@@ -15,4 +15,5 @@
 1. Clone files required
 2. Work on the files
 3. Open Git Desktop and select updated files
-4. Commit to main
+4. Commit to your own branch
+5. Create a PR. Review it and merge it if no conflicts.
