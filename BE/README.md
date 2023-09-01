@@ -13,6 +13,11 @@ BE\Scripts\activate.bat
 python -m pip install Django
 ```
 
+## Download Django Rest Framework
+```sh
+pip install djangorestframework
+```
+
 ### Run Django Server
 
 ```sh
