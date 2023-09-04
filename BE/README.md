@@ -30,5 +30,21 @@ python manage.py migrate
 ```
 
 
+### Remedy Actions
+If Cannot detect python
+activate.bat change to your current path
+set VIRTUAL_ENV=C:\Users\<user>\Documents\wad2\WADII_Project\BE
 
+If Cannot detect mysqlclient
+
+pip install pymysql
+
+Insert into settings.py
+
+import pymysql
+pymysql.install_as_MySQLdb()
+
+Change password to "" if cannot connect
+
+run "Create Schema wad2" to create schema
 
