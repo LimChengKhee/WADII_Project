@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\weilo\Documents\GitHub\WADII_Project\BE
+set VIRTUAL_ENV=Z:/wad2/WADII_Project/BE
 
 if not defined PROMPT set PROMPT=$P$G
 
