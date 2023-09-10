@@ -82,6 +82,7 @@ DATABASES = {
         "NAME": "wad2",
         "USER": "root",
         "PASSWORD": "",
+      ]
         'HOST':'127.0.0.1',
         'PORT':'3306',
     }

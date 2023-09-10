@@ -9,6 +9,7 @@ export default {
   name: '',
   components: {
     // importing components from other places
+
   },
   data () {
     // local repository of information
