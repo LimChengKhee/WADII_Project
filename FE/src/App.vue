@@ -25,19 +25,33 @@ import { RouterLink, RouterView } from 'vue-router'
 import Navbar from "./components/Navbar.vue";
 import Login from "./views/Login.vue";
 import SignUp from "./views/SignUp.vue";
+import axios from 'axios';
 
-export default {
+export default { 
   name: "App",
+  /*Life cycle hook*/
   components:{
     Navbar,
     Login,
     SignUp,
+  },
+  methods:{
+    beforeCreate(){
+    this.$store.commit('initalizeStore')
+    const token = this.$store.state.token
+
+    if (token){
+      axios.defaults.headers.common['Authorization'] = "Token " + token
+    }else{
+      axios.defaults.headers.common['Authorization'] = ''
+    }
+  },
   }
 };
 </script>
 
 <style>
-  @import '../src/assets/login.css';
+  /* @import '../src/assets/login.css'; */
   
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
 

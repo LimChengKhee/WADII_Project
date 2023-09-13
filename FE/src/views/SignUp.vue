@@ -6,7 +6,7 @@
 
         <form @submit.prevent="signUp" class="form-signup">
           <div class="form-group">
-            <input type="text" v-model="name" class="form-control" placeholder="Enter Name" />
+            <input type="text" v-model="username" class="form-control" placeholder="Enter Name" />
           </div>
           <div class="form-group">
             <input type="text" v-model="email" class="form-control" placeholder="Enter Email" />
@@ -34,14 +34,27 @@ export default {
   name: 'SignUp',
   data() {
     return {
-      name: '',
-      email: '',
+      username: '',
       password: '',
     };
   },
   methods: {
-    signUp() {
+    signUp(e) {
       // Your sign-up logic here
+      const formData = {
+        username: this.username,
+        password: this.password,
+        email: this.email
+      }
+      axios 
+        .post('/api/v1/users/', formData)
+        .then(response => {
+          this.$router.push('/login')
+          console.log(response)
+        })
+        .catch(error =>{
+          console.log(error)
+        })
     },
   },
 };

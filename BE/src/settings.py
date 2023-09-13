@@ -28,12 +28,16 @@ SECRET_KEY = 'django-insecure-ej9)=i*us+#(z0@t-mm-h@@fv9a60^amv%a8t@a41zjem)nh3o
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+#Adjust accordingly to your vue and django ports
+CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:5173','http://127.0.0.1:8000']
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENICATIONCLASSES':(
+    'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework.authentication.TokenAuthentication',
     ),
-    ''
+    'DEFAULT_PERMISSION_CLASSES':(
+        'rest_framework.permissions.IsAuthenticated',
+    )
+    
 }
 
 # Application definition
