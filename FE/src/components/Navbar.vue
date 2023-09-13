@@ -1,23 +1,17 @@
 <template>
-  <div class="container-fluid">
-    <ul class="menu">
-      
-      <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
-      
-      <li class="menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
-        :ref="'menu-item_' + link.id">
-        <a href="#" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
-          <i class="menu-icon" :class="link.icon"></i>
-          <span>{{ link.text }}</span>
-        </a>
-      </li>
-    </ul>
-    </div>
-
+  <ul class="menu">
+    <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
+    <li class="menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
+      :ref="'menu-item_' + link.id">
+      <a href="#" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
+        <i class="menu-icon" :class="link.icon"></i>
+        <span>{{ link.text }}</span>
+      </a>
+    </li>
+  </ul>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -75,31 +69,31 @@ export default {
   --active-background-color: #132238;
 }
 
-/* ul */
 .menu {
   padding: 0;
   margin: 0;
+  height: 80px; /* Increase the height to your desired value */
   position: relative;
   background-color: var(--menu-background-color);
-  display: inline-flex;
-  border-radius: 4px;
+  width: 100%; /* Span the entire screen width */
   list-style-type: none;
   overflow: hidden;
-
 }
 
-/* li */
 .menu-item {
   display: inline-flex;
+  height: 100%; /* Ensure each menu item stretches to the full height of the navbar */
+  align-items: center; /* Vertically center the menu items */
 }
 
-/* a */
 .menu-link {
-  padding: 0.75rem 1rem;
+  padding: 0 20px; /* Adjust padding to your preference */
   display: inline-flex;
   align-items: center;
   color: var(--link-text-color);
   text-decoration: none;
+  height: 100%; /* Ensure menu links stretch to the full height of the menu item */
+  transition: background-color 0.3s ease; /* Add a smooth background color transition on hover */
 }
 
 .menu-link:hover,
@@ -129,7 +123,4 @@ export default {
   width: 3rem;
   transition: all ease 0.5s;
 }
-
-
-
 </style>
