@@ -29,6 +29,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENICATIONCLASSES':(
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    ''
+}
 
 # Application definition
 
@@ -40,11 +46,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -82,7 +92,6 @@ DATABASES = {
         "NAME": "wad2",
         "USER": "root",
         "PASSWORD": "",
-      ]
         'HOST':'127.0.0.1',
         'PORT':'3306',
     }

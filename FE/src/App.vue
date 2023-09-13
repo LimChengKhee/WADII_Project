@@ -15,5 +15,6 @@ export default {
 };
 </script>
 <style>
-  @import '..\FE\src\assets\login.css';
+  @import '../src/assets/login.css';
+  
 </style>
