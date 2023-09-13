@@ -1,15 +1,15 @@
 <template>
-  <div id="app">
-    <div class="container-fluid">
+  <div id="app" class="no-scroll">
+    <div class="container-fluid px-0">
+      <!-- Navbar takes up the entire width -->
       <div class="row">
-        <!-- Navbar takes up the entire width -->
-        <div class="col-12">
+        <div class="col-12 px-0">
           <Navbar/>
         </div>
       </div>
       <div class="row">
-        <!-- Router view takes up the first 3 out of 12 columns -->
-        <div class="col-12">
+        <!-- Content -->
+        <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12">
           <router-view/>
         </div>
       </div>
@@ -17,14 +17,11 @@
   </div>
 </template>
 
-
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 
-
 <script>
-
 import Navbar from "./components/Navbar.vue";
 import Login from "./views/Login.vue";
 import SignUp from "./views/SignUp.vue";
@@ -32,7 +29,7 @@ import SignUp from "./views/SignUp.vue";
 export default {
   name: "App",
   components:{
-    Navbar, /* by indicating this in here, i'm able to make us of the <navbar/> tag as a module*/
+    Navbar,
     Login,
     SignUp,
   }
@@ -42,18 +39,17 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
 
-
-
 html, body {
   height: 100%;
-
 }
-body{
-  font-family:"Roboto", sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+body {
+  font-family: "Roboto", sans-serif;
   width: 100%;
 }
 
+.no-scroll {
+  overflow-y: hidden;
+  height: 100%; /* Make sure the container fills the viewport height */
+}
 </style>
