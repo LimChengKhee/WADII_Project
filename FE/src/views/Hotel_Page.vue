@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>suck</p>
+    <p>suck it</p>
   </div>
 </template>
 <script>
@@ -8,7 +8,7 @@
 // import example from '@/utils/string_formatter'
 
 export default {
-  name: '',
+  name: 'Hotel_Page',
   components: {
     // importing components from other places
     
@@ -26,7 +26,6 @@ export default {
 
   // start of lifecycle
   async mounted () {
-    await this.getPasswordFieldOptions()
   },
 
   methods: {

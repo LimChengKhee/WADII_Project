@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Hotel_Flights from '../views/Hotel_Flights.vue'
+import Hotel from '../views/Hotel.vue'
 import Home from '../views/Home.vue'
+import Hotel_Page from '../views/Hotel_Page.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,11 +12,15 @@ const router = createRouter({
       component: Home
     },
     {
-      path: '/hotel_flights',
-      name: 'Hotel_Flights',
-      component: Hotel_Flights
+      path: '/hotel',
+      name: 'Hotel',
+      component: Hotel
     },
-
+    {
+      path: '/hotel/:name',
+      name: 'Specific',
+      component: Hotel_Page
+    }
   ]
 })
 
