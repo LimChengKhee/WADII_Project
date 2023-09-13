@@ -6,7 +6,7 @@
 
         <form @submit.prevent="signUp" class="form-signup">
           <div class="form-group">
-            <input type="text" v-model="name" class="form-control" placeholder="Enter Name" />
+            <input type="text" v-model="username" class="form-control" placeholder="Enter Name" />
           </div>
           <div class="form-group">
             <input type="text" v-model="email" class="form-control" placeholder="Enter Email" />
