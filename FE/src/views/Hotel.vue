@@ -34,76 +34,32 @@
         <div class="row ms-4">
           <div class="col-3"></div>
           <!--PRICE FILTER-->
-          <div class="col-1 ms-4" style="padding-left: 0px">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Price
+          <div class="col-2">
+            <button
+              class="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+            >
+              Price Per Night
+            </button>
+          </div>
+
+          <div class="col-1">
+            <button
+              class="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+            >
+              Rating
             </button>
             <!--slider-->
           </div>
 
-          <!--AMENITIES FILTER-->
-          <div class="col-1 mx-1" style="padding-left: 0px">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Amenities
-            </button>
-
-            <!--SHOWER CHECKBOX-->
-            <div class="dropdown-menu ps-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="showerCheck" />
-                <label class="form-check-label" for="showerCheck"> Shower </label>
-              </div>
-
-              <!--BATHROOM CHECKBOX-->
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="bathroomCheck" />
-                <label class="form-check-label" for="bathroomCheck"> Bathroom </label>
-              </div>
-
-              <!--CASINO CHECKBOX-->
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="casinoCheck" />
-                <label class="form-check-label" for="casinoCheck"> Casino </label>
-              </div>
-            </div>
-          </div>
-
           <div class="col-1 mx-4" style="padding-left: 0px">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
+            <button
+              class="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+            >
               Star Rating
             </button>
-            <div class="dropdown-menu ps-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="one_star" />
-                <label class="form-check-label" for="one_star"> 1 Star </label>
-              </div>
-
-              <!--BATHROOM CHECKBOX-->
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="two_star" />
-                <label class="form-check-label" for="two_star"> 2 Star </label>
-              </div>
-
-              <!--CASINO CHECKBOX-->
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="three_star" />
-                <label class="form-check-label" for="three_star"> 3 Star </label>
-              </div>
-
-              <!--CASINO CHECKBOX-->
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="four_star" />
-                <label class="form-check-label" for="four_star"> 4 Star </label>
-              </div>
-
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="five_star" />
-                <label class="form-check-label" for="five_star"> 5 Star </label>
-              </div>
-            </div>
           </div>
 
           <div class="col-1 mx-4" style="padding-left: 0px">
@@ -115,8 +71,9 @@
         </div>
       </div>
     </div>
-    <div class="card_section">
-      <HotelCard v-for="hotel in this.hotelsInCities"
+    <div class="card_section" v-if="mounted">
+      <HotelCard
+        v-for="hotel in this.hotelsInCities"
         :hotel_name="hotel.hotel_name"
         :distance_to_cc_formatted="hotel.distance_to_cc_formatted"
         :review_score="hotel.review_score"
@@ -125,13 +82,22 @@
         :photo_url="hotel.max_1440_photo_url"
         :price_per_night="hotel.composite_price_breakdown.gross_amount_per_night.value"
         :currency="hotel.composite_price_breakdown.gross_amount_per_night.currency"
-        ></HotelCard>
+        :updated_object="hotel"
+        :district="hotel.district"
+        :city="hotel.city"
+      ></HotelCard>
+    </div>
+    <div class="spinner_section d-flex flex-column" v-if="!mounted">
+      <div class="spinner-border mt-5" style="margin: 0 auto;height:200px;width:200px;" role="status">
+      </div>
+      <p class="mt-2" style="text-align: center;">Loading...Please give us a second</p>
     </div>
   </div>
 </template>
 <script>
-import HotelCard from '../components/Hotel_Card.vue';
+import HotelCard from '../components/Hotel_Card.vue'
 import axios from 'axios'
+import flushPromises from 'flush-promises'
 
 export default {
   name: 'Hotel',
@@ -142,22 +108,23 @@ export default {
   data() {
     // local repository of information
     return {
-      hotelsInCities: {}
+      hotelsInCities: {},
+      mounted: false
     }
   },
   computed: {
     // computed
-
   },
 
   // start of lifecycle
-  async mounted() {
-    this.mountAllHotelInformation();
-  },
+  // async mounted() {
+  //   await this.mountAllHotelInformation()
+  //   this.mounted = true
+  // },
 
   methods: {
     // methods defined by ourselves
-    async mountAllHotelInformation(){
+    async mountAllHotelInformation() {
       // get all the hotels within that city displayed.
       // const options = {
       //   method: 'GET',
@@ -204,13 +171,38 @@ export default {
           'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
           'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
         }
-      };
-      const response = await axios.request(options);
-      this.hotelsInCities = response.data.result;
-      console.log(this.hotelsInCities);
-    }
+      }
+      const response = await axios.request(options)
+      this.hotelsInCities = response.data.result
 
-  },
+      await flushPromises()
+
+      for (let hotel of this.hotelsInCities) {
+        let hotel_id = hotel.hotel_id
+        // fire an API call to get description
+        const options = {
+          method: 'GET',
+          url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
+          params: {
+            hotel_id: hotel_id,
+            locale: 'en-gb'
+          },
+          headers: {
+            'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+            'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+          }
+        }
+        try {
+          const response = await axios.request(options)
+          hotel['Description'] = response.data
+        } catch (error) {
+          console.error(error)
+        }
+      }
+      await flushPromises()
+      console.log(this.hotelsInCities)
+    }
+  }
 }
 </script>
 
