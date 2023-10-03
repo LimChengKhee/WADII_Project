@@ -4,6 +4,7 @@ import SignUp from "../views/SignUp.vue";
 import Form from "../views/Forms.vue";
 import Home_Page from '../views/home.vue'
 import Itinerary_Page from '../views/itinerary.vue'
+import Dashboard from "../views/Dashboard.vue";
 
 const routes = [
   
@@ -28,17 +29,27 @@ const routes = [
     component: Form,
   },
   {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+  },
+  {
     path: '/itinerary',
     name: 'Itinerary_Page',
     component: Itinerary_Page
-  }
+  },
+  {
+    path: '/',
+    name: 'Home_Page',
+    component: Home_Page
+  },
 ];
 
 
 
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 

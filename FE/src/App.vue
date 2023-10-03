@@ -25,6 +25,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import Navbar from "./components/Navbar.vue";
 import Login from "./views/Login.vue";
 import SignUp from "./views/SignUp.vue";
+import Dashboard from "./views/dashboard.vue";
 import axios from 'axios';
 
 export default { 
@@ -34,6 +35,7 @@ export default {
     Navbar,
     Login,
     SignUp,
+    Dashboard,
   },
   methods:{
     beforeCreate(){
