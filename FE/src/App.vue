@@ -1,15 +1,15 @@
 <template>
   <div id="app" class="no-scroll">
-    <div class="container-fluid px-0">
+    <div class="container-fluid">
       <!-- Navbar takes up the entire width -->
       <div class="row">
-        <div class="col-12 px-0">
+        <div class="px-0">
           <Navbar/>
         </div>
       </div>
       <div class="row">
         <!-- Content -->
-        <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12">
+        <div class="px-0">
           <router-view/>
         </div>
       </div>

@@ -3,24 +3,31 @@
     <div class="row">
       <div class="col-8 px-0">
         <ul class="menu">
-          <img class="ms-4" src="../img/EcoBound.png" style="height: 50px; max-width: 100%;" alt="EcoBound Logo">
+          <img class="ms-4" src="../img/EcoBound.png" style="height: 50px;" alt="EcoBound Logo">
           <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
           <li class="menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
             :ref="'menu-item_' + link.id">
-            <a href="#" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
+            <router-link :to="link.route" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
               <i class="menu-icon" :class="link.icon"></i>
               <span>{{ link.text }}</span>
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
-      <div class="col-2 px-0" style="background-color: var(--menu-background-color);"></div>
-      <div class="col-2 px-0" style="background-color: var(--menu-background-color);">
-        <button type="button" class="btn btn-primary">Primary</button>
+      <div class="col-1 px-0" style="background-color: var(--menu-background-color);"></div>
+      <div class="col-3 px-0 d-flex align-items-center" style="background-color: var(--menu-background-color);">
+        <img src="../img/kfc.png" class="rounded-circle" style="height: 30px; width:auto" alt="profileImg">
+        <router-link to="/login">
+          <button type="button" class="button m-3 px-6" style="background-color:#de503a;">Log in</button>
+        </router-link>
+        <router-link to="/Sign-Up">
+          <button type="button" class="button m-3 px-6">Sign up</button>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
+
 
 
 <script>
@@ -35,22 +42,28 @@ export default {
           id: 1,
           icon: "fa fa-home",
           text: "Home",
+          route: "/home",
         },
         {
           id: 2,
-          icon: "fa fa-plane",
-          text: "Flights",
+          icon: "fa fa-gear",
+          text: "Dashboard",
+          route: "/dashboard",
         },
         {
           id: 3,
-          icon: "fa fa-user",
-          text: "Profile",
-        },
-        {
-          id: 4,
           icon: "fa fa-question",
           text: "About",
+          route: "",
         },
+
+        {
+          id: 4,
+          icon: "fa fa-user",
+          text: "Profile",
+          route: "",
+        },
+
       ],
     };
   },
@@ -74,11 +87,15 @@ export default {
 </script>
 
 <style>
+body {
+  font-family: var(bs);
+}
+
 :root {
   --active-color: #ffee93;
   --link-text-color: #f1faee;
-  --menu-background-color: #1d3557;
-  --active-background-color: #132238;
+  --menu-background-color: #191645;
+  --active-background-color: #EB4F47;
 }
 
 .menu {
@@ -141,5 +158,21 @@ export default {
   margin: auto;
   width: 3rem;
   transition: all ease 0.5s;
+}
+
+.button {
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
+  font-size: 1rem;
+}
+.rounded-circle{
+  background-color: white;
 }
 </style>
