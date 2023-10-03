@@ -117,10 +117,16 @@ export default {
   },
 
   // start of lifecycle
-  // async mounted() {
-  //   await this.mountAllHotelInformation()
-  //   this.mounted = true
-  // },
+  async mounted() {
+    let currentState = await this.loadPersistedData();
+
+    if(currentState == null){
+      await this.mountAllHotelInformation()
+      await this.savePersistedData()
+      this.mounted = true
+    }
+    this.mounted = true
+  },
 
   methods: {
     // methods defined by ourselves
@@ -152,10 +158,10 @@ export default {
         method: 'GET',
         url: 'https://booking-com.p.rapidapi.com/v1/hotels/search',
         params: {
-          checkin_date: '2023-09-27',
+          checkin_date: '2023-10-27',
           dest_type: 'city',
           units: 'metric',
-          checkout_date: '2023-09-30',
+          checkout_date: '2023-10-30',
           adults_number: '2',
           order_by: 'popularity',
           dest_id: '-73635',
@@ -200,7 +206,18 @@ export default {
         }
       }
       await flushPromises()
-      console.log(this.hotelsInCities)
+    },
+    async savePersistedData() {
+      // Use localStorage to save data
+      this.$store.commit("settingHotels", this.hotelsInCities);
+      localStorage.setItem('persistedData', JSON.stringify(this.hotelsInCities));
+    },
+
+    async loadPersistedData(){
+      const persistedData = localStorage.getItem('persistedData');
+      this.hotelsInCities = persistedData ? JSON.parse(persistedData) : null;
+
+      return this.hotelsInCities;
     }
   }
 }
