@@ -29,7 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 #Adjust accordingly to your vue and django ports
-CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:8000','http://localhost:5173']
+CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:5173','http://127.0.0.1:8000']
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework.authentication.TokenAuthentication',
@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'src.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "wad2",
+        "NAME": "test",
         "USER": "root",
         "PASSWORD": "",
-        'HOST':'127.0.0.1',
+        'HOST':'localhost',
         'PORT':'3306',
     }
 }
