@@ -1,6 +1,30 @@
+import { createRouter, createWebHistory } from "vue-router";
+import Login from "../views/Login.vue";
+import SignUp from "../views/SignUp.vue";
+import Form from "../views/Forms.vue";
 import { createRouter, createWebHistory } from 'vue-router'
 import Home_Page from '../views/home.vue'
 import Itinerary_Page from '../views/itinerary.vue'
+
+const routes = [
+  {
+    path: "/login",
+    name: "login",
+    component: Login,
+  },
+  {
+    path: "/sign-up",
+    name: "SignUp",
+    component: SignUp,
+  },
+  {
+    path: "/form",
+    name: "Forms",
+    component: Form,
+  }
+];
+
+
 
 
 const router = createRouter({
@@ -19,4 +43,4 @@ const router = createRouter({
   ]
 })
 
-export default router
+export default router;
