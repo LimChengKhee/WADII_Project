@@ -1,15 +1,27 @@
 <template>
-  <ul class="menu">
-    <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
-    <li class="menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
-      :ref="'menu-item_' + link.id">
-      <a href="#" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
-        <i class="menu-icon" :class="link.icon"></i>
-        <span>{{ link.text }}</span>
-      </a>
-    </li>
-  </ul>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-6 px-0">
+        <ul class="menu">
+          <img src="../img/EcoBound.png" style="height: 50px; max-width: 100%;" alt="EcoBound Logo">
+          <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
+          <li class="menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
+            :ref="'menu-item_' + link.id">
+            <a href="#" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
+              <i class="menu-icon" :class="link.icon"></i>
+              <span>{{ link.text }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-4 px-0" style="background-color: var(--menu-background-color);"></div>
+      <div class="col-2 px-0" style="background-color: var(--menu-background-color);">
+        <button type="button" class="btn btn-primary">Primary</button>
+      </div>
+    </div>
+  </div>
 </template>
+
 
 <script>
 export default {
@@ -72,28 +84,35 @@ export default {
 .menu {
   padding: 0;
   margin: 0;
-  height: 80px; /* Increase the height to your desired value */
+  height: 80px;
+  /* Increase the height to your desired value */
   position: relative;
   background-color: var(--menu-background-color);
-  width: 100%; /* Span the entire screen width */
+  width: 100%;
+  /* Span the entire screen width */
   list-style-type: none;
   overflow: hidden;
 }
 
 .menu-item {
   display: inline-flex;
-  height: 100%; /* Ensure each menu item stretches to the full height of the navbar */
-  align-items: center; /* Vertically center the menu items */
+  height: 100%;
+  /* Ensure each menu item stretches to the full height of the navbar */
+  align-items: center;
+  /* Vertically center the menu items */
 }
 
 .menu-link {
-  padding: 0 20px; /* Adjust padding to your preference */
+  padding: 0 20px;
+  /* Adjust padding to your preference */
   display: inline-flex;
   align-items: center;
   color: var(--link-text-color);
   text-decoration: none;
-  height: 100%; /* Ensure menu links stretch to the full height of the menu item */
-  transition: background-color 0.3s ease; /* Add a smooth background color transition on hover */
+  height: 100%;
+  /* Ensure menu links stretch to the full height of the menu item */
+  transition: background-color 0.3s ease;
+  /* Add a smooth background color transition on hover */
 }
 
 .menu-link:hover,
