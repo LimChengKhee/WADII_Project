@@ -1,9 +1,9 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-6 px-0">
+      <div class="col-8 px-0">
         <ul class="menu">
-          <img src="../img/EcoBound.png" style="height: 50px; max-width: 100%;" alt="EcoBound Logo">
+          <img class="ms-4" src="../img/EcoBound.png" style="height: 50px; max-width: 100%;" alt="EcoBound Logo">
           <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
           <li class="menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
             :ref="'menu-item_' + link.id">
@@ -14,7 +14,7 @@
           </li>
         </ul>
       </div>
-      <div class="col-4 px-0" style="background-color: var(--menu-background-color);"></div>
+      <div class="col-2 px-0" style="background-color: var(--menu-background-color);"></div>
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);">
         <button type="button" class="btn btn-primary">Primary</button>
       </div>
