@@ -7,6 +7,12 @@ import Itinerary_Page from '../views/itinerary.vue'
 import Dashboard from "../views/Dashboard.vue";
 
 const routes = [
+  
+  {
+    path: "/",
+    name: "home",
+    component: Home_Page,
+  },
   {
     path: "/login",
     name: "login",

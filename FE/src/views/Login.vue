@@ -53,21 +53,26 @@ export default {
         username: this.username,
         password: this.password
       }
-      console.log(formData)
       axios
         .post('/api/v1/token/login', formData)
         .then(response => {
-          console.log('sdasdas')
           console.log(response)
           const token = response.data.auth_token
           console.log(token)
-          this.$store.commit('setToken', token)
-          //to push to next page afterwards
-          //   this.$router.push('/login')
+          // store.commit('setUserId',formData.username)
+          // to push to next page afterwards
+          this.$router.push("/form")
 
           axios.defaults.headers.common['Authorization'] = 'Token ' + token
 
           localStorage.setItem('token', token)
+          localStorage.setItem('userid', formData.username)
+          // localStorage.removeItem('YourItem')
+          // localStorage.setItem('YourItem', response.data)
+          // localStorage.storedData = this.input;
+          // let value = localStorage.storedData;
+          
+          
         })
         .catch(error => {
           console.log(error)

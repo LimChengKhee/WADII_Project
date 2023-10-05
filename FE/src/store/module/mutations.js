@@ -1,7 +1,8 @@
 export default {
 
-    exampleFunction (example) {
-        // logic
-    },
+    setUserId(state, userId) {
+        state.userId = userId;
+        console.log("User ID set in store");
+      },
   }
   

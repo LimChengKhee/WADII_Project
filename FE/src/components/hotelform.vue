@@ -79,8 +79,9 @@
 
 
       </div>
-      
+      <router-link to="/itinerary">
       <button type="submit" class="btn btn-primary mt-5">Submit</button>
+    </router-link>
     </form>
   </div>
 </template>

@@ -33,6 +33,7 @@ CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:5173','http://127.0.0.1:8000']
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES':(
         'rest_framework.permissions.IsAuthenticated',
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'corsheaders',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -93,7 +95,7 @@ WSGI_APPLICATION = 'src.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "test",
+        "NAME": "wad2",
         "USER": "root",
         "PASSWORD": "",
         'HOST':'localhost',
