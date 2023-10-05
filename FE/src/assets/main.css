@@ -17,3 +17,10 @@
   margin-left: auto;
   border: 1px solid skyblue;
 }
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 100px;
+    width: 100px;
+    outline: black;
+    background-color: #808080;
+}
