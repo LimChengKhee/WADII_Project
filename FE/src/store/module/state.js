@@ -8,6 +8,8 @@ export default createStore({
       noofadult:2,
       noofchildren:2,
       noofroom:2,
+      token:"",
+      userId: null,
     },
   })
   

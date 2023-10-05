@@ -252,6 +252,7 @@
   
     // start of lifecycle
     async mounted () {
+      console.log(localStorage.userid)
     },
   
     methods: {
