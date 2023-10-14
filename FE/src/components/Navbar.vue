@@ -16,7 +16,19 @@
       </div>
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);"></div>
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);">
-        <button type="button" class="btn btn-primary">Primary</button>
+        
+        <template v-if="userflag">
+          <div class="profile">{{ userid }}</div>
+          <button class="btn btn-primary" @click="logout()">Logout</button>
+        </template>
+        <template v-else>
+          <button  type="button" class="btn btn-primary">Login</button>
+          <div ></div>
+        </template>
+        
+
+        
+        
       </div>
     </div>
   </div>
@@ -30,6 +42,8 @@ export default {
       sliderPosition: 0,
       selectedElementWidth: 0,
       selectedIndex: 0,
+      userid: "",
+      userflag:false,
       links: [
         {
           id: 1,
@@ -61,6 +75,19 @@ export default {
       this.selectedElementWidth = el.offsetWidth;
       this.selectedIndex = id;
     },
+    getUser(){
+      console.log(this.userid)
+      this.userid = localStorage.getItem('userid')
+      if (this.userid != null){
+        this.userflag = true;
+      }else{
+        this.userflag = false;
+      }
+    },
+    logout(){
+      localStorage.clear();
+      this.$router.go('/login')
+    }
   },
   computed: {
     positionToMove() {
@@ -70,10 +97,16 @@ export default {
       return this.selectedElementWidth + "px";
     },
   },
+  mounted(){
+    this.getUser()
+  }
 };
 </script>
 
 <style>
+.profile{
+  color:white;
+}
 :root {
   --active-color: #ffee93;
   --link-text-color: #f1faee;

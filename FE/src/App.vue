@@ -4,7 +4,7 @@
       <!-- Navbar takes up the entire width -->
       <div class="row">
         <div class="col-12 px-0">
-          <Navbar/>
+          <Navbar />
         </div>
       </div>
       <div class="row">
@@ -18,15 +18,18 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+
 </script>
 
 <script>
 import Navbar from "./components/Navbar.vue";
 import Login from "./views/Login.vue";
-import SignUp from "./views/SignUp.vue";
-import Dashboard from "./views/dashboard.vue";
+
+// import Dashboard from "./views/dashboard.vue";
 import axios from 'axios';
+// var VueRouter = require('vue-router')
+// Vue.use (VueRouter)
+import { RouterLink, RouterView } from 'vue-router'
 
 export default { 
   name: "App",
@@ -34,8 +37,7 @@ export default {
   components:{
     Navbar,
     Login,
-    SignUp,
-    Dashboard,
+    // Dashboard,
   },
   methods:{
     beforeCreate(){

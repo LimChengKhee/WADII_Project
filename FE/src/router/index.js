@@ -2,20 +2,24 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
 import Form from "../views/Forms.vue";
-import Home_Page from '../views/home.vue'
+import Home_Page from '../views/Home.vue'
 import Itinerary_Page from '../views/itinerary.vue'
 import Dashboard from "../views/Dashboard.vue";
+import Flight from "../views/Flight.vue"
 
 const routes = [
   
   {
     path: "/",
-    name: "home",
+    name: "Home",
+    // redirect: { path: "/login" },
+    meta: { refresh: true },
     component: Home_Page,
   },
   {
     path: "/login",
     name: "login",
+    meta: { refresh: true },
     component: Login,
   },
   {
@@ -39,26 +43,12 @@ const routes = [
     component: Itinerary_Page
   },
   {
-    path: '/',
-    name: 'Home_Page',
-    component: Home_Page
+    path: '/flight',
+    name: 'Flight',
+    component: Flight
   },
 ];
 
-
-
-const routes = [
-  {
-    path: '/',
-    name: 'Home_Page',
-    component: Home_Page
-  },
-  {
-    path: '/itinerary',
-    name: 'Itinerary_Page',
-    component: Itinerary_Page
-  }
-]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

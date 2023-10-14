@@ -2,6 +2,9 @@
   <div class="container">
     <form>
         <h1>Hotel</h1>
+        <div class="row">
+          <input type="text" name="" id="hotelname" placeholder="Hotel">
+        </div>
       <div class="row justify-content-center mt-4">
         <div class="col mb-3">
             <div class="form-group">
