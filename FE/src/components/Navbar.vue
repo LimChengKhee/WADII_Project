@@ -16,7 +16,7 @@
       </div>
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);"></div>
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);">
-        <button type="button" class="btn btn-primary">Primary</button>
+        <!-- <button type="button" class="btn btn-primary">Primary</button> -->
       </div>
     </div>
   </div>

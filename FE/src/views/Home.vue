@@ -36,7 +36,6 @@ export default {
 
   // start of lifecycle
   async mounted () {
-    await this.getPasswordFieldOptions()
   },
 
   methods: {
