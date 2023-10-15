@@ -1,6 +1,5 @@
 <template>
   <div>
-      <p>
           <!-- use the router-link component for navigation. -->
           <!-- specify the link by passing the `to` prop. -->
           <!-- `<router-link>` will render an `<a>` tag with the correct `href` attribute -->
@@ -8,10 +7,17 @@
           <br>
           <router-link to="/itinerary">Go to Itinerary</router-link> -->
           
-      </p>
+
       <!-- route outlet -->
       <!-- component matched by the route will render here -->
       <router-view></router-view>
+  </div>
+  <div class="row mt-5">
+    <div class="col text-start ">Recently View</div>
+    <div class="col">
+      <button class="btn btn-primary" @click="createitinerary">Create new Trip</button>
+    </div>
+    
   </div>
 </template>
 <script>
@@ -59,20 +65,21 @@ export default {
     }else{
       // window.location.re
     }
-    // this.$router.go(0)
-    // window.location.reload()
-    // localStorage.clear()
-    // location.reload();
+
   },
 
   methods: {
     // methods defined by ourselves
+
     redirect(url, isRedirect) {           
     if (isRedirect == true) {
       window.open(url);
     } else {
       this.$router.push(`${url}`);
     }
+  },
+  createitinerary(){
+    this.$router.push('/form')
   }
   },
 }

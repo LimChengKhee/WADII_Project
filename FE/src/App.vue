@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="no-scroll">
+  <div id="app" class="" onunload="HandleOnClose()">
     <div class="container-fluid px-0">
       <!-- Navbar takes up the entire width -->
       <div class="row">
@@ -39,7 +39,16 @@ export default {
     Login,
     // Dashboard,
   },
+  created(){
+    window.addEventListener("beforeunload", this.leaving);
+  },
   methods:{
+    leaving(){
+      console.log('hi')
+      // localStorage.clear()
+    },
+  
+
     beforeCreate(){
     this.$store.commit('initalizeStore')
     const token = this.$store.state.token

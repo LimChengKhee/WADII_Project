@@ -81,6 +81,7 @@ export default {
           // to push to next page afterwards
           localStorage.setItem('token', token)
           localStorage.setItem('userid', formData.username)
+          document.cookie = "loginstatus=loggedin";
           // location.reload();
           this.$router.push('/')
 

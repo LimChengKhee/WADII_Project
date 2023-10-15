@@ -1,20 +1,29 @@
 <template>
+    <destinationForm></destinationForm>
     <hotelForm></hotelForm>
     <flightForm></flightForm>
+    
 </template>
 
 <script>
 import hotelForm from '../components/hotelform.vue';
-import flightForm from '../components/flightform.vue'
+import flightForm from '../components/flightform.vue';
+import destinationForm from '../components/destinationForm.vue'
 import axios from 'axios';
 
 
 export default {
     name: 'Forms',
     data() {
-        return {};
+        return {
+            
+        };
+        
     },
     methods: {
+        submitStep(){
+    this.activeStepIndex++;
+        },
         getInfo(){
             var url = "http://127.0.0.1:8000/api/location/?format=json"
             axios
@@ -32,7 +41,7 @@ export default {
         },
 
     },
-    components: { hotelForm,flightForm },
+    components: { hotelForm,flightForm,destinationForm },
 
     mounted(){
         console.log(localStorage.userid)

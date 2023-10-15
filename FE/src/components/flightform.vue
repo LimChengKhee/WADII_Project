@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+   <div class="container">
     <form @submit.prevent="handleSubmit" action="">
     <div class="row">
       <div class="col">
@@ -27,7 +27,8 @@
     </div>
     <button type="btn" class="btn btn-primary mt-5" @click = "submitAirline">Submit</button>
 </form>
-  </div>
+  </div> 
+  
 </template>
 
 <script>
@@ -40,18 +41,23 @@ import axios from 'axios'
 
 export default {
   name: 'flightForm',
+  props:['steps'],
   data() {
     return {
       startdate:"",
       airline:"",
       flightno:"",
       enddate:"",
+      activeStepIndex:0,
     }
   },
   components:{
     Datepicker
   },
   methods:{
+    submitStep(){
+    this.activeStepIndex++;
+  },
     format_date(date){
       let mth = date.getMonth()
       let day = date.getDate()
