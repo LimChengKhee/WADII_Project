@@ -10,6 +10,7 @@ export default createStore({
       noofroom:2,
       token:"",
       userId: null,
+      step:1,
     },
   })
   

@@ -29,9 +29,14 @@
     <div class="card_section" v-if="mounted">
       <FlightCard
         v-for="flight in this.hotelsInCities.data.itineraries"
-        :flightNumber="flight.legs[0].segments[0].flightNumber"
-        :alternateId ="flight.legs[0].segments[0].marketingCarrier.alternateId"
-        :carrierName="flight.legs[0].carriers.marketing[0].name"
+        :flightNumberO="flight.legs[0].segments[0].flightNumber"
+        :alternateIdO ="flight.legs[0].segments[0].marketingCarrier.alternateId"
+        :carrierNameO="flight.legs[0].carriers.marketing[0].name"
+
+        :flightNumberD="flight.legs[1].segments[0].flightNumber"
+        :alternateIdD ="flight.legs[1].segments[0].marketingCarrier.alternateId"
+        :carrierNameD="flight.legs[1].carriers.marketing[0].name"
+
         :departure="flight.legs[0].segments[0].departure"
         :originDisplayCode="flight.legs[0].segments[0].origin.displayCode"
         :originName="flight.legs[0].segments[0].origin.name"

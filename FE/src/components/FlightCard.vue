@@ -6,7 +6,7 @@
         <div class="card mb-3 rounded-0">
           <div class="row">
             <div class="col">
-              {{this.alternateId }}-{{ this.flightNumber }},{{this.carrierName}}
+              {{this.alternateIdO }}-{{ this.flightNumberO }},{{this.carrierNameO}}
             </div>
             <div class="col">
               {{ this.departure }},{{
@@ -20,6 +20,9 @@
               }},{{ this.destinationName }},{{
                 this.destinationCity
               }}
+            </div>
+            <div class="col bg-primary">
+              {{this.alternateIdD }}-{{ this.flightNumberD }},{{this.carrierNameD}}
             </div>
           </div>
           <div class="row mt-5">
@@ -38,9 +41,12 @@ export default {
   name: 'FlightCard',
   components: {},
   props: {
-    alternateId: String,
-    flightNumber: String,
-    carrierName: String,
+    alternateIdO: String,
+    flightNumberO: String,
+    carrierNameO: String,
+    alternateIdD: String,
+    flightNumberD: String,
+    carrierNameD: String,
     departure: String,
     originDisplayCode: String,
     originName: String,
