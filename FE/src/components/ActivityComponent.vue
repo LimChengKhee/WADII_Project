@@ -1,10 +1,10 @@
 
 
 <template>
-    <div class="carousel-item" v-for='set in slicedArr' v-bind:key="set[0].id" v-bind:class="{ active: isFirstItem(set) }">
+    <div class="carousel-item" v-for='set in slicedArr' :key="set[0].id" :class="{ active: isFirstItem(set) }">
         <div class="card-group">
             <div v-for='activity in set' :key="activity.id" class="card" style="width: 18rem;">
-                <img v-bind:src="'/assets/img/' + activity.image" class="card-img-top" alt="...">
+                <img :src="getImage(activity.image)" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{activity.name}}</h5>
                     <p class="card-text">{{activity.description}}</p>
@@ -45,11 +45,12 @@ export default {
     computed: {
         // computed
         slicedArr() {
-        const result = []
-        for (let i = 0; i < this.allActivities.length; i += 3)
-                result.push(this.allActivities.slice(i, i + 3))
-        return result
-    }
+            const result = []
+            for (let i = 0; i < this.allActivities.length; i += 3)
+                    result.push(this.allActivities.slice(i, i + 3))
+            return result
+        },
+
     },
 
     // start of lifecycle
@@ -73,7 +74,14 @@ export default {
                     break
                 }
             }
-        }
+        },
+        getImage(image){
+            console.log(image)
+            if (image == ""){
+                return '/assets/img/DSC00788-3.jpg'
+            }
+            return '/assets/img/' + image
+        },
     },
 }
 
