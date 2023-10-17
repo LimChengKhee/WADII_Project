@@ -46,8 +46,7 @@
   
   <script>
   import * as d3 from "d3";
-  import crossfilter from "crossfilter"; // Use crossfilter2 for ES6 compatibility
-  
+  import crossfilter from "crossfilter"; //may remove if not needed
   import Linechart from "../components/linechart.vue";
   import Piechart from "../components/piechart.vue";
   
