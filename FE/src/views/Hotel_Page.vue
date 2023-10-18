@@ -8,41 +8,62 @@
             <p style="font-size: 3rem">{{ this.hotelName }}</p>
           </div>
           <div class="row address mb-5" style="font-size: 1.5rem">
-            {{ this.exactAddress }}
+            <span style="padding-left: 0px;">
+              <img src="../assets/nearby.png" style="width: 50px;">
+              {{ this.exactAddress }}
+            </span>
           </div>
-          <div class="row picture justify-content-center">
-            <div class="col-12">
-              <div id="carouselExample" class="carousel slide">
-                <div class="carousel-inner" v-if="Object.keys(picturesOfHotel).length !== 0">
-                  <div class="carousel-item active">
-                    <img :src="`${picturesOfHotel.data[2].url_1440}`" class="d-block img-fluid" alt="..." />
-                  </div>
-
-                  <div v-for="pictures in picturesOfHotel.data" class="carousel-item" style="width: 100%; height: 50%">
-                    <img :src="`${pictures.url_1440}`" class="d-block w-75" alt="..." />
-                  </div>
+          <div class="row picture w-50 mx-auto">
+            <div id="carouselExample" class="carousel slide">
+              <div class="carousel-inner" v-if="Object.keys(picturesOfHotel).length !== 0">
+                <div class="carousel-item active">
+                  <img :src="`${picturesOfHotel.data[2].url_1440}`" class="d-block img-fluid" alt="..." />
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                  data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                  data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
+
+                <div v-for="pictures in picturesOfHotel.data" class="carousel-item" style="width: 100%; height: 50%">
+                  <img :src="`${pictures.url_1440}`" class="d-block w-100" alt="..." />
+                </div>
               </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
             </div>
           </div>
           <div class="row long_description" style="margin-top: 30px;">
-            <strong style="padding-left: 0px;">About</strong> <br/> {{ this.longDescription }}
+            <strong style="padding-left: 0px;">About</strong> <br /> {{ this.longDescription }}
           </div>
+          <div class="row long_price" style="margin-top:  30px" v-if="Object.keys((this.specificHotelInfo)).length !== 0">
+            <strong style="padding-left: 0px;">Price</strong> <br />
+            <ul class="list-group list-group-horizontal" style="margin-top: 10px;">
+              <li class="list-group-item">
+                <strong>
+                  All Inclusive Amount
+                </strong>
+              </li>
+              <li class="list-group-item">
+                {{ this.specificHotelInfo['composite_price_breakdown']["all_inclusive_amount"]["value"] }}
+              </li>
+              <li class="list-group-item">
+                <strong>
+                  Price Per Night
+                </strong>
+              </li>
+              <li class="list-group-item">
+                {{ this.specificHotelInfo['composite_price_breakdown']["gross_amount_per_night"]["value"] }}
+              </li>
+            </ul>
+          </div>
+
           <div class="row facilities">
             <div class="container">
               <div class="row">
                 <div class="col" style="padding-left: 0px;padding-top: 30px;">
-                  <strong>Most Popular Facilities</strong><br/>
+                  <strong>Most Popular Facilities</strong><br />
                 </div>
               </div>
               <div class="row">
@@ -55,7 +76,7 @@
                         </span>
                         <p style="white-space:nowrap;">{{ facilities["label"] }} </p>
                       </div>
-                      
+
                     </div>
                   </div>
                 </div>
@@ -164,6 +185,32 @@
               </div>
             </div>
           </div>
+          <div class="row house_rules" style="margin-top:  40px" v-if="Object.keys((this.specificHotelInfo)).length !== 0">
+            <strong style="padding-left: 0px;">Check In & Check Out</strong> <br />
+            <ul class="list-group">
+              <li class="list-group-item" style="padding: 30px;">
+                <div class="row">
+                  <div class="col-3">
+                    <img src="../assets/door.png" style="width: 30px;margin-right:30px;" alt=""> Check In 
+                  </div>
+                  <div class="col-9">
+                      {{ "Check In From: " + this.specificHotelInfo["checkin"]["from"] }}
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item" style="padding: 30px;">
+                <div class="row">
+                  <div class="col-3">
+                    <img src="../assets/door.png" style="width: 30px;margin-right:30px;" alt=""> Check Out 
+                  </div>
+                  <div class="col-9">
+                      {{ "Check Out Before: " + this.specificHotelInfo["checkout"]["until"] }}
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
         </div>
       </div>
     </div>
@@ -298,37 +345,40 @@ export default {
           locale: 'en-gb'
         },
         headers: {
-          'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+          'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
           'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
         }
-      }
+      };
 
       try {
-        const response = await axios.request(options)
-        return response
+        const response = await axios.request(options);
+        return response;
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async getFacilitiesOfHotels() {
+
       const options = {
         method: 'GET',
         url: 'https://booking-com.p.rapidapi.com/v1/hotels/facilities',
         params: {
-          hotel_id: this.hotelId,
+          hotel_id: '1676161',
           locale: 'en-gb'
         },
         headers: {
-          'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+          'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
           'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
         }
-      }
+      };
+
       try {
-        const response = await axios.request(options)
+        const response = await axios.request(options);
         return response
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
+
     },
     async getReviews() {
       const options = {
@@ -342,16 +392,16 @@ export default {
           customer_type: 'solo_traveller,review_category_group_of_friends'
         },
         headers: {
-          'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+          'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
           'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
         }
-      }
+      };
 
       try {
         const response = await axios.request(options)
         return response.data.result.slice(0, 3)
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async getDescription() {
@@ -363,17 +413,16 @@ export default {
           locale: 'en-gb'
         },
         headers: {
-          'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+          'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
           'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
         }
-      }
+      };
 
       try {
         const response = await axios.request(options)
-        console.log(response.data['description'])
         return response.data['description']
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     }
   },
@@ -385,7 +434,6 @@ export default {
 
     // get hotel specific info
     await this.getHotelSpecificInfo()
-    console.log(Object.keys(this.picturesOfHotel).length !== 0)
     // extraction of all relevant data I want to show
     this.exactAddress = this.specificHotelInfo['address']
     this.picturesOfHotel = await this.getPicturesOfHotels()

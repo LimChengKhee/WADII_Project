@@ -35,29 +35,20 @@
           <div class="col-3"></div>
           <!--PRICE FILTER-->
           <div class="col-2">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-            >
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button">
               Price Per Night
             </button>
           </div>
 
           <div class="col-1">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-            >
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button">
               Rating
             </button>
             <!--slider-->
           </div>
 
           <div class="col-1 mx-4" style="padding-left: 0px">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-            >
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button">
               Star Rating
             </button>
           </div>
@@ -72,20 +63,13 @@
       </div>
     </div>
     <div class="card_section" v-if="mounted">
-      <HotelCard
-        v-for="hotel in this.hotelsInCities"
-        :hotel_name="hotel.hotel_name"
-        :distance_to_cc_formatted="hotel.distance_to_cc_formatted"
-        :review_score="hotel.review_score"
-        :review_score_word="hotel.review_score_word"
-        :number_of_reviews="hotel.review_nr"
+      <HotelCard v-for="hotel in this.hotelsInCities" :hotel_name="hotel.hotel_name"
+        :distance_to_cc_formatted="hotel.distance_to_cc_formatted" :review_score="hotel.review_score"
+        :review_score_word="hotel.review_score_word" :number_of_reviews="hotel.review_nr"
         :photo_url="hotel.max_1440_photo_url"
         :price_per_night="hotel.composite_price_breakdown.gross_amount_per_night.value"
-        :currency="hotel.composite_price_breakdown.gross_amount_per_night.currency"
-        :updated_object="hotel"
-        :district="hotel.district"
-        :city="hotel.city"
-      ></HotelCard>
+        :currency="hotel.composite_price_breakdown.gross_amount_per_night.currency" :updated_object="hotel"
+        :district="hotel.district" :city="hotel.city"></HotelCard>
     </div>
     <div class="spinner_section d-flex flex-column" v-if="!mounted">
       <div class="spinner-border mt-5" style="margin: 0 auto;height:200px;width:200px;" role="status">
@@ -120,7 +104,7 @@ export default {
   async mounted() {
     let currentState = await this.loadPersistedData();
 
-    if(currentState == null){
+    if (currentState == null) {
       await this.mountAllHotelInformation()
       await this.savePersistedData()
       this.mounted = true
@@ -154,32 +138,40 @@ export default {
       //     'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
       //   }
       // };
+
       const options = {
         method: 'GET',
         url: 'https://booking-com.p.rapidapi.com/v1/hotels/search',
         params: {
-          checkin_date: '2023-10-27',
+          checkin_date: '2023-11-27',
           dest_type: 'city',
           units: 'metric',
-          checkout_date: '2023-10-30',
+          checkout_date: '2023-11-28',
           adults_number: '2',
           order_by: 'popularity',
-          dest_id: '-73635',
-          filter_by_currency: 'HNL',
+          dest_id: '-553173',
+          filter_by_currency: 'AED',
           locale: 'en-gb',
           room_number: '1',
           children_number: '2',
           children_ages: '5,0',
           categories_filter_ids: 'class::2,class::4,free_cancellation::1',
+          page_number: '0',
           include_adjacency: 'true'
         },
         headers: {
-          'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+          'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
           'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
         }
+      };
+
+      try {
+        const response = await axios.request(options)
+        console.log(response);
+        this.hotelsInCities = response.data.result
+      } catch (error) {
+        console.error(error);
       }
-      const response = await axios.request(options)
-      this.hotelsInCities = response.data.result
 
       await flushPromises()
 
@@ -194,10 +186,10 @@ export default {
             locale: 'en-gb'
           },
           headers: {
-            'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+            'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
             'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
           }
-        }
+        };
         try {
           const response = await axios.request(options)
           hotel['Description'] = response.data
@@ -213,7 +205,7 @@ export default {
       localStorage.setItem('persistedData', JSON.stringify(this.hotelsInCities));
     },
 
-    async loadPersistedData(){
+    async loadPersistedData() {
       const persistedData = localStorage.getItem('persistedData');
       this.hotelsInCities = persistedData ? JSON.parse(persistedData) : null;
 
