@@ -9,61 +9,62 @@
         </div>
         <div class="row">
           <div class="col">
-            <p style="text-align: center">Search for accomodation deals for {} in {}</p>
+            <p style="text-align: center">Search for accomodation deals in {}</p>
           </div>
         </div>
       </div>
 
-      <div class="container-fluid ms-5 mb-3">
+      <div class="container">
         <div class="row">
-          <div class="col-4"></div>
-          <div class="col-2 me-3">
-            <!--inputted value in it-->
-            <input type="text" value="Singapore" />
-          </div>
+          <div class="col-1"></div>
           <div class="col-3">
-            <input type="date" value="13th September 2023" />
+            <input v-model="user_search" type="text">
+            <input type="button" value="Search" @click="searchHotelName()">
           </div>
-          <div class="col-3">
-            <!-- human logos in it -->
-          </div>
-        </div>
-      </div>
-
-      <div class="container-fluid filter-button">
-        <div class="row ms-4">
-          <div class="col-3"></div>
-          <!--PRICE FILTER-->
-          <div class="col-2">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button">
-              Price Per Night
-            </button>
-          </div>
-
+          <div class="col-5"></div>
           <div class="col-1">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button">
-              Rating
-            </button>
-            <!--slider-->
-          </div>
+            <span>
+              <div class="dropdown" style="width: 100%">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Sorting Criteria
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Review Rating
+                      <span v-if="review_sort" @click="sort_review()"><img src="../assets/sort-up.png" style="width:10px"
+                          alt=""></span>
 
-          <div class="col-1 mx-4" style="padding-left: 0px">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button">
-              Star Rating
-            </button>
-          </div>
+                      <span @click="sort_review()" v-else><img src="../assets/caret-down.png" style="width:10px"
+                          alt=""></span>
+                    </a></li>
+                  <li><a class="dropdown-item" href="#">Distance
+                      <span v-if="distance_sort" @click="sort_distance()"><img src="../assets/sort-up.png"
+                          style="width:10px" alt=""></span>
 
-          <div class="col-1 mx-4" style="padding-left: 0px">
-            <input type="text" class="search" />
-            <!--Search text box-->
-          </div>
+                      <span v-else @click="sort_distance()"><img src="../assets/caret-down.png" style="width:10px"
+                          alt=""></span>
 
-          <!--Pending search button-->
+                    </a></li>
+                </ul>
+              </div>
+
+            </span>
+          </div>
         </div>
       </div>
+
     </div>
-    <div class="card_section" v-if="mounted">
+    <div class="card_section" v-if="mounted && !search">
       <HotelCard v-for="hotel in this.hotelsInCities" :hotel_name="hotel.hotel_name"
+        :distance_to_cc_formatted="hotel.distance_to_cc_formatted" :review_score="hotel.review_score"
+        :review_score_word="hotel.review_score_word" :number_of_reviews="hotel.review_nr"
+        :photo_url="hotel.max_1440_photo_url"
+        :price_per_night="hotel.composite_price_breakdown.gross_amount_per_night.value"
+        :currency="hotel.composite_price_breakdown.gross_amount_per_night.currency" :updated_object="hotel"
+        :district="hotel.district" :city="hotel.city"></HotelCard>
+    </div>
+    <div class="card_section" v-if="mounted && search">
+      <HotelCard v-for="hotel in this.sub_hotels" :hotel_name="hotel.hotel_name"
         :distance_to_cc_formatted="hotel.distance_to_cc_formatted" :review_score="hotel.review_score"
         :review_score_word="hotel.review_score_word" :number_of_reviews="hotel.review_nr"
         :photo_url="hotel.max_1440_photo_url"
@@ -92,8 +93,13 @@ export default {
   data() {
     // local repository of information
     return {
-      hotelsInCities: {},
-      mounted: false
+      hotelsInCities: [],
+      mounted: false,
+      user_search: "",
+      search: false,
+      sub_hotels: [],
+      review_sort: true,
+      distance_sort: true
     }
   },
   computed: {
@@ -113,6 +119,43 @@ export default {
   },
 
   methods: {
+    sort_review(direction_to_go) {
+      this.review_sort = !this.review_sort;
+      if(!this.review_sort){
+        this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
+        return Number(a["review_score"]) - Number(b["review_score"]) 
+      })
+      } else{
+        this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
+          return  Number(b["review_score"])  - Number(a["review_score"])
+      })
+      }
+    },
+    sort_distance() {
+      this.distance_sort = !this.distance_sort;
+      if(!this.distance_sort){
+        this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
+        return Number(b["distance_to_cc"]) - Number(a["distance_to_cc"])  
+      })
+      } else{
+        this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
+        return Number(a["distance_to_cc"] - Number(b["distance_to_cc"]))  
+      })
+      }
+    },
+    searchHotelName() {
+      this.search = true;
+      let hotels_sub = []
+      for (let element of this.hotelsInCities) {
+        if ((element["hotel_name"].includes(this.user_search))) {
+          hotels_sub.push(element)
+        }
+      }
+      this.sub_hotels = hotels_sub;
+
+    },
+
+
     // methods defined by ourselves
     async mountAllHotelInformation() {
       // get all the hotels within that city displayed.
@@ -219,4 +262,7 @@ export default {
 .banner {
   background-color: blue;
 }
-</style>
+
+#search_input {
+  position: absolute;
+}</style>
