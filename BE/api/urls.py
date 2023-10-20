@@ -9,8 +9,8 @@ urlpatterns = [
 # path('tutorials/<int:pk>', views.tutorial_detail),
 # path('tutorials/published/', views.tutorial_list_published),
 
-path('flight/', views.flight_list),
-path('flight/<str:username>/<str:flight_id>/', views.flights_detail),
+path('itinerary/', views.itinerary_list),
+path('itinerary/<str:username>/<str:itinerary_name>/', views.itinerary_detail),
 
 
 ]

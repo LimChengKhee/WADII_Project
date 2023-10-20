@@ -17,15 +17,23 @@
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);"></div>
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);">
         
-        <template v-if="userflag">
+        <!-- <template v-if="userflag">
           <div class="profile">{{ userid }}</div>
           <button class="btn btn-primary" @click="logout()">Logout</button>
         </template>
         <template v-else>
-          <button  type="button" class="btn btn-primary">Login</button>
+          <button  type="button" class="btn btn-primary" @click="login()">Login</button>
+          <div ></div>
+        </template> -->
+        
+         <template v-if="authStore.user">
+          <div class="profile">{{ userid }}</div>
+          <button class="btn btn-primary" @click="authStore.logout()">Logout</button>
+        </template>
+        <template v-else>
+          <button  type="button" class="btn btn-primary" @click="login()">Login</button>
           <div ></div>
         </template>
-        
 
         
         
@@ -36,6 +44,9 @@
 
 
 <script>
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { mapStores } from 'pinia';
+
 export default {
   data() {
     return {
@@ -74,6 +85,9 @@ export default {
       this.sliderPosition = el.offsetLeft;
       this.selectedElementWidth = el.offsetWidth;
       this.selectedIndex = id;
+      if (id== 1){
+        this.$router.push('/')
+      }
     },
     getUser(){
       console.log(this.userid)
@@ -84,18 +98,23 @@ export default {
         this.userflag = false;
       }
     },
-    logout(){
-      localStorage.clear();
-      this.$router.go('/login')
+    // logout(){
+    //   localStorage.clear();
+    //   this.$router.go('/login')
+    // },
+    login(){
+      this.$router.push('/login')
     }
   },
   computed: {
+    ...mapStores(useAuthStore),
     positionToMove() {
       return this.sliderPosition + "px";
     },
     sliderWidth() {
       return this.selectedElementWidth + "px";
     },
+    
   },
   mounted(){
     this.getUser()

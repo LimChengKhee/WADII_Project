@@ -7,19 +7,18 @@ import Itinerary_Page from '../views/itinerary.vue'
 import Dashboard from "../views/Dashboard.vue";
 import Flight from "../views/Flight.vue"
 
+import { useAuthStore } from "../store/piniaStore/authStore";
+
 const routes = [
   
   {
     path: "/",
     name: "Home",
-    // redirect: { path: "/login" },
-    meta: { refresh: true },
     component: Home_Page,
   },
   {
     path: "/login",
-    name: "login",
-    meta: { refresh: true },
+    name: "Login",
     component: Login,
   },
   {
@@ -38,7 +37,7 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: '/itinerary',
+    path: '/itinerary/:username/:itinerary_name',
     name: 'Itinerary_Page',
     component: Itinerary_Page
   },
@@ -51,8 +50,23 @@ const routes = [
 
 
 const router = createRouter({
+  mode: 'history',
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+})
+
+router.beforeEach(async (to) => {
+  // clear alert on route change
+
+  // redirect to login page if not logged in and trying to access a restricted page 
+  const publicPages = ['/login', '/sign-up'];
+  const authRequired = !publicPages.includes(to.path);
+  const authStore = useAuthStore();
+  console.log(authRequired,!authStore.user,to.path)
+  if (authRequired && !authStore.user) {
+      authStore.returnUrl = to.fullPath;
+      return '/login';
+  }
 })
 
 export default router;

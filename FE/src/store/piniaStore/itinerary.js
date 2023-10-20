@@ -27,6 +27,10 @@ export const useItineraryStore = defineStore('itinerary', {
                 room:'',
             adult:'',
             child:'',
+            flag:{
+            hotel:false,
+            flight:false,
+            },
             },
         }
     },

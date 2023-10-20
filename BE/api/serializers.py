@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import User,Flight
+from .models import User,Itinerary
 
 
-class FlightSerializer(serializers.ModelSerializer):
+class ItinerarySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Flight
+        model = Itinerary
         fields = ('__all__')

@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { mapStores } from 'pinia';
+import { useUsersStore } from '../store/piniaStore/useUserStore';
 
 export default {
   name: 'SignUp',
@@ -36,26 +37,26 @@ export default {
     return {
       username: '',
       password: '',
+      email :'',
     };
   },
+  computed:{
+    ...mapStores(useUsersStore)
+  },
   methods: {
-    signUp(e) {
-      // Your sign-up logic here
-      const formData = {
-        username: this.username,
-        password: this.password,
-        email: this.email
-      }
-      axios 
-        .post('/api/v1/users/', formData)
-        .then(response => {
-          this.$router.push('/login')
-          console.log(response)
-        })
-        .catch(error =>{
-          console.log(error)
-        })
-    },
+    async signUp(){
+      const userStore = useUsersStore();
+        var formdata = {"username":this.username,"password":this.password,"email":this.email}
+        const resp = await userStore.register(formdata);
+        console.log(resp)
+        if (resp){
+          alert("Successful Registeration")
+          await this.$router.push('login')
+        }else{
+          alert("error")
+        }
+        
+    }
   },
 };
 </script>

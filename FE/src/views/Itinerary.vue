@@ -3,7 +3,6 @@
     <div class="header row" style="text-align: start; font-size:20px;">
       <p class="mb-3 fw-bold">Suggested Activities</p>
     </div>
-
     <div id="carouselExample" class="w-50 carousel slide">
       <div class="carousel-inner">
         <Activity_Component :allActivities="allActivities" :days="days"></Activity_Component>
@@ -43,6 +42,7 @@
   import Day_Component from '../components/DayComponent.vue'
   import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
   import '../../node_modules/@vuepic/vue-datepicker/dist/main.css';
+  import axios from 'axios'
   // import {GMapAutocomplete} from '../../node_modules/@fawmi/vue-google-maps'
   //  import statements
   // import DatePick from '../../node_modules/vue-date-pick';
@@ -138,6 +138,9 @@
       const startDate = new Date();
       const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
       this.date = [startDate, endDate];
+
+      
+      
       // const scripts = [
       //   "https://maps.googleapis.com/maps/api/js?key=AIzaSyC27_uXwB2Wdx05nP3pezmdAH5svn1oqr4&libraries=places&callback=initMap"
       //   ];
@@ -169,6 +172,7 @@
           this.addDay();
       }
       },
+      
     }
       // }
       // async initMap() {

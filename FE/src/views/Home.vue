@@ -17,13 +17,15 @@
     <div class="col">
       <button class="btn btn-primary" @click="createitinerary">Create new Trip</button>
     </div>
+    <br>
+    {{ test }}
     
   </div>
 </template>
 <script>
 //  import statements
 // import example from '@/utils/string_formatter'
-
+import axios from 'axios';
 export default {
   name: 'Home',
   components: {
@@ -33,7 +35,10 @@ export default {
   data () {
     // local repository of information
     return {
-      example: "hello world"
+      itinerarys:[],
+      userid:"",
+      token:"",
+      test:"",
     }
   },
   computed: {
@@ -42,12 +47,10 @@ export default {
   },
 
   // start of lifecycle
- mounted () {
-
-
-
-
-    var test = localStorage.getItem('userid');
+ async mounted () {
+    var userid = localStorage.getItem('userid');
+    this.userid = userid
+    this.token = localStorage.getItem('token');
 
     if (localStorage.getItem('reloaded')) {
         // The page was just reloaded. Clear the value from local storage
@@ -58,14 +61,20 @@ export default {
         localStorage.setItem('reloaded', '1');
         location.reload();
     }
-    console.log(test)
-    if (test == null){
+    console.log(userid)
+    if (userid == null){
       console.log('Hello')
       this.redirect('login',false)
     }else{
       // window.location.re
     }
+    await this.getItinerary();
 
+    
+
+  },
+  created(){
+    
   },
 
   methods: {
@@ -80,7 +89,23 @@ export default {
   },
   createitinerary(){
     this.$router.push('/form')
-  }
+  },
+  async getItinerary(){
+    const info  = await axios
+      .get(`http://127.0.0.1:8000/api/itinerary/?username=${this.userid}`,{headers:{ "Content-Type":"application/json",
+        "Authorization":`Token ${this.token}`}})
+
+    this.itinerarys = info.data
+    let item = (info.data[6].itinerary_data)
+    console.log(JSON.parse(item))
+    this.test = item
+    // item = item.replaceAll("/","")
+    
+    //  this.test = JSON.parse(item)
+    //  console.log(this.test)
+    // console.log( JSON.parse(item))
+  },
+
   },
 }
 

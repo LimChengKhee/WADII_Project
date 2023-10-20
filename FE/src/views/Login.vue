@@ -8,7 +8,6 @@
 
           <div class="login-form">
             <h1 class="card-title">Login Page</h1>
-            <button @click="findPlace">HI</button>
             <form @submit.prevent="submitForm" class="form-login">
               <div class="form-group with-icon">
                 <i class="fa fa-envelope input-icon"></i>
@@ -36,7 +35,9 @@
 </template>
   
 <script>
-import axios from 'axios'
+import axios from "axios";
+import { mapStores } from 'pinia';
+import { useAuthStore } from '../store/piniaStore/authStore';
 
 export default {
   name: 'Login',
@@ -46,61 +47,53 @@ export default {
       password: ''
     }
   },
-  methods: {
-    findPlace(){
-            var url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/';
-            var params = {
-                input: 'Museum',
-                inputtype: 'textquery', 
-                fields: 'geometry',
-                key: 'AIzaSyC27_uXwB2Wdx05nP3pezmdAH5svn1oqr4',
-            }
-            // var headers = {'Access-Control-Allow-Origin': 'http://127.0.0.1:5173/','Access-Control-Allow-Credentials': 'true','Content-Type':  'application/json'}
-            axios.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum&inputtype=textquery&fields=geometry&key=AIzaSyC27_uXwB2Wdx05nP3pezmdAH5svn1oqr4")
-            .then(response => {
-                console.log(response.data)
-            })
-            .catch(error=>{
-                console.log(error)
-            })
-        },
-  
-     submitForm(e) {
-
-      const formData = {
-        username: this.username,
-        password: this.password
-      }
-       axios
-        .post('/api/v1/token/login', formData)
-        .then(response => {
-          console.log(response)
-          const token = response.data.auth_token
-          console.log(token)
-          // store.commit('setUserId',formData.username)
-          // to push to next page afterwards
-          localStorage.setItem('token', token)
-          localStorage.setItem('userid', formData.username)
-          document.cookie = "loginstatus=loggedin";
-          // location.reload();
-          this.$router.push('/')
-
-
-          axios.defaults.headers.common['Authorization'] = 'Token ' + token
-
-          
-          // localStorage.removeItem('YourItem')
-          // localStorage.setItem('YourItem', response.data)
-          // localStorage.storedData = this.input;
-          // let value = localStorage.storedData;
-          
-          
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    }
+  computed:{
+    ...mapStores(useAuthStore)
   },
+  methods: {
+    
+  async submitForm(){
+    const authStore = useAuthStore();
+    var resp = await authStore.login(this.username,this.password);
+    console.log(resp,"te")
+    if (resp){
+      console.log('hi')
+      this.$router.push({ path: '/' })
+    }else{
+      alert("Wrong Info")
+    }
+
+  },
+    //  submitForm(e) {
+
+    //   const formData = {
+    //     username: this.username,
+    //     password: this.password
+    //   }
+    //    axios
+    //     .post('/api/v1/token/login', formData)
+    //     .then(response => {
+    //       console.log(response)
+    //       const token = response.data.auth_token
+    //       console.log(token)
+    //       // store.commit('setUserId',formData.username)
+    //       // to push to next page afterwards
+    //       localStorage.setItem('token', token)
+    //       localStorage.setItem('userid', formData.username)
+    //       document.cookie = "loginstatus=loggedin";
+    //       // location.reload();
+
+    //       this.$router.push('/')
+
+
+    //       axios.defaults.headers.common['Authorization'] = 'Token ' + token
+          
+    //     })
+    //     .catch(error => {
+    //       console.log(error)
+    //     })
+    // }
+    },
   components: {},
 }
 </script>
