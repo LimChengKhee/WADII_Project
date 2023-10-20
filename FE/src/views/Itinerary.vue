@@ -256,12 +256,6 @@
   
     methods: {
       // methods defined by ourselves
-<<<<<<< Updated upstream
-      
-    },
-  };
-  
-=======
       addDaystoEnd(numDays){
         for (let i=0;i<numDays;i++){
           this.days.push({
@@ -345,7 +339,6 @@
       }
     }
   }
->>>>>>> Stashed changes
   </script>
   
   <style scoped>
