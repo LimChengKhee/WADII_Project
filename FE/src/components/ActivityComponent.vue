@@ -76,7 +76,6 @@ export default {
             }
         },
         getImage(image){
-            console.log(image)
             if (image == ""){
                 return '/assets/img/DSC00788-3.jpg'
             }

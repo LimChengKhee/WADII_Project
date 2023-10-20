@@ -187,7 +187,8 @@
           for (let i=0;i<days+1;i++){
               this.days.push({
                 dayId: this.days.length,
-                dayActivities: []
+                dayActivities: [],
+                accoms: ["The Fullerton Hotel Sydney", "Sydney Harbour Marriott Hotel at Circular Quay"] // PLACEHOLDER!!!!
             })
           }
           let addDay = document.getElementById('addDay')
