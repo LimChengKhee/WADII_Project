@@ -1,7 +1,8 @@
 import Vue from 'vue'
 
 export default {
-  example: (example) => {
-    return example
-  },
+  getUser: state => {
+    console.log('Retrieving user...')
+    return state.user;
+  }
 }
