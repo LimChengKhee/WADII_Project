@@ -429,7 +429,8 @@ export default {
   // start of lifecycle
   async mounted() {
     this.hotelsInCities = await this.loadPersistedData()
-
+    
+    
     this.hotelName = this.$route.params['name']
 
     // get hotel specific info

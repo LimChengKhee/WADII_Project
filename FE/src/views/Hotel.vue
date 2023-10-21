@@ -94,6 +94,7 @@ import HotelCard from '../components/Hotel_Card.vue'
 import axios from 'axios'
 import flushPromises from 'flush-promises'
 import Side_Bar from "../components/SideBar.vue"
+import test from "../views/static/test.json"
 
 export default {
   name: 'Hotel',
@@ -132,6 +133,7 @@ export default {
 
   methods: {
     sort_review(direction_to_go) {
+      console.log('sd')
       this.review_sort = !this.review_sort;
       if (!this.review_sort) {
         this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
@@ -229,7 +231,8 @@ export default {
       // }
 
       // await flushPromises()
-
+      this.hotelsInCities = test
+        console.log(test)
       for (let hotel of this.hotelsInCities) {
         let hotel_id = hotel.hotel_id
         // fire an API call to get description

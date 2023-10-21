@@ -33,7 +33,7 @@ const routes =  [
       component: SideBar
     },
     {
-      path: 'url/:name-of-booked-hotel',
+      path: '/url/:name-of-booked-hotel',
       name: 'Your-Component',
       component: 'Component'
     },

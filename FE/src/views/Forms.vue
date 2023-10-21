@@ -1,6 +1,6 @@
 <template>
-    <hotelForm></hotelForm>
-    <flightForm></flightForm>
+    <!-- <hotelForm></hotelForm>
+    <flightForm></flightForm> -->
 </template>
 
 <script>
