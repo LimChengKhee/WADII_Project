@@ -26,7 +26,12 @@ const router = createRouter({
       path: '/hotel/sidebar',
       name: 'SideBar',
       component: SideBar
-    }
+    },
+    {
+      path: 'url/:name-of-booked-hotel',
+      name: 'Your-Component',
+      component: 'Component'
+    },
   ]
 })
 

@@ -47,13 +47,22 @@
                           </h5>
                         </div>
                     </div>
-                    <div class="row mt-5">
+                    <div class="row mt-3">
                       <div class="col">
-                        <button type="button" class="btn btn-warning mt-2">
+
+                        <button type="button" class="btn btn-primary mt-2" >
                           <router-link :to="`/hotel/${this.hotel_name}`" style="text-decoration: none; color:black;font-weight: bold;">
-                          Book Room
+                          Details
                           </router-link>
                         </button>
+
+                        <br/>
+                        <button type="button" class="btn btn-warning mt-2" @click="book_room()">
+                          <router-link :to="`/url/:name-of-hotel`" style="text-decoration: none; color:black;font-weight: bold;">
+                            Book Room
+                          </router-link>
+                        </button>
+
                       </div>
                     </div>
 
@@ -91,6 +100,7 @@ export default {
   data() {
     // local repository of information
     return {
+      room_booked: []
     }
   },
   computed: {
@@ -105,7 +115,10 @@ export default {
 
   methods: {
     // methods defined by ourselves
-    example() {}
+    book_room(){
+      let hotel_name = this.hotel_name;
+      (this.room_booked).push(hotel_name);
+    }
   }
 }
 </script>
