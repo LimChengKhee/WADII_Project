@@ -1,4 +1,5 @@
 <template>
+
   <div id="app">
       <p>
           <!-- use the router-link component for navigation. -->
@@ -36,6 +37,7 @@ export default {
 
   // start of lifecycle
   async mounted () {
+  await this.getPasswordFieldOptions();
   },
 
   methods: {
@@ -51,3 +53,4 @@ export default {
 <style scoped>
 
 </style>
+

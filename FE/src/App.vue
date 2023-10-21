@@ -21,6 +21,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 
+
 <script>
 import Navbar from "./components/Navbar.vue";
 import Login from "./views/Login.vue";
