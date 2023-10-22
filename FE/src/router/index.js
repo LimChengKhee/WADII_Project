@@ -3,7 +3,7 @@ import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
 import Form from "../views/Forms.vue";
 import Home_Page from '../views/Home.vue'
-import Itinerary_Page from '../views/itinerary.vue'
+import Itinerary_Page from '../views/Itinerary.vue'
 import Dashboard from "../views/Dashboard.vue";
 import Flight from "../views/Flight.vue"
 
@@ -41,6 +41,11 @@ const routes = [
     name: 'Itinerary_Page',
     component: Itinerary_Page
   },
+  // {
+  //   path: '/itinerary',
+  //   name: 'Itinerary_Page',
+  //   component: Itinerary_Page
+  // },
   {
     path: '/flight',
     name: 'Flight',
