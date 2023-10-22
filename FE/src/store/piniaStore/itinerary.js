@@ -81,7 +81,7 @@ export const useItineraryStore = defineStore('itinerary', {
                 let mth = date.getMonth();
                 let day = date.getDate();
                 let year = date.getFullYear();
-                let time = String(date.toLocaleTimeString())
+                let time = String(date.toLocaleTimeString()).replaceAll(' ','-')
                 return [`${year}-${mth+1}-${day}`,time];
               },
         async createitinerary(){
