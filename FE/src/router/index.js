@@ -71,11 +71,11 @@ const routes =  [
     name: 'Itinerary_Page',
     component: Itinerary_Page
   },
-  // {
-  //   path: '/itinerary',
-  //   name: 'Itinerary_Page',
-  //   component: Itinerary_Page
-  // },
+  {
+    path: '/itinerary',
+    name: 'Itinerary_Page',
+    component: Itinerary_Page
+  },
   {
     path: '/flight',
     name: 'Flight',

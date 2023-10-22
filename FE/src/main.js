@@ -32,10 +32,9 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 // import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 // import "../node_modules/bootstrap"
 
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';// const pinia = createPinia() 
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';// const pinia = createPinia() 
 // const app = createApp(App)
 
-app
 // app.use(router,axios,pinia);
 
 // app.mount('#app');

@@ -41,7 +41,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: fixed;
+    position: relative;
     overflow-y: auto; /* Make sidebar scrollable if it overflows */
   }
   
