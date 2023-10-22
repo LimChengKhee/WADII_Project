@@ -6,20 +6,23 @@ export const useAuthStore = defineStore({
     id: 'auth',
     state: () => ({
         // initialize state from local storage to enable user to stay logged in
-        user: JSON.parse(localStorage.getItem('userid')),
+        user: localStorage.getItem('userid'),
         returnUrl: null,
-        userData : null
+        userData : null,
+        token: null
     }),
+    persist: true,
     actions: {
         async login(username, password) {
             
             try {
                 this.userData = await axios.post('/api/v1/token/login',{"username":username,"password":password})
-                const token = this.userData.data.auth_token
+                const token2 = this.userData.data.auth_token
                 this.user = username
-                localStorage.setItem('token', token)
+                this.token = token2
+                localStorage.setItem('token', token2)
                 // store user details and jwt in local storage to keep user logged in between page refreshes
-                localStorage.setItem('userid', JSON.stringify(username));
+                localStorage.setItem('userid',username);
                 return  this.userData
             } catch (error) {
                 // let the form component display the error

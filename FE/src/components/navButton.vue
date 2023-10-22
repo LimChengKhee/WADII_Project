@@ -12,38 +12,22 @@ var userid = localStorage.getItem('userid')
 var token = localStorage.getItem('token')
 
  async function nextLocation(){
+    let itinerary_name =  await itineraryStore.createitinerary();
+    // var itinerary_name = "Eleventh"
+    console.log(itinerary_name)
 
-    var itinerary_name = "Eleventh"
-//     var test_obj = {
-//         "day":[{"cool":"New"}],
-//         "flight":{"Flight1":{"FlightNO":"23"}}
-//     }
-//     var temp_str = JSON.stringify(test_obj);
-//     var bodydata= {
-// "username":userid,
-// "itinerary_data":temp_str,
-// "itinerary_name":itinerary_name
-// }
-//     console.log(token)
-//     console.log(userid)
-//     console.log(temp_str)
-//     console.log(bodydata)
-//     const info  = await axios
-//       .post(`http://127.0.0.1:8000/api/itinerary/`,bodydata,{headers:{ "Content-Type":"application/json",
-//         "Authorization":`Token ${token}`}})
-    
-//     console.log(info)
     
     router.push({ path: `itinerary/${userid}/${itinerary_name}` })
 }
-
+// console.log(itineraryStore)
 const nextStep = () => {
-    // if (stepStore.step == 1) {
-    //     userStore.validateAll();
-    //     if (userStore.errors.name || userStore.errors.email || userStore.errors.phoneNumber) {
-    //         return;
-    //     }
-    // }
+    if (stepStore.step == 1) {
+        console.log(itineraryStore.arrival_country);
+        itineraryStore.validateAll();
+        if (itineraryStore.errors.arrival_country ) {
+            return;
+        }
+    }
 
     // if (stepStore.step == 2) {
     //     if (!priceStore.validate()) {

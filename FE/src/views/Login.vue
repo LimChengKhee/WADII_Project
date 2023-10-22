@@ -64,35 +64,7 @@ export default {
     }
 
   },
-    //  submitForm(e) {
-
-    //   const formData = {
-    //     username: this.username,
-    //     password: this.password
-    //   }
-    //    axios
-    //     .post('/api/v1/token/login', formData)
-    //     .then(response => {
-    //       console.log(response)
-    //       const token = response.data.auth_token
-    //       console.log(token)
-    //       // store.commit('setUserId',formData.username)
-    //       // to push to next page afterwards
-    //       localStorage.setItem('token', token)
-    //       localStorage.setItem('userid', formData.username)
-    //       document.cookie = "loginstatus=loggedin";
-    //       // location.reload();
-
-    //       this.$router.push('/')
-
-
-    //       axios.defaults.headers.common['Authorization'] = 'Token ' + token
-          
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    // }
+    
     },
   components: {},
 }

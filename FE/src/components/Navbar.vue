@@ -16,18 +16,10 @@
       </div>
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);"></div>
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);">
-        
-        <!-- <template v-if="userflag">
-          <div class="profile">{{ userid }}</div>
-          <button class="btn btn-primary" @click="logout()">Logout</button>
-        </template>
-        <template v-else>
-          <button  type="button" class="btn btn-primary" @click="login()">Login</button>
-          <div ></div>
-        </template> -->
+
         
          <template v-if="authStore.user">
-          <div class="profile">{{ userid }}</div>
+          <div class="profile">{{ authStore.user }}</div>
           <button class="btn btn-primary" @click="authStore.logout()">Logout</button>
         </template>
         <template v-else>
@@ -85,9 +77,9 @@ export default {
       this.sliderPosition = el.offsetLeft;
       this.selectedElementWidth = el.offsetWidth;
       this.selectedIndex = id;
-      if (id== 1){
-        this.$router.push('/')
-      }
+      var routes ={1:'/',2:'/flight',3:'/',4:'/'}
+      var page = routes[id]
+      this.$router.push(page)
     },
     getUser(){
       console.log(this.userid)
@@ -98,10 +90,6 @@ export default {
         this.userflag = false;
       }
     },
-    // logout(){
-    //   localStorage.clear();
-    //   this.$router.go('/login')
-    // },
     login(){
       this.$router.push('/login')
     }
@@ -117,7 +105,9 @@ export default {
     
   },
   mounted(){
-    this.getUser()
+    // this.getUser()
+    // const authStore = useAuthStore();
+    // this.userid = authStore.user
   }
 };
 </script>

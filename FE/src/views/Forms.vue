@@ -2,8 +2,8 @@
 import TheSideBar from '../components/TheSideBar.vue'
 import Content from '../components/Content.vue';
 import Itinerary from '../components/ItineraryForm.vue';
-import Flight from '../components/FlightFor.vue';
-import Hotel from '../components/HotelFor.vue';
+import Flight from '../components/FlightForm.vue';
+import Hotel from '../components/HotelForm.vue';
 // import AddOns from '../components/AddOns.vue';
 // import Summary from '../components/Summary.vue';
 // import ThankYou from '../components/ThankYou.vue';

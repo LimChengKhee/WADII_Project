@@ -29,7 +29,7 @@
 
 <script>
 import { mapStores } from 'pinia';
-import { useUsersStore } from '../store/piniaStore/useUserStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
 
 export default {
   name: 'SignUp',

@@ -8,7 +8,7 @@ import router from './router'
 import axios from 'axios'
 axios.defaults.baseURL = "http://127.0.0.1:8000"
 import { createPinia } from 'pinia'
-// import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 // import VueGoogleMaps from '../node_modules/@fawmi/vue-google-maps'
 // import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
@@ -23,5 +23,5 @@ import { createPinia } from 'pinia'
 const pinia = createPinia().use(({ store }) => {
     store.$router = markRaw(router)
   });
-
+  pinia.use(piniaPluginPersistedstate)
 createApp(App).use(pinia).use(router).mount('#app')

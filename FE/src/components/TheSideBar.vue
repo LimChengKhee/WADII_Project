@@ -1,10 +1,19 @@
 <script setup>
 import { useStepStore } from '../store/piniaStore/step';
 import StepComponent from './StepComponent.vue';
+import { useItineraryStore } from '../store/piniaStore/itinerary';
 
 const stepStore = useStepStore()
+const itineraryStore = useItineraryStore();
 
 function gotostep(step){
+    if (stepStore.step == 1) {
+        console.log(itineraryStore.arrival_country);
+        itineraryStore.validateAll();
+        if (itineraryStore.errors.arrival_country ) {
+            return;
+        }
+    }
     stepStore.setStep(step);
 }
 
