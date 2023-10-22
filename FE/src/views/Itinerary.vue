@@ -123,7 +123,8 @@
             }
         ],
         days: [ // days is an array of dayObjects, each dayObject contains dayId, and an array of activity objects (dayActivities)
-      ],
+
+      ]
       }
     },
     computed: {
