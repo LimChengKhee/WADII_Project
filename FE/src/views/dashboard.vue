@@ -268,20 +268,15 @@ export default {
         var trip_obj = getDataPerTrip(category, field_param, data);
         for (let trip in trip_obj) {
           if (trip_obj[trip] != []) {
-
             for (let t of trip_obj[trip]) {
-
               for (let val of Object.values(t)) {
                 console.log(val)
                 if (typeof val === 'number') {
                   temp += val
                 }
               }
-
             }
-
           }
-
         }
       }
       result[field_param] = temp
