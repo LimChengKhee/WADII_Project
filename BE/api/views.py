@@ -2,11 +2,11 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Flight,Tutorial
+from .models import Itinerary
 from rest_framework import permissions
 from django.shortcuts import render
 from django.http import JsonResponse
-from .serializers import FlightSerializer
+from .serializers import ItinerarySerializer
 from rest_framework.decorators import api_view
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
@@ -72,48 +72,48 @@ from rest_framework.parsers import JSONParser
 
 
 @api_view(['GET', 'POST', 'DELETE'])
-def flight_list(request):
+def itinerary_list(request):
     # GET list of tutorials, POST a new tutorial, DELETE all tutorials
     if request.method == 'GET':
-        flights = Flight.objects.all()
+        itinerary = Itinerary.objects.all()
         
         user = request.GET.get('username', None)
-        print(user)
         if user is not None:
-            flights = flights.filter(username=user)
+            itinerary = itinerary.filter(username=user)
         
-        flights_serializer = FlightSerializer(flights, many=True)
-        return JsonResponse(flights_serializer.data, safe=False)
+        itinerary_serializer = ItinerarySerializer(itinerary, many=True)
+        return JsonResponse(itinerary_serializer.data, safe=False)
         # 'safe=False' for objects serialization
     elif request.method == 'POST':
-        flights_data = JSONParser().parse(request)
-        flights_serializer = FlightSerializer(data=flights_data)
-        if flights_serializer.is_valid():
-            flights_serializer.save()
-            return JsonResponse(flights_serializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(flights_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        itinerary_data = JSONParser().parse(request)
+        itinerary_serializer = ItinerarySerializer(data=itinerary_data)
+        if itinerary_serializer.is_valid():
+            itinerary_serializer.save()
+            return JsonResponse(itinerary_serializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
 @api_view(['GET', 'PUT', 'DELETE'])
-def flights_detail(request, **kwargs):
+def itinerary_detail(request, **kwargs):
         # find tutorial by pk (id)
     try: 
-        flight = Flight.objects.get(username=kwargs['username'],flight_id=kwargs['flight_id']) 
-    except Flight.DoesNotExist: 
-        return JsonResponse({'message': 'The flight id not there does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+        itinerary = Itinerary.objects.get(username=kwargs['username'],itinerary_name=kwargs['itinerary_name']) 
+    except Itinerary.DoesNotExist: 
+        return JsonResponse({'message': 'The itinerary id not there does not exist'}, status=status.HTTP_404_NOT_FOUND) 
 
     if request.method == 'GET': 
-        flight_serializer = FlightSerializer(flight) 
-        return JsonResponse(flight_serializer.data) 
+        # print(kwargs['itinerary_name'])
+        itinerary_serializer = ItinerarySerializer(itinerary) 
+        return JsonResponse(itinerary_serializer.data) 
     elif request.method == 'PUT':
-        flight_data = JSONParser().parse(request) 
-        flight_serializer = FlightSerializer(flight, data=flight_data) 
+        itinerary_data = JSONParser().parse(request) 
+        itinerary_serializer = ItinerarySerializer(itinerary, data=itinerary_data) 
         
-        if flight_serializer.is_valid(): 
-            flight_serializer.save() 
-            return JsonResponse(flight_serializer.data) 
-        return JsonResponse(flight_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if itinerary_serializer.is_valid(): 
+            itinerary_serializer.save() 
+            return JsonResponse(itinerary_serializer.data) 
+        return JsonResponse(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE': 
-        flight.delete() 
-        return JsonResponse({'message': 'Flight was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+        itinerary.delete() 
+        return JsonResponse({'message': 'itinerary was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
     
    
