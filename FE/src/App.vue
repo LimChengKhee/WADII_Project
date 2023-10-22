@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="" onunload="HandleOnClose()">
+  <div id="app">
     <div class="container-fluid px-0">
       <!-- Navbar takes up the entire width -->
       <div class="row">
@@ -16,6 +16,9 @@
     </div>
   </div>
 </template>
+
+
+
 
 <script>
 import Navbar from "./components/Navbar.vue";

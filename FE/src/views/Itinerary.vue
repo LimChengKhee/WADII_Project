@@ -3,6 +3,7 @@
     <div class="header row" style="text-align: start; font-size:20px;">
       <p class="mb-3 fw-bold">Suggested Activities</p>
     </div>
+
     <div id="carouselExample" class="w-50 carousel slide">
       <div class="carousel-inner">
         <Activity_Component :allActivities="allActivities" :days="days"></Activity_Component>
@@ -18,19 +19,24 @@
     </div>
     <div class="header" style="text-align: start; font-size:22px;">
         <div class="row">
-          <div class="col-1">
+          <div class="col-2">
             <p class="d-inline fw-bold"> Itinerary </p>
           </div>
-          <div class="col-3"><Datepicker v-model="date" @input="populateDays" range class="d-inline" style="width:10px;" :enable-time-picker="false"/></div>
-          <div class="col-3"></div>
-          <div class="col-1">
-            <button @click="addDay" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-warning d-inline" type="button">
+          <div class="col-3" style="width:28%">
+            <Datepicker id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range class="d-inline" :enable-time-picker="false"/>
+          </div>
+          <div class="col-2"></div>
+          <div class="col-4">
+            <button id='addDay' @click="addDaystoEnd(1)" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-warning d-none" type="button">
             Add day
             </button>
+            <!-- <button @click="deleteAllDays" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-danger d-inline mx-2" type="button">
+            Delete all days
+            </button> -->
           </div>
           <div class="col-4"></div>
     </div>
-      <Day_Component :allActivities="allActivities" :days="days"></Day_Component>
+      <Day_Component :allActivities="allActivities" :days="days" :date="date"></Day_Component>
     </div>
   </div>
 
@@ -38,16 +44,12 @@
 
 </template>
   <script>
-  import Activity_Component from '../components/ActivityComponent.vue'
-  import Day_Component from '../components/DayComponent.vue'
+  import Activity_Component from '../components/ActivityComponent.vue';
+  import Day_Component from '../components/DayComponent.vue';
   import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
   import '../../node_modules/@vuepic/vue-datepicker/dist/main.css';
-  import axios from 'axios'
   // import {GMapAutocomplete} from '../../node_modules/@fawmi/vue-google-maps'
   //  import statements
-  // import DatePick from '../../node_modules/vue-date-pick';
-  // import '../../node_modules/vue-date-pick/dist/vueDatePick.css';
-  // app.component('DatePick', DatePick)
   // import example from '@/utils/string_formatter'
   export default {
     name: 'Itinerary_Page',
@@ -62,7 +64,7 @@
     data () {
       // local repository of information
       return {      
-        date: [],
+        date : [],
         itemNum : 0,
         allActivities: [
             {
@@ -120,11 +122,7 @@
                 image: "DSC00601.jpg"
             }
         ],
-        days: [
-          { // days is an array of dayObjects, each dayObject contains an array of activity objects
-            dayId: 0,
-            dayActivities: []
-        }
+        days: [ // days is an array of dayObjects, each dayObject contains dayId, and an array of activity objects (dayActivities)
       ],
       }
     },
@@ -135,76 +133,99 @@
   
     // start of lifecycle
     async mounted () {
-      const startDate = new Date();
-      const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-      this.date = [startDate, endDate];
-      
-
-
-      
-      
-      // const scripts = [
-      //   "https://maps.googleapis.com/maps/api/js?key=AIzaSyC27_uXwB2Wdx05nP3pezmdAH5svn1oqr4&libraries=places&callback=initMap"
-      //   ];
-      //   scripts.forEach(script => {
-      //       let tag = document.head.querySelector(`[src="${ script }"`);
-      //       if (!tag) {
-      //           tag = document.createElement("script");
-      //           tag.setAttribute("src", script);
-      //           tag.setAttribute("type", 'text/javascript');
-      //           document.head.appendChild(tag); 
-      //       }
-      //   });
+      if (this.date.length == 0){
+        const startDate = new Date();
+        const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+        this.date = [startDate, endDate];
+      }
     },
   
     methods: {
       // methods defined by ourselves
-      addDay(){
-        this.days.push({
-          dayId: this.days.length,
-          dayActivities: []
-        })
+      addDaystoEnd(numDays){
+        for (let i=0;i<numDays;i++){
+          this.days.push({
+            dayId: this.days.length,
+            dayActivities: []
+          })
+        }
+          let currentEnd = this.date[1]
+          this.date[1].setDate(currentEnd.getDate() + numDays)
+          // this.date[1] = new Date(this.date[1].getTime() + (i * 24 * 60 * 60 * 1000));
       },
-      populateDays(){
-        let start = this.date[0];
-        let end = this.date[1];
-        let days = Math.floor((end - start) / (1000 * 60 * 60 * 24));
-        console.log(days)
-        for (let i=0;i<days;i++){
-          this.addDay();
+      addDaystoStart(numDays){
+        for (let i=0;i<numDays;i++){
+          this.days.unshift({
+            dayId: 0,
+            dayActivities: []
+          })
+        }
+        for (let i=0;i<this.days.length;i++){
+          this.days[i].dayId = i
+        }
+        let currentStart = this.date[0]
+        this.date[0].setDate(currentStart.getDate() - numDays)
+      },
+      removeDaysfromStart(diff){
+        this.days.splice(0,diff)
+        for (let i=0;i<this.days.length;i++){
+          this.days[i].dayId = i
+        }
+        let currentStart = this.date[0]
+        this.date[0].setDate(currentStart.getDate() + diff)
+      },
+      removeDaysfromEnd(diff){
+        this.days = this.days.slice(0,this.days.length-diff)
+        let currentEnd = this.date[1]
+        this.date[1].setDate(currentEnd.getDate() - diff)
+      },
+      selectDate(newDate){
+        if (this.days.length == 0){
+          let start = newDate[0];
+          let end = newDate[1];
+          let days = Math.floor((end - start) / (1000 * 60 * 60 * 24));
+          for (let i=0;i<days+1;i++){
+              this.days.push({
+                dayId: this.days.length,
+                dayActivities: [],
+                accoms: ["The Fullerton Hotel Sydney", "Sydney Harbour Marriott Hotel at Circular Quay"] // PLACEHOLDER!!!!
+            })
+          }
+          let addDay = document.getElementById('addDay')
+          addDay.classList.remove('d-none')
+          addDay.classList.add('d-inline')
+          this.date = newDate;
+        }else{
+          let newStart = newDate[0];
+          let newEnd = newDate[1];
+          let startDate = this.date[0];
+          let endDate = this.date[1];
+          if (startDate > newStart){
+            console.log("startDate > newStart")
+            let numDays = Math.floor((startDate - newStart) / (1000 * 60 * 60 * 24));
+            this.addDaystoStart(numDays)
+          }else if (startDate < newStart){
+            console.log("startDate < newStart")
+            let diff = Math.floor((newStart-startDate) / (1000 * 60 * 60 * 24));
+            this.removeDaysfromStart(diff)
+          }
+          if (endDate > newEnd){
+            console.log("endDate > newEnd")
+            let diff = Math.floor((endDate-newEnd) / (1000 * 60 * 60 * 24));
+            this.removeDaysfromEnd(diff)
+          }else if (endDate < newEnd){
+            console.log("endDate < newEnd")
+            let numDays = Math.floor((newEnd - endDate) / (1000 * 60 * 60 * 24));
+            console.log(numDays)
+            this.addDaystoEnd(numDays);
+          }
+        }
+      },
+      deleteAllDays(){ // for future use
+        confirm("This will delete ALL days and clear your ENTIRE itinerary! Please confirm!");
       }
-      },
-      
     }
-      // }
-      // async initMap() {
-      //   const { Map } = await google.maps.importLibrary("maps");
-      //   var map;
-      //   var service;
-      //   var infowindow;
-      //   var sydney = new google.maps.LatLng(-33.867, 151.195);
-
-      //   infowindow = new google.maps.InfoWindow();
-
-      //   map = new Map(
-      //       document.getElementById('map'), {center: sydney, zoom: 15});
-
-      //   var request = {
-      //     query: 'Museum of Contemporary Art Australia',
-      //     fields: ['name', 'geometry'],
-      //   };
-
-      //   var service = new google.maps.places.PlacesService(map);
-
-      //   service.findPlaceFromQuery(request, function(results, status) {
-      //     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      //       for (var i = 0; i < results.length; i++) {
-      //         createMarker(results[i]);
-      //       }
-      //       map.setCenter(results[0].geometry.location);
-      //     }
-      //   });
-      // }
+    
       }
   </script>
   

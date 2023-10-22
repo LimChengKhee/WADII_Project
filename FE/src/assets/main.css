@@ -1,3 +1,6 @@
+
+@import './base.css';
+
 #app {
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
@@ -24,3 +27,4 @@
     outline: black;
     background-color: #808080;
 }
+
