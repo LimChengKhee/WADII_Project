@@ -17,17 +17,17 @@
       <button class="btn btn-primary" @click="createitinerary">Create new Trip</button>
     </div>
     <br />
-    <div class="row">
-      <div v-for="iti in itinerarys">
-      <router-link :to="{path:`/itinerary/${userid}/${iti.itinerary_name}`}" class="d-inline w-25">
-      <div class="card" style="width: 18rem;">
+    <div class="row d-flex">
+
+      
+      <div v-for="iti in itinerarys" class="card" style="width: 18rem;cursor: pointer;" @click="routeItineraryPage(iti.itinerary_name)" >
       <img src="../assets/img/japan.jpg" class="card-img-top" alt="...">
       <div class="card-body">
         <p class="card-text">{{ iti.itinerary_name }}</p>
       </div>
     </div>
-  </router-link>
-  </div>
+  
+
     </div>
   </div>
 </template>
@@ -69,6 +69,7 @@ export default {
   this.token = authStore.token
   // await 
     this.itinerarys = await userStore.getItinerary(this.userid,this.token);
+    console.log(this.itinerarys)
 
 
 
@@ -80,6 +81,9 @@ export default {
   createitinerary(){
     this.$router.push('/form')
   },
+  routeItineraryPage(iti_name){
+    this.$router.push({path:`/itinerary/${this.userid}/${iti_name}`})
+  }
 
   },
 }

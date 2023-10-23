@@ -16,7 +16,7 @@ export const useAuthStore = defineStore({
         async login(username, password) {
             
             try {
-                this.userData = await axios.post('/api/v1/token/login',{"username":username,"password":password})
+                this.userData = await axios.post('http://127.0.0.1:8000/api_d/v1/token/login',{"username":username,"password":password})
                 const token2 = this.userData.data.auth_token
                 this.user = username
                 this.token = token2

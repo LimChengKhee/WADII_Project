@@ -15,7 +15,7 @@ export const useUsersStore = defineStore({
         async register(formData) {
 
         try {
-            this.userData = await axios.post('/api/v1/users/',formData)
+            this.userData = await axios.post('http://127.0.0.1:8000/api_d/v1/users/',formData)
             return  this.userData
           } catch (error) {
             // let the form component display the error
@@ -39,7 +39,7 @@ export const useUsersStore = defineStore({
           }
           console.log(userid,token)
           const info  = await axios
-            .get(`http://127.0.0.1:8000/api/itinerary/`,config)
+            .get(`http://127.0.0.1:8000/api_d/itinerary/`,config)
           
           for (let i of info.data){
             var temp = i
@@ -57,7 +57,7 @@ export const useUsersStore = defineStore({
         async getUserItinerary(username,itinerary_name){
           const authStore = useAuthStore()
           const info  = await axios
-            .get(`http://127.0.0.1:8000/api/itinerary/${username}/${itinerary_name}/`,{headers:{ "Content-Type":"application/json",
+            .get(`http://127.0.0.1:8000/api_d/itinerary/${username}/${itinerary_name}/`,{headers:{ "Content-Type":"application/json",
               "Authorization":`Token ${authStore.token}`}})
 
           this.itinerarys = info.data
@@ -75,7 +75,7 @@ export const useUsersStore = defineStore({
             "itinerary_name":iti_name
             }
           const info  = await axios
-            .put(`http://127.0.0.1:8000/api/itinerary/${user}/${iti_name}/`,bodydata,{headers:{ "Content-Type":"application/json",
+            .put(`http://127.0.0.1:8000/api_d/itinerary/${user}/${iti_name}/`,bodydata,{headers:{ "Content-Type":"application/json",
               "Authorization":`Token ${authStore.token}`}})
 
               console.log(info)

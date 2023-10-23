@@ -101,7 +101,7 @@ export const useItineraryStore = defineStore('itinerary', {
             }
             console.log(bodydata,token)
     const info  = await axios
-      .post(`http://127.0.0.1:8000/api/itinerary/`,bodydata,{headers:{ "Content-Type":"application/json",
+      .post(`http://127.0.0.1:8000/api_d/itinerary/`,bodydata,{headers:{ "Content-Type":"application/json",
         "Authorization":`Token ${token}`}})
     
     return itinerary_name

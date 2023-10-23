@@ -158,6 +158,7 @@ import { useItineraryStore } from '../store/piniaStore/itinerary';
       let item = iti_data.itinerary_data.destination.itinerary_date.split(',')
       let date_range = [new Date(item[0]),new Date(item[1])]
       this.iti_data = iti_data
+      console.log(date_range)
       this.selectDate(date_range)
       this.days = iti_data.itinerary_data.itinerary_days
     },
@@ -209,6 +210,7 @@ import { useItineraryStore } from '../store/piniaStore/itinerary';
         this.date[1].setDate(currentEnd.getDate() - diff)
       },
       selectDate(newDate){
+        console.log("heeeeeee",newDate)
         if (this.days.length == 0){
           let start = newDate[0];
           let end = newDate[1];
