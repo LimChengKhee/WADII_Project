@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("api", "0004_tutorial_delete_task"),
+        ("api_d", "0004_tutorial_delete_task"),
     ]
 
     operations = [

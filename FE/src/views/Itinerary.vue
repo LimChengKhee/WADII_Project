@@ -38,6 +38,7 @@
     </div>
       <Day_Component :allActivities="allActivities" :days="days" :date="date"></Day_Component>
     </div>
+    <button class="btn btn-primary" @click="save">Save</button>
   </div>
 
 
@@ -48,6 +49,10 @@
   import Day_Component from '../components/DayComponent.vue';
   import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
   import '../../node_modules/@vuepic/vue-datepicker/dist/main.css';
+  import { mapStores } from 'pinia';
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
+import { useItineraryStore } from '../store/piniaStore/itinerary';
   // import {GMapAutocomplete} from '../../node_modules/@fawmi/vue-google-maps'
   //  import statements
   // import example from '@/utils/string_formatter'
@@ -63,7 +68,10 @@
     },
     data () {
       // local repository of information
-      return {      
+      return {
+        iti_data : [],
+        user:'',
+        iti_name:'',
         date : [],
         itemNum : 0,
         allActivities: [
@@ -127,9 +135,12 @@
       }
     },
     computed: {
-      // computed
-  
-    },
+    // computed
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore),
+    ...mapStores(useItineraryStore)
+
+  },
   
     // start of lifecycle
     async mounted () {
@@ -138,9 +149,28 @@
         const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
         this.date = [startDate, endDate];
       }
+      const authStore = useAuthStore();
+      const userStore = useUsersStore();
+      this.user = this.$route.params.username
+      this.iti_name = this.$route.params.itinerary_name
+      var iti_data = await userStore.getUserItinerary(this.user,this.iti_name) 
+      
+      let item = iti_data.itinerary_data.destination.itinerary_date.split(',')
+      let date_range = [new Date(item[0]),new Date(item[1])]
+      this.iti_data = iti_data
+      console.log(date_range)
+      this.selectDate(date_range)
+      this.days = iti_data.itinerary_data.itinerary_days
     },
   
     methods: {
+      async save(){
+        const userStore = useUsersStore();
+        const authStore = useAuthStore();
+        console.log(this.iti_data)
+        this.iti_data.itinerary_data.itinerary_days = this.days
+        await userStore.updateItinerary(this.iti_data,this.user,this.iti_name);
+      },
       // methods defined by ourselves
       addDaystoEnd(numDays){
         for (let i=0;i<numDays;i++){
@@ -180,6 +210,7 @@
         this.date[1].setDate(currentEnd.getDate() - diff)
       },
       selectDate(newDate){
+        console.log("heeeeeee",newDate)
         if (this.days.length == 0){
           let start = newDate[0];
           let end = newDate[1];
