@@ -2,31 +2,38 @@
   <div class="container-fluid">
     <div class="row px-0">
       <div class="col-lg-3 col-md-4 col-12 p-5 sidebar">
-        <img class="shadow-4-strong img-circle rounded-circle custom-width my-3" alt="profileImg" src="../img/steve.jpg" />
+        <img class="shadow-4-strong img-circle rounded-circle custom-width my-3" alt="profileImg"
+          src="../img/steve.jpg" />
         <div class="profileInfo">
           <h5>{{ profileInfo[0].Name }}</h5>
           <p>{{ profileInfo[0].Birthday }}</p>
+          <div class="d-flex align-items-center mt-2">
+            <img src="../img/leaf.png" class="mr-2" alt="leafImg" style="height: 20px;" />
+            <p>Carbon Footprint: {{ carbonFootprint }}</p>
+          </div>
         </div>
       </div>
-      <div class="col-lg-9 col-md-8 col-12 main-content">
+      <div class="col-lg-9 col-md-8 col-sm-12 main-content">
         <div class="row keyStats mb-4">
-          <div class="col-lg-3 col-md-6 col-12">
+          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-primary text-white p-3 m-2">
             <!-- Content for the first key stat column -->
+            <Totaltrips />
           </div>
-          <div class="col-lg-3 col-md-6 col-12">
+          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-secondary text-white p-3 m-2">
             <!-- Content for the second key stat column -->
             <Totaltrips />
           </div>
-          <div class="col-lg-3 col-md-6 col-12">
+          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-success text-white p-3 m-2">
             <!-- Content for the third key stat column -->
           </div>
-          <div class="col-lg-3 col-md-6 col-12">
+          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-danger text-white p-3 m-2">
             <!-- Content for the fourth key stat column -->
           </div>
         </div>
+
         <div class="row priChart mb-4">
           <div class="col-lg-12">
-            <Linechart />
+            <Linechart class="" />
           </div>
         </div>
         <div class="row secCharts mb-4">
@@ -42,7 +49,7 @@
         </div>
         <div class="row">
           <div class="col-lg-12">
-            
+
           </div>
         </div>
       </div>
@@ -67,7 +74,7 @@ export default {
     Piechart,
     Barchart,
     Totaltrips,
-},
+  },
   data() {
     return {
       profileInfo: [
@@ -82,7 +89,7 @@ export default {
     };
   },
   mounted() {
-    
+
   },
   methods: {
 
@@ -217,6 +224,13 @@ div.row img.rounded-circle.custom-width {
 
 .profileInfo {
   color: white;
+}
+
+.rounded-rectangle {
+  border-radius: 15px;
+  padding: 15px;
+  margin: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* Add a drop shadow */
 }
 </style>
   

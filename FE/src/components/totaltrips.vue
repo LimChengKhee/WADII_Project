@@ -27,13 +27,5 @@
   </script>
   
   <style scoped>
-  .total-trips-pill {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 20px;
-    margin-bottom: 10px;
-  }
   </style>
   

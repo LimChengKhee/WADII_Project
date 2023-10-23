@@ -126,11 +126,15 @@ export default {
 
 <style scoped>
 #chartContainer {
-  width: 100%; /* Adjust the width to 100% to occupy the entire width of the screen */
+  width: 100%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2); /* Add a drop shadow */
+  
 }
 
 * {
-  background-color: beige;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: bold;
 }
