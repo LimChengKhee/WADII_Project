@@ -2,21 +2,20 @@
   <div class="container-fluid">
     <div class="row px-0">
       <div class="col-lg-3 col-md-4 col-12 p-5 sidebar">
-        <img class="shadow-4-strong img-circle rounded-circle custom-width my-3" alt="profileImg"
-          src="../img/steve.jpg" />
+        <img class="shadow-4-strong img-circle rounded-circle custom-width my-3" alt="profileImg" src="../img/steve.jpg" />
         <div class="profileInfo">
           <h5>{{ profileInfo[0].Name }}</h5>
           <p>{{ profileInfo[0].Birthday }}</p>
         </div>
       </div>
       <div class="col-lg-9 col-md-8 col-12 main-content">
-        
-        <div class="row keyStats">
+        <div class="row keyStats mb-4">
           <div class="col-lg-3 col-md-6 col-12">
             <!-- Content for the first key stat column -->
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <!-- Content for the second key stat column -->
+            <Totaltrips />
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <!-- Content for the third key stat column -->
@@ -25,22 +24,26 @@
             <!-- Content for the fourth key stat column -->
           </div>
         </div>
-        <div class="row priChart">
-          <div class="col-lg-12 px-0">
+        <div class="row priChart mb-4">
+          <div class="col-lg-12">
             <Linechart />
           </div>
         </div>
-        <div class="row secCharts">
+        <div class="row secCharts mb-4">
           <div class="col-lg-4 col-md-6 col-12">
-            <Piechart/>
+            <Piechart />
           </div>
           <div class="col-lg-4 col-md-6 col-12">
-            <Piechart/>
+            <!-- Content for the second secondary chart column -->
           </div>
           <div class="col-lg-4 col-12">
-            <Piechart/>
+            <!-- Content for the third secondary chart column -->
           </div>
-          
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            
+          </div>
         </div>
       </div>
     </div>
@@ -49,16 +52,22 @@
   
 <script>
 import * as d3 from "d3";
-import crossfilter from "crossfilter"; //may remove if not needed
+import * as crossfilter from "crossfilter";
 import Linechart from "../components/linechart.vue";
 import Piechart from "../components/piechart.vue";
+import Barchart from "../components/barchart.vue";
+import Totaltrips from "../components/totaltrips.vue";
+import itiData from "../components/data.json";
+
 
 export default {
   name: 'Dashboard',
   components: {
     Linechart,
     Piechart,
-  },
+    Barchart,
+    Totaltrips,
+},
   data() {
     return {
       profileInfo: [
@@ -68,114 +77,14 @@ export default {
           Birthday: "01 Sep 2000",
         },
       ],
-      data: [
-        {
-          "id": "1",
-          "itinerary_name": "japan-2023-10-19",
-          "username": "tester2",
-          "itinerary_data": {
-            "destination": {
-              "trip_country": "japan",
-              "itinerary_date": "2023-10-19, 2023-10-20",
-              "start_date": "2023-10-19",
-              "end_date": "2023-10-19"
-            },
-            "flights": [
-              {
-                "flight_no": "SQ-222",
-                "departure_datetime": "2023-10-19, 17:03",
-                "arrival_datetime": "2023-10-19, 19:03",
-                "departure_country": "singapore",
-                "arrival_country": "japan",
-                "duration": 100,
-                "distance": 5246,
-                "cost": 500,
-                "currency": "sgd",
-                "carbon_fp": 0,
-                "notes": ""
-              }
-            ],
-            "hotels": [
-              {
-                "hotelname": "Novotel Hotel",
-                "check_indates": "2023-10-19, 2023-10-28",
-                "start_date": "2023-10-19",
-                "end_date": "2023-10-28",
-                "duration": "9",
-                "lengthofstay": 10,
-                "cost": 500,
-                "currency": "sgd",
-                "rooms": 2,
-                "adult": 2,
-                "child": 2,
-                "people": 4,
-                "carbon_fp": 0,
-                "img": "https://url.com",
-                "notes": ""
+      data: itiData,
 
-              }
-            ],
-            "itinerary_days": [
-              {
-                "activity_name": "Resaurant",
-                "activity_type": "food/activity",
-                "location": "Fort Bragg, CA 959499",
-                "description": "testing",
-                "cords": {
-                  "lat": 121.2,
-                  "lng": 222
-                },
-                "tags": ["seafood", "steak", "bakery"],
-                "ratings": {
-                  "no": 2000,
-                  "stars": 4.5
-                },
-                "cost": 200,
-                "avg_price": 100,
-                "img": "https://url.com",
-                "carbon_fp": 0,
-                "notes": ""
-              }
-            ]
-          }
-        }
-      ],
-
-
-      // crossfilterData: null,
-      // filteredData: [],
     };
   },
   mounted() {
-    // Call a function to set up Crossfilter when the component is mounted
-    // this.setupCrossfilter();
+    
   },
   methods: {
-    // setupCrossfilter() {
-    //   // Create a Crossfilter instance
-    //   this.crossfilterData = crossfilter(this.data);
-
-    //   // Define dimensions based on the data properties you want to filter on
-    //   const dateDimension = this.crossfilterData.dimension((d) => d.date);
-
-    //   // Store the dimension in the component's data
-    //   this.dateDimension = dateDimension;
-
-    //   // Apply an initial filter
-    //   this.dateDimension.filterRange(["24-Apr-07", "27-Apr-07"]);
-
-    //   // Initialize the filteredData
-    //   this.updateFilteredData();
-
-    //   // Listen for changes to the Crossfilter data
-    //   this.crossfilterData.on("filtered", () => {
-    //     this.updateFilteredData();
-    //   });
-    // },
-    // updateFilteredData() {
-    //   // Update the filteredData based on the current Crossfilter state
-    //   this.filteredData = this.dateDimension.top(Infinity);
-    // },
 
     getDates(startDate, stopDate) {
       Date.prototype.addDays = function (days) {

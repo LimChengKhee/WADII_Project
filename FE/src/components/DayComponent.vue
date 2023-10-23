@@ -363,7 +363,7 @@ export default {
             //   </div>
             // </div>`;
             // }
-            console.log("hello");
+            
         },
 
         // create function to check if dayActivities has at least 2 activities currently

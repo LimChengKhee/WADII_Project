@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Line Chart</h2>
+    <h2>Bar Chart</h2>
     <div id="chartContainer">
       <svg ref="chart"></svg>
     </div>
@@ -12,22 +12,20 @@ import * as d3 from "d3";
 import itiData from "./data.json";
 
 export default {
-  name: 'Linechart',
+  name: 'Barchart',
   data() {
     return {
       data: itiData,
-      screenWidth: window.innerWidth * 0.8, // Adjust the multiplier to set the desired width proportion
+      screenWidth: window.innerWidth * 0.8,
     };
   },
   mounted() {
     this.drawChart();
-
     window.addEventListener('resize', this.handleResize);
-    
   },
   methods: {
     handleResize() {
-      this.screenWidth = window.innerWidth * 0.8; // Adjust the multiplier to set the desired width proportion
+      this.screenWidth = window.innerWidth * 0.8;
       this.drawChart();
     },
     drawChart() {
@@ -35,7 +33,7 @@ export default {
       container.select("svg").remove();
       const containerWidth = container.node().getBoundingClientRect().width;
       const margin = { top: 20, right: 20, bottom: 40, left: 60 };
-      const width = Math.min(this.screenWidth, containerWidth) - margin.left - margin.right; // Use the minimum value to prevent exceeding the screen width
+      const width = Math.min(this.screenWidth, containerWidth) - margin.left - margin.right;
       const height = 500 - margin.top - margin.bottom;
 
       const svg = d3.select("#chartContainer")
@@ -46,45 +44,24 @@ export default {
       const g = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      const formatTime = d3.timeFormat("%Y-%m-%d");
-      const parseTime = d3.timeParse("%Y-%m-%d"); // Adjust the format according to the date format you have
-
-      const x = d3
-        .scaleTime()
-        .domain([
-          d3.min(this.data, d => parseTime(d.itinerary_data.destination.start_date)),
-          d3.max(this.data, d => parseTime(d.itinerary_data.destination.start_date))
-        ])
-        .range([0, width]);
-
-      const y = d3
-        .scaleLinear()
-        .domain([
-          0,
-          d3.max(this.data, d => d.itinerary_data.flights[0].distance) * 1.2 // Adjust the multiplier to expand the y-axis
-        ])
-        .nice()
+      const parseTime = d3.timeParse("%Y-%m-%d");
+      const y = d3.scaleLinear()
+        .domain([0, d3.max(this.data, d => d.itinerary_data.flights[0].distance) * 1.2])
         .range([height, 0]);
 
-      const line = d3
-        .line()
-        .x(d => x(parseTime(d.itinerary_data.destination.start_date)))
-        .y(d => y(d.itinerary_data.flights[0].distance));
+      const x = d3.scaleBand()
+        .domain(this.data.map(d => parseTime(d.itinerary_data.destination.start_date)))
+        .range([0, width])
+        .padding(0.1);
 
-      g.append("path")
-        .datum(this.data)
-        .attr("fill", "none")
-        .attr("stroke", "red")
-        .attr("stroke-width", 3)
-        .attr("d", line);
-
-      g.selectAll("dot")
+      g.selectAll(".bar")
         .data(this.data)
-        .enter()
-        .append("circle")
-        .attr("cx", d => x(parseTime(d.itinerary_data.destination.start_date)))
-        .attr("cy", d => y(d.itinerary_data.flights[0].distance))
-        .attr("r", 5)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", d => x(parseTime(d.itinerary_data.destination.start_date)))
+        .attr("y", d => y(d.itinerary_data.flights[0].distance))
+        .attr("width", x.bandwidth())
+        .attr("height", d => height - y(d.itinerary_data.flights[0].distance))
         .attr("fill", "steelblue")
         .on("mouseover", function (event, d) {
           const tooltip = d3.select("#chartContainer")
@@ -103,15 +80,17 @@ export default {
 
       g.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).tickFormat(formatTime).ticks(this.data.length));
+        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")).ticks(this.data.length))
+        .selectAll("text")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "end");
 
       g.append("g")
         .call(d3.axisLeft(y).tickSizeOuter(0))
         .selectAll("text")
-        .attr("x", -30) // Shift the y-axis labels to the left
-        .attr("y", -10); // Adjust the vertical alignment of the labels
+        .attr("x", -30)
+        .attr("y", -10);
 
-      // Style x-axis labels
       svg.selectAll(".tick text")
         .attr("fill", "black")
         .attr("text-anchor", "middle")
@@ -126,7 +105,7 @@ export default {
 
 <style scoped>
 #chartContainer {
-  width: 100%; /* Adjust the width to 100% to occupy the entire width of the screen */
+  width: 100%;
 }
 
 * {
