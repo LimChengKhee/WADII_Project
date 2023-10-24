@@ -4,10 +4,10 @@
     <p class="d-inline">
          Day {{ day.dayId + 1 }}  ({{getPrintableDate(day.dayId)}})
         <button type="button" @click="deleteDay(day.dayId)" class="btn btn-outline-danger" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: 0.6rem; margin-left:0.5rem">Delete Day</button>
-        <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 35rem" class="btn btn-secondary d-inline" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" aria-controls="collapseExample">
+        <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 35rem" class="btn btn-secondary d-inline float-end" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" aria-controls="collapseExample">
             Expand Day
         </button>
-
+        
     </p>
     <div class="collapse" :id="'Day' + day.dayId + 'Collapse'">
         <!-- <div v-if="day.dayActivities.length > 0">
@@ -27,6 +27,7 @@
                     </div>
                 </div>
             </div>
+            
         </div>
         <div :id="'Day' + day.dayId + 'EndLocation'"> 
             <div class="input-group w-50 mb-3">
@@ -56,6 +57,7 @@
             </div>
         </div>
     </div>
+    <hr/>
 </div>
 </template>
 <script>
