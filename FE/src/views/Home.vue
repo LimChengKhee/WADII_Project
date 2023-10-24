@@ -20,10 +20,11 @@
     <div class="row d-flex">
 
       
-      <div v-for="iti in itinerarys" class="card" style="width: 18rem;cursor: pointer;" @click="routeItineraryPage(iti.itinerary_name)" >
-      <img src="../assets/img/japan.jpg" class="card-img-top" alt="...">
+      <div v-for="iti in itinerarys" class="card" style="width: 18rem;cursor: pointer;"  >
+      <img src="../assets/img/japan.jpg" class="card-img-top" alt="..." @click="routeItineraryPage(iti.itinerary_name)">
       <div class="card-body">
         <p class="card-text">{{ iti.itinerary_name }}</p>
+        <button class="btn btn-danger" @click="deleteItinerary(iti.itinerary_name)">Delete</button>
       </div>
     </div>
   
@@ -83,6 +84,11 @@ export default {
   },
   routeItineraryPage(iti_name){
     this.$router.push({path:`/itinerary/${this.userid}/${iti_name}`})
+  },
+  async deleteItinerary(iti_name){
+    const userStore = useUsersStore();
+    var pass = await userStore.deleteUserItinerary(this.userid,iti_name)
+    this.itinerarys = await userStore.getItinerary(this.userid,this.token);
   }
 
   },
