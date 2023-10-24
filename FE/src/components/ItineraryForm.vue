@@ -25,24 +25,31 @@ export default {
   methods: {
     getCountry() {
       const itineraryStore = useItineraryStore()
+      var check_val = itineraryStore.arrival_country.toLowerCase()
+      
       var countryList = document.getElementById(`country`)
       countryList.innerHTML = '' // clear the list of past predictions on each input
-      var countries = this.cities
+      
+      var countries = this.cities.filter((c) => c.toLowerCase().includes(check_val));
 
+      console.log(this.cities.filter((c) => c.toLowerCase().includes(check_val)));
+      if (check_val != "" || check_val != null){
       countryList.classList.remove('d-none') // display the list
                     for (let c=0;c<countries.length;c++){
                         var listGroupItem = document.createElement('button') // creating the button for each prediction
+                        var desc = countries[c]
                         listGroupItem.type = 'button'
                         listGroupItem.classList.add('list-group-item')
                         listGroupItem.classList.add('list-group-item-action')
                         listGroupItem.innerHTML = desc // displaying the place description for each item
                         listGroupItem.addEventListener('click',function(){ //making sure that upon click of the prediction, will add it to the activities
-                          itineraryStore.arrival_country
+                          itineraryStore.arrival_country = countries[c]
                           countryList.classList.add('d-none') // hiding the list upon selection of prediction
                         }.bind(this)) // for eventlistener to have latest data
                         countryList.appendChild(listGroupItem) // adding the button to the lists
                     
                 }
+              }
       
     },
     getDate() {
@@ -88,9 +95,9 @@ export default {
         id="search"
         placeholder="Where to?"
         v-model="itineraryStore.arrival_country"
-        v-on:keypress="isLetter($event)"
-        @input="getCountry()"
+        @input="getCountry"
       /> 
+      <div class="list-group d-none" :id="'country'"></div>
       
     </div>
 
@@ -106,7 +113,7 @@ export default {
         :min-date="mindate"
         range
       />
-      <div class="list-group d-none" :id="'country'"></div>
+      
     </div>
   </div>
 </template>
