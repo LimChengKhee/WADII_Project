@@ -26,6 +26,11 @@ const routes =  [
       component: Hotel
     },
     {
+      path: '/hotel/:username/:itinerary_name',
+      name: 'Hotelurl',
+      component: Hotel
+    },
+    {
       path: '/hotel/:name',
       name: 'Specific',
       component: Hotel_Page
@@ -79,6 +84,11 @@ const routes =  [
   {
     path: '/flight',
     name: 'Flight',
+    component: Flight
+  },
+  {
+    path: '/flight/:username/:itinerary_name',
+    name: 'Flight_specific',
     component: Flight
   },
 ];

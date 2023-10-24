@@ -89,7 +89,7 @@ export default {
     const userStore = useUsersStore();
     var pass = await userStore.deleteUserItinerary(this.userid,iti_name)
     this.itinerarys = await userStore.getItinerary(this.userid,this.token);
-  }
+  },
 
   },
 }

@@ -37,10 +37,10 @@ export const useUsersStore = defineStore({
               "Authorization":`Token ${token}`},
             params: {"username":userid}
           }
-          console.log(userid,token)
+          
           const info  = await axios
             .get(`http://127.0.0.1:8000/api_d/itinerary/`,config)
-          
+
           for (let i of info.data){
             var temp = i
             if (isJsonString(temp["itinerary_data"])){
@@ -51,6 +51,7 @@ export const useUsersStore = defineStore({
             temp["itinerary_data"] = json_data
             this.iti_data.push(temp)
           }
+
           return this.iti_data
         },
 

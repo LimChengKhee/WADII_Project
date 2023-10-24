@@ -28,7 +28,7 @@
     </div>
     <div class="card_section" v-if="mounted">
       <FlightCard
-        v-for="flight in this.hotelsInCities.data.itineraries"
+        v-for="flight in this.hotelsInCities"
         :flightNumberO="flight.legs[0].segments[0].flightNumber"
         :alternateIdO ="flight.legs[0].segments[0].marketingCarrier.alternateId"
         :carrierNameO="flight.legs[0].carriers.marketing[0].name"
@@ -44,9 +44,10 @@
         :duration="flight.legs[0].durationInMinutes"
         :arrival="flight.legs[0].arrival"
         :destinationDisplayCode="flight.legs[0].segments[0].destination.displayCode"
-        :destinationCity="flight.legs[0].destination.city"
+        :destinationCity="flight.legs[0].destination.name"
         :totalPrice="flight.price.formatted"
         :tag = "flight.tags"
+        :eco = "flight.eco.ecoContenderDelta"
       ></FlightCard>
     </div>
     <div class="spinner_section d-flex flex-column" v-if="!mounted">
@@ -140,8 +141,8 @@ export default {
       // }
 
       // const response = await axios.request(options)
-      this.hotelsInCities = this.false_data
-      console.log(this.hotelsInCities.data.itineraries,'test')
+      this.hotelsInCities = this.filterby(this.false_data,'one')
+      // console.log(this.hotelsInCities.data.itineraries,'test')
 
       // for (let hotel of this.hotelsInCities) {
       //   let hotel_id = hotel.hotel_id
@@ -166,6 +167,23 @@ export default {
       //   }
       // }
       // this.hotelsInCities = this.false_data;
+    },
+    filterby(data,stops){
+      console.log(data)
+      var result = []
+      if (stops == 'one'){
+        var flight_list = data.data.itineraries
+        console.log(flight_list)
+        for (let f of flight_list){
+          if (f.legs[0].segments.length == 1 && f.legs[1].segments.length == 1 ){
+            if (!('eco' in f)){
+              f['eco'] = {'ecoContenderDelta':"NORMAL"}
+            }
+            result.push(f)
+          }
+        }
+      }
+      return result
     }
   }
 }
