@@ -47,6 +47,11 @@ export default {
       this.drawChart();
     },
     drawChart() {
+      this.data.sort((a, b) => {
+      const dateA = new Date(a.itinerary_data.itinerary_data.destination.start_date);
+      const dateB = new Date(b.itinerary_data.itinerary_data.destination.start_date);
+      return dateA - dateB;
+    });
       const container = d3.select("#chartContainer");
       container.select("svg").remove();
       const containerWidth = container.node().getBoundingClientRect().width;
