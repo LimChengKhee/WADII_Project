@@ -29,10 +29,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 #Adjust accordingly to your vue and django ports
-CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:5173','http://127.0.0.1:8000']
+CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:8000','http://127.0.0.1:5173']
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES':(
         'rest_framework.permissions.IsAuthenticated',
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'corsheaders',
+    'api_d.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [

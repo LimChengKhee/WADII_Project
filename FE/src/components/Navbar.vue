@@ -3,7 +3,8 @@
     <div class="row">
       <div class="col-8 px-0">
         <ul class="menu">
-          <img class="ms-4" src="../img/EcoBound.png" style="height: 50px;" alt="EcoBound Logo">
+          <img class="ms-4" src="../img/EcoBound.png" style="height: 50px;cursor:pointer; max-width: 100%;"
+            alt="EcoBound Logo" @click="sliderIndicator(1)">
           <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
           <li class="menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
             :ref="'menu-item_' + link.id">
@@ -17,12 +18,27 @@
       <div class="col-1 px-0" style="background-color: var(--menu-background-color);"></div>
       <div class="col-3 px-0 d-flex align-items-center" style="background-color: var(--menu-background-color);">
         <img src="../img/kfc.png" class="rounded-circle" style="height: 30px; width:auto" alt="profileImg">
-        <router-link to="/login">
-          <button type="button" class="button m-3 px-6" style="background-color:#de503a;">Log in</button>
+        
+
+
+          <template v-if="authStore.user">
+            <div class="profile">{{ authStore.user }}</div>
+            <button class="btn btn-primary" @click="authStore.logout()">Logout</button>
+          </template>
+          <template v-else><router-link to="/login">
+            <button type="button" class="button m-3 px-6" @click="login()" style="background-color:#de503a;">Log in</button>
         </router-link>
         <router-link to="/Sign-Up">
           <button type="button" class="button m-3 px-6">Sign up</button>
         </router-link>
+        
+        </template></div>
+
+        
+</template>
+
+
+
       </div>
     </div>
   </div>
@@ -31,12 +47,17 @@
 
 
 <script>
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { mapStores } from 'pinia';
+
 export default {
   data() {
     return {
       sliderPosition: 0,
       selectedElementWidth: 0,
       selectedIndex: 0,
+      userid: "",
+      userflag: false,
       links: [
         {
           id: 1,
@@ -59,9 +80,8 @@ export default {
 
         {
           id: 4,
-          icon: "fa fa-user",
-          text: "Profile",
-          route: "",
+          icon: "fa fa-question",
+          text: "Hotel",
         },
 
       ],
@@ -73,20 +93,45 @@ export default {
       this.sliderPosition = el.offsetLeft;
       this.selectedElementWidth = el.offsetWidth;
       this.selectedIndex = id;
+      var routes = { 1: '/', 2: '/flight', 3: '/', 4: '/hotel' }
+      var page = routes[id]
+      this.$router.push(page)
     },
+    getUser() {
+      console.log(this.userid)
+      this.userid = localStorage.getItem('userid')
+      if (this.userid != null) {
+        this.userflag = true;
+      } else {
+        this.userflag = false;
+      }
+    },
+    login() {
+      this.$router.push('/login')
+    }
   },
   computed: {
+    ...mapStores(useAuthStore),
     positionToMove() {
       return this.sliderPosition + "px";
     },
     sliderWidth() {
       return this.selectedElementWidth + "px";
     },
+
   },
+  mounted() {
+    // this.getUser()
+    // const authStore = useAuthStore();
+    // this.userid = authStore.user
+  }
 };
 </script>
 
 <style>
+.profile{
+  color:white;
+}
 body {
   font-family: var(bs);
 }
@@ -172,7 +217,8 @@ body {
   border-radius: 16px;
   font-size: 1rem;
 }
-.rounded-circle{
+
+.rounded-circle {
   background-color: white;
 }
 </style>

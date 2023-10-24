@@ -8,7 +8,6 @@
 
           <div class="login-form">
             <h1 class="card-title">Login Page</h1>
-
             <form @submit.prevent="submitForm" class="form-login">
               <div class="form-group with-icon">
                 <i class="fa fa-envelope input-icon"></i>
@@ -36,7 +35,9 @@
 </template>
   
 <script>
-import axios from 'axios'
+import axios from "axios";
+import { mapStores } from 'pinia';
+import { useAuthStore } from '../store/piniaStore/authStore';
 
 export default {
   name: 'Login',
@@ -46,35 +47,26 @@ export default {
       password: ''
     }
   },
-  methods: {
-    submitForm(e) {
-
-      const formData = {
-        username: this.username,
-        password: this.password
-      }
-      console.log(formData)
-      axios
-        .post('/api/v1/token/login', formData)
-        .then(response => {
-          console.log('sdasdas')
-          console.log(response)
-          const token = response.data.auth_token
-          console.log(token)
-          this.$store.commit('setToken', token)
-          //to push to next page afterwards
-          //   this.$router.push('/login')
-
-          axios.defaults.headers.common['Authorization'] = 'Token ' + token
-
-          localStorage.setItem('token', token)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    }
+  computed:{
+    ...mapStores(useAuthStore)
   },
-  components: {}
+  methods: {
+    
+  async submitForm(){
+    const authStore = useAuthStore();
+    var resp = await authStore.login(this.username,this.password);
+    console.log(resp,"te")
+    if (resp){
+      console.log('hi')
+      this.$router.push({ path: '/' })
+    }else{
+      alert("Wrong Info")
+    }
+
+  },
+    
+    },
+  components: {},
 }
 </script>
   

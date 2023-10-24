@@ -6,255 +6,171 @@
 
     <div id="carouselExample" class="w-50 carousel slide">
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          <div class="card-group">
-            <div class="card" style="width: 18rem;">
-              <img src="../assets/img/DSC00625.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Museum</h5>
-                <p class="card-text">Generic description...</p>
-                <a href="#" class="btn btn-sm btn-primary">Add to itinerary</a>
-              </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-              <img src="../assets/img/DSC00630.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Castle</h5>
-                <p class="card-text">Generic description ...</p>
-                <a href="#" class="btn btn-sm btn-primary">Add to itinerary</a>
-              </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-              <img src="../assets/img/DSC00701.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Atrium</h5>
-                <p class="card-text">Generic description...</p>
-                <a href="#" class="btn btn-sm btn-primary">Add to itinerary</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="card-group">
-            <div class="card" style="width: 18rem;">
-              <img src="../assets/img/DSC00729.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Mountains</h5>
-                <p class="card-text">Generic description...</p>
-                <a href="#" class="btn btn-sm btn-primary">Add to itinerary</a>
-              </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-              <img src="../assets/img/DSC00746.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Village</h5>
-                <p class="card-text">Generic description...</p>
-                <a href="#" class="btn btn-sm btn-primary">Add to itinerary</a>
-              </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-              <img src="../assets/img/DSC00757.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Fast-food Restaurant</h5>
-                <p class="card-text">Generic description...</p>
-                <a href="#" class="btn btn-sm btn-primary">Add to itinerary</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="card-group">
-            <div class="card" style="width: 18rem;">
-              <img src="../assets/img/DSC00769.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Hill</h5>
-                <p class="card-text">Generic description...</p>
-                <a href="#" class="btn btn-sm btn-primary">Add to itinerary</a>
-              </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-              <img src="../assets/img/DSC00788-3.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Sunset</h5>
-                <p class="card-text">Generic description...</p>
-                <a href="#" class="btn btn-sm btn-primary">Add to itinerary</a>
-              </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-              <img src="../assets/img/DSC00601.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Colorful buildings</h5>
-                <p class="card-text">Generic description...</p>
-                <a href="#" class="btn btn-sm btn-primary">Add to itinerary</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Activity_Component :allActivities="allActivities" :days="days"></Activity_Component>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+        <button class="carousel-control-prev btn" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
     </div>
     <div class="header" style="text-align: start; font-size:22px;">
-      <p class="d-inline fw-bold">Itinerary</p>
-      <!--Supposed Date picker on the right side of Itinerary-->
-<!-- <date-pick class="col-6" v-model="date"> 
-        <template v-slot:default="{toggle, inputValue}">
-            <button @click="toggle">
-                 {{ inputValue || 'Toggle calendar' }}
-            </button>
-        </template>
-        <template v-slot:cellContent="{item}">
-            <div class="vdpCellContent">
-                <strong>{{ item.date.getDate() }}</strong>
-            </div>
-        </template>
-    </date-pick> -->
-      <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 520px" class="btn btn-warning d-inline" type="button">
-        Add day
-        </button><!--Add Day button-->
-    </div>
-    <div class="row">
-      <p class="d-inline">
-        Day 1
-        <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 35rem" class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-          Expand Day
-        </button>
-      </p>
-      <div class="collapse" id="collapseExample">
-        <div class="card mb-3" style="max-width: 665px;">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src="../assets/img/DSC00625.jpg" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body row">
-                <h5 class="card-title col-10">Activity 1 - Museum</h5>
-                <button type="button" class="btn btn-outline-danger col-2" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem;--bs-btn-font-size: 0.6rem">Delete Activity</button>
-                <p class="card-text">This museum was built in 1669 (nice)</p>
-                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-              </div>
-            </div>
+        <div class="row">
+          <div class="col-2">
+            <p class="d-inline fw-bold"> Itinerary </p>
           </div>
-        </div>
-        <div class="col-6">
-              <label for="location" class="form-label">Location</label>
-              <div class="input-group mb-3">
-              <span class="input-group-text" id="location"><svg width="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg></span>
-              <input type="text" class="form-control" placeholder="Enter a location" aria-label="location" aria-describedby="location">
-</div>
-        </div>
+          <div class="col-3" style="width:28%">
+            <Datepicker id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range class="d-inline" :enable-time-picker="false"/>
+          </div>
+          <div class="col-2"></div>
+          <div class="col-4">
+            <button id='addDay' @click="addDaystoEnd(1)" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-warning d-none" type="button">
+            Add day
+            </button>
+            <!-- <button @click="deleteAllDays" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-danger d-inline mx-2" type="button">
+            Delete all days
+            </button> -->
+          </div>
+          <div class="col-4"></div>
     </div>
+      <Day_Component :allActivities="allActivities" :days="days" :date="date"></Day_Component>
     </div>
-    <div>
-      
-    </div>
-    </div>
-
-  <div class="container-fluid">
-    
+    <button class="btn btn-primary" @click="save">Save</button>
   </div>
 
 
-    
-    <!-- <div class="flight_container" style="display:flex;justify-content: center;">
-      <div class="card" style="width: 50rem;">
-        <div class="card-body">
-            <div class="row-of-buttons">
-              <div class="dropdown">
-            <button class="btn btn dropdown-toggle ps-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Round Trip
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Round Trip</a></li>
-              <li><a class="dropdown-item" href="#">One-Way</a></li>
-              <li><a class="dropdown-item" href="#">Multi-City</a></li>
-            </ul>
-            </div>
-
-          <div class="row row_of_inputs">
-            <div class="col-3">
-              <label for="location" class="form-label">Location</label>
-              <input type="text" class="form-control" id="location" placeholder="Location">
-            </div>
-            <div class="col-3">
-              <label for="location" class="form-label">Location</label>
-              <input type="text" class="form-control" id="location" placeholder="Location">
-            </div>
-            <div class="col-6">
-              <label for="location" class="form-label">Location</label>
-              <input type="text" class="form-control" id="location" placeholder="Location">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-  </div> -->
-      
-    
-
-    <!-- <div class="hotel_container" style="display:flex;justify-content: center; margin-top: 50px;">
-      <div class="card" style="width: 50rem;">
-        <div class="card-body">
-
-          <div class="row row_of_inputs">
-            <div class="col-3">
-              <label for="hotel" class="form-label">Hotel</label>
-              <input type="text" class="form-control" id="hotel" placeholder="Hotel">
-            </div>
-            <div class="col-3">
-              <label for="location" class="form-label">Duration</label>
-              <input type="text" class="form-control" id="duration" placeholder="Duration">
-            </div>
-            <div class="col-6">
-              <label for="people" class="form-label">People</label>
-              <input type="text" class="form-control" id="people" placeholder="Number of people">
-            </div>
-        </div>
-      </div>
-    </div>
-      
-
-    </div> -->
 
 </template>
   <script>
+  import Activity_Component from '../components/ActivityComponent.vue';
+  import Day_Component from '../components/DayComponent.vue';
+  import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
+  import '../../node_modules/@vuepic/vue-datepicker/dist/main.css';
+  import { mapStores } from 'pinia';
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
+import { useItineraryStore } from '../store/piniaStore/itinerary';
+  // import {GMapAutocomplete} from '../../node_modules/@fawmi/vue-google-maps'
   //  import statements
-  // import DatePick from '../../node_modules/vue-date-pick';
-  // import '../../node_modules/vue-date-pick/dist/vueDatePick.css';
-  // app.component('DatePick', DatePick)
   // import example from '@/utils/string_formatter'
   export default {
     name: 'Itinerary_Page',
     components: { 
       // importing components from other places
+      // GMapAutocomplete,
       // DatePick
+      Activity_Component,
+      Day_Component,
+      Datepicker,
     },
     data () {
       // local repository of information
       return {
-        example: "hello world"
+        iti_data : [],
+        user:'',
+        iti_name:'',
+        date : [],
+        itemNum : 0,
+        allActivities: [
+            {
+                id: 0,
+                name: "Museum",
+                description: "This museum was built in 1669 (nice)",
+                image: "DSC00625.jpg"
+            },
+            {
+                id: 1,
+                name: "Castle",
+                description: "This castle was built in 1669 (nice)",
+                image: "DSC00630.jpg"
+            },
+            {
+                id: 2,
+                name: "Atrium",
+                description: "This atrium was built in 1669 (nice)",
+                image: "DSC00701.jpg"
+            },
+            {
+                id: 3,
+                name: "Mountains",
+                description: "These mountains were built in 1669 (nice)",
+                image: "DSC00729.jpg"
+            },
+            {
+                id: 4,
+                name: "Village",
+                description: "This village was built in 1669 (nice)",
+                image: "DSC00746.jpg"
+            },
+            {
+                id: 5,
+                name: "Fast-food Restaurant",
+                description: "This fast-food restaurant was built in 1669 (nice)",
+                image: "DSC00757.jpg"
+            },
+            {
+                id: 6,
+                name: "Hill",
+                description: "This hill was built in 1669 (nice)",
+                image: "DSC00769.jpg"
+            },
+            {
+                id: 7,
+                name: "Sunset",
+                description: "This sunset was built in 1669 (nice)",
+                image: "DSC00788-3.jpg"
+            },
+            {
+                id: 8,
+                name: "Colorful buildings",
+                description: "These colorful buildings were built in 1669 (nice)",
+                image: "DSC00601.jpg"
+            }
+        ],
+        days: [ // days is an array of dayObjects, each dayObject contains dayId, and an array of activity objects (dayActivities)
+      ],
       }
     },
     computed: {
-      // computed
-  
-    },
+    // computed
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore),
+    ...mapStores(useItineraryStore)
+
+  },
   
     // start of lifecycle
     async mounted () {
+      if (this.date.length == 0){
+        const startDate = new Date();
+        const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+        this.date = [startDate, endDate];
+      }
+      const authStore = useAuthStore();
+      const userStore = useUsersStore();
+      this.user = this.$route.params.username
+      this.iti_name = this.$route.params.itinerary_name
+      var iti_data = await userStore.getUserItinerary(this.user,this.iti_name) 
+      
+      let item = iti_data.itinerary_data.destination.itinerary_date.split(',')
+      let date_range = [new Date(item[0]),new Date(item[1])]
+      this.iti_data = iti_data
+      console.log(date_range)
+      this.selectDate(date_range)
+      this.days = iti_data.itinerary_data.itinerary_days
     },
   
     methods: {
+      async save(){
+        const userStore = useUsersStore();
+        const authStore = useAuthStore();
+        console.log(this.iti_data)
+        this.iti_data.itinerary_data.itinerary_days = this.days
+        await userStore.updateItinerary(this.iti_data,this.user,this.iti_name);
+      },
       // methods defined by ourselves
       addDaystoEnd(numDays){
         for (let i=0;i<numDays;i++){
@@ -294,6 +210,7 @@
         this.date[1].setDate(currentEnd.getDate() - diff)
       },
       selectDate(newDate){
+        console.log("heeeeeee",newDate)
         if (this.days.length == 0){
           let start = newDate[0];
           let end = newDate[1];
@@ -301,7 +218,8 @@
           for (let i=0;i<days+1;i++){
               this.days.push({
                 dayId: this.days.length,
-                dayActivities: []
+                dayActivities: [],
+                accoms: ["The Fullerton Hotel Sydney", "Sydney Harbour Marriott Hotel at Circular Quay"] // PLACEHOLDER!!!!
             })
           }
           let addDay = document.getElementById('addDay')
@@ -338,7 +256,8 @@
         confirm("This will delete ALL days and clear your ENTIRE itinerary! Please confirm!");
       }
     }
-  }
+    
+      }
   </script>
   
   <style scoped>
