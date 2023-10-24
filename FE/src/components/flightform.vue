@@ -11,7 +11,7 @@ export default {
   name: 'FlightForm',
   data() {
     return {
-      mindate: this.getDate(),
+      mindate: '',
       startdate: '',
       enddate: '',
       cities : countries,
@@ -41,7 +41,9 @@ export default {
 
 
   },
-  components: { Datepicker }
+  components: { Datepicker },
+  mounted(){
+  }
 }
 </script>
 
@@ -79,7 +81,10 @@ export default {
             placeholder="Departure Date/time"
             :enable-time-picker="true"
             :text-input="true"
-            :min-date="mindate"
+            :min-date="itineraryStore.trip_date[0]"
+            :start-date="itineraryStore.departure_date"
+            :max-date="itineraryStore.trip_date[1]"
+            focus-start-date
           />
         </div>
         <div class="col">
@@ -90,6 +95,7 @@ export default {
             placeholder="SIN"
             autofocus
             v-model="itineraryStore.departure_country"
+           
           />
         </div>
       </div>
@@ -109,7 +115,8 @@ export default {
             :enable-time-picker="true"
             :text-input="true"
             :min-date="itineraryStore.departure_date"
-            :start-date="itineraryStore.departure_date" 
+            :start-date="itineraryStore.departure_date"
+            :max-date="itineraryStore.trip_date[1]"
             focus-start-date
             
           />

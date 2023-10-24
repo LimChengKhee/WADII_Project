@@ -80,6 +80,16 @@ export const useUsersStore = defineStore({
 
               console.log(info)
 
+        },
+        async deleteUserItinerary(user,iti_name){
+          const authStore = useAuthStore()
+          const info  = await axios
+            .delete(`http://127.0.0.1:8000/api_d/itinerary/${user}/${iti_name}/`,{headers:{ "Content-Type":"application/json",
+              "Authorization":`Token ${authStore.token}`}})
+
+              console.log(info)
+
         }
+
     }
 });
