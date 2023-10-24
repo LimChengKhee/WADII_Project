@@ -33,7 +33,7 @@
 
         <div class="row priChart mb-4">
           <div class="col-lg-12">
-            <Linechart class="" />
+            <Linechart :data="data" />
           </div>
         </div>
         <div class="row secCharts mb-4">
@@ -64,7 +64,7 @@ import Linechart from "../components/linechart.vue";
 import Piechart from "../components/piechart.vue";
 import Barchart from "../components/barchart.vue";
 import Totaltrips from "../components/totaltrips.vue";
-import itiData from "../components/data.json";
+
 
 
 export default {
@@ -84,13 +84,13 @@ export default {
           Birthday: "01 Sep 2000",
         },
       ],
-      data: itiData,
+      data: '',
 
     };
   },
   mounted() {
-
-  },
+    },
+  
   methods: {
 
     getDates(startDate, stopDate) {
@@ -230,7 +230,8 @@ div.row img.rounded-circle.custom-width {
   border-radius: 15px;
   padding: 15px;
   margin: 10px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* Add a drop shadow */
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  /* Add a drop shadow */
 }
 </style>
   

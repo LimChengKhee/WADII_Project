@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="no-scroll">
+  <div id="app">
     <div class="container-fluid">
       <!-- Navbar takes up the entire width -->
       <div class="row">

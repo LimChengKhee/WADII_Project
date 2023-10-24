@@ -8,7 +8,8 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 export default defineConfig({
   server:{
     proxy: {
-      '/api': 'https://maps.googleapis.com/maps/',
+      '/api': {target:'https://maps.googleapis.com/maps/', changeOrigin:true},
+      
     }
   },
   plugins: [

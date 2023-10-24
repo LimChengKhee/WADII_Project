@@ -8,42 +8,44 @@
           <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
           <li class="menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
             :ref="'menu-item_' + link.id">
-            <router-link :to="link.route" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
+            <a href="#" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
               <i class="menu-icon" :class="link.icon"></i>
               <span>{{ link.text }}</span>
-            </router-link>
+            </a>
+            <!-- <router-link :to="link.route" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
+              <i class="menu-icon" :class="link.icon"></i>
+              <span>{{ link.text }}</span>
+            </router-link> -->
           </li>
         </ul>
       </div>
       <div class="col-1 px-0" style="background-color: var(--menu-background-color);"></div>
       <div class="col-3 px-0 d-flex align-items-center" style="background-color: var(--menu-background-color);">
         <img src="../img/kfc.png" class="rounded-circle" style="height: 30px; width:auto" alt="profileImg">
-        
 
 
-          <template v-if="authStore.user">
-            <div class="profile">{{ authStore.user }}</div>
-            <button class="btn btn-primary" @click="authStore.logout()">Logout</button>
-          </template>
-          <template v-else><router-link to="/login">
+
+        <template v-if="authStore.user">
+          <div class="profile">{{ authStore.user }}</div>
+          <button class="btn btn-primary" @click="authStore.logout()">Logout</button>
+        </template>
+
+        <template v-else>
+
+          <router-link to="/login">
             <button type="button" class="button m-3 px-6" @click="login()" style="background-color:#de503a;">Log in</button>
-        </router-link>
-        <router-link to="/Sign-Up">
-          <button type="button" class="button m-3 px-6">Sign up</button>
-        </router-link>
-        
-        </template></div>
+          </router-link>
 
-        
-</template>
+          <router-link to="/Sign-Up">
+            <button type="button" class="button m-3 px-6">Sign up</button>
+          </router-link>
 
-
-
+        </template>
       </div>
     </div>
+    
   </div>
 </template>
-
 
 
 <script>
@@ -63,19 +65,19 @@ export default {
           id: 1,
           icon: "fa fa-home",
           text: "Home",
-          route: "/home",
+          
         },
         {
           id: 2,
           icon: "fa fa-gear",
           text: "Dashboard",
-          route: "/dashboard",
+          
         },
         {
           id: 3,
           icon: "fa fa-question",
           text: "About",
-          route: "",
+          
         },
 
         {
@@ -93,7 +95,7 @@ export default {
       this.sliderPosition = el.offsetLeft;
       this.selectedElementWidth = el.offsetWidth;
       this.selectedIndex = id;
-      var routes = { 1: '/', 2: '/flight', 3: '/', 4: '/hotel' }
+      var routes = { 1: '/', 2: '/dashboard', 3: '/', 4: '/hotel' }
       var page = routes[id]
       this.$router.push(page)
     },
@@ -129,9 +131,10 @@ export default {
 </script>
 
 <style>
-.profile{
-  color:white;
+.profile {
+  color: white;
 }
+
 body {
   font-family: var(bs);
 }
