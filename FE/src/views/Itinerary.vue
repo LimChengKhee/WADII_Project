@@ -146,7 +146,7 @@ export default {
     // local repository of information
     return {
       iti_data: {
-        
+        itinerary_data:{hotels:[]},
       },
       itinerary_date: '',
       user: '',

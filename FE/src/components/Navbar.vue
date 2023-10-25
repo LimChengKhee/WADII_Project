@@ -129,7 +129,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .profile {
   color: white;
 }
@@ -280,8 +280,8 @@ body {
 }
 
 * {
-  color: white;
-  font-weight: var(--menu-background-color);
+  /* color: white;
+  font-weight: var(--menu-background-color); */
 }
 
 /* Styling the navbar dropdown */
