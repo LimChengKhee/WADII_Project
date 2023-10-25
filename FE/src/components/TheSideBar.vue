@@ -36,7 +36,7 @@ let steps = [
 </script>
 
 <template>
-    <div class="sidebar">
+    <div class="sidebar w-25">
         <StepComponent v-for="step in steps" :step="step" @click.native="gotostep(step)" :active="step.number == stepStore.step" />
     </div>
 </template>
@@ -44,7 +44,6 @@ let steps = [
 <style scoped>
 .sidebar {
     height: 100%;
-    width: 320px;
     padding: 60px 40px;
     background: url("../assets/img/bg-sidebar-desktop.svg");
     background-size: cover;
