@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-8 px-0">
         <ul class="menu">
-          <img class="ms-4" src="../img/EcoBound.png" style="height: 50px; max-width: 100%;" alt="EcoBound Logo">
+          <img class="ms-4" src="../img/EcoBound.png" style="height: 50px;cursor:pointer; max-width: 100%;" alt="EcoBound Logo" @click="sliderIndicator(1)">
           <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
           <li class="menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
             :ref="'menu-item_' + link.id">
@@ -16,7 +16,19 @@
       </div>
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);"></div>
       <div class="col-2 px-0" style="background-color: var(--menu-background-color);">
-        <!-- <button type="button" class="btn btn-primary">Primary</button> -->
+
+        
+         <template v-if="authStore.user">
+          <div class="profile">{{ authStore.user }}</div>
+          <button class="btn btn-primary" @click="authStore.logout()">Logout</button>
+        </template>
+        <template v-else>
+          <button  type="button" class="btn btn-primary" @click="login()">Login</button>
+          <div ></div>
+        </template>
+
+        
+        
       </div>
     </div>
   </div>
@@ -24,12 +36,17 @@
 
 
 <script>
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { mapStores } from 'pinia';
+
 export default {
   data() {
     return {
       sliderPosition: 0,
       selectedElementWidth: 0,
       selectedIndex: 0,
+      userid: "",
+      userflag:false,
       links: [
         {
           id: 1,
@@ -49,7 +66,7 @@ export default {
         {
           id: 4,
           icon: "fa fa-question",
-          text: "About",
+          text: "Hotel",
         },
       ],
     };
@@ -60,20 +77,45 @@ export default {
       this.sliderPosition = el.offsetLeft;
       this.selectedElementWidth = el.offsetWidth;
       this.selectedIndex = id;
+      var routes ={1:'/',2:'/flight',3:'/',4:'/hotel'}
+      var page = routes[id]
+      this.$router.push(page)
     },
+    getUser(){
+      console.log(this.userid)
+      this.userid = localStorage.getItem('userid')
+      if (this.userid != null){
+        this.userflag = true;
+      }else{
+        this.userflag = false;
+      }
+    },
+    login(){
+      this.$router.push('/login')
+    }
   },
   computed: {
+    ...mapStores(useAuthStore),
     positionToMove() {
       return this.sliderPosition + "px";
     },
     sliderWidth() {
       return this.selectedElementWidth + "px";
     },
+    
   },
+  mounted(){
+    // this.getUser()
+    // const authStore = useAuthStore();
+    // this.userid = authStore.user
+  }
 };
 </script>
 
 <style>
+.profile{
+  color:white;
+}
 :root {
   --active-color: #ffee93;
   --link-text-color: #f1faee;
