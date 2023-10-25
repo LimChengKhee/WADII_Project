@@ -1,18 +1,18 @@
 <template>
-  <div class="container-fluid">  
+  <div class="mt-3 container-fluid">  
     <div class="header row" style="text-align: start; font-size:20px;">
       <p class="mb-3 fw-bold">Suggested Activities</p>
     </div>
 
-    <div id="carouselExample" class="w-50 carousel slide">
+    <div id="activityCarousel" class="w-50 carousel slide mb-5">
       <div class="carousel-inner">
         <Activity_Component :allActivities="allActivities" :days="days"></Activity_Component>
       </div>
-        <button class="carousel-control-prev btn" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <button class="carousel-control-prev btn" type="button" data-bs-target="#activityCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#activityCarousel" data-bs-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
@@ -30,9 +30,6 @@
             <button id='addDay' @click="addDaystoEnd(1)" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-warning d-none" type="button">
             Add day
             </button>
-            <!-- <button @click="deleteAllDays" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-danger d-inline mx-2" type="button">
-            Delete all days
-            </button> -->
           </div>
           <div class="col-4"></div>
     </div>

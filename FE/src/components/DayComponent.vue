@@ -1,16 +1,17 @@
 <template>
-
+<div id="testingDiv"></div>
 <div v-for="day of days" :key='day.dayId'  class="row">
     <p class="d-inline">
          Day {{ day.dayId + 1 }}  ({{getPrintableDate(day.dayId)}})
         <button type="button" @click="deleteDay(day.dayId)" class="btn btn-outline-danger" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: 0.6rem; margin-left:0.5rem">Delete Day</button>
         <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 35rem" class="btn btn-secondary d-inline" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" aria-controls="collapseExample">
-            Expand Day
+            Expand Day 
         </button>
+        <button type="button" class="btn btn-success btn-circle"><i class="fa fa-check"></i></button>
 
     </p>
     <div class="collapse" :id="'Day' + day.dayId + 'Collapse'">
-        <div v-if="day.dayActivities.length>=0" > 
+        <div v-if="day.dayActivities.length>0" > 
             <div v-for="activity in day.dayActivities" :key="activity.number" class="card mb-3" style="max-width: 665px;">
                 <div class="row g-0">
                     <div class="col-md-4">
@@ -26,30 +27,30 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" @click="source='end', recs=[], loadingRecs=false" data-bs-target="#filterModal">Recommend me activities!</button>
-            <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterLabel" aria-hidden="true">
+            <button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" @click="source='end', recs=[], selectedRecs=[], loadingRecs=false" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommend me activities!</button>
+            <div class="modal fade" :id="'filter'+ day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'#filter'+ day.dayId + 'Label'" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="filterLabel">Filters</h1>
+                            <h1 class="modal-title fs-5" :id="'filter'+ day.dayId + 'Label'">Filters</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="distanceSelect" class="form-label">Please select how far you are willing to travel (in km)</label>
+                            <label :for="'distance' + day.dayId + 'Select'" class="form-label">Please select how far you are willing to travel (in km)</label>
                             <div class="text-center">Current selection: {{distance}} km</div>
-                            <input type="range" class="form-range" id="distanceSelect" min="1" max="50" v-model="distance">
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="collapseExample">
+                            <input type="range" class="form-range" :id="'distance'+ day.dayId + 'Select'" min="1" max="50" v-model="distance"> 
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" :data-bs-target="'#filter'+ day.dayId + 'Collapse'" aria-expanded="false"> <!--aria-controls="collapseExample"-->
                                 Filter
                             </button>
-                            <div class="collapse" id="filterCollapse">
+                            <div class="collapse" :id="'filter'+ day.dayId + 'Collapse'">
                                 <button class="btn btn-outline-success my-2" type="button" @click="checkAll">
                                 Check/uncheck all
                                 </button>
                                 <div v-for="(searchType,name) in types">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox"
-                                        v-model="selectedTypes" :value="searchType" :id="searchType + 'Check'" :checked="allChecked">
-                                        <label class="form-check-label" :for="searchType + 'Check'">
+                                        v-model="selectedTypes" :value="searchType" :id="day.dayId + searchType + 'Check'">
+                                        <label class="form-check-label" :for="day.dayId + searchType + 'Check'">
                                             {{ name }}
                                         </label>
                                     </div>
@@ -57,26 +58,29 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button v-if="prevMeal" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#mealConsiderationModal">Search</button>
-                            <button v-else type="button" class="btn btn-primary" @click="recommendAny(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" data-bs-target="#recommendModal">Search</button>
+                            <div v-if="selectedTypes.length > 0">
+                                <button v-if="mealTypes.includes(day.dayActivities[day.dayActivities.length-1].type)" type="button" class="btn btn-secondary" data-bs-toggle="modal" :data-bs-target="'#mealConsideration' + day.dayId + 'Modal'">Search</button>
+                                <button v-else type="button" class="btn btn-primary" @click="recommendAny(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Search</button>
+                            </div>
+                            <p class="fs-5 text-danger" v-else>Please select at least one category.</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="recommendModal" tabindex="-1" aria-labelledby="recommendModalLabel" aria-hidden="true">
+            <div class="modal fade" :id="'recommend' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'recommend' + day.dayId + 'ModalLabel'" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="recommendModalLabel">Recommended activities</h1>
+                            <h1 class="modal-title fs-5" :id="'recommend' + day.dayId + 'ModalLabel'">Recommended activities</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div id="testingDiv"></div>
                             <div v-if="loadingRecs && slicedRecs.length==0">
-                                    <div class="spinner-border text-primary" role="status">
-                                    </div>
-                                    <span class="visually-hidden">Loading...</span>
+                                <div class="spinner-border text-primary" role="status">
                                 </div>
+                                <div>Loading...</div>
+                            </div>
+                            <div v-if="noResults">There are no results for your search parameters</div>
                             <div v-if="source=='start'">
                                 <h5> <!--State time of first activity-->
 
@@ -124,23 +128,19 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="mealConsiderationModal" tabindex="-1" aria-labelledby="mealConsiderationLabel" aria-hidden="true">
+            <div class="modal fade" :id="'mealConsideration' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'mealConsideration' + day.dayId + 'Label'" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="mealConsiderationLabel">Suggestion</h1>
+                            <h1 class="modal-title fs-5" :id="'mealConsideration' + day.dayId + 'Label'">Suggestion</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>As your previous activity is a meal, we suggest that you avoid intense activities for an hour or two.</p>
-                            <p>
-                                If you choose to ignore this suggestion, we will recommend you activities based on your filter.
-                                If you decide to choose a non-intense activity, we will recommend you activities based on our predetermined filters.
-                            </p>
+                            <p>As your previous activity is a meal, we suggest that you avoid <span class="text-primary">intense activities</span> for an hour or two.</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @click="recommendAny(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" data-bs-target="#recommendModal">Ignore suggestion</button>
-                            <button type="button" class="btn btn-primary" @click="recommendNonIntense(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" data-bs-target="#recommendModal">Choose non-intense activity</button>
+                            <button type="button" class="btn btn-secondary" @click="recommendAny(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Ignore suggestion</button>
+                            <button type="button" class="btn btn-primary" @click="recommendNonIntense(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Choose non-intense activity</button>
                         </div>
                     </div>
                 </div>
@@ -148,23 +148,23 @@
         </div>
         <div v-else>
             <h4 class="p-4">
-                You have no activities currently. <button type="button" class="btn btn-outline-primary" @click="loadingRecs=false, recs=[]" data-bs-toggle="modal" data-bs-target="#noActivitiesConsiderationModal">Recommend me activities!</button>
+                You have no activities currently. <button type="button" class="btn btn-outline-primary" @click="loadingRecs=false, recs=[]" data-bs-toggle="modal" :data-bs-target="'#noActivitiesConsideration' + day.dayId + 'Modal'">Recommend me activities!</button>
             </h4>
-            <div class="modal fade" id="noActivitiesModal" tabindex="-1" aria-labelledby="noActivitiesLabel" aria-hidden="true">
+            <div class="modal fade" :id="'noActivities' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'noActivities' + day.dayId + 'Label'" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="noActivitiesLabel">Recommended activities</h1>
+                            <h1 class="modal-title fs-5" :id="'noActivities' + day.dayId + 'Label'">Recommended activities</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div id="testingDiv"></div>
                         <div class="modal-body">
                             <div v-if="day.accoms.length>0" > <!--this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0]})-->
-                                <div v-if="loadingRecs && slicedRecs.length==0">
+                                <div v-if="loadingRecs && slicedRecs.length==0 && !noResults">
                                     <div class="spinner-border text-primary" role="status">
                                     </div>
-                                    <span class="visually-hidden">Loading...</span>
+                                    <div>Loading...</div>
                                 </div>
+                                <div v-if="noResults">There are no results for your search parameters</div>
                                 <div v-for="(rec,index) in slicedRecs" class="card mb-3 px-0" style="max-width: 665px;">
                                     <div class="row g-0">
                                         <div class="col-md-4">
@@ -197,19 +197,55 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="noActivitiesConsiderationModal" tabindex="-1" aria-labelledby="noActivitiesConsiderationLabel" aria-hidden="true">
+            <div class="modal fade" :id="'noActivitiesConsideration' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'noActivitiesConsideration' + day.dayId + 'Label'" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="noActivitiesConsiderationLabel">Suggestion</h1>
+                            <h1 class="modal-title fs-5" :id="'noActivitiesConsideration' + day.dayId + 'Label'">Suggestion</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Since you have no activities added for this day currently, we recommends choosing a breakfast location first. 
+                            Since you have no activities added for this day currently, we recommend choosing a breakfast location first. 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" @click="chooseBreakfastFunc(day.dayId)" data-bs-toggle="modal" data-bs-target="#noActivitiesModal" class="btn btn-success mx-2">OK</button>
-                            <button type="button" @click="recommendAny(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" data-bs-target="#noActivitiesModal" class="btn btn-danger mx-2">Skip breakfast for now</button>
+                            <button type="button" @click="chooseBreakfastFunc(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#noActivities' + day.dayId + 'Modal'" class="btn btn-success mx-2">OK</button>
+                            <button type="button" data-bs-toggle="modal" :data-bs-target="'#filter' + day.dayId + 'Modal2'" class="btn btn-danger mx-2">Skip breakfast for now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" :id="'filter' + day.dayId + 'Modal2'" tabindex="-1" :aria-labelledby="'filter' + day.dayId + 'Label2'" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" :id="'filter' + day.dayId + 'Label2'">Filters</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="distanceSelect2" class="form-label">Please select how far you are willing to travel (in km)</label>
+                            <div class="text-center">Current selection: {{distance}} km</div>
+                            <input type="range" class="form-range" :id="'distance' + day.dayId + 'Select2'" min="1" max="50" v-model="distance">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" :data-bs-target="'#filter' + day.dayId + 'Collapse2'" aria-expanded="false"> <!--aria-controls="collapseExample"-->
+                                Filter
+                            </button>
+                            <div class="collapse" :id="'filter' + day.dayId + 'Collapse2'">
+                                <button class="btn btn-outline-success my-2" type="button" @click="checkAll">
+                                Check/uncheck all
+                                </button>
+                                <div v-for="(searchType,name) in types">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                        v-model="selectedTypes" :value="searchType" :id="day.dayId + searchType + 'Check'">
+                                        <label class="form-check-label" :for="day.dayId + searchType + 'Check'">
+                                            {{ name }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button v-if="selectedTypes.length > 0" type="button" class="btn btn-primary" @click="recommendAny(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" :data-bs-target="'#noActivities' + day.dayId + 'Modal'">Search</button>
+                            <p class="fs-5 text-danger" v-else>Please select at least one category.</p>
                         </div>
                     </div>
                 </div>
@@ -218,29 +254,29 @@
         </div>
         <div :id="'Day' + day.dayId + 'EndLocation'"> 
             <div class="input-group w-50 mb-3">
-                <span class="input-group-text" :id="'Day' + day.dayId + 'location'">
+                <span class="input-group-text" :id="'Day' + day.dayId + 'EndLocationInput'">
                     <svg width="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </span>
-                <input type="text" @input="placeAutocomplete" v-on:place_changed="selectedPlace" class="form-control" placeholder="Add a place" :aria-describedby="'Day' + day.dayId + 'location'">
+                <input type="text" @input="placeAutocomplete" v-on:place_changed="selectedPlace" class="form-control" placeholder="Add a place" :aria-describedby="'Day' + day.dayId + 'EndLocationInput'">
                 <div class="dropend">
                     <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" style="height:38px;">Custom events</button>
                     <form class="dropdown-menu dropdown-menu-start p-4" style="width:50%;" data-bs-theme="dark">
                         <div class="mb-3">
-                            <label :for="'Day' + day.dayId + 'eventName'" class="form-label">Event Name</label>
-                            <input type="text" class="form-control" :id="'Day' + day.dayId + 'eventName'" placeholder="Cook lunch">
+                            <label :for="'Day' + day.dayId + 'EndEventName'" class="form-label">Event Name</label>
+                            <input type="text" class="form-control" :id="'Day' + day.dayId + 'EndEventName'" placeholder="Cook lunch">
                         </div>
                         <div class="mb-3">
-                            <label :for="'Day' + day.dayId + 'notes'" class="form-label">Notes</label>
-                            <input type="text" class="form-control" :id="'Day' + day.dayId + 'notes'" placeholder="Fried rice">
+                            <label :for="'Day' + day.dayId + 'EndNotes'" class="form-label">Notes</label>
+                            <input type="text" class="form-control" :id="'Day' + day.dayId + 'EndNotes'" placeholder="Fried rice">
                         </div>
                         <button type="button" @click="addCustomEvent(day.dayId,day.dayActivities.length)" class="btn btn-primary">Add event</button>
                     </form>
                 </div>
             </div>
-            <div v-if="predictionList" class="list-group" :id="'Day' + day.dayId + 'predictionList'">
+            <div v-if="predictionList" class="list-group" :id="'Day' + day.dayId + 'EndPredictionList'">
                 <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction.place_id)">{{prediction.description}}</button>
             </div>
         </div>
@@ -249,6 +285,7 @@
 </template>
 <script>
 //  import statements
+import '../assets/day.css';
 // import axios from 'axios';
 
 
@@ -274,7 +311,7 @@ data () {
         distance: 5,
         sliceCount: 0,
         source: '',
-        prevMeal: true,
+        mealTypes: ['meal','bakery','cafe','restaurant'],
         types: {'Amusement parks':'amusement_park',
                 'Aquariums':'aquarium', 
                 'Art galleries': 'art_gallery',
@@ -554,7 +591,11 @@ data () {
             country: "Australia",
             predictionList: [],
             autocomplete: '',
-            selectedTypes: []
+            selectedTypes: ['amusement_park','aquarium', 'art_gallery','bakery','bar','bicycle_store','book_store', 
+            'bowling_alley','cafe','casino','clothing_store','electronics_store','florist','gym', 'jewelry_store',
+            'library','movie_theater','museum', 'night_club','park','restaurant','shopping_mall','spa','stadium',
+            'tourist_attraction','zoo'],
+            noResults: false,
     }
 },
 computed: {
@@ -591,19 +632,16 @@ methods: {
         return this.countryList[countryName]
     },
     checkAll(){
-        if (this.allChecked){
-            console.log("setting allchecked to false")
-            this.allChecked = false
+        if (this.selectedTypes.length > 0){
+            this.selectedTypes = []
         }else{
-            console.log("setting allchecked to true")
-            this.allChecked = true
+            this.selectedTypes = ['amusement_park','aquarium', 'art_gallery','bakery','bar','bicycle_store','book_store', 
+            'bowling_alley','cafe','casino','clothing_store','electronics_store','florist','gym', 'jewelry_store',
+            'library','movie_theater','museum', 'night_club','park','restaurant','shopping_mall','spa','stadium',
+            'tourist_attraction','zoo']
         }
     },
     // methods defined by ourselves
-    skipBreakfastFunc(){
-        this.skipBreakfast = true;
-        // recommend others
-    },
     chooseBreakfastFunc(dayId){
         this.loadingRecs = true;
         var range = this.distance * 1000
@@ -613,82 +651,108 @@ methods: {
         this.findPlace(startAccoms,['geometry']).then(result=>
         {
             this.nearbySearch(keyword,result,range).then(resp =>{
-                for (let p of resp){
-                    this.getPlaceDetails(p.place_id,['url']).then(url =>{
-                        this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url})
-                    })
+                if (resp == "No valid results"){
+                    this.noResults = true;
+                }else{
+                    this.noResults = false;
+                    for (let p of resp){
+                        this.getPlaceDetails(p.place_id,['url']).then(url =>{
+                            this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, type:"meal"})
+                        })
+                    }
                 }
             })
         })  
     },
     recommendAny(dayId,index){
-        // var prevAct = this.days[dayId].dayActivities[index]
+        var prevAct = this.days[dayId].dayActivities[index]
+        if (prevAct.type == "custom"){
+            var origin = this.days[dayId].accoms[0]
+        }else{
+            var origin = prevAct.name
+        }
         this.loadingRecs = true;
         var range = this.distance * 1000
         var types = this.selectedTypes
         var numReccsPerType = Math.floor(60/types.length)
         var reccsLeft = 60
         this.recs = []
-        // this.findPlace(prevAct.name,['geometry']).then(result=>
-        this.findPlace("Two Good Eggs Cafe",['geometry']).then(result=>
+        this.findPlace(origin,['geometry']).then(result=>
         {
             for (let i=0;i<types.length;i++){
-                console.log(types[i])
                 this.nearbySearch(types[i],result,range).then(resp =>{
-                    var pushCount = 0
-                    // update numReccsPerType if resp.length < numReccsPerType
-                    for (let p of resp){
-                        if (pushCount >= numReccsPerType){
-                            break;
+                    if (resp !== "No valid results"){
+                        this.noResults = false;
+                        var pushCount = 0
+                        for (let p of resp){
+                            if (pushCount >= numReccsPerType){
+                                break;
+                            }
+                            if (p.rating < 4 || p.user_ratings_total < 50){
+                                continue;
+                            }
+                            this.getPlaceDetails(p.place_id,['url']).then(url =>{
+                                this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, "type":types[i]})
+                            })
+                            pushCount++;
                         }
-                        if (p.rating < 4 || p.user_ratings_total < 50){
-                            continue;
+                        reccsLeft = reccsLeft - pushCount
+                        console.log("reccsLeft = " + reccsLeft)
+                        console.log("pushCount = " + pushCount)
+                        if (pushCount < numReccsPerType){
+                            numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
                         }
-                        this.getPlaceDetails(p.place_id,['url']).then(url =>{
-                            this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url})
-                        })
-                        pushCount++;
-                    }
-                    reccsLeft = reccsLeft - pushCount
-                    if (pushCount < numReccsPerType){
-                        numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
                     }
                 })
-                
+            }
+            if (this.recs.length == 0){
+                console.log("noresults set to true")
+                this.noResults = true;
             }
         })
     },  
     recommendNonIntense(dayId,index){
-        // var prevAct = this.days[dayId].dayActivities[index]
+        var prevAct = this.days[dayId].dayActivities[index]
+        if (prevAct.type == "custom"){
+            var origin = this.days[dayId].accoms[0]
+        }else{
+            var origin = prevAct.name
+        }
         this.loadingRecs = true;
         var range = this.distance * 1000
         var types = ['aquarium','art_gallery', 'museum', 'park', 'shopping_mall', 'zoo', 'tourist_attraction']
         var numReccsPerType = Math.floor(60/types.length)
         var reccsLeft = 60
         this.recs = []
-        // this.findPlace(prevAct.name,['geometry']).then(result=>
-        this.findPlace("Two Good Eggs Cafe",['geometry']).then(result=>
+        this.findPlace(origin,['geometry']).then(result=>
         {
+            if (result == "No results"){
+                this.noResults = true;
+            }
             for (let i=0;i<types.length;i++){
-                console.log(types[i])
                 this.nearbySearch(types[i],result,range).then(resp =>{
-                    var pushCount = 0
-                    // update numReccsPerType if resp.length < numReccsPerType
-                    for (let p of resp){
-                        if (pushCount >= numReccsPerType){
-                            break;
+                    if (resp == "No valid results"){
+                        this.noResults = true;
+                    }else{
+                        this.noResults = false;
+                        var pushCount = 0
+                        // update numReccsPerType if resp.length < numReccsPerType
+                        for (let p of resp){
+                            if (pushCount >= numReccsPerType){
+                                break;
+                            }
+                            if (p.rating < 4 || p.user_ratings_total < 50){
+                                continue;
+                            }
+                            this.getPlaceDetails(p.place_id,['url']).then(url =>{
+                                this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, "type":types[i]})
+                            })
+                            pushCount++;
                         }
-                        if (p.rating < 4 || p.user_ratings_total < 50){
-                            continue;
+                        reccsLeft = reccsLeft - pushCount
+                        if (pushCount < numReccsPerType){
+                            numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
                         }
-                        this.getPlaceDetails(p.place_id,['url']).then(url =>{
-                            this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url})
-                        })
-                        pushCount++;
-                    }
-                    reccsLeft = reccsLeft - pushCount
-                    if (pushCount < numReccsPerType){
-                        numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
                     }
                 })
                 
@@ -719,8 +783,9 @@ methods: {
             var actNum = this.days[dayId].dayActivities.length + 1
             var image = a.photo
             var actDesc = a.address 
+            var type = a.type
             // eslint-disable-next-line vue/no-mutating-props
-            this.days[dayId].dayActivities.push({'name':actName, 'number':actNum, 'description':actDesc, 'image':image})
+            this.days[dayId].dayActivities.push({'name':actName, 'number':actNum, 'description':actDesc, 'image':image, 'type':type})
         }
     },
     async nearbySearch(kw, loc, dist) {
@@ -750,28 +815,15 @@ methods: {
                 if (finished == true){
                     resolve(final)
                 }
-            } else {
-                if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-                    resolve([]);
-                }else{
+            }
+            else if(status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
+                resolve("No valid results")
+            } 
+            else {
                     reject(new Error(`Places service request failed with status: ${status}`));
-                }
             }
             });
         });
-
-        // var url = '/api/place/nearbysearch/json'
-        // console.log(kw, loc)
-        // var params = {
-        //     keyword: kw,
-        //     location: loc,
-        //     radius: 5000,
-        //     key: 'AIzaSyC27_uXwB2Wdx05nP3pezmdAH5svn1oqr4',
-        // }
-        // return axios.get(url,{params})
-        // .then(response=>{
-        //     return response.data.results
-        // })
     },
     async findPlace(query,fieldList){
         var testDiv = document.getElementById('testingDiv');
@@ -784,28 +836,16 @@ methods: {
         return new Promise((resolve, reject) => {service.findPlaceFromQuery(request, (results, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 resolve(results[0].geometry.location); // Resolve the promise with the results
-            }else{
+            }
+            else if(status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
+                resolve("No results")
+            }
+            else{
                 reject(new Error(`Places service request failed with status: ${status}`));
             }
         })
         })
-        
-        // })
-        // var url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
-        // var params = {
-        //     input: query,
-        //     inputtype: "textquery",
-        //     fields: fields,
-        //     key: 'AIzaSyC27_uXwB2Wdx05nP3pezmdAH5svn1oqr4',
-        // }
-        // return axios.get(url,{params}, {headers: { 
-        //     'Access-Control-Allow-Origin': '*',
-        //     'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
-        // }})
-        // .then(response=>{
-        //     // return response.data.candidates
-        //     console.log(response.data.candidates[0].geometry.location)
-        // }) 
+
     },
     async getPlaceDetails(id,fieldList){
         var testDiv = document.getElementById('testingDiv');
@@ -819,7 +859,13 @@ methods: {
             service.getDetails(request, (results, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                     resolve(results['url'])
-                }else{
+            }else if(status === google.maps.places.PlacesServiceStatus.NOT_FOUND){
+                resolve("Place not found")
+            }
+            else if(status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
+                resolve("No valid results")
+            }
+            else{
                     reject (new Error(`Places service request failed with status: ${gdStatus}`));
                 }
             });
@@ -858,7 +904,6 @@ methods: {
         var image = place.photos[0].getUrl({maxWidth:221})
         var actDesc = place.vicinity
         this.days[dayId].dayActivities.push({name:actName, number:actNum, description:actDesc, image:image})
-        console.log(this.days[dayId].dayActivities)
         
     },
     // async placeAutocomplete(event){ // calls api to get you candidates for search and their place id
@@ -943,12 +988,14 @@ methods: {
     addCustomEvent(day,position){
         let dayActivities = this.days[day].dayActivities
         if (position == dayActivities.length){
-            let name = document.getElementById(`Day${day}eventName`).value
-            let notes = document.getElementById(`Day${day}notes`).value
+            let name = document.getElementById(`Day${day}EndEventName`)
+            let notes = document.getElementById(`Day${day}EndNotes`)
             let num = dayActivities.length + 1
             dayActivities.push({
-                name: name, number: num, description:notes, image: '', placeId: ''
+                name: name.value, number: num, description:notes.value, image: '', placeId: '', type:'custom'
             })
+            name.value = ""
+            notes.value = ""
         }
     }
 },
