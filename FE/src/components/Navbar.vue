@@ -95,7 +95,7 @@ export default {
       this.sliderPosition = el.offsetLeft;
       this.selectedElementWidth = el.offsetWidth;
       this.selectedIndex = id;
-      var routes = { 1: '/', 2: '/dashboard', 3: '/', 4: '/hotel' }
+      var routes = { 1: '/', 2: '/flight', 3: '/', 4: '/hotel' }
       var page = routes[id]
       this.$router.push(page)
     },
@@ -142,7 +142,7 @@ body {
 :root {
   --active-color: #ffee93;
   --link-text-color: #f1faee;
-  --menu-background-color: #191645;
+  --menu-background-color: rgba(255, 0, 0, 0);;
   --active-background-color: #EB4F47;
 }
 
