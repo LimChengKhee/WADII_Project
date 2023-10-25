@@ -48,15 +48,12 @@
   import Day_Component from '../components/DayComponent.vue';
   import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
   import '../../node_modules/@vuepic/vue-datepicker/dist/main.css';
-  // import {GMapAutocomplete} from '../../node_modules/@fawmi/vue-google-maps'
   //  import statements
   // import example from '@/utils/string_formatter'
   export default {
     name: 'Itinerary_Page',
     components: { 
       // importing components from other places
-      // GMapAutocomplete,
-      // DatePick
       Activity_Component,
       Day_Component,
       Datepicker,
