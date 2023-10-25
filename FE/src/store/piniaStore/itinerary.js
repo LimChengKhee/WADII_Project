@@ -236,13 +236,12 @@ export const useItineraryStore = defineStore('itinerary', {
       }
     },
     async getDistance(arr_c, dep_c) {
-      console.log(arr_c, dep_c)
-      if (arr_c.includes(' ')) {
-        arr_c = arr_c.split(' ')[0]
-      }
-      if (dep_c.includes(' ')) {
-        dep_c = dep_c.split(' ')[0]
-      }
+    //   if (arr_c.includes(' ')) {
+    //     arr_c = arr_c.split(' ')[0]
+    //   }
+    //   if (dep_c.includes(' ')) {
+    //     dep_c = dep_c.split(' ')[0]
+    //   }
       arr_c = arr_c.toLowerCase()
       dep_c = dep_c.toLowerCase()
       console.log(arr_c, dep_c)

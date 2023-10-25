@@ -4,13 +4,11 @@
       <div class="container-fluid mt-5 ms-5 mb-3">
         <div class="row">
           <div class="col">
-            <h2 style="text-align: center">Search accomodation</h2>
+            <h2 style="text-align: center">Search Flight</h2>
           </div>
         </div>
         <div class="row">
-          <div class="col">
-            <p style="text-align: center">Search for accomodation deals for {} in {}</p>
-          </div>
+       
         </div>
       </div>
 
@@ -18,10 +16,21 @@
         <div class="row">
           <div class="col">
             <!--inputted value in it-->
-            <input type="text" value="Singapore" class="w-100" />
+            <input type="text" v-model="destination_c" class="w-100" />
           </div>
           <div class="col">
-            <input type="date" value="13th September 2023" class="w-100" />
+            <Datepicker
+            v-model="flight_date"
+            placeholder="Departure Date/time"
+            :enable-time-picker="false"
+            :text-input="true"
+            :min-date="start_date"
+            :start-date="start_date"
+            :max-date="end_date"
+            @update:model-value="mountAllHotelInformation"
+            focus-start-date
+            range
+          />
           </div>
         </div>
       </div>
@@ -65,110 +74,165 @@ import FlightCard from '../components/FlightCard.vue'
 import axios from 'axios'
 import flight from './flight.json'
 
+import { mapStores } from 'pinia'
+import { useAuthStore } from '../store/piniaStore/authStore'
+import { useUsersStore } from '../store/piniaStore/userStore'
+import { useItineraryStore } from '../store/piniaStore/itinerary'
+import Datepicker from '@vuepic/vue-datepicker'
+import capital from '../components/countries.json'
+
 export default {
   name: 'Flight',
   components: {
     // importing components from other places
-    FlightCard
+    FlightCard,
+    Datepicker
   },
   data() {
     // local repository of information
     return {
       hotelsInCities: {},
       mounted: false,
-      false_data: flight
+      // false_data: flight
+      false_data:[],
+      user:'',
+      iti_name:'',
+      iti_data: '',
+      start_date:'',
+      end_date:'',
+      flight_date:'',
+      destination_c:''
+
     }
   },
   computed: {
     // computed
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore),
+    ...mapStores(useItineraryStore)
   },
 
   // start of lifecycle
   async mounted() {
-    await this.mountAllHotelInformation()
-    this.mounted = true
+    // await this.mountAllHotelInformation()
+    const authStore = useAuthStore()
+    const userStore = useUsersStore()
+    const itineraryStore = useItineraryStore()
+    this.user = this.$route.params.username
+    this.iti_name = this.$route.params.itinerary_name
+
+    var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+    this.iti_data = iti_data
+    this.start_date = new Date(iti_data.itinerary_data.destination.start_date)
+    var dc = iti_data.itinerary_data.destination.trip_country
+    this.destination_c = dc
+
+    
   },
 
   methods: {
     // methods defined by ourselves
     async mountAllHotelInformation() {
-      // get all the hotels within that city displayed.
-      // const options = {
-      //   method: 'GET',
-      //   url: 'https://booking-com.p.rapidapi.com/v1/hotels/search',
-      //   params: {
-      //     checkin_date: checkin_date,
-      //     dest_type: 'city',
-      //     units: 'metric',
-      //     checkout_date: checkout_date,
-      //     adults_number: adults_number,
-      //     order_by: 'popularity',
-      //     dest_id: dest_id,
-      //     filter_by_currency: 'HNL',
-      //     locale: 'en-gb',
-      //     room_number: number_of_rooms,
-      //     categories_filter_ids: 'class::2,class::4,free_cancellation::1',
-      //     include_adjacency: 'true'
-      //   },
-      //   headers: {
-      //     'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
-      //     'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-      //   }
-      // };
-      // const options = {
-      //   method: 'GET',
-      //   url: 'https://booking-com.p.rapidapi.com/v1/hotels/search',
-      //   params: {
-      //     checkin_date: '2023-09-27',
-      //     dest_type: 'city',
-      //     units: 'metric',
-      //     checkout_date: '2023-09-30',
-      //     adults_number: '2',
-      //     order_by: 'popularity',
-      //     dest_id: '-73635',
-      //     filter_by_currency: 'HNL',
-      //     locale: 'en-gb',
-      //     room_number: '1',
-      //     children_number: '2',
-      //     children_ages: '5,0',
-      //     categories_filter_ids: 'class::2,class::4,free_cancellation::1',
-      //     include_adjacency: 'true'
-      //   },
-      //   headers: {
-      //     'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
-      //     'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-      //   }
-      // }
+      // const authStore = useAuthStore()
+      // const userStore = useUsersStore()
+      // const itineraryStore = useItineraryStore()
+      // this.user = this.$route.params.username
+      // this.iti_name = this.$route.params.itinerary_name
 
-      // const response = await axios.request(options)
-      this.hotelsInCities = this.filterby(this.false_data,'one')
-      // console.log(this.hotelsInCities.data.itineraries,'test')
+      // var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+      // this.iti_data = iti_data
+      // var dc = iti_data.itinerary_data.destination.trip_country
+      // this.destination_c = dc
 
-      // for (let hotel of this.hotelsInCities) {
-      //   let hotel_id = hotel.hotel_id
-      //   // fire an API call to get description
-      //   const options = {
-      //     method: 'GET',
-      //     url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
-      //     params: {
-      //       hotel_id: hotel_id,
-      //       locale: 'en-gb'
-      //     },
-      //     headers: {
-      //       'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
-      //       'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-      //     }
-      //   }
-      //   try {
-      //     const response = await axios.request(options)
-      //     hotel['Description'] = response.data
-      //   } catch (error) {
-      //     console.error(error)
-      //   }
-      // }
-      // this.hotelsInCities = this.false_data;
+      var state = capital.filter((c) => c['country'].toLowerCase() == this.destination_c.toLowerCase() );
+      var destination_country = state[0]['city']
+      //placeholder
+      var data = flight
+      this.hotelsInCities = await this.filterby(data,'one')
+      this.mounted = true
+      return
+
+
+      var start_date = iti_data.itinerary_data.destination.start_date
+      var end_date = iti_data.itinerary_data.destination.end_date
+      this.start_date = start_date
+      this.end_date = end_date
+      var date_range = itineraryStore.handleDate(this.flight_date)
+
+      var date_list = date_range.split(',')
+
+      var d_date = date_list[0]
+      var a_date = date_list[1]
+    
+      
+      var d_skyId = "SINS"
+      var d_entityId = "27546111"
+      console.log(destination_country)
+      const [a_skyId,a_entityId] = await this.getAPIcountry(destination_country)
+      // var a_skyId = 'JP'
+      // var a_entityId = '29475330'
+      if (a_skyId == null || a_entityId == null){
+        this.hotelsInCities = []
+        return
+      }
+      var people  = '1'
+      console.log(d_date,a_date)
+const options = {
+  method: 'GET',
+  url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchFlights',
+  params: {
+    originSkyId: d_skyId,
+    destinationSkyId: a_skyId,
+    originEntityId: d_entityId,
+    destinationEntityId: a_entityId,
+    date: d_date,
+    returnDate : a_date,
+    adults: people,
+    currency: 'SGD'
+  },
+  headers: {
+    'X-RapidAPI-Key': '921e9474d9msh41e6dc80c2d8395p101f78jsne7dbbeab3134',
+    'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
+  }
+};
+console.log(options)
+try {
+	const response = await axios.request(options);
+	console.log(response.data);
+  var data = response.data
+  this.hotelsInCities = await this.filterby(data,'one')
+  this.mounted = true
+} catch (error) {
+	console.error(error);
+}
+
     },
-    filterby(data,stops){
+
+    async getAPIcountry(country){
+      const options = {
+        method: 'GET',
+        url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchAirport',
+        params: {query: country},
+        headers: {
+          'X-RapidAPI-Key': '921e9474d9msh41e6dc80c2d8395p101f78jsne7dbbeab3134',
+          'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
+        }
+      };
+
+      try {
+        const response = await axios.request(options);
+        console.log(response.data)
+        var skyId = response.data.data[0].navigation.relevantFlightParams.skyId
+        var entityId = response.data.data[0].navigation.relevantFlightParams.entityId
+        console.log(response.data);
+        console.log(skyId,entityId,"ENTITY ID")
+        return [skyId,entityId]
+      } catch (error) {
+        console.error(error);
+        return [null,null]
+      }
+    },
+    async filterby(data,stops){
       console.log(data)
       var result = []
       if (stops == 'one'){
