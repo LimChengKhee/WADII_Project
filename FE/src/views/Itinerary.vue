@@ -359,7 +359,8 @@ export default {
 
         let currentStart = this.date[0]
         this.date[0].setDate(currentStart.getDate() - numDays)
-      },
+      }
+    },
       removeDaysfromStart(diff){
         this.days.splice(0,diff)
         for (let i=0;i<this.days.length;i++){
@@ -436,7 +437,8 @@ export default {
       this.$router.push({ path: `/flight/${this.user}/${this.iti_name}` })
     }
   }
-}
+
+
 </script>
 
 <style scoped></style>
