@@ -157,6 +157,7 @@ body {
   /* Span the entire screen width */
   list-style-type: none;
   overflow: hidden;
+  
 }
 
 .menu-item {
@@ -169,21 +170,13 @@ body {
 
 .menu-link {
   padding: 0 20px;
-  /* Adjust padding to your preference */
   display: inline-flex;
   align-items: center;
   color: var(--link-text-color);
   text-decoration: none;
   height: 100%;
-  /* Ensure menu links stretch to the full height of the menu item */
   transition: background-color 0.3s ease;
-  /* Add a smooth background color transition on hover */
-}
-
-.menu-link:hover,
-.menu-link.active {
-  color: var(--active-color);
-  background-color: var(--active-background-color);
+  /* text-transform: uppercase; Add this line to capitalize the text */
 }
 
 /* icon */
@@ -224,4 +217,7 @@ body {
 .rounded-circle {
   background-color: white;
 }
+
+
+
 </style>
