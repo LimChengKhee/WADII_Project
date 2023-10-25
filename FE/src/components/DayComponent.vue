@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" @click="source='end', recs=[], selectedRecs=[], loadingRecs=false" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommend me activities!</button>
+            <button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" @click="source='end', recs=[], selectedRecs=[]" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommend me activities!</button>
             <div class="modal fade" :id="'filter'+ day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'#filter'+ day.dayId + 'Label'" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -74,13 +74,13 @@
                             <h1 class="modal-title fs-5" :id="'recommend' + day.dayId + 'ModalLabel'">Recommended activities</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <div v-if="loadingRecs && slicedRecs.length==0">
+                        <div class="modal-body mx-auto">
+                            <div v-if="slicedRecs.length ==0 && anyRecs[0] != anyRecs[1]">
                                 <div class="spinner-border text-primary" role="status">
                                 </div>
                                 <div>Loading...</div>
                             </div>
-                            <div v-if="noResults">There are no results for your search parameters</div>
+                            <div v-if="slicedRecs.length == 0 && anyRecs[0] == anyRecs[1]">There are no results for your search parameters</div>
                             <div v-if="source=='start'">
                                 <h5> <!--State time of first activity-->
 
@@ -148,7 +148,7 @@
         </div>
         <div v-else>
             <h4 class="p-4">
-                You have no activities currently. <button type="button" class="btn btn-outline-primary" @click="loadingRecs=false, recs=[]" data-bs-toggle="modal" :data-bs-target="'#noActivitiesConsideration' + day.dayId + 'Modal'">Recommend me activities!</button>
+                You have no activities currently. <button type="button" class="btn btn-outline-primary" @click="recs=[]" data-bs-toggle="modal" :data-bs-target="'#noActivitiesConsideration' + day.dayId + 'Modal'">Recommend me activities!</button>
             </h4>
             <div class="modal fade" :id="'noActivities' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'noActivities' + day.dayId + 'Label'" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -157,14 +157,14 @@
                             <h1 class="modal-title fs-5" :id="'noActivities' + day.dayId + 'Label'">Recommended activities</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body mx-auto">
                             <div v-if="day.accoms.length>0" > <!--this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0]})-->
-                                <div v-if="loadingRecs && slicedRecs.length==0 && !noResults">
+                                <div v-if="slicedRecs.length==0 && anyRecs[0] != anyRecs[1]">
                                     <div class="spinner-border text-primary" role="status">
                                     </div>
                                     <div>Loading...</div>
                                 </div>
-                                <div v-if="noResults">There are no results for your search parameters</div>
+                                <div v-if="slicedRecs.length == 0 && anyRecs[0] == anyRecs[1]">There are no results for your search parameters</div>
                                 <div v-for="(rec,index) in slicedRecs" class="card mb-3 px-0" style="max-width: 665px;">
                                     <div class="row g-0">
                                         <div class="col-md-4">
@@ -306,8 +306,8 @@ data () {
         allChecked: true,
         recs: [],
         // respLength: 0,
-        loadingRecs: false,
         selectedRecs: [],
+        anyRecs: [],
         distance: 5,
         sliceCount: 0,
         source: '',
@@ -595,7 +595,6 @@ data () {
             'bowling_alley','cafe','casino','clothing_store','electronics_store','florist','gym', 'jewelry_store',
             'library','movie_theater','museum', 'night_club','park','restaurant','shopping_mall','spa','stadium',
             'tourist_attraction','zoo'],
-            noResults: false,
     }
 },
 computed: {
@@ -643,18 +642,19 @@ methods: {
     },
     // methods defined by ourselves
     chooseBreakfastFunc(dayId){
-        this.loadingRecs = true;
         var range = this.distance * 1000
         var keyword = 'breakfast'
         var startAccoms = this.days[dayId].accoms[0]
         this.recs = []
+        this.sliceCount = 0
+        this.anyRecs = [1,0]
         this.findPlace(startAccoms,['geometry']).then(result=>
         {
+            console.log(result)
             this.nearbySearch(keyword,result,range).then(resp =>{
                 if (resp == "No valid results"){
-                    this.noResults = true;
+                    this.anyRecs[1]++;
                 }else{
-                    this.noResults = false;
                     for (let p of resp){
                         this.getPlaceDetails(p.place_id,['url']).then(url =>{
                             this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, type:"meal"})
@@ -665,24 +665,32 @@ methods: {
         })  
     },
     recommendAny(dayId,index){
-        var prevAct = this.days[dayId].dayActivities[index]
-        if (prevAct.type == "custom"){
+        if (this.days[dayId].dayActivities.length == 0){
             var origin = this.days[dayId].accoms[0]
         }else{
-            var origin = prevAct.name
+            var prevAct = this.days[dayId].dayActivities[index]
+            if (prevAct.type == "custom"){
+                var origin = this.days[dayId].accoms[0]
+            }else{
+                var origin = prevAct.description
+            }
         }
-        this.loadingRecs = true;
+        this.sliceCount = 0
         var range = this.distance * 1000
         var types = this.selectedTypes
         var numReccsPerType = Math.floor(60/types.length)
         var reccsLeft = 60
         this.recs = []
+        this.anyRecs = [types.length,0]
         this.findPlace(origin,['geometry']).then(result=>
-        {
+        {   
             for (let i=0;i<types.length;i++){
                 this.nearbySearch(types[i],result,range).then(resp =>{
-                    if (resp !== "No valid results"){
-                        this.noResults = false;
+                    console.log(resp)
+                    if (resp == "No valid results"){
+                        this.anyRecs[1]++;
+                    }
+                    else{
                         var pushCount = 0
                         for (let p of resp){
                             if (pushCount >= numReccsPerType){
@@ -705,36 +713,33 @@ methods: {
                     }
                 })
             }
-            if (this.recs.length == 0){
-                console.log("noresults set to true")
-                this.noResults = true;
-            }
         })
     },  
     recommendNonIntense(dayId,index){
-        var prevAct = this.days[dayId].dayActivities[index]
-        if (prevAct.type == "custom"){
+        if (this.days[dayId].dayActivities.length == 0){
             var origin = this.days[dayId].accoms[0]
         }else{
-            var origin = prevAct.name
+            var prevAct = this.days[dayId].dayActivities[index]
+            if (prevAct.type == "custom"){
+                var origin = this.days[dayId].accoms[0]
+            }else{
+                var origin = prevAct.description
+            }
         }
-        this.loadingRecs = true;
+        this.sliceCount = 0
         var range = this.distance * 1000
         var types = ['aquarium','art_gallery', 'museum', 'park', 'shopping_mall', 'zoo', 'tourist_attraction']
         var numReccsPerType = Math.floor(60/types.length)
         var reccsLeft = 60
         this.recs = []
+        this.anyRecs = [types.length,0]
         this.findPlace(origin,['geometry']).then(result=>
         {
-            if (result == "No results"){
-                this.noResults = true;
-            }
             for (let i=0;i<types.length;i++){
                 this.nearbySearch(types[i],result,range).then(resp =>{
                     if (resp == "No valid results"){
-                        this.noResults = true;
+                        this.anyRecs[1]++;
                     }else{
-                        this.noResults = false;
                         var pushCount = 0
                         // update numReccsPerType if resp.length < numReccsPerType
                         for (let p of resp){
@@ -755,7 +760,6 @@ methods: {
                         }
                     }
                 })
-                
             }
         })
     },  
@@ -873,7 +877,7 @@ methods: {
     },
     getImage(image){
         if (image == ""){
-            return '/assets/img/DSC00788-3.jpg'
+            return '/assets/img/DSC00769.jpg'
         }else if (typeof(image) == 'object'){
             return image.getUrl({maxWidth:221})
         }else{
