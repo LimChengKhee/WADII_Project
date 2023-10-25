@@ -150,7 +150,7 @@
                         <h5 class="card-title col-10">Activity {{activity.number}} - {{activity.name}}</h5>
                         <button @click="delActivity(day.dayId,activity.number)" type="button" class="btn btn-outline-danger col-2" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem;--bs-btn-font-size: 0.6rem">Delete Activity</button>
                         <p class="card-text fs-6">{{activity.description}}</p>
-                        <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
+                        <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
                          <!-- start and end time of activity -->
                          <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon1">Start</span>
@@ -161,7 +161,7 @@
                                 <span class="input-group-text" id="basic-addon1">End</span>
                                 <input type="time" class="form-control" placeholder="Username" aria-label="Username"
                                     aria-describedby="basic-addon1">
-                            </div> --> 
+                            </div>
 
             </div>
         </div>
