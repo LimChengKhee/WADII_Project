@@ -2,7 +2,6 @@
 import { useStepStore } from '../store/piniaStore/step';
 import { useItineraryStore } from '../store/piniaStore/itinerary';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
 const router = useRouter()
 
 
