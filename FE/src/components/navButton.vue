@@ -15,9 +15,13 @@ var token = localStorage.getItem('token')
     let itinerary_name =  await itineraryStore.createitinerary();
     // var itinerary_name = "Eleventh"
     console.log(itinerary_name)
-
-    
-    router.push({ path: `itinerary/${userid}/${itinerary_name}` })
+    console.log(itineraryStore.flag.hotel,'TESTING TO SEE IF ')
+    if (!itineraryStore.flag.hotel){
+        router.push({ path: `/hotel/${userid}/${itinerary_name}` })
+    }else{
+        router.push({ path: `itinerary/${userid}/${itinerary_name}` })
+    }
+    // 
 }
 // console.log(itineraryStore)
 const nextStep = () => {

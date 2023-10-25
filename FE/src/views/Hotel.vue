@@ -2,7 +2,6 @@
   <div class="parent-container">
     <div class="row">
       <div class="col-2">
-        <Side_Bar />
       </div>
       <div class="col-10 ">
         <div class="header">

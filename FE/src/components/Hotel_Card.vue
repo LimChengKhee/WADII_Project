@@ -58,9 +58,9 @@
 
                         <br/>
                         <button type="button" class="btn btn-warning mt-2" @click="book_room()">
-                          <router-link :to="`/url/:name-of-hotel`" style="text-decoration: none; color:black;font-weight: bold;">
+                          <span style="text-decoration: none; color:black;font-weight: bold;">
                             Book Room
-                          </router-link>
+                          </span>
                         </button>
 
                       </div>
@@ -78,7 +78,10 @@
   </div>
 </template>
 <script>
-
+import { mapStores } from 'pinia';
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
+import { useItineraryStore } from '../store/piniaStore/itinerary';
 export default {
   name: 'HotelCard',
   components: {},
@@ -100,14 +103,20 @@ export default {
   data() {
     // local repository of information
     return {
-      room_booked: []
+      room_booked: [],
+      user:'',
+      iti_name:''
+      
     }
   },
   computed: {
     // computed
     src(){
       return this.photo_url;
-    }
+    },
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore),
+    ...mapStores(useItineraryStore)
   },
 
   // start of lifecycle
@@ -115,12 +124,58 @@ export default {
 
   methods: {
     // methods defined by ourselves
-    book_room(){
+    async book_room(){
+      const itineraryStore = useItineraryStore();
+      const userStore = useUsersStore();
+        const authStore = useAuthStore();
+      this.user = this.$route.params.username
+        this.iti_name = this.$route.params.itinerary_name
+        var iti_data = await userStore.getUserItinerary(this.user,this.iti_name) 
+        
+       
+      var date_arr = iti_data.itinerary_data.destination.itinerary_date.split(',')
+      var check_date = []
+      for(let i of date_arr){
+        check_date.push(new Date(i))
+      }
+      
       let hotel_name = this.hotel_name;
-      (this.room_booked).push(hotel_name);
+
+      var hotel_obj = {
+                "hotelname":hotel_name,
+                "start_date":"",
+                "end_date":"",
+                "check_indates":check_date,
+                "lengthofstay":10,
+                "cost":this.price_per_night,
+                "currency":"sgd",
+                "rooms":1,
+                "adult":1,
+                "child":0,
+                "people":0,
+                "carbon_fp":0,
+                "img":this.photo_url,
+                "notes":""
+      
+              }
+      var hoteljson = itineraryStore.createHotel(hotel_obj)
+      iti_data.itinerary_data.hotels.push(hoteljson)
+      console.log(iti_data.itinerary_data.hotels.length)
+      if (iti_data.itinerary_data.hotels.length > 0){
+        
+        itineraryStore.flag.hotel = true
+        console.log(itineraryStore.flag.hotel,"STATUS UPDATEDEDD")
+      }
+        
+        console.log(iti_data,'HOTEL HERE')
+        
+        
+        await userStore.updateItinerary(iti_data,this.user,this.iti_name);
+        this.$router.push({ path: `/itinerary/${this.user}/${this.iti_name}` ,replace:true})
+      },
     }
   }
-}
+
 </script>
 
 <style scoped></style>
