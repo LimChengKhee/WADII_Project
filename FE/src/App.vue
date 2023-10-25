@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="container-fluid px-0">
+    <div class="container-fluid">
       <!-- Navbar takes up the entire width -->
       <div class="row">
         <div class="px-0">
@@ -9,15 +9,13 @@
       </div>
       <div class="row">
         <!-- Content -->
-        <div class="pdx-0">
+        <div class="px-0">
           <router-view/>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-
 
 
 <script>

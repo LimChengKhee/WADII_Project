@@ -251,6 +251,7 @@ export default {
     this.itinerary_date = date_range
     console.log(this.iti_data)
 
+
     this.$nextTick(() => this.activeFlight())
   },
   async created() {
@@ -303,6 +304,7 @@ export default {
           dayId: this.days.length,
           dayActivities: []
         })
+
       }
       let currentEnd = this.date[1]
       this.date[1].setDate(currentEnd.getDate() + numDays)
@@ -364,15 +366,65 @@ export default {
           let diff = Math.floor((newStart - startDate) / (1000 * 60 * 60 * 24))
           this.removeDaysfromStart(diff)
         }
-        if (endDate > newEnd) {
-          console.log('endDate > newEnd')
-          let diff = Math.floor((endDate - newEnd) / (1000 * 60 * 60 * 24))
-          this.removeDaysfromEnd(diff)
-        } else if (endDate < newEnd) {
-          console.log('endDate < newEnd')
-          let numDays = Math.floor((newEnd - endDate) / (1000 * 60 * 60 * 24))
-          console.log(numDays)
-          this.addDaystoEnd(numDays)
+
+        let currentStart = this.date[0]
+        this.date[0].setDate(currentStart.getDate() - numDays)
+      }
+    },
+      removeDaysfromStart(diff){
+        this.days.splice(0,diff)
+        for (let i=0;i<this.days.length;i++){
+          this.days[i].dayId = i
+        }
+        let currentStart = this.date[0]
+        this.date[0].setDate(currentStart.getDate() + diff)
+      },
+      removeDaysfromEnd(diff){
+        this.days = this.days.slice(0,this.days.length-diff)
+        let currentEnd = this.date[1]
+        this.date[1].setDate(currentEnd.getDate() - diff)
+      },
+      selectDate(newDate){
+        if (this.days.length == 0){
+          let start = newDate[0];
+          let end = newDate[1];
+          let days = Math.floor((end - start) / (1000 * 60 * 60 * 24));
+          for (let i=0;i<days+1;i++){
+              this.days.push({
+                dayId: this.days.length,
+                dayActivities: [],
+                accoms: ["The Fullerton Hotel Sydney", "Sydney Harbour Marriott Hotel at Circular Quay"] // PLACEHOLDER!!!!
+            })
+          }
+          let addDay = document.getElementById('addDay')
+          addDay.classList.remove('d-none')
+          addDay.classList.add('d-inline')
+          this.date = newDate;
+        }else{
+          let newStart = newDate[0];
+          let newEnd = newDate[1];
+          let startDate = this.date[0];
+          let endDate = this.date[1];
+          if (startDate > newStart){
+            console.log("startDate > newStart")
+            let numDays = Math.floor((startDate - newStart) / (1000 * 60 * 60 * 24));
+            this.addDaystoStart(numDays)
+          }else if (startDate < newStart){
+            console.log("startDate < newStart")
+            let diff = Math.floor((newStart-startDate) / (1000 * 60 * 60 * 24));
+            this.removeDaysfromStart(diff)
+          }
+          if (endDate > newEnd){
+            console.log("endDate > newEnd")
+            let diff = Math.floor((endDate-newEnd) / (1000 * 60 * 60 * 24));
+            this.removeDaysfromEnd(diff)
+          }else if (endDate < newEnd){
+            console.log("endDate < newEnd")
+            let numDays = Math.floor((newEnd - endDate) / (1000 * 60 * 60 * 24));
+            console.log(numDays)
+            this.addDaystoEnd(numDays);
+          }
+
         }
       }
     },
@@ -396,7 +448,8 @@ export default {
       this.$router.push({ path: `/flight/${this.user}/${this.iti_name}` })
     }
   }
-}
+
+
 </script>
 
 <style scoped></style>

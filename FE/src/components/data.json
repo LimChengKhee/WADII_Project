@@ -1,0 +1,282 @@
+[
+    {
+      "id": "1",
+      "itinerary_name": "japan-2023-10-19",
+      "username": "tester2",
+      "itinerary_data": {
+        "destination": {
+          "trip_country": "japan",
+          "itinerary_date": "2023-10-19, 2023-10-20",
+          "start_date": "2023-10-19",
+          "end_date": "2023-10-19"
+        },
+        "flights": [
+          {
+            "flight_no": "SQ-222",
+            "departure_datetime": "2023-10-19, 17:03",
+            "arrival_datetime": "2023-10-19, 19:03",
+            "departure_country": "singapore",
+            "arrival_country": "japan",
+            "duration":100,
+            "distance":5246,
+            "cost":500,
+            "currency":"sgd",
+            "carbon_fp":0,
+            "notes":""
+          }
+        ],
+        "hotels":[
+          {
+            "hotelname":"Novotel Hotel",
+            "check_indates":"2023-10-19, 2023-10-28",
+            "start_date":"2023-10-19",
+            "end_date":"2023-10-28",
+            "duration":"9",
+            "lengthofstay":10,
+            "cost":500,
+            "currency":"sgd",
+            "rooms":2,
+            "adult":2,
+            "child":2,
+            "people":4,
+            "carbon_fp":0,
+            "img":"https://url.com",
+            "notes":""
+  
+          }
+        ],
+        "itinerary_days":[
+          {
+            "activity_name":"Resaurant",
+            "activity_type":"food/activity",
+            "location":"Fort Bragg, CA 959499",
+            "description":"testing",
+            "cords":{
+              "lat":121.2,
+              "lng":222
+            },
+            "tags":["seafood","steak","bakery"],
+            "ratings":{
+              "no":2000,
+              "stars":4.5
+            },
+            "cost":200,
+            "avg_price":100,
+            "img":"https://url.com",
+            "carbon_fp":0,
+            "notes":""
+          }
+        ]
+      }
+    },
+    {
+      "id": "2",
+      "itinerary_name": "japan-2023-10-20",
+      "username": "tester2",
+      "itinerary_data": {
+        "destination": {
+          "trip_country": "japan",
+          "itinerary_date": "2023-10-19, 2023-10-20",
+          "start_date": "2023-10-20",
+          "end_date": "2023-10-19"
+        },
+        "flights": [
+          {
+            "flight_no": "SQ-222",
+            "departure_datetime": "2023-10-19, 17:03",
+            "arrival_datetime": "2023-10-19, 19:03",
+            "departure_country": "singapore",
+            "arrival_country": "japan",
+            "duration":100,
+            "distance":10000,
+            "cost":450,
+            "currency":"sgd",
+            "carbon_fp":0,
+            "notes":""
+          }
+        ],
+        "hotels":[
+          {
+            "hotelname":"Novotel Hotel",
+            "check_indates":"2023-10-19, 2023-10-28",
+            "start_date":"2023-10-19",
+            "end_date":"2023-10-28",
+            "duration":"9",
+            "lengthofstay":10,
+            "cost":500,
+            "currency":"sgd",
+            "rooms":2,
+            "adult":2,
+            "child":2,
+            "people":4,
+            "carbon_fp":0,
+            "img":"https://url.com",
+            "notes":""
+  
+          }
+        ],
+        "itinerary_days":[
+          {
+            "activity_name":"Resaurant",
+            "activity_type":"food/activity",
+            "location":"Fort Bragg, CA 959499",
+            "description":"testing",
+            "cords":{
+              "lat":121.2,
+              "lng":222
+            },
+            "tags":["seafood","steak","bakery"],
+            "ratings":{
+              "no":2000,
+              "stars":4.5
+            },
+            "cost":200,
+            "avg_price":100,
+            "img":"https://url.com",
+            "carbon_fp":0,
+            "notes":""
+          }
+        ]
+      }
+    },
+    {
+      "id": "3",
+      "itinerary_name": "japan-2023-10-19",
+      "username": "tester2",
+      "itinerary_data": {
+        "destination": {
+          "trip_country": "japan",
+          "itinerary_date": "2023-10-19, 2023-10-20",
+          "start_date": "2023-10-21",
+          "end_date": "2023-10-19"
+        },
+        "flights": [
+          {
+            "flight_no": "SQ-222",
+            "departure_datetime": "2023-10-19, 17:03",
+            "arrival_datetime": "2023-10-19, 19:03",
+            "departure_country": "singapore",
+            "arrival_country": "japan",
+            "duration":100,
+            "distance":5246,
+            "cost": 250,
+            "currency":"sgd",
+            "carbon_fp":0,
+            "notes":""
+          }
+        ],
+        "hotels":[
+          {
+            "hotelname":"Novotel Hotel",
+            "check_indates":"2023-10-19, 2023-10-28",
+            "start_date":"2023-10-19",
+            "end_date":"2023-10-28",
+            "duration":"9",
+            "lengthofstay":10,
+            "cost":500,
+            "currency":"sgd",
+            "rooms":2,
+            "adult":2,
+            "child":2,
+            "people":4,
+            "carbon_fp":0,
+            "img":"https://url.com",
+            "notes":""
+  
+          }
+        ],
+        "itinerary_days":[
+          {
+            "activity_name":"Resaurant",
+            "activity_type":"food/activity",
+            "location":"Fort Bragg, CA 959499",
+            "description":"testing",
+            "cords":{
+              "lat":121.2,
+              "lng":222
+            },
+            "tags":["seafood","steak","bakery"],
+            "ratings":{
+              "no":2000,
+              "stars":4.5
+            },
+            "cost":200,
+            "avg_price":100,
+            "img":"https://url.com",
+            "carbon_fp":0,
+            "notes":""
+          }
+        ]
+      }
+    },
+    {
+      "id": "4",
+      "itinerary_name": "japan-2023-10-19",
+      "username": "tester2",
+      "itinerary_data": {
+        "destination": {
+          "trip_country": "japan",
+          "itinerary_date": "2023-10-19, 2023-10-20",
+          "start_date": "2023-10-22",
+          "end_date": "2023-10-19"
+        },
+        "flights": [
+          {
+            "flight_no": "SQ-222",
+            "departure_datetime": "2023-10-19, 17:03",
+            "arrival_datetime": "2023-10-19, 19:03",
+            "departure_country": "singapore",
+            "arrival_country": "japan",
+            "duration":100,
+            "distance":5246,
+            "cost":100,
+            "currency":"sgd",
+            "carbon_fp":0,
+            "notes":""
+          }
+        ],
+        "hotels":[
+          {
+            "hotelname":"Novotel Hotel",
+            "check_indates":"2023-10-19, 2023-10-28",
+            "start_date":"2023-10-19",
+            "end_date":"2023-10-28",
+            "duration":"9",
+            "lengthofstay":10,
+            "cost":500,
+            "currency":"sgd",
+            "rooms":2,
+            "adult":2,
+            "child":2,
+            "people":4,
+            "carbon_fp":0,
+            "img":"https://url.com",
+            "notes":""
+  
+          }
+        ],
+        "itinerary_days":[
+          {
+            "activity_name":"Resaurant",
+            "activity_type":"food/activity",
+            "location":"Fort Bragg, CA 959499",
+            "description":"testing",
+            "cords":{
+              "lat":121.2,
+              "lng":222
+            },
+            "tags":["seafood","steak","bakery"],
+            "ratings":{
+              "no":2000,
+              "stars":4.5
+            },
+            "cost":200,
+            "avg_price":100,
+            "img":"https://url.com",
+            "carbon_fp":0,
+            "notes":""
+          }
+        ]
+      }
+    }
+  ]
