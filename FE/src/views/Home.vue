@@ -99,6 +99,7 @@ export default {
     }
   }
 };
+
 </script> 
 
 <style>
@@ -150,6 +151,7 @@ body::after {
 }
 *{
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
 
 
 }

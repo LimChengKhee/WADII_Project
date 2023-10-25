@@ -17,7 +17,7 @@
             <div class="col">
               {{ this.arrival }},{{
                 this.destinationDisplayCode
-              }},{{ this.destinationName }},{{
+              }},{{ this.destinationCity }},{{
                 this.destinationCity
               }}
             </div>
@@ -28,7 +28,9 @@
           <div class="row mt-5">
             <div class="col mt-5">{{ this.totalPrice }}</div>
             {{ this.tag }}
-            <button class="btn btn-primary">Book</button>
+            <br>
+            {{ this.eco }}
+            <button class="btn btn-primary" @click="book_flight()">Book</button>
           </div>
         </div>
       </div>
@@ -37,6 +39,11 @@
   </div>
 </template>
 <script>
+
+import { mapStores } from 'pinia';
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
+import { useItineraryStore } from '../store/piniaStore/itinerary';
 export default {
   name: 'FlightCard',
   components: {},
@@ -54,19 +61,26 @@ export default {
     duration: String,
     arrival: String,
     destinationDisplayCode: String,
-    destinationName: String,
+    destinationCity: String,
     totalPrice: String,
     tag:Object,
+    eco:String,
   },
   data() {
     // local repository of information
-    return {}
+    return {
+      user:'',
+      iti_name:''
+    }
   },
   computed: {
     // computed
     src() {
       return this.photo_url
-    }
+    },
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore),
+    ...mapStores(useItineraryStore)
   },
 
   // start of lifecycle
@@ -74,7 +88,42 @@ export default {
 
   methods: {
     // methods defined by ourselves
-    example() {}
+    async book_flight(){
+      const itineraryStore = useItineraryStore();
+      const userStore = useUsersStore();
+      const authStore = useAuthStore();
+      this.user = this.$route.params.username
+      this.iti_name = this.$route.params.itinerary_name
+      var iti_data = await userStore.getUserItinerary(this.user,this.iti_name) 
+        
+       
+      var date_arr = iti_data.itinerary_data.destination.itinerary_date.split(',')
+      var check_date = []
+      for(let i of date_arr){
+        check_date.push(new Date(i))
+      }
+      var flight_obj = {
+                    "duration":this.duration,
+                    "flight_no" :this.alternateIdO + this.flightNumberO,
+                    "departure_datetime": new Date(this.departure),
+                    "arrival_datetime": new Date(this.arrival),
+                    "departure_country": this.originName,
+                    "arrival_country": this.destinationCity,
+                    "distance":0,
+                    "cost":this.totalPrice,
+                    "currency":"sgd",
+                    "carbon_fp":0,
+                    "notes":""
+                }
+      var flightjson = await itineraryStore.createflight(flight_obj)
+      console.log(flightjson,'JSON')
+      iti_data.itinerary_data.flights.push(flightjson)
+      
+        
+        await userStore.updateItinerary(iti_data,this.user,this.iti_name);
+        this.$router.push({ path: `/itinerary/${this.user}/${this.iti_name}` ,replace:true})
+      },
+  
   }
 }
 </script>

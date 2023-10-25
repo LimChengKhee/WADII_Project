@@ -25,6 +25,7 @@ const store = createStore({
 
 import axios from 'axios'
 // axios.defaults.baseURL = "http://127.0.0.1:8000"
+
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
@@ -34,6 +35,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';// const pinia = createPinia() 
 // const app = createApp(App)
+
 
 // app.use(router,axios,pinia);
 

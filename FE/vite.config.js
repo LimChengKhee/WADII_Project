@@ -7,10 +7,9 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 // https://vitejs.dev/config/
 export default defineConfig({
   server:{
-    proxy: {
-      '/api': {target:'https://maps.googleapis.com/maps/', changeOrigin:true},
-      
-    }
+     proxy: {
+       '/api': 'https://maps.googleapis.com/maps/',
+     },
   },
   plugins: [
     vue(),
