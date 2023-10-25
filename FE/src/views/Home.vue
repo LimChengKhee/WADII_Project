@@ -19,12 +19,12 @@
           <div class="carousel-inner">
             <div v-for="(iti, index) in Math.ceil(itinerarys.length / 3)" :key="index" :class="['carousel-item', index === 0 ? 'active' : '']">
               <div class="row">
-                <div v-for="subIndex in 3" :key="subIndex" class="col-md-4 col-lg-4">
+                <div v-for="subIndex in 3" :key="subIndex" class="col-sm-4">
                   <div v-if="(iti - 1) * 3 + (subIndex - 1) < itinerarys.length" class="m-3">
                     <div class="card" style="width: 18rem;">
                       <h5 class="card-title">{{ itinerarys[(iti - 1) * 3 + (subIndex - 1)].itinerary_data.itinerary_data.destination.trip_country }}</h5>
                       <img class="card-img-top" src="../assets/img/japan.jpg" alt="..." @click="routeItineraryPage(itinerarys[(iti - 1) * 3 + (subIndex - 1)].itinerary_name)">
-                      <div class="card-body">                
+                      <div class="card-body">
                         <button class="btn btn-danger" @click="deleteItinerary(itinerarys[(iti - 1) * 3 + (subIndex - 1)].itinerary_name)">Delete</button>
                       </div>
                     </div>
@@ -99,7 +99,7 @@ export default {
     }
   }
 };
-</script> 
+</script>
 
 <style>
 body {
@@ -134,7 +134,6 @@ body::after {
   /* Ensure the content is above the overlay */
 }
 
-
 .entranceMsg {
   font-size: 2.5rem;
   /* Adjust font size according to your preference */
@@ -146,12 +145,20 @@ body::after {
   letter-spacing: 2px;
   /* Adjust the letter spacing for better readability */
   /* Add any other styles you want to make it more engaging */
-
-}
-*{
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-
-
 }
 
+* {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Add the following CSS to ensure responsiveness and prevent overlapping */
+.row {
+  margin: 0;
+  padding: 0;
+}
+
+.col-sm-4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+}
 </style>
