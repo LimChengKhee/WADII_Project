@@ -13,21 +13,41 @@
         </div>
       </div>
       <div class="col-12 px-0 mt-5">
-        <div class="card-group justify-content-center">
-          <div v-for="iti in itinerarys" :key="iti.id" class="m-3 col-md-6 col-lg-3 d-flex justify-content-center">
-            <div class="card mt-2" style="width: 18rem;">
-              <h5 class="card-title">{{ iti.itinerary_data.itinerary_data.destination.trip_country }}</h5>
-              <img class="card-img-top" src="../assets/img/japan.jpg" alt="..." @click="routeItineraryPage(iti.itinerary_name)">
-              <div class="card-body">                
-                <button class="btn btn-danger" @click="deleteItinerary(iti.itinerary_name)">Delete</button>
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div v-for="(iti, index) in Math.ceil(itinerarys.length / 3)" :key="index" :class="['carousel-item', index === 0 ? 'active' : '']">
+              <div class="row">
+                <div v-for="subIndex in 3" :key="subIndex" class="col-md-4 col-lg-4">
+                  <div v-if="(iti - 1) * 3 + (subIndex - 1) < itinerarys.length" class="m-2">
+                    <div class="card" style="width: 18rem; margin-bottom: 20px;">
+                      <h5 class="card-title">{{ itinerarys[(iti - 1) * 3 + (subIndex - 1)].itinerary_data.itinerary_data.destination.trip_country }}</h5>
+                      <img class="card-img-top" src="../assets/img/japan.jpg" alt="..." @click="routeItineraryPage(itinerarys[(iti - 1) * 3 + (subIndex - 1)].itinerary_name)">
+                      <div class="card-body" style="padding: 10px;">                
+                        <button class="btn btn-danger" @click="deleteItinerary(itinerarys[(iti - 1) * 3 + (subIndex - 1)].itinerary_name)">Delete</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev" style="margin-left: -50px;">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+
+
+
 
 <script>
 // import statements
@@ -80,7 +100,7 @@ export default {
     }
   }
 };
-</script>
+</script> 
 
 <style>
 body {
@@ -129,9 +149,10 @@ body::after {
   /* Add any other styles you want to make it more engaging */
 
 }
-.container, button, h1, h5, .card-title {
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: bold;
+*{
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
 
 }
+
 </style>

@@ -1,49 +1,78 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-8 px-0">
-        <ul class="menu">
-          <img class="ms-4" src="../img/EcoBound.png" style="height: 50px;cursor:pointer; max-width: 100%;"
-            alt="EcoBound Logo" @click="sliderIndicator(1)">
-          <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
-          <li class="menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
-            :ref="'menu-item_' + link.id">
-            <a href="#" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
-              <i class="menu-icon" :class="link.icon"></i>
-              <span>{{ link.text }}</span>
-            </a>
-            <!-- <router-link :to="link.route" class="menu-link" :class="link.id === selectedIndex ? 'active' : null">
-              <i class="menu-icon" :class="link.icon"></i>
-              <span>{{ link.text }}</span>
-            </router-link> -->
-          </li>
-        </ul>
-      </div>
-      <div class="col-1 px-0" style="background-color: var(--menu-background-color);"></div>
-      <div class="col-3 px-0 d-flex align-items-center" style="background-color: var(--menu-background-color);">
-        <img src="../img/kfc.png" class="rounded-circle" style="height: 30px; width:auto" alt="profileImg">
-
-
-
-        <template v-if="authStore.user">
-          <div class="profile">{{ authStore.user }}</div>
-          <button class="btn btn-primary" @click="authStore.logout()">Logout</button>
-        </template>
-
-        <template v-else>
-
-          <router-link to="/login">
-            <button type="button" class="button m-3 px-6" @click="login()" style="background-color:#de503a;">Log in</button>
-          </router-link>
-
-          <router-link to="/Sign-Up">
-            <button type="button" class="button m-3 px-6">Sign up</button>
-          </router-link>
-
-        </template>
+      <div class="col-12 px-0 d-flex justify-content-center">
+        <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid position-relative">
+            <img
+              class="ms-4"
+              src="../img/EcoBound.png"
+              style="height: 50px; cursor: pointer; max-width: 100%;"
+              alt="EcoBound Logo"
+              @click="sliderIndicator(1)"
+            />
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li
+                  class="nav-item menu-item"
+                  v-for="link in links"
+                  :key="link.id"
+                  @click="sliderIndicator(link.id)"
+                  :ref="'menu-item_' + link.id"
+                >
+                  <a
+                    href="#"
+                    class="nav-link menu-link"
+                    :class="link.id === selectedIndex ? 'active' : null"
+                  >
+                    <i class="menu-icon" :class="link.icon"></i>
+                    <span>{{ link.text }}</span>
+                  </a>
+                </li>
+                <!-- <li class="nav-item menu-item" v-if="authStore.user">
+                  <div class="profile" style="margin-right: 20px;">{{ authStore.user }}</div>
+                  <button
+                    class="btn tton-80"
+                    @click="authStore.logout()"
+                    style="margin-right: 10px; color:white;"
+                  >
+                    Logout
+                  </button>
+                </li> -->
+              </ul>
+            </div>
+            <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
+            <div class="d-flex align-items-center ml-auto" v-if="!authStore.user">
+              <router-link to="/login">
+                <button
+                  type="button"
+                  class="button m-3 px-6 button-80"
+                  @click="login()"
+                >
+                  Log in
+                </button>
+              </router-link>
+              <router-link to="/Sign-Up">
+                <button type="button" class="button m-3 px-6 button-80">
+                  Sign up
+                </button>
+              </router-link>
+            </div>
+          </div>
+        </nav>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -65,27 +94,22 @@ export default {
           id: 1,
           icon: "fa fa-home",
           text: "Home",
-          
         },
         {
           id: 2,
           icon: "fa fa-gear",
           text: "Dashboard",
-          
         },
-        {
-          id: 3,
-          icon: "fa fa-question",
-          text: "About",
-          
-        },
-
-        {
-          id: 4,
-          icon: "fa fa-question",
-          text: "Hotel",
-        },
-
+        // {
+        //   id: 3,
+        //   icon: "fa fa-question",
+        //   text: "About",
+        // },
+        // {
+        //   id: 4,
+        //   icon: "fa fa-question",
+        //   text: "Hotel",
+        // },
       ],
     };
   },
@@ -95,7 +119,7 @@ export default {
       this.sliderPosition = el.offsetLeft;
       this.selectedElementWidth = el.offsetWidth;
       this.selectedIndex = id;
-      var routes = { 1: '/', 2: '/flight', 3: '/', 4: '/hotel' }
+      var routes = { 1: '/', 2: '/dashboard', 3: '/', 4: '/hotel' }
       var page = routes[id]
       this.$router.push(page)
     },
@@ -120,7 +144,6 @@ export default {
     sliderWidth() {
       return this.selectedElementWidth + "px";
     },
-
   },
   mounted() {
     // this.getUser()
@@ -129,7 +152,6 @@ export default {
   }
 };
 </script>
-
 <style>
 .profile {
   color: white;
@@ -137,6 +159,67 @@ export default {
 
 body {
   font-family: var(bs);
+}
+
+
+.button-80 {
+  background: #fff;
+  backface-visibility: hidden;
+  border-radius: .375rem;
+  border-style: solid;
+  border-width: .125rem;
+  box-sizing: border-box;
+  color: #212121;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Circular,Helvetica,sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.3;
+  padding: .875rem 1.125rem;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transform: translateZ(0) scale(1);
+  transition: transform .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-80:not(:disabled):hover {
+  transform: scale(1.05);
+}
+
+.button-80:not(:disabled):hover:active {
+  transform: scale(1.05) translateY(.125rem);
+}
+
+.button-80:focus {
+  outline: 0 solid transparent;
+}
+
+.button-80:focus:before {
+  content: "";
+  left: calc(-1*.375rem);
+  pointer-events: none;
+  position: absolute;
+  top: calc(-1*.375rem);
+  transition: border-radius;
+  user-select: none;
+}
+
+.button-80:focus:not(:focus-visible) {
+  outline: 0 solid transparent;
+}
+
+.button-80:focus:not(:focus-visible):before {
+  border-width: 0;
+}
+
+.button-80:not(:disabled):active {
+  transform: translateY(.125rem);
 }
 
 :root {
@@ -217,6 +300,46 @@ body {
 .rounded-circle {
   background-color: white;
 }
+
+*{
+  color:white;
+}
+/* Styling the navbar dropdown */
+.navbar-toggler {
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+.navbar-toggler-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-image: url("path_to_your_hamburger_icon");
+  /* Replace "path_to_your_hamburger_icon" with the actual path to your hamburger icon */
+  background-size: cover;
+}
+
+/* Styling the dropdown menu */
+.navbar-collapse {
+  text-align: center;
+}
+
+.navbar-nav {
+  margin-top: 10px;
+}
+
+.nav-link {
+  color: white;
+  font-size: 1.2rem;
+  padding: 10px;
+}
+
+/* Styling the active link in the dropdown */
+.nav-link.active {
+  color: #EB4F47;
+  font-weight: bold;
+}
+
 
 
 
