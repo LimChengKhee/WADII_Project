@@ -1,5 +1,9 @@
 <template>
-<p>test</p>
+
+  <div>
+    <p>suck</p>
+  </div>
+
 </template>
 <script>
 //  import statements
@@ -9,6 +13,7 @@ export default {
   name: '',
   components: {
     // importing components from other places
+    
   },
   data () {
     // local repository of information
