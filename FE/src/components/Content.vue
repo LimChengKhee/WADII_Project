@@ -6,7 +6,7 @@ const stepStore = useStepStore();
 </script>
 
 <template>
-    <div class="main-container">
+    <div class="main-container px-5 pt-3">
         <div class="main-content">
             <slot />
         </div>
@@ -16,13 +16,13 @@ const stepStore = useStepStore();
 
 <style scoped>
 .main-container {
-    padding: 20px 100px;
+    /* padding: 20px 100px; */
     /* margin-left: 20px; */
     /* width: calc(100% - 320px); */
 }
 
 .main-content {
-    height: 600px;
+    /* height: 600px; */
     width: 100%;
 }
 </style>

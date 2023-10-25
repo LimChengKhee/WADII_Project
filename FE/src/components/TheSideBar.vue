@@ -36,15 +36,15 @@ let steps = [
 </script>
 
 <template>
-    <div class="sidebar w-25">
-        <StepComponent v-for="step in steps" :step="step" @click.native="gotostep(step)" :active="step.number == stepStore.step" />
+    <div class="sidebar w-25 pt-5 ps-4 me-5">
+        <StepComponent class="" v-for="step in steps" :step="step" @click.native="gotostep(step)" :active="step.number == stepStore.step" />
     </div>
 </template>
 
 <style scoped>
 .sidebar {
     height: 100%;
-    padding: 60px 40px;
+    /* padding: 60px 40px; */
     background: url("../assets/img/bg-sidebar-desktop.svg");
     background-size: cover;
     border-radius: 16px;

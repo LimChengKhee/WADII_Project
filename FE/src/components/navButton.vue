@@ -54,25 +54,25 @@ const nextStep = () => {
 
 <style scoped>
 .nav-buttons {
-    position: relative;
-    bottom: 20px;
+    /* position: relative;
+    bottom: 20px; */
 }
 
 .button {
-    position: absolute;
+    /* position: absolute; */
     border-radius: 8px;
     border: none;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     font-size: 18px;
-    bottom:-400px;
+    /* bottom:-400px; */
 }
 
 .prev-button {
     background-color: transparent;
     color: var(--cool-gray);
-    left: 0;
+    /* left: 0; */
 }
 
 .prev-button:hover {
@@ -83,7 +83,7 @@ const nextStep = () => {
     padding: 16px 32px;
     background-color: var(--marine-blue);
     color: var(--white);
-    right: 0;
+    /* right: 0; */
 }
 
 .next-button:hover {
@@ -94,7 +94,7 @@ const nextStep = () => {
     padding: 16px 32px;
     background-color: var(--purplish-blue);
     color: var(--white);
-    right: 0;
+    /* right: 0; */
 }
 
 .confirm-button:hover {

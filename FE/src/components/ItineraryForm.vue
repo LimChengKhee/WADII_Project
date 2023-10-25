@@ -82,9 +82,13 @@ export default {
 </script>
 
 <template>
-  <div>
-    <h2>Plan your itinerary</h2>
-    <p>Please provide your information.</p>
+  <div class="row">
+    <div class="">
+      <h2>Plan your itinerary</h2>
+      <p>Please provide your information.</p>
+    </div>
+
+    
 
     <div class="form-group">
       <div class="form-group-label">
@@ -125,33 +129,33 @@ export default {
 h2 {
   font-size: 2.5rem;
   font-weight: 600;
-  padding: 20px 0;
+  /* padding: 20px 0; */
 }
 
 p {
   font-size: 18px;
-  margin-bottom: 60px;
+  /* margin-bottom: 60px; */
   color: var(--cool-gray);
 }
 
 .form-group {
-  margin-bottom: 40px;
+  /* margin-bottom: 40px; */
 }
 
 .form-group label {
   display: block;
   font-size: 18px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .form-group input {
   width: 100%;
-  height: 50px;
+  /* height: 50px; */
   border: 1px solid var(--cool-gray);
   border-radius: 8px;
-  padding: 0 20px;
+  /* padding: 0 20px; */
   font-size: 18px;
-  padding: 24px 16px;
+  /* padding: 24px 16px; */
 }
 
 .form-group input:focus {

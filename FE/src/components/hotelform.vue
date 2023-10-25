@@ -50,8 +50,11 @@ mindate = getDate()
 
 <template>
   <div>
-    <h2>Hotel</h2>
-    <p>Please provide your information.(Optional)</p>
+    <div class="">
+      <h2>Hotel</h2>
+      <p>Please provide your information.(Optional)</p>
+    </div>
+   
 
     <div class="form-group">
       <div class="form-group-label">
@@ -201,33 +204,32 @@ mindate = getDate()
 h2 {
   font-size: 2.5rem;
   font-weight: 600;
-  padding: 20px 0;
+  /* padding: 20px 0; */
 }
 
 p {
   font-size: 18px;
-  margin-bottom: 60px;
   color: var(--cool-gray);
 }
 
 .form-group {
-  margin-bottom: 40px;
+  /* margin-bottom: 40px; */
 }
 
 .form-group label {
   display: block;
   font-size: 18px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .form-group input {
   width: 100%;
-  height: 50px;
+  /* height: 50px; */
   border: 1px solid var(--cool-gray);
   border-radius: 8px;
-  padding: 0 20px;
+  /* padding: 0 20px; */
   font-size: 18px;
-  padding: 24px 16px;
+  /* padding: 24px 16px; */
 }
 
 .form-group input:focus {

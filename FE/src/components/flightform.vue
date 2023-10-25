@@ -48,7 +48,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="row">
     <h2 class="title">Select your flight</h2>
     <p class="subtitle">Fill up your flight details (Optional)</p>
 
@@ -166,7 +166,6 @@ h2 {
 p {
   font-size: 18px;
   margin-bottom: 60px;
-  color: var(--cool-gray);
 }
 
 .form-group {

@@ -16,8 +16,8 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="sidebar-step-container">
-        <span class="sidebar-step-number" :class="{ active: active }">{{ step.number }}</span>
+    <div class="sidebar-step-container me-auto">
+        <span class="sidebar-step-number " :class="{ active: active }">{{ step.number }}</span>
         <div class="sidebar-step">
             <span>STEP {{ step.number }}</span>
             <span>{{ step.label }}</span>
