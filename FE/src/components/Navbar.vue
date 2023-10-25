@@ -4,38 +4,19 @@
       <div class="col-12 px-0 d-flex justify-content-center">
         <nav class="navbar navbar-expand-lg">
           <div class="container-fluid position-relative">
-            <img
-              class="ms-4"
-              src="../img/EcoBound.png"
-              style="height: 50px; cursor: pointer; max-width: 100%;"
-              alt="EcoBound Logo"
-              @click="sliderIndicator(1)"
-            />
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
+            <img class="ms-4" src="../img/EcoBound.png" style="height: 50px; cursor: pointer; max-width: 100%;"
+              alt="EcoBound Logo" @click="sliderIndicator(1)" />
+              <div class="me-4 d-lg-none">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
-                <li
-                  class="nav-item menu-item"
-                  v-for="link in links"
-                  :key="link.id"
-                  @click="sliderIndicator(link.id)"
-                  :ref="'menu-item_' + link.id"
-                >
-                  <a
-                    href="#"
-                    class="nav-link menu-link"
-                    :class="link.id === selectedIndex ? 'active' : null"
-                  >
+                <li class="nav-item menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
+                  :ref="'menu-item_' + link.id">
+                  <a href="#" class="nav-link menu-link" :class="link.id === selectedIndex ? 'active' : null">
                     <i class="menu-icon" :class="link.icon"></i>
                     <span>{{ link.text }}</span>
                   </a>
@@ -55,11 +36,7 @@
             <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
             <div class="d-flex align-items-center ml-auto" v-if="!authStore.user">
               <router-link to="/login">
-                <button
-                  type="button"
-                  class="button m-3 px-6 button-80"
-                  @click="login()"
-                >
+                <button type="button" class="button m-3 px-6 button-80" @click="login()">
                   Log in
                 </button>
               </router-link>
@@ -172,7 +149,7 @@ body {
   color: #212121;
   cursor: pointer;
   display: inline-block;
-  font-family: Circular,Helvetica,sans-serif;
+  font-family: Circular, Helvetica, sans-serif;
   font-size: 1.125rem;
   font-weight: 700;
   letter-spacing: -.01em;
@@ -225,7 +202,8 @@ body {
 :root {
   --active-color: #ffee93;
   --link-text-color: #f1faee;
-  --menu-background-color: rgba(255, 0, 0, 0);;
+  --menu-background-color: rgba(255, 0, 0, 0);
+  ;
   --active-background-color: #EB4F47;
 }
 
@@ -240,7 +218,7 @@ body {
   /* Span the entire screen width */
   list-style-type: none;
   overflow: hidden;
-  
+
 }
 
 .menu-item {
@@ -301,9 +279,11 @@ body {
   background-color: white;
 }
 
-*{
-  color:white;
+* {
+  color: white;
+  font-weight: var(--menu-background-color);
 }
+
 /* Styling the navbar dropdown */
 .navbar-toggler {
   border: none;
@@ -339,8 +319,4 @@ body {
   color: #EB4F47;
   font-weight: bold;
 }
-
-
-
-
 </style>

@@ -12,17 +12,19 @@
           <button class="btn btn-primary" @click="createitinerary">Create new Trip</button>
         </div>
       </div>
-      <div class="col-12 px-0 mt-5">
+    </div>
+    <div class="row">
+      <div class="col-12 px-0 mt-5 d-flex justify-content-center">
         <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
             <div v-for="(iti, index) in Math.ceil(itinerarys.length / 3)" :key="index" :class="['carousel-item', index === 0 ? 'active' : '']">
               <div class="row">
                 <div v-for="subIndex in 3" :key="subIndex" class="col-md-4 col-lg-4">
-                  <div v-if="(iti - 1) * 3 + (subIndex - 1) < itinerarys.length" class="m-2">
-                    <div class="card" style="width: 18rem; margin-bottom: 20px;">
+                  <div v-if="(iti - 1) * 3 + (subIndex - 1) < itinerarys.length" class="m-3">
+                    <div class="card" style="width: 18rem;">
                       <h5 class="card-title">{{ itinerarys[(iti - 1) * 3 + (subIndex - 1)].itinerary_data.itinerary_data.destination.trip_country }}</h5>
                       <img class="card-img-top" src="../assets/img/japan.jpg" alt="..." @click="routeItineraryPage(itinerarys[(iti - 1) * 3 + (subIndex - 1)].itinerary_name)">
-                      <div class="card-body" style="padding: 10px;">                
+                      <div class="card-body">                
                         <button class="btn btn-danger" @click="deleteItinerary(itinerarys[(iti - 1) * 3 + (subIndex - 1)].itinerary_name)">Delete</button>
                       </div>
                     </div>
@@ -31,23 +33,20 @@
               </div>
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev" style="margin-left: -50px;">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+          <!-- Carousel controls moved outside the carousel-inner -->
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
   </div>
 </template>
-
-
-
-
 
 <script>
 // import statements
