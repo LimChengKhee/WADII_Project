@@ -74,10 +74,12 @@
 
       <div class="col">
         <div class="row">
-          <div v-for="hotel in this.iti_data.itinerary_data.hotels" class="mt-5">
+          <div v-for="(hotel,ind) in this.iti_data.itinerary_data.hotels" class="mt-5">
+            <p v-if="ind==0"> Recommendation based on this</p>
             {{ hotel.hotelname }}
             {{ hotel.check_indates }}
             {{ hotel.cost }}
+            <button class="btn btn-danger" @click="deleteHotel(ind)">Delete</button>
           </div>
         </div>
       </div>
@@ -86,7 +88,7 @@
       <button class="btn btn-warning" @click="addFlight">Add Flight</button>
       <div class="col">
         <div class="row">
-          <div v-for="flight in this.iti_data.itinerary_data.flights" class="mt-5">
+          <div v-for="(flight,ind) in this.iti_data.itinerary_data.flights" class="mt-5">
             <div class="card mb-3 rounded-0">
               <div class="row">
                 <div class="col">
@@ -105,10 +107,13 @@
               </div>
               <div class="row mt-5">
                 <div class="col mt-5">${{ flight.cost }}</div>
+                
 
                 <br />
               </div>
+              <button class="btn btn-danger" @click="deleteFlight(ind)">Delete</button>
             </div>
+
           </div>
         </div>
       </div>
@@ -141,14 +146,7 @@ export default {
     // local repository of information
     return {
       iti_data: {
-        itinerary_name: '',
-        username: '',
-        itinerary_data: {
-          destination: {},
-          flights: [{}],
-          hotels: [{}],
-          itinerary_days: []
-        }
+        itinerary_data:{hotels:[]},
       },
       itinerary_date: '',
       user: '',
@@ -245,7 +243,7 @@ export default {
     if (iti_data.itinerary_data.hotels.length == 0) {
       this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
     }
-
+    console.log(iti_data.itinerary_data.destination.itinerary_date)
     let item = iti_data.itinerary_data.destination.itinerary_date.split(',')
     let date_range = [new Date(item[0]), new Date(item[1])]
     this.iti_data = iti_data
@@ -276,10 +274,22 @@ export default {
   methods: {
     async save() {
       const userStore = useUsersStore()
-      const authStore = useAuthStore()
-      console.log(this.iti_data)
+      const itineraryStore = useItineraryStore()
+      console.log(itineraryStore.handleDate(this.date))
+      for (let i in this.days){
+        if (!('accoms' in this.days[i])){
+          this.days[i]['accoms'] = this.getHotels()
+        }
+      }
       this.iti_data.itinerary_data.itinerary_days = this.days
+      this.iti_data.itinerary_data.destination.itinerary_date = itineraryStore.handleDate(this.date)
       await userStore.updateItinerary(this.iti_data, this.user, this.iti_name)
+    },
+    async deleteFlight(id){
+      this.iti_data.itinerary_data.flights.splice(id,1)
+    },
+    async deleteHotel(id){
+      this.iti_data.itinerary_data.hotels.splice(id,1)
     },
     async activeFlight() {
       let res = this.iti_data.itinerary_data.flights
@@ -423,6 +433,7 @@ export default {
       var hotels = this.iti_data.itinerary_data.hotels
       for (let h of hotels) {
         result.push(h.hotelname)
+        break
       }
       return result
     },

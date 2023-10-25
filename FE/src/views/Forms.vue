@@ -15,7 +15,7 @@ const stepStore = useStepStore();
 </script>
 
 <template>
-  <div class="container mt-5">
+  <div class="container mt-5 d-flex h-100">
     <TheSideBar />
     <Content>
       <Itinerary v-if="stepStore.step == 1" />
@@ -27,12 +27,11 @@ const stepStore = useStepStore();
 
 <style scoped>
 .container {
-  width: 1080px;
-  height: 1080px;
+  /* width: 1080px;
+  height: 1080px; */
   background-color: hsl(231, 100%, 99%);
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
-  display: flex;
 }
 </style>

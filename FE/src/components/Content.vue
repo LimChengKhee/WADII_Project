@@ -17,8 +17,8 @@ const stepStore = useStepStore();
 <style scoped>
 .main-container {
     padding: 20px 100px;
-    margin-left: 20px;
-    width: calc(100% - 320px);
+    /* margin-left: 20px; */
+    /* width: calc(100% - 320px); */
 }
 
 .main-content {

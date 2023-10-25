@@ -29,10 +29,13 @@ export default {
       
       var countryList = document.getElementById(`country`)
       countryList.innerHTML = '' // clear the list of past predictions on each input
-      
-      var countries = this.cities.filter((c) => c.toLowerCase().includes(check_val));
+      var country = []  
+      this.cities.forEach(function(obj){
+        country.push(obj['country'])
+      })
+      var countries = country.filter((c) => c.toLowerCase().includes(check_val)).slice(0,5);
 
-      console.log(this.cities.filter((c) => c.toLowerCase().includes(check_val)));
+      // console.log(this.cities.filter((c) => c.toLowerCase().includes(check_val)));
       if (check_val != "" || check_val != null){
       countryList.classList.remove('d-none') // display the list
                     for (let c=0;c<countries.length;c++){
