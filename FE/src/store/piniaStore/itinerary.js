@@ -69,6 +69,7 @@ export const useItineraryStore = defineStore('itinerary', {
       this.validateDestination(this.arrival_country)
     },
     handleDate(date_range) {
+        console.log(date_range,'DATERABE')
       if (date_range == '') {
         return
       }
