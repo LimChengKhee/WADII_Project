@@ -181,4 +181,8 @@ p {
   color: var(--strawberry-red);
   font-size: 14px;
 }
+
+*{
+  background-color: white;
+}
 </style>
