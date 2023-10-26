@@ -56,7 +56,7 @@ export default {
       <p class="">Fill up your flight details (Optional)</p>
     </div>
 
-    <div class="form-group mb-4">
+    <div class="form-group ">
       <div class="form-group-label mb-2">
         <label for="name">Flight Number</label>
         <span v-if="itineraryStore.errors.flight_no">{{ itineraryStore.errors.flight_no }}</span>
@@ -70,15 +70,15 @@ export default {
       />
     </div>
 
-    <div class="form-group mb-4">
-      <div class="form-group-label mb-2 mb-sm-4">
+    <div class="form-group ">
+      <div class="form-group-label mb-2 ">
         <!-- <label for="name">Departure</label>/ -->
         <span v-if="itineraryStore.errors.departure_date">{{
           itineraryStore.errors.departure_date
         }}</span>
       </div>
-      <div class="row">
-        <div class="col-sm-12 mb-sm-4">
+      <div class="row ">
+        <div class="col-xl-6  col-lg-6 col-md-6">
           <label for="name" class="text-start mb-2">Departure</label
           ><Datepicker
             v-model="itineraryStore.departure_date"
@@ -93,7 +93,7 @@ export default {
             focus-start-date
           />
         </div>
-        <div class="col-sm-12">
+        <div class="col-xl-6 col-lg-6 col-md-6">
           <label for="name" class="text-start mb-2">Departure Country</label
           ><input
             type="text"
@@ -106,14 +106,14 @@ export default {
         </div>
       </div>
     </div>
-    <div class="form-group mb-4">
+    <div class="form-group">
       <div class="form-group-label mb-2">
         <span v-if="itineraryStore.errors.arrival_date">{{
           itineraryStore.errors.arrival_date
         }}</span>
       </div>
-      <div class="row">
-        <div class="col-sm-12 mb-sm-4">
+      <div class="row ">
+        <div class="col-xl-6 col-lg-6 col-md-6">
           <label for="name" class="text-start mb-2">Arrival</label
           ><Datepicker
             v-model="itineraryStore.arrival_date"
@@ -129,7 +129,7 @@ export default {
             
           />
         </div>
-        <div class="col-sm-12 mb-sm-4">
+        <div class="col-xl-6 col-lg-6 col-md-6">
           <label for="name" class="text-start mb-2">Arrival Country</label
           ><input
             type="text"
@@ -142,7 +142,7 @@ export default {
       </div>
     </div>
 
-    <div class="form-group mb-4">
+    <div class="form-group ">
       <div class="form-group-label mb-2">
         <label for="name">Cost</label>
         <span v-if="itineraryStore.errors.flight_cost">{{

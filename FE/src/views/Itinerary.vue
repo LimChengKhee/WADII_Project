@@ -324,9 +324,9 @@ export default {
       this.date[0].setDate(currentStart.getDate() - numDays)
     },
     removeDaysfromStart(diff) {
-      this.days.splice(0, diff)
+      this.days.splice(0, diff);
       for (let i = 0; i < this.days.length; i++) {
-        this.days[i].dayId = i
+        this.days[i].dayId = i;
       }
       let currentStart = this.date[0]
       this.date[0].setDate(currentStart.getDate() + diff)
@@ -426,8 +426,8 @@ export default {
           }
 
         }
-      }
-    },
+      },
+    
     getHotels() {
       var result = []
       var hotels = this.iti_data.itinerary_data.hotels
@@ -448,6 +448,7 @@ export default {
       this.$router.push({ path: `/flight/${this.user}/${this.iti_name}` })
     }
   }
+}
 
 
 </script>
