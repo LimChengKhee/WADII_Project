@@ -59,18 +59,31 @@ export default {
 
   methods: {
     handleResize() {
-      this.screenWidth = window.innerWidth * 0.8; // Adjust the multiplier to set the desired width proportion
+      this.screenWidth = window.innerWidth * 0.8;
+      const container = d3.select("#chartContainer");
+      container.select("svg").remove();
       this.drawChart();
     },
     drawChart() {
       if (this.dataLC.length === 0) {
         return; // Check if the data array is empty
       }
+      const resizeDimensions = () => {
+        this.screenWidth = container.node().getBoundingClientRect().width * 0.8;
+        this.drawChart();
+      };
       this.dataLC.sort((a, b) => {
-    const dateA = new Date(a.itinerary_data.itinerary_data.destination.start_date);
-    const dateB = new Date(b.itinerary_data.itinerary_data.destination.start_date);
-    return dateA - dateB;
-  });
+        const dateA = new Date(a.itinerary_data.itinerary_data.destination.start_date);
+        const dateB = new Date(b.itinerary_data.itinerary_data.destination.start_date);
+        return dateA - dateB;
+
+      });
+      // Calculate total cost
+      const totalCost = this.dataLC.reduce((acc, cur) => acc + cur.itinerary_data.itinerary_data.hotels[0].cost, 0);
+
+      // Calculate average cost
+      const averageCost = totalCost / this.dataLC.length;
+
 
       const container = d3.select("#chartContainer");
       container.select("svg").remove();
@@ -142,6 +155,14 @@ export default {
         .y(d => y(d.itinerary_data.itinerary_data.hotels[0].cost));
 
 
+
+      g.append("text")
+        .attr("x", width - 10) // Adjust the x position
+        .attr("y", 10) // Adjust the y position
+        .attr("text-anchor", "end")
+        .attr("fill", "white")
+        
+
       g.append("path")
         .datum(this.dataLC)
         .attr("fill", "none")
@@ -169,7 +190,7 @@ export default {
         .attr("cy", d => y(d.itinerary_data.itinerary_data.hotels[0].cost))
         .attr("r", 5)
         .attr("fill", "steelblue")
-       .on("mouseover", function (event, d) {
+        .on("mouseover", function (event, d) {
           const xPos = x(parseTime(d.itinerary_data.itinerary_data.destination.start_date));
           const yPos = y(d.itinerary_data.itinerary_data.hotels[0].cost);
 
@@ -206,7 +227,7 @@ export default {
             .style("color", "black")
             .style("padding", "5px")
             .style("border", "1px solid #333")
-            .text(`Date: ${d.itinerary_data.itinerary_data.destination.start_date}, cost: ${d.itinerary_data.itinerary_data.hotels[0].cost}`);
+
 
           // Dotted lines
           g.append("line")
@@ -243,6 +264,19 @@ export default {
         .selectAll("text")
         .attr("x", -30) // Shift the y-axis labels to the left
         .attr("y", -10); // Adjust the vertical alignment of the labels
+      g.append("text")
+        .attr("x", width - 10)
+        .attr("y", 30)
+        .attr("text-anchor", "end")
+        .attr("fill", "white")
+        .text(`Total Cost: ${totalCost.toFixed(2)}`);
+
+      g.append("text")
+        .attr("x", width - 10)
+        .attr("y", 10)
+        .attr("text-anchor", "end")
+        .attr("fill", "white")
+        .text(`Average Cost: ${averageCost.toFixed(2)}`);
 
       // Style x-axis labels
       svg.selectAll(".tick text")
@@ -273,7 +307,7 @@ export default {
   font-weight: bold;
 }
 
-h2{
+h2 {
   color: white;
 }
 </style>
