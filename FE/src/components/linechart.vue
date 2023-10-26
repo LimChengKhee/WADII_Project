@@ -161,7 +161,7 @@ export default {
         .attr("y", 10) // Adjust the y position
         .attr("text-anchor", "end")
         .attr("fill", "white")
-        
+
 
       g.append("path")
         .datum(this.dataLC)
@@ -227,6 +227,7 @@ export default {
             .style("color", "black")
             .style("padding", "5px")
             .style("border", "1px solid #333")
+            .text(`Date: ${d.itinerary_data.itinerary_data.destination.start_date}, cost: ${d.itinerary_data.itinerary_data.hotels[0].cost}`);
 
 
           // Dotted lines
