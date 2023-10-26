@@ -92,15 +92,13 @@
 import HotelCard from '../components/Hotel_Card.vue'
 import axios from 'axios'
 import flushPromises from 'flush-promises'
-import Side_Bar from "../components/SideBar.vue"
 import test from "../views/static/test.json"
 
 export default {
   name: 'Hotel',
   components: {
     // importing components from other places
-    Side_Bar,
-    HotelCard
+    HotelCard,
   },
   data() {
     // local repository of information

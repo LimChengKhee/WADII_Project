@@ -240,9 +240,9 @@ export default {
 
     var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
     console.log(iti_data)
-    if (iti_data.itinerary_data.hotels.length == 0) {
-      this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
-    }
+    // if (iti_data.itinerary_data.hotels.length == 0) {
+    //   this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
+    // }
     console.log(iti_data.itinerary_data.destination.itinerary_date)
     let item = iti_data.itinerary_data.destination.itinerary_date.split(',')
     let date_range = [new Date(item[0]), new Date(item[1])]

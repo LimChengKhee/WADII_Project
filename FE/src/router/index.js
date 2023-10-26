@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Hotel from '../views/Hotel.vue'
 import Home from '../views/Home.vue'
 import Hotel_Page from '../views/Hotel_Page.vue'
-import SideBar from '../components/SideBar.vue'
 import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
 import Form from "../views/Forms.vue";
@@ -33,11 +32,6 @@ const routes =  [
       path: '/hotel/:name',
       name: 'Specific',
       component: Hotel_Page
-    },
-    {
-      path: '/hotel/sidebar',
-      name: 'SideBar',
-      component: SideBar
     },
     {
       path: '/url/:name-of-booked-hotel',
