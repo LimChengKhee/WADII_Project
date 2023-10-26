@@ -16,24 +16,41 @@ import { mapStores } from 'pinia';
 
 export default {
   name: 'Linechart',
+  props: {
+    dataLC: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
-      data: '',
+
       screenWidth: window.innerWidth * 0.8, // Adjust the multiplier to set the desired width proportion
     };
   },
 
   async mounted() {
-    const authStore = useAuthStore();
-    const userStore = useUsersStore();
-    this.userid = authStore.user
-    this.token = authStore.token
-    // await 
-    this.data = await userStore.getItinerary(this.userid, this.token);
-    console.log(this.data)
+    // const authStore = useAuthStore();
+    // const userStore = useUsersStore();
+    // this.userid = authStore.user
+    // this.token = authStore.token
+    // // await 
+    // this.dataLC = await userStore.getItinerary(this.userid, this.token);
+
+
     this.drawChart();
     window.addEventListener('resize', this.handleResize);
 
+
+  },
+  watch: {
+    dataLC: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        console.log(this.dataLC)
+        this.drawChart();
+      }
+    }
   },
   computed: {
     ...mapStores(useAuthStore),
@@ -47,19 +64,19 @@ export default {
       this.drawChart();
     },
     drawChart() {
-      this.data.sort((a, b) => {
-      const dateA = new Date(a.itinerary_data.itinerary_data.destination.start_date);
-      const dateB = new Date(b.itinerary_data.itinerary_data.destination.start_date);
-      return dateA - dateB;
-    });
+      if (this.dataLC.length === 0) {
+        return; // Check if the data array is empty
+      }
+
       const container = d3.select("#chartContainer");
       container.select("svg").remove();
       const containerWidth = container.node().getBoundingClientRect().width;
       const margin = { top: 20, right: 60, bottom: 40, left: 60 };
-      const width = Math.min(this.screenWidth, containerWidth) - margin.left - margin.right; // Use the minimum value to prevent exceeding the screen width
+      const width = Math.min(this.screenWidth, containerWidth) - margin.left - margin.right;
       const height = 500 - margin.top - margin.bottom;
 
-      const svg = d3.select("#chartContainer")
+      const svg = d3
+        .select("#chartContainer")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom);
@@ -96,8 +113,8 @@ export default {
       const x = d3
         .scaleTime()
         .domain([
-          d3.min(this.data, d => parseTime(d.itinerary_data.itinerary_data.destination.start_date)),
-          d3.max(this.data, d => parseTime(d.itinerary_data.itinerary_data.destination.start_date))
+          d3.min(this.dataLC, d => parseTime(d.itinerary_data.itinerary_data.destination.start_date)),
+          d3.max(this.dataLC, d => parseTime(d.itinerary_data.itinerary_data.destination.start_date))
         ])
         .range([0, width]);
 
@@ -105,7 +122,7 @@ export default {
         .scaleLinear()
         .domain([
           0,
-          d3.max(this.data, d => d.itinerary_data.itinerary_data.hotels[0].cost) * 1.2 // Adjust the multiplier to expand the y-axis
+          d3.max(this.dataLC, d => d.itinerary_data.itinerary_data.hotels[0].cost) * 1.2 // Adjust the multiplier to expand the y-axis
         ])
         .nice()
         .range([height, 0]);
@@ -116,14 +133,14 @@ export default {
         .y(d => y(d.itinerary_data.itinerary_data.hotels[0].cost));
 
       g.append("path")
-        .datum(this.data)
+        .datum(this.dataLC)
         .attr("fill", "none")
         .attr("stroke", "red")
         .attr("stroke-width", 3)
         .attr("d", line);
 
       g.selectAll("dot")
-        .data(this.data)
+        .data(this.dataLC)
         .enter()
         .append("circle")
         .attr("cx", d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
@@ -131,20 +148,22 @@ export default {
         .attr("r", 5)
         .attr("fill", "steelblue")
         .on("mouseover", function (event, d) {
-          const tooltip = d3.select("#chartContainer")
-            .append("div")
-            .style("position", "absolute")
-            .style("background", "#f4f4f4")
-            .style("padding", "5px")
-            .style("border", "1px solid #333")
-            .text(`Date: ${d.itinerary_data.itinerary_data.destination.start_date}, cost: ${d.itinerary_data.itinerary_data.hotels[0].cost}`)
-            .style("left", event.pageX + "px")
-            .style("top", event.pageY + "px");
-
-          // Dotted lines
           const xPos = x(parseTime(d.itinerary_data.itinerary_data.destination.start_date));
           const yPos = y(d.itinerary_data.itinerary_data.hotels[0].cost);
 
+          g.append("foreignObject")
+            .attr("x", xPos + 10) // Adjust the x-position relative to the data point
+            .attr("y", yPos - 10) // Adjust the y-position relative to the data point
+            .attr("width", 250) // Adjust the width of the description box
+            .attr("height", 50) // Adjust the height of the description box
+            .append("xhtml:div")
+            .style("position", "absolute")
+            .style("background", "white")
+            .style("padding", "5px")
+            .style("border", "1px solid #333")
+            .text(`Date: ${d.itinerary_data.itinerary_data.destination.start_date}, cost: ${d.itinerary_data.itinerary_data.hotels[0].cost}`);
+
+          // Dotted lines
           g.append("line")
             .attr("class", "x-hover-line hover-line")
             .attr("x1", xPos)
@@ -171,7 +190,7 @@ export default {
 
       g.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).tickFormat(formatTime).ticks(this.data.length));
+        .call(d3.axisBottom(x).tickFormat(formatTime).ticks(this.dataLC.length));
 
       g.append("g")
         .call(d3.axisLeft(y).tickSizeOuter(0))
