@@ -50,22 +50,23 @@ mindate = getDate()
 
 <template>
   <div>
-    <div class="">
-      <h2>Hotel</h2>
-      <p>Please provide your information.(Optional)</p>
+    <div class="text-start">
+      <h2 class="mt-3  d-none d-md-block">Plan your Hotel</h2>
+      <h2 class="d-md-none mt-3">Hotel</h2>
+      <p class="">Please provide your information.(Optional)</p>
     </div>
    
 
-    <div class="form-group">
-      <div class="form-group-label">
+    <div class="form-group mb-4">
+      <div class="form-group-label mb-2">
         <label for="email">Hotel</label>
         <span v-if="itineraryStore.errors.hotel">{{ itineraryStore.errors.hotel }}</span>
       </div>
-      <input type="text" id="email" placeholder="" v-model="itineraryStore.hotel" />
+      <input type="text" id="email" class="py-2 ps-3" placeholder="" v-model="itineraryStore.hotel" />
     </div>
 
-    <div class="form-group">
-      <div class="form-group-label">
+    <div class="form-group mb-4">
+      <div class="form-group-label mb-2">
         <label for="name">Check in Dates</label>
         <span v-if="itineraryStore.errors.checkin_date">{{
           itineraryStore.errors.checkin_date
@@ -75,7 +76,8 @@ mindate = getDate()
         v-model="itineraryStore.checkin_date"
         placeholder="Start Date | End Date"
         :enable-time-picker="false"
-        
+        :teleport="true"
+        input-class-name="dp-custom-input py-2 rounded-3"
         :min-date="itineraryStore.trip_date[0]"
         :start-date="itineraryStore.trip_date[0]"
         :max-date="itineraryStore.trip_date[1]"
@@ -84,8 +86,8 @@ mindate = getDate()
       />
     </div>
 
-    <div class="form-group">
-      <div class="form-group-label">
+    <div class="form-group mb-5">
+      <div class="form-group-label mb-2">
         <label for="name">Cost</label>
         <span v-if="itineraryStore.errors.hotel_cost">{{ itineraryStore.errors.hotel_cost }}</span>
       </div>
@@ -95,17 +97,17 @@ mindate = getDate()
             type="Number"
             id="name"
             placeholder=""
-            autofocus
+            class="py-2 ps-3"
             v-model="itineraryStore.hotel_cost"
           />
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col d-flex">
+    <div class="row mb-4 people_row">
+      <div class="col d-flex ">
         <label for="exampleFormControlInput1" class="form-label my-auto">Room</label>
-        <div class="input-group">
+        <div class="input-group ">
           <span class="input-group-btn">
             <button
               type="button"
@@ -197,10 +199,125 @@ mindate = getDate()
         </div>
       </div>
     </div>
+    <div class="dropdown d-lg-none" >
+  <button type="button" class="btn btn-white dropdown-toggle border border-secondary w-100" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+    {{ itineraryStore.adult }} adults, {{ itineraryStore.child }} child,
+    {{ itineraryStore.room }} rooms
+  </button>
+  <div class="dropdown-menu p-4 w-50" onsubmit="event.preventDefault()">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label my-auto">Room</label>
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button
+              type="button"
+              class="btn btn-default btn-number"
+              data-type="minus"
+              @click="changeCounter('-1', 'room')"
+            >
+              <i class="fa fa-minus"></i>
+            </button>
+          </span>
+          <input
+            type="text"
+            name="quant[1]"
+            v-model="itineraryStore.room"
+            class="form-control input-number px-2"
+          />
+          <span class="input-group-btn">
+            <button
+              type="button"
+              class="btn btn-default btn-number"
+              @click="changeCounter('1', 'room')"
+            >
+              <i class="fa fa-plus"></i>
+            </button>
+          </span>
+        </div>
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label my-auto">Adult</label>
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button
+              type="button"
+              class="btn btn-default btn-number"
+              data-type="minus"
+              @click="changeCounter('-1', 'adult')"
+            >
+              <i class="fa fa-minus"></i>
+            </button>
+          </span>
+          <input
+            type="text"
+            name="quant[1]"
+            class="form-control input-number px-2"
+            v-model="itineraryStore.adult"
+          />
+          <span class="input-group-btn">
+            <button
+              type="button"
+              class="btn btn-default btn-number"
+              data-type="plus"
+              @click="changeCounter('1', 'adult')"
+            >
+              <i class="fa fa-plus"></i>
+            </button>
+          </span>
+        </div>
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label my-auto">Child</label>
+        <div class="input-group">
+          <span class="input-group-btn">
+            <button
+              type="button"
+              class="btn btn-default btn-number"
+              data-type="minus"
+              @click="changeCounter('-1', 'child')"
+            >
+              <i class="fa fa-minus"></i>
+            </button>
+          </span>
+          <input
+            type="text"
+            name="quant[1]"
+            class="form-control input-number px-2"
+            v-model="itineraryStore.child"
+          />
+          <span class="input-group-btn">
+            <button
+              type="button"
+              class="btn btn-default btn-number"
+              data-type="plus"
+              @click="changeCounter('1', 'child')"
+            >
+              <i class="fa fa-plus"></i>
+            </button>
+          </span>
+        </div>
+    </div>
+  
+   
+  </div>
+</div>
+
+
+
+
   </div>
 </template>
 
 <style scoped>
+
+h2,p{
+  font-family: 'Ubuntu';
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../assets/fonts/Ubuntu-Regular.ttf") format("truetype");
+}
+
 h2 {
   font-size: 2.5rem;
   font-weight: 600;
@@ -210,10 +327,6 @@ h2 {
 p {
   font-size: 18px;
   color: var(--cool-gray);
-}
-
-.form-group {
-  /* margin-bottom: 40px; */
 }
 
 .form-group label {
@@ -258,5 +371,27 @@ p {
 .form-group-label span {
   color: var(--strawberry-red);
   font-size: 14px;
+}
+
+*{
+    color:black;
+}
+
+@media only screen and (max-width: 991px) {
+    .people_row {
+    display:none
+    /* padding: 60px 40px; */
+}
+}
+
+</style>
+
+<style lang="scss">
+.dp-custom-input {
+  border: 1px solid var(--cool-gray);
+
+  &:focus {
+    border: 1px solid var(--purplish-blue);
+  }
 }
 </style>

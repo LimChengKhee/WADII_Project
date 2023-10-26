@@ -280,7 +280,7 @@ body {
 }
 
 * {
-  color: white;
+  /* color: white; */
   font-weight: var(--menu-background-color);
 }
 

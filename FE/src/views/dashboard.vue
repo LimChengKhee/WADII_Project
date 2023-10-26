@@ -203,7 +203,7 @@ export default {
 </script>
   
   
-<style>
+<style scoped>
 .img-circle {
   height: 200px;
   border: 2px solid black;

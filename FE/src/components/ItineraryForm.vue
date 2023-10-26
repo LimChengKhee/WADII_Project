@@ -82,16 +82,17 @@ export default {
 </script>
 
 <template>
-  <div class="row">
-    <div class="">
-      <h2>Plan your itinerary</h2>
+  <div >
+    <div class="text-start">
+      <h2 class="mt-3  d-none d-md-block">Plan your itinerary</h2>
+      <h2 class="d-md-none mt-3">Itinerary</h2>
       <p>Please provide your information.</p>
     </div>
 
     
 
-    <div class="form-group">
-      <div class="form-group-label">
+    <div class="form-group mb-4">
+      <div class="form-group-label mb-2">
         <label for="search">Destination</label>
         <span v-if="itineraryStore.errors.arrival_country">{{
           itineraryStore.errors.arrival_country
@@ -102,23 +103,27 @@ export default {
         id="search"
         placeholder="Where to?"
         v-model="itineraryStore.arrival_country"
+        class="py-2 ps-3"
         @input="getCountry"
       /> 
       <div class="list-group d-none" :id="'country'"></div>
       
     </div>
 
-    <div class="form-group">
-      <div class="form-group-label">
+    <div class="form-group mb-4">
+      <div class="form-group-label mb-2">
         <label for="name">Dates</label>
         <span v-if="itineraryStore.errors.trip_date">{{ itineraryStore.errors.trip_date }}</span>
       </div>
       <Datepicker
         v-model="itineraryStore.trip_date"
+        input-class-name="dp-custom-input py-2 rounded-3"
         placeholder="Start Date | End Date"
         :enable-time-picker="false"
         :min-date="mindate"
+        :teleport="true"
         range
+        
       />
       
     </div>
@@ -126,20 +131,26 @@ export default {
 </template>
 
 <style scoped>
+h2,p{
+  font-family: 'Ubuntu';
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../assets/fonts/Ubuntu-Regular.ttf") format("truetype");
+}
 h2 {
   font-size: 2.5rem;
   font-weight: 600;
-  /* padding: 20px 0; */
 }
 
 p {
   font-size: 18px;
-  /* margin-bottom: 60px; */
   color: var(--cool-gray);
 }
 
-.form-group {
-  /* margin-bottom: 40px; */
+.dp-custom{
+
+  color: red;
 }
 
 .form-group label {
@@ -181,8 +192,21 @@ p {
   align-items: center;
 }
 
+
 .form-group-label span {
   color: var(--strawberry-red);
   font-size: 14px;
 }
+
 </style>
+
+<style lang="scss">
+.dp-custom-input {
+  border: 1px solid var(--cool-gray);
+
+  &:focus {
+    border: 1px solid var(--purplish-blue);
+  }
+}
+</style>
+

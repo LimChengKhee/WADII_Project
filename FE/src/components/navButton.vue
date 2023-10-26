@@ -12,6 +12,10 @@ var userid = localStorage.getItem('userid')
 var token = localStorage.getItem('token')
 
  async function nextLocation(){
+    itineraryStore.validateH()
+    if (itineraryStore.errors.hotel  ) {
+            return;
+        }
     let itinerary_name =  await itineraryStore.createitinerary();
     // var itinerary_name = "Eleventh"
     console.log(itinerary_name)
@@ -28,7 +32,7 @@ const nextStep = () => {
     if (stepStore.step == 1) {
         console.log(itineraryStore.arrival_country);
         itineraryStore.validateAll();
-        if (itineraryStore.errors.arrival_country ) {
+        if (itineraryStore.errors.arrival_country|| itineraryStore.errors.trip_date ) {
             return;
         }
     }
@@ -46,17 +50,13 @@ const nextStep = () => {
 
 <template>
     <div class="nav-buttons">
-        <button v-if="stepStore.step > 1" @click="stepStore.previousStep()" class="button prev-button">Go Back</button>
-        <button v-if="stepStore.step < 3" @click="nextStep()" class="button next-button">Next Step</button>
-        <button v-if="stepStore.step == 3" @click="nextLocation()" class="button confirm-button">Confirm</button>
+        <button v-if="stepStore.step > 1" @click="stepStore.previousStep()" class="button prev-button float-start  d-flex flex-row mt-auto mx-auto">Go Back</button>
+        <button v-if="stepStore.step < 3" @click="nextStep()" class="button next-button float-end">Next Step</button>
+        <button v-if="stepStore.step == 3" @click="nextLocation()" class="button confirm-button float-end">Confirm</button>
     </div>
 </template>
 
 <style scoped>
-.nav-buttons {
-    /* position: relative;
-    bottom: 20px; */
-}
 
 .button {
     /* position: absolute; */
@@ -100,4 +100,80 @@ const nextStep = () => {
 .confirm-button:hover {
     opacity: 0.8;
 }
+@media only screen and (min-width: 992px) {
+
+    .prev-button{
+    position:absolute;
+    bottom: 0%;
+    left:25%;
+  }
+  .next-button{
+    position:absolute;
+    bottom: 0%;
+    right:7%;
+  }
+  .confirm-button{
+    position:absolute;
+    bottom: 0%;
+    right:7%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+    .prev-button{
+    position:absolute;
+    bottom: 0%;
+    left:25%;
+  }
+  .next-button{
+    position:absolute;
+    bottom: 0%;
+    right:7%;
+  }
+  .confirm-button{
+    position:absolute;
+    bottom: 0%;
+    right:7%;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+
+  .prev-button{
+    position:absolute;
+    bottom: 0%;
+    left:-6%;
+  }
+  .next-button{
+    position:absolute;
+    bottom: 0%;
+    right:0%;
+  }
+  .confirm-button{
+    position:absolute;
+    bottom: 0%;
+    right:7%;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+
+.prev-button{
+  position:absolute;
+  bottom: 0%;
+  left:-6%;
+}
+.next-button{
+  position:absolute;
+  bottom: 0%;
+  right:0%;
+}
+.confirm-button{
+  position:absolute;
+  bottom: 0%;
+  right:7%;
+}
+}
+
+
 </style>
