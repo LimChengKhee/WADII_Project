@@ -3,7 +3,6 @@
     <h2>Line Chart</h2>
     <div id="chartContainer">
       <svg ref="chart"></svg>
-      <button @click="test">test</button>
     </div>
   </div>
 </template>
@@ -67,17 +66,24 @@ export default {
       if (this.dataLC.length === 0) {
         return; // Check if the data array is empty
       }
+      this.dataLC.sort((a, b) => {
+    const dateA = new Date(a.itinerary_data.itinerary_data.destination.start_date);
+    const dateB = new Date(b.itinerary_data.itinerary_data.destination.start_date);
+    return dateA - dateB;
+  });
 
       const container = d3.select("#chartContainer");
       container.select("svg").remove();
       const containerWidth = container.node().getBoundingClientRect().width;
-      const margin = { top: 20, right: 60, bottom: 40, left: 60 };
+      const margin = { top: 20, right: 100, bottom: 40, left: 100 };
       const width = Math.min(this.screenWidth, containerWidth) - margin.left - margin.right;
       const height = 500 - margin.top - margin.bottom;
 
       const svg = d3
         .select("#chartContainer")
         .append("svg")
+        .style("color", "white")
+        .attr("border-radius", "15px")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom);
 
@@ -101,7 +107,10 @@ export default {
       svg.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
-        .style("fill", "url(#svgGradient)");
+        .style("fill", "#204E59")
+        .attr("rx", "15") // Horizontal radius for rounded corners
+        .attr("ry", "15"); // Vertical radius for rounded corners
+
 
 
       const g = svg.append("g")
@@ -132,12 +141,25 @@ export default {
         .x(d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
         .y(d => y(d.itinerary_data.itinerary_data.hotels[0].cost));
 
+
       g.append("path")
         .datum(this.dataLC)
         .attr("fill", "none")
-        .attr("stroke", "red")
+        .attr("stroke", "#C8EE51")
         .attr("stroke-width", 3)
         .attr("d", line);
+
+      g.selectAll(".verticalLines")
+        .data(this.dataLC)
+        .enter()
+        .append("line")
+        .attr("class", "verticalLines")
+        .attr("x1", d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
+        .attr("x2", d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
+        .attr("y1", height)
+        .attr("y2", d => y(d.itinerary_data.itinerary_data.hotels[0].cost))
+        .style("stroke", "gray")
+        .style("stroke-dasharray", "3,3");
 
       g.selectAll("dot")
         .data(this.dataLC)
@@ -147,18 +169,41 @@ export default {
         .attr("cy", d => y(d.itinerary_data.itinerary_data.hotels[0].cost))
         .attr("r", 5)
         .attr("fill", "steelblue")
-        .on("mouseover", function (event, d) {
+       .on("mouseover", function (event, d) {
           const xPos = x(parseTime(d.itinerary_data.itinerary_data.destination.start_date));
           const yPos = y(d.itinerary_data.itinerary_data.hotels[0].cost);
 
-          g.append("foreignObject")
-            .attr("x", xPos + 10) // Adjust the x-position relative to the data point
-            .attr("y", yPos - 10) // Adjust the y-position relative to the data point
-            .attr("width", 250) // Adjust the width of the description box
-            .attr("height", 50) // Adjust the height of the description box
+          const containerRect = g.node().getBoundingClientRect();
+          const containerLeft = containerRect.left;
+          const containerTop = containerRect.top;
+
+          const descriptionWidth = 250;
+          const descriptionHeight = 50;
+
+          const maxPosX = containerRect.width - descriptionWidth - 10;
+          const maxPosY = containerRect.height - descriptionHeight - 10;
+
+          const constrainedXPos = Math.max(10, Math.min(maxPosX, xPos + 10));
+          const constrainedYPos = Math.max(10, Math.min(maxPosY, yPos - 10));
+
+          const foreignObject = g.select(".description-box");
+
+          if (!foreignObject.empty()) {
+            foreignObject.remove();
+          }
+
+          const foreignObjectGroup = g.append("g")
+            .attr("class", "description-box")
+            .attr("transform", `translate(${constrainedXPos},${constrainedYPos})`);
+
+          foreignObjectGroup
+            .append("foreignObject")
+            .attr("width", descriptionWidth)
+            .attr("height", descriptionHeight)
             .append("xhtml:div")
             .style("position", "absolute")
             .style("background", "white")
+            .style("color", "black")
             .style("padding", "5px")
             .style("border", "1px solid #333")
             .text(`Date: ${d.itinerary_data.itinerary_data.destination.start_date}, cost: ${d.itinerary_data.itinerary_data.hotels[0].cost}`);
@@ -183,14 +228,15 @@ export default {
             .style("stroke-dasharray", "3,3");
         })
         .on("mouseout", function () {
-          d3.select("#chartContainer").select("div").remove();
+          g.selectAll(".description-box").remove();
           d3.select(".x-hover-line").remove();
           d3.select(".y-hover-line").remove();
         });
-
       g.append("g")
+        .attr("style", "color: white;")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).tickFormat(formatTime).ticks(this.dataLC.length));
+
 
       g.append("g")
         .call(d3.axisLeft(y).tickSizeOuter(0))
@@ -200,7 +246,7 @@ export default {
 
       // Style x-axis labels
       svg.selectAll(".tick text")
-        .attr("fill", "black")
+        .attr("fill", "white")
         .attr("text-anchor", "middle")
         .attr("dy", "1em");
     },
@@ -225,5 +271,9 @@ export default {
 * {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: bold;
+}
+
+h2{
+  color: white;
 }
 </style>

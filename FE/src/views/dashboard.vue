@@ -1,34 +1,33 @@
 <template>
   <div class="container-fluid">
-    <div class="row d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="row d-flex justify-content-center align-items-center my-4" >
       <div class="col-lg-3">
-        <div class="rounded-rectangle p-4" style="background-color: white;">
+        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
           <!-- Your content goes here -->
           <Totaltrips :dataTT="fetchedData" />
         </div>
       </div>
       <div class="col-lg-3">
-        <div class="rounded-rectangle p-4" style="background-color: white;">
+        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
           <!-- Your content goes here -->
           <TotalCarbonFootprint :dataCP="fetchedData" />
         </div>
       </div>
       <div class="col-lg-3">
-        <div class="rounded-rectangle p-4" style="background-color: white;">
+        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
           <!-- Your content goes here -->
-          <h1 class="text-center">Rounded White Rectangle</h1>
-          <p class="text-center">This is a rounded white rectangle in the middle of the screen.</p>
+          <Totaltrips :dataTT="fetchedData" />
         </div>
       </div>
       <div class="col-lg-3">
-        <div class="rounded-rectangle p-4" style="background-color: white;">
+        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
           <!-- Your content goes here -->
-          <h1 class="text-center">Rounded White Rectangle</h1>
-          <p class="text-center">This is a rounded white rectangle in the middle of the screen.</p>
+          <TotalCarbonFootprint :dataCP="fetchedData" />
         </div>
+
       </div>
     </div>
-    <div class="row">
+    <div class="row my-4">
       <Linechart :dataLC="fetchedData" />
     </div>
 
