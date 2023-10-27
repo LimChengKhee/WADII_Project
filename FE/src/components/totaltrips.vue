@@ -1,6 +1,7 @@
 <template>
   <div class="total-trips-pill">
-    <h2>Total Trips Travelled: {{ totalTrips }}</h2>
+    <p>Total Trips Travelled:</p>
+    <p><span style="font-size:40px  ;">{{ totalTrips }}</span></p>
   </div>
 </template>
   
@@ -60,8 +61,11 @@ export default {
 <style scoped>
 .total-trips-pill {
   display: flex;
-  justify-content: center;
-  align-items: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin:0;
 
 }
 </style>

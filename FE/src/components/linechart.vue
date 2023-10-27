@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2>Line Chart</h2>
     <div id="chartContainer">
       <svg ref="chart"></svg>
@@ -37,7 +37,7 @@ export default {
     // this.dataLC = await userStore.getItinerary(this.userid, this.token);
 
 
-    this.drawChart();
+    
     window.addEventListener('resize', this.handleResize);
 
 
@@ -229,7 +229,6 @@ export default {
             .style("border", "1px solid #333")
             .text(`Date: ${d.itinerary_data.itinerary_data.destination.start_date}, cost: ${d.itinerary_data.itinerary_data.hotels[0].cost}`);
 
-
           // Dotted lines
           g.append("line")
             .attr("class", "x-hover-line hover-line")
@@ -259,6 +258,7 @@ export default {
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).tickFormat(formatTime).ticks(this.dataLC.length));
 
+        
 
       g.append("g")
         .call(d3.axisLeft(y).tickSizeOuter(0))
@@ -293,9 +293,21 @@ export default {
 </script>
 
 <style scoped>
+.container{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
 #chartContainer {
   width: 100%;
-  background-color: white;
+  max-width: 100%;
+
   padding: 20px;
   border-radius: 15px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);

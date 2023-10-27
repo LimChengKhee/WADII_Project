@@ -1,36 +1,37 @@
 <template>
   <div class="container-fluid">
-    <div class="row d-flex justify-content-center align-items-center my-4" >
-      <div class="col-lg-3">
-        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
+    <div class="row d-flex justify-content-center align-items-center my-4">
+      <div class="col-lg-4">
+        <div class="rounded-rectangle p-4 m-2" style="background-color:#5271FF;">
           <!-- Your content goes here -->
           <Totaltrips :dataTT="fetchedData" />
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
           <!-- Your content goes here -->
           <TotalCarbonFootprint :dataCP="fetchedData" />
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
           <!-- Your content goes here -->
           <Totaltrips :dataTT="fetchedData" />
         </div>
       </div>
-      <div class="col-lg-3">
-        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
-          <!-- Your content goes here -->
-          <TotalCarbonFootprint :dataCP="fetchedData" />
-        </div>
 
-      </div>
     </div>
     <div class="row my-4">
-      <Linechart :dataLC="fetchedData" />
-    </div>
+      <div class="col-9 d-flex justify-content-center">
+        <Linechart :dataLC="fetchedData" />
+      </div>
 
+      <div class="col-3 d-flex justify-content-center align-items-center">
+        <div class="rounded-rectangle p-4 m-2" style="background-color: white; height:500px;">
+          <Piechart :dataPC="fetchedData" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
   
@@ -71,9 +72,6 @@ export default {
 
     // fetches the data 
     this.fetchedData = await userStore.getItinerary(this.userid, this.token);
-    console.log(this.fetchedData)
-
-
 
   },
 
@@ -199,6 +197,15 @@ export default {
   border-radius: 25px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  
 
+
+}
+
+* {
+  font-weight: bold;
 }
 </style>

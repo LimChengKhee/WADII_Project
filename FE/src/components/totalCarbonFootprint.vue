@@ -1,6 +1,8 @@
 <template>
     <div class="total-trips-pill">
-        <h2>Total Trips Travelled: {{ totalCarbonFootprint }}</h2>
+        <p>Total Carbon Footprint:</p>
+        <p><span style="font-size:40px;">{{ totalCarbonFootprint }}</span></p>
+        
     </div>
 </template>
   
@@ -36,6 +38,7 @@ export default {
         // this.totalCarbonFootprint = this.getInfo(this.data, 'carbon_fp');
 
     },
+    
     watch: {
         dataCP: {
             immediate: true,
@@ -51,6 +54,22 @@ export default {
 
 
     methods: {
+        updateChart() {
+        // Clear the existing chart
+        d3.select("#chart-container").selectAll("*").remove();
+
+        // Re-create the chart with updated data
+        const chart = dc.barChart("#chart-container");
+        chart
+          .dimension(this.dimension)
+          .group(this.dimension.group().reduceSum((d) => d.carbon_fp)) // Replace with your actual metric
+          .x(d3.scaleBand())
+          .xUnits(dc.units.ordinal)
+          .render();
+
+        // Call renderAll to render all charts
+        dc.renderAll();
+      },
         getInfo(data, category) {
             var total = 0
             for (let itinerary of data) {
@@ -103,8 +122,11 @@ export default {
 <style scoped>
 .total-trips-pill {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin:0;
 
 }
 </style>
