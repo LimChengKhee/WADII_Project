@@ -12,12 +12,10 @@
   "dependencies": {
     "@fawmi/vue-google-maps": "^0.9.79",
     "@googlemaps/js-api-loader": "^1.16.2",
+    "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^7.0.0",
     "axios": "^1.5.1",
     "bootstrap": "^5.3.1",
-    "@popperjs/core": "^2.11.8",
-
-
     "bootstrap-vue": "^2.23.1",
     "flush-promises": "^1.0.2",
     "font-awesome": "^4.7.0",
@@ -37,6 +35,6 @@
     "eslint-plugin-vue": "^9.16.1",
     "prettier": "^3.0.0",
     "sass": "^1.66.1",
-    "vite": "^4.4.9"
+    "vite": "^4.5.0"
   }
 }

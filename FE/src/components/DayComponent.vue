@@ -1,3 +1,5 @@
+<!-- eslint-disable no-redeclare -->
+<!-- eslint-disable vue/require-v-for-key -->
 <template>
 <div id="testingDiv"></div>
 <div v-for="day of days" :key='day.dayId'  class="row">
@@ -100,7 +102,7 @@
                                     <div class="card mb-3 px-0" style="max-width: 665px;">
                                         <div class="row g-0">
                                             <div class="col-md-4">
-                                                <img :src="rec.photo.getUrl({maxWidth:221})" class="img-fluid rounded-start" alt="...">
+                                                <img :src="getImage(rec.photo)" class="img-fluid rounded-start" alt="...">
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="card-body row">
@@ -168,7 +170,7 @@
                                 <div v-for="(rec,index) in slicedRecs" class="card mb-3 px-0" style="max-width: 665px;">
                                     <div class="row g-0">
                                         <div class="col-md-4">
-                                            <img :src="rec.photo.getUrl({maxWidth:221})" class="img-fluid rounded-start" alt="...">
+                                            <img :src="getImage(rec.photo)" class="img-fluid rounded-start" alt="...">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body row">
@@ -260,7 +262,7 @@
                         <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </span>
-                <input type="text" @input="placeAutocomplete" v-on:place_changed="selectedPlace" class="form-control" placeholder="Add a place" :aria-describedby="'Day' + day.dayId + 'EndLocationInput'">
+                <input type="text" @input="processAutocomplete" class="form-control" placeholder="Add a place" :aria-describedby="'Day' + day.dayId + 'EndLocationInput'">
                 <div class="dropend">
                     <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" style="height:38px;">Custom events</button>
                     <form class="dropdown-menu dropdown-menu-start p-4" style="width:50%;" data-bs-theme="dark">
@@ -277,7 +279,7 @@
                 </div>
             </div>
             <div v-if="predictionList" class="list-group" :id="'Day' + day.dayId + 'EndPredictionList'">
-                <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction.place_id)">{{prediction.description}}</button>
+                <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction)">{{prediction.description}}</button>
             </div>
         </div>
     </div>
@@ -339,262 +341,264 @@ data () {
                 'Tourist attractions':'tourist_attraction',
                 'Zoos':'zoo'
             },
-            countryList: {
-                'Afghanistan': 'AF',
-                'Aland Islands': 'AX',
-                'Albania': 'AL',
-                'Algeria': 'DZ',
-                'American Samoa': 'AS',
-                'Andorra': 'AD',
-                'Angola': 'AO',
-                'Anguilla': 'AI',
-                'Antarctica': 'AQ',
-                'Antigua And Barbuda': 'AG',
-                'Argentina': 'AR',
-                'Armenia': 'AM',
-                'Aruba': 'AW',
-                'Australia': 'AU',
-                'Austria': 'AT',
-                'Azerbaijan': 'AZ',
-                'Bahamas': 'BS',
-                'Bahrain': 'BH',
-                'Bangladesh': 'BD',
-                'Barbados': 'BB',
-                'Belarus': 'BY',
-                'Belgium': 'BE',
-                'Belize': 'BZ',
-                'Benin': 'BJ',
-                'Bermuda': 'BM',
-                'Bhutan': 'BT',
-                'Bolivia': 'BO',
-                'Bosnia And Herzegovina': 'BA',
-                'Botswana': 'BW',
-                'Bouvet Island': 'BV',
-                'Brazil': 'BR',
-                'British Indian Ocean Territory': 'IO',
-                'Brunei Darussalam': 'BN',
-                'Bulgaria': 'BG',
-                'Burkina Faso': 'BF',
-                'Burundi': 'BI',
-                'Cambodia': 'KH',
-                'Cameroon': 'CM',
-                'Canada': 'CA',
-                'Cape Verde': 'CV',
-                'Cayman Islands': 'KY',
-                'Central African Republic': 'CF',
-                'Chad': 'TD',
-                'Chile': 'CL',
-                'China': 'CN',
-                'Christmas Island': 'CX',
-                'Cocos (Keeling) Islands': 'CC',
-                'Colombia': 'CO',
-                'Comoros': 'KM',
-                'Congo': 'CG',
-                'Congo, Democratic Republic': 'CD',
-                'Cook Islands': 'CK',
-                'Costa Rica': 'CR',
-                "Cote D'Ivoire": 'CI',
-                'Croatia': 'HR',
-                'Cuba': 'CU',
-                'Cyprus': 'CY',
-                'Czech Republic': 'CZ',
-                'Denmark': 'DK',
-                'Djibouti': 'DJ',
-                'Dominica': 'DM',
-                'Dominican Republic': 'DO',
-                'Ecuador': 'EC',
-                'Egypt': 'EG',
-                'El Salvador': 'SV',
-                'Equatorial Guinea': 'GQ',
-                'Eritrea': 'ER',
-                'Estonia': 'EE',
-                'Ethiopia': 'ET',
-                'Falkland Islands (Malvinas)': 'FK',
-                'Faroe Islands': 'FO',
-                'Fiji': 'FJ',
-                'Finland': 'FI',
-                'France': 'FR',
-                'French Guiana': 'GF',
-                'French Polynesia': 'PF',
-                'French Southern Territories': 'TF',
-                'Gabon': 'GA',
-                'Gambia': 'GM',
-                'Georgia': 'GE',
-                'Germany': 'DE',
-                'Ghana': 'GH',
-                'Gibraltar': 'GI',
-                'Greece': 'GR',
-                'Greenland': 'GL',
-                'Grenada': 'GD',
-                'Guadeloupe': 'GP',
-                'Guam': 'GU',
-                'Guatemala': 'GT',
-                'Guernsey': 'GG',
-                'Guinea': 'GN',
-                'Guinea-Bissau': 'GW',
-                'Guyana': 'GY',
-                'Haiti': 'HT',
-                'Heard Island & Mcdonald Islands': 'HM',
-                'Holy See (Vatican City State)': 'VA',
-                'Honduras': 'HN',
-                'Hong Kong': 'HK',
-                'Hungary': 'HU',
-                'Iceland': 'IS',
-                'India': 'IN',
-                'Indonesia': 'ID',
-                'Iran, Islamic Republic Of': 'IR',
-                'Iraq': 'IQ',
-                'Ireland': 'IE',
-                'Isle Of Man': 'IM',
-                'Israel': 'IL',
-                'Italy': 'IT',
-                'Jamaica': 'JM',
-                'Japan': 'JP',
-                'Jersey': 'JE',
-                'Jordan': 'JO',
-                'Kazakhstan': 'KZ',
-                'Kenya': 'KE',
-                'Kiribati': 'KI',
-                'Korea': 'KR',
-                'Kuwait': 'KW',
-                'Kyrgyzstan': 'KG',
-                "Lao People's Democratic Republic": 'LA',
-                'Latvia': 'LV',
-                'Lebanon': 'LB',
-                'Lesotho': 'LS',
-                'Liberia': 'LR',
-                'Libyan Arab Jamahiriya': 'LY',
-                'Liechtenstein': 'LI',
-                'Lithuania': 'LT',
-                'Luxembourg': 'LU',
-                'Macao': 'MO',
-                'Macedonia': 'MK',
-                'Madagascar': 'MG',
-                'Malawi': 'MW',
-                'Malaysia': 'MY',
-                'Maldives': 'MV',
-                'Mali': 'ML',
-                'Malta': 'MT',
-                'Marshall Islands': 'MH',
-                'Martinique': 'MQ',
-                'Mauritania': 'MR',
-                'Mauritius': 'MU',
-                'Mayotte': 'YT',
-                'Mexico': 'MX',
-                'Micronesia, Federated States Of': 'FM',
-                'Moldova': 'MD',
-                'Monaco': 'MC',
-                'Mongolia': 'MN',
-                'Montenegro': 'ME',
-                'Montserrat': 'MS',
-                'Morocco': 'MA',
-                'Mozambique': 'MZ',
-                'Myanmar': 'MM',
-                'Namibia': 'NA',
-                'Nauru': 'NR',
-                'Nepal': 'NP',
-                'Netherlands': 'NL',
-                'Netherlands Antilles': 'AN',
-                'New Caledonia': 'NC',
-                'New Zealand': 'NZ',
-                'Nicaragua': 'NI',
-                'Niger': 'NE',
-                'Nigeria': 'NG',
-                'Niue': 'NU',
-                'Norfolk Island': 'NF',
-                'Northern Mariana Islands': 'MP',
-                'Norway': 'NO',
-                'Oman': 'OM',
-                'Pakistan': 'PK',
-                'Palau': 'PW',
-                'Palestinian Territory, Occupied': 'PS',
-                'Panama': 'PA',
-                'Papua New Guinea': 'PG',
-                'Paraguay': 'PY',
-                'Peru': 'PE',
-                'Philippines': 'PH',
-                'Pitcairn': 'PN',
-                'Poland': 'PL',
-                'Portugal': 'PT',
-                'Puerto Rico': 'PR',
-                'Qatar': 'QA',
-                'Reunion': 'RE',
-                'Romania': 'RO',
-                'Russian Federation': 'RU',
-                'Rwanda': 'RW',
-                'Saint Barthelemy': 'BL',
-                'Saint Helena': 'SH',
-                'Saint Kitts And Nevis': 'KN',
-                'Saint Lucia': 'LC',
-                'Saint Martin': 'MF',
-                'Saint Pierre And Miquelon': 'PM',
-                'Saint Vincent And Grenadines': 'VC',
-                'Samoa': 'WS',
-                'San Marino': 'SM',
-                'Sao Tome And Principe': 'ST',
-                'Saudi Arabia': 'SA',
-                'Senegal': 'SN',
-                'Serbia': 'RS',
-                'Seychelles': 'SC',
-                'Sierra Leone': 'SL',
-                'Singapore': 'SG',
-                'Slovakia': 'SK',
-                'Slovenia': 'SI',
-                'Solomon Islands': 'SB',
-                'Somalia': 'SO',
-                'South Africa': 'ZA',
-                'South Georgia And Sandwich Isl.': 'GS',
-                'Spain': 'ES',
-                'Sri Lanka': 'LK',
-                'Sudan': 'SD',
-                'Suriname': 'SR',
-                'Svalbard And Jan Mayen': 'SJ',
-                'Swaziland': 'SZ',
-                'Sweden': 'SE',
-                'Switzerland': 'CH',
-                'Syrian Arab Republic': 'SY',
-                'Taiwan': 'TW',
-                'Tajikistan': 'TJ',
-                'Tanzania': 'TZ',
-                'Thailand': 'TH',
-                'Timor-Leste': 'TL',
-                'Togo': 'TG',
-                'Tokelau': 'TK',
-                'Tonga': 'TO',
-                'Trinidad And Tobago': 'TT',
-                'Tunisia': 'TN',
-                'Turkey': 'TR',
-                'Turkmenistan': 'TM',
-                'Turks And Caicos Islands': 'TC',
-                'Tuvalu': 'TV',
-                'Uganda': 'UG',
-                'Ukraine': 'UA',
-                'United Arab Emirates': 'AE',
-                'United Kingdom': 'GB',
-                'United States': 'US',
-                'United States Outlying Islands': 'UM',
-                'Uruguay': 'UY',
-                'Uzbekistan': 'UZ',
-                'Vanuatu': 'VU',
-                'Venezuela': 'VE',
-                'Viet Nam': 'VN',
-                'Virgin Islands, British': 'VG',
-                'Virgin Islands, U.S.': 'VI',
-                'Wallis And Futuna': 'WF',
-                'Western Sahara': 'EH',
-                'Yemen': 'YE',
-                'Zambia': 'ZM',
-                'Zimbabwe': 'ZW',
-                'North Macedonia': 'MK',
-                'Češka': 'CZ'
-            },
-            country: "Australia",
-            predictionList: [],
-            autocomplete: '',
-            selectedTypes: ['amusement_park','aquarium', 'art_gallery','bakery','bar','bicycle_store','book_store', 
-            'bowling_alley','cafe','casino','clothing_store','electronics_store','florist','gym', 'jewelry_store',
-            'library','movie_theater','museum', 'night_club','park','restaurant','shopping_mall','spa','stadium',
-            'tourist_attraction','zoo'],
+        countryList: {
+            'Afghanistan': 'AF',
+            'Aland Islands': 'AX',
+            'Albania': 'AL',
+            'Algeria': 'DZ',
+            'American Samoa': 'AS',
+            'Andorra': 'AD',
+            'Angola': 'AO',
+            'Anguilla': 'AI',
+            'Antarctica': 'AQ',
+            'Antigua And Barbuda': 'AG',
+            'Argentina': 'AR',
+            'Armenia': 'AM',
+            'Aruba': 'AW',
+            'Australia': 'AU',
+            'Austria': 'AT',
+            'Azerbaijan': 'AZ',
+            'Bahamas': 'BS',
+            'Bahrain': 'BH',
+            'Bangladesh': 'BD',
+            'Barbados': 'BB',
+            'Belarus': 'BY',
+            'Belgium': 'BE',
+            'Belize': 'BZ',
+            'Benin': 'BJ',
+            'Bermuda': 'BM',
+            'Bhutan': 'BT',
+            'Bolivia': 'BO',
+            'Bosnia And Herzegovina': 'BA',
+            'Botswana': 'BW',
+            'Bouvet Island': 'BV',
+            'Brazil': 'BR',
+            'British Indian Ocean Territory': 'IO',
+            'Brunei Darussalam': 'BN',
+            'Bulgaria': 'BG',
+            'Burkina Faso': 'BF',
+            'Burundi': 'BI',
+            'Cambodia': 'KH',
+            'Cameroon': 'CM',
+            'Canada': 'CA',
+            'Cape Verde': 'CV',
+            'Cayman Islands': 'KY',
+            'Central African Republic': 'CF',
+            'Chad': 'TD',
+            'Chile': 'CL',
+            'China': 'CN',
+            'Christmas Island': 'CX',
+            'Cocos (Keeling) Islands': 'CC',
+            'Colombia': 'CO',
+            'Comoros': 'KM',
+            'Congo': 'CG',
+            'Congo, Democratic Republic': 'CD',
+            'Cook Islands': 'CK',
+            'Costa Rica': 'CR',
+            "Cote D'Ivoire": 'CI',
+            'Croatia': 'HR',
+            'Cuba': 'CU',
+            'Cyprus': 'CY',
+            'Czech Republic': 'CZ',
+            'Denmark': 'DK',
+            'Djibouti': 'DJ',
+            'Dominica': 'DM',
+            'Dominican Republic': 'DO',
+            'Ecuador': 'EC',
+            'Egypt': 'EG',
+            'El Salvador': 'SV',
+            'Equatorial Guinea': 'GQ',
+            'Eritrea': 'ER',
+            'Estonia': 'EE',
+            'Ethiopia': 'ET',
+            'Falkland Islands (Malvinas)': 'FK',
+            'Faroe Islands': 'FO',
+            'Fiji': 'FJ',
+            'Finland': 'FI',
+            'France': 'FR',
+            'French Guiana': 'GF',
+            'French Polynesia': 'PF',
+            'French Southern Territories': 'TF',
+            'Gabon': 'GA',
+            'Gambia': 'GM',
+            'Georgia': 'GE',
+            'Germany': 'DE',
+            'Ghana': 'GH',
+            'Gibraltar': 'GI',
+            'Greece': 'GR',
+            'Greenland': 'GL',
+            'Grenada': 'GD',
+            'Guadeloupe': 'GP',
+            'Guam': 'GU',
+            'Guatemala': 'GT',
+            'Guernsey': 'GG',
+            'Guinea': 'GN',
+            'Guinea-Bissau': 'GW',
+            'Guyana': 'GY',
+            'Haiti': 'HT',
+            'Heard Island & Mcdonald Islands': 'HM',
+            'Holy See (Vatican City State)': 'VA',
+            'Honduras': 'HN',
+            'Hong Kong': 'HK',
+            'Hungary': 'HU',
+            'Iceland': 'IS',
+            'India': 'IN',
+            'Indonesia': 'ID',
+            'Iran, Islamic Republic Of': 'IR',
+            'Iraq': 'IQ',
+            'Ireland': 'IE',
+            'Isle Of Man': 'IM',
+            'Israel': 'IL',
+            'Italy': 'IT',
+            'Jamaica': 'JM',
+            'Japan': 'JP',
+            'Jersey': 'JE',
+            'Jordan': 'JO',
+            'Kazakhstan': 'KZ',
+            'Kenya': 'KE',
+            'Kiribati': 'KI',
+            'Korea': 'KR',
+            'Kuwait': 'KW',
+            'Kyrgyzstan': 'KG',
+            "Lao People's Democratic Republic": 'LA',
+            'Latvia': 'LV',
+            'Lebanon': 'LB',
+            'Lesotho': 'LS',
+            'Liberia': 'LR',
+            'Libyan Arab Jamahiriya': 'LY',
+            'Liechtenstein': 'LI',
+            'Lithuania': 'LT',
+            'Luxembourg': 'LU',
+            'Macao': 'MO',
+            'Macedonia': 'MK',
+            'Madagascar': 'MG',
+            'Malawi': 'MW',
+            'Malaysia': 'MY',
+            'Maldives': 'MV',
+            'Mali': 'ML',
+            'Malta': 'MT',
+            'Marshall Islands': 'MH',
+            'Martinique': 'MQ',
+            'Mauritania': 'MR',
+            'Mauritius': 'MU',
+            'Mayotte': 'YT',
+            'Mexico': 'MX',
+            'Micronesia, Federated States Of': 'FM',
+            'Moldova': 'MD',
+            'Monaco': 'MC',
+            'Mongolia': 'MN',
+            'Montenegro': 'ME',
+            'Montserrat': 'MS',
+            'Morocco': 'MA',
+            'Mozambique': 'MZ',
+            'Myanmar': 'MM',
+            'Namibia': 'NA',
+            'Nauru': 'NR',
+            'Nepal': 'NP',
+            'Netherlands': 'NL',
+            'Netherlands Antilles': 'AN',
+            'New Caledonia': 'NC',
+            'New Zealand': 'NZ',
+            'Nicaragua': 'NI',
+            'Niger': 'NE',
+            'Nigeria': 'NG',
+            'Niue': 'NU',
+            'Norfolk Island': 'NF',
+            'Northern Mariana Islands': 'MP',
+            'Norway': 'NO',
+            'Oman': 'OM',
+            'Pakistan': 'PK',
+            'Palau': 'PW',
+            'Palestinian Territory, Occupied': 'PS',
+            'Panama': 'PA',
+            'Papua New Guinea': 'PG',
+            'Paraguay': 'PY',
+            'Peru': 'PE',
+            'Philippines': 'PH',
+            'Pitcairn': 'PN',
+            'Poland': 'PL',
+            'Portugal': 'PT',
+            'Puerto Rico': 'PR',
+            'Qatar': 'QA',
+            'Reunion': 'RE',
+            'Romania': 'RO',
+            'Russian Federation': 'RU',
+            'Rwanda': 'RW',
+            'Saint Barthelemy': 'BL',
+            'Saint Helena': 'SH',
+            'Saint Kitts And Nevis': 'KN',
+            'Saint Lucia': 'LC',
+            'Saint Martin': 'MF',
+            'Saint Pierre And Miquelon': 'PM',
+            'Saint Vincent And Grenadines': 'VC',
+            'Samoa': 'WS',
+            'San Marino': 'SM',
+            'Sao Tome And Principe': 'ST',
+            'Saudi Arabia': 'SA',
+            'Senegal': 'SN',
+            'Serbia': 'RS',
+            'Seychelles': 'SC',
+            'Sierra Leone': 'SL',
+            'Singapore': 'SG',
+            'Slovakia': 'SK',
+            'Slovenia': 'SI',
+            'Solomon Islands': 'SB',
+            'Somalia': 'SO',
+            'South Africa': 'ZA',
+            'South Georgia And Sandwich Isl.': 'GS',
+            'Spain': 'ES',
+            'Sri Lanka': 'LK',
+            'Sudan': 'SD',
+            'Suriname': 'SR',
+            'Svalbard And Jan Mayen': 'SJ',
+            'Swaziland': 'SZ',
+            'Sweden': 'SE',
+            'Switzerland': 'CH',
+            'Syrian Arab Republic': 'SY',
+            'Taiwan': 'TW',
+            'Tajikistan': 'TJ',
+            'Tanzania': 'TZ',
+            'Thailand': 'TH',
+            'Timor-Leste': 'TL',
+            'Togo': 'TG',
+            'Tokelau': 'TK',
+            'Tonga': 'TO',
+            'Trinidad And Tobago': 'TT',
+            'Tunisia': 'TN',
+            'Turkey': 'TR',
+            'Turkmenistan': 'TM',
+            'Turks And Caicos Islands': 'TC',
+            'Tuvalu': 'TV',
+            'Uganda': 'UG',
+            'Ukraine': 'UA',
+            'United Arab Emirates': 'AE',
+            'United Kingdom': 'GB',
+            'United States': 'US',
+            'United States Outlying Islands': 'UM',
+            'Uruguay': 'UY',
+            'Uzbekistan': 'UZ',
+            'Vanuatu': 'VU',
+            'Venezuela': 'VE',
+            'Viet Nam': 'VN',
+            'Virgin Islands, British': 'VG',
+            'Virgin Islands, U.S.': 'VI',
+            'Wallis And Futuna': 'WF',
+            'Western Sahara': 'EH',
+            'Yemen': 'YE',
+            'Zambia': 'ZM',
+            'Zimbabwe': 'ZW',
+            'North Macedonia': 'MK',
+            'Češka': 'CZ'
+        },
+        countryName: "Australia",
+        country: "",
+        predictionList: [],
+        autocomplete: '',
+        selectedTypes: ['amusement_park','aquarium', 'art_gallery','bakery','bar','bicycle_store','book_store', 
+        'bowling_alley','cafe','casino','clothing_store','electronics_store','florist','gym', 'jewelry_store',
+        'library','movie_theater','museum', 'night_club','park','restaurant','shopping_mall','spa','stadium',
+        'tourist_attraction','zoo'],
+        topAttractions: []
     }
 },
 computed: {
@@ -623,10 +627,20 @@ computed: {
 
 // start of lifecycle
 async mounted () {
-    this.country = this.getCountryCode(this.country)
+    this.country = this.getCountryCode(this.countryName)
+
 },
 
 methods: {
+    getImage(image){
+        if (image == ""){
+            return '/assets/img/DSC00769.jpg'
+        }else if (typeof(image) == 'object'){
+            return image.getUrl({maxWidth:221})
+        }else{
+            return '/assets/img/' + image
+        }
+    },
     getCountryCode(countryName){
         return this.countryList[countryName]
     },
@@ -640,7 +654,74 @@ methods: {
             'tourist_attraction','zoo']
         }
     },
-    // methods defined by ourselves
+    getTopAttractions(){
+        var search = "tourist attractions in " + this.countryName
+        for (let i=0;i<this.days.length;i++){
+            if (this.days[i].accoms[0]){
+                var search = "tourist attractions near " + this.days[i].accoms[0]
+                break
+            }
+        }
+        var attractionsCount = 0
+        var topAttractions = [];
+        return new Promise((resolve) => {
+            this.textSearch(search).then(resp =>{
+                for (let p of resp){
+                    if (attractionsCount == 9){
+                        resolve(topAttractions)
+                        break;
+                    }
+                    if (p.rating < 4 || p.user_ratings_total < 50){
+                        continue;
+                    }
+                    this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                        if (result == "No results"){
+                            var url = ""
+                        }else{
+                            var url = result.url
+                        }
+                        topAttractions.push({"name": p.name, "address" : p.formatted_address, "rating" : [p.rating,p.user_ratings_total], "photo" : p.photos[0], "url": url})
+                    })
+                    attractionsCount++;
+                }
+            })
+        })
+
+    },
+    async textSearch(kw){
+        var testDiv = document.getElementById('testingDiv');
+        const { PlacesService } = await google.maps.importLibrary('places');
+            var request = {
+                query: kw
+            }
+        var service = new PlacesService(testDiv);
+        var finished = false;
+        var pageCount = 0;
+        var final = []
+        return new Promise((resolve, reject) => {
+            service.textSearch(request, (results, status, pagination) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                if (pagination.hasNextPage && pageCount < 2) {
+                    final = final.concat(results) 
+                    pagination.nextPage(); // Fetches the next 20 results from the next page.
+                    pageCount += 1;
+                }else{
+                    final = final.concat(results)
+                    finished = true;
+                }
+                if (finished == true){
+                    resolve(final)
+                }
+            }
+            else if(status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
+                resolve("No valid results")
+            } 
+            else {
+                    reject(new Error(`Places service request failed with status: ${status}`));
+            }
+            });
+        });
+    },
     chooseBreakfastFunc(dayId){
         var range = this.distance * 1000
         var keyword = 'breakfast'
@@ -650,13 +731,17 @@ methods: {
         this.anyRecs = [1,0]
         this.findPlace(startAccoms,['geometry']).then(result=>
         {
-            console.log(result)
             this.nearbySearch(keyword,result,range).then(resp =>{
                 if (resp == "No valid results"){
                     this.anyRecs[1]++;
                 }else{
                     for (let p of resp){
-                        this.getPlaceDetails(p.place_id,['url']).then(url =>{
+                        this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                            if (result == "No results"){
+                                var url = ""
+                            }else{
+                                var url = result.url
+                            }
                             this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, type:"meal"})
                         })
                     }
@@ -686,7 +771,6 @@ methods: {
         {   
             for (let i=0;i<types.length;i++){
                 this.nearbySearch(types[i],result,range).then(resp =>{
-                    console.log(resp)
                     if (resp == "No valid results"){
                         this.anyRecs[1]++;
                     }
@@ -699,14 +783,37 @@ methods: {
                             if (p.rating < 4 || p.user_ratings_total < 50){
                                 continue;
                             }
-                            this.getPlaceDetails(p.place_id,['url']).then(url =>{
-                                this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, "type":types[i]})
+                            this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                                if (p.vicinity === undefined){
+                                var address = ""
+                                }else{
+                                    var address = p.vicinity
+                                }
+                                if (p.rating === undefined){
+                                    var rating = ["-", "-"]
+                                }else{
+                                    var rating = [p.rating,p.user_ratings_total]
+                                }
+                                if (p.price_level === undefined){
+                                    var cost = 0
+                                }else{
+                                    var cost = p.price_level
+                                }
+                                if (p.photos === undefined){
+                                    var photo = 'DSC00769.jpg'
+                                }else{
+                                    var photo = p.photos[0]
+                                }
+                                if (result == "No results"){
+                                    var url = ""
+                                }else{
+                                    var url = result.url
+                                }
+                                this.recs.push({"name": p.name, "address" : address, "rating" : rating, "cost": cost, "photo" : photo, "url": url, "type":types[i]})
                             })
                             pushCount++;
                         }
                         reccsLeft = reccsLeft - pushCount
-                        console.log("reccsLeft = " + reccsLeft)
-                        console.log("pushCount = " + pushCount)
                         if (pushCount < numReccsPerType){
                             numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
                         }
@@ -749,7 +856,12 @@ methods: {
                             if (p.rating < 4 || p.user_ratings_total < 50){
                                 continue;
                             }
-                            this.getPlaceDetails(p.place_id,['url']).then(url =>{
+                            this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                                if (result == "No results"){
+                                    var url = ""
+                                }else{
+                                    var url = result.url
+                                }
                                 this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, "type":types[i]})
                             })
                             pushCount++;
@@ -792,15 +904,33 @@ methods: {
             this.days[dayId].dayActivities.push({'name':actName, 'number':actNum, 'description':actDesc, 'image':image, 'type':type})
         }
     },
+    addActivityFromPrediction(dayId,prediction){
+        var actNum = this.days[dayId].dayActivities.length + 1
+        console.log(prediction.place_id)
+        this.getPlaceDetails(prediction.place_id,['name','vicinity','photos']).then(result=>{
+            // eslint-disable-next-line vue/no-mutating-props
+            this.days[dayId].dayActivities.push({'name':result.name, 'number':actNum, 'description':result.vicinity, 'image':result.photos[0], 'type':'custom'})
+        })
+        
+        
+    },
     async nearbySearch(kw, loc, dist) {
         var testDiv = document.getElementById('testingDiv');
         const { PlacesService } = await google.maps.importLibrary('places');
-        var request = {
+        if (kw == "breakfast"){
+            var request = {
                 location: loc,
                 radius: dist,
-                keyword: kw,
-        };
-
+                keyword: "breakfast",
+            }
+        }
+        else{
+            var request = {
+                location: loc,
+                radius: dist,
+                type: kw,
+            }   
+        }
         var service = new PlacesService(testDiv);
         var finished = false;
         var pageCount = 0;
@@ -862,7 +992,7 @@ methods: {
         return new Promise((resolve, reject) => {
             service.getDetails(request, (results, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    resolve(results['url'])
+                    resolve(results)
             }else if(status === google.maps.places.PlacesServiceStatus.NOT_FOUND){
                 resolve("Place not found")
             }
@@ -870,103 +1000,42 @@ methods: {
                 resolve("No valid results")
             }
             else{
-                    reject (new Error(`Places service request failed with status: ${gdStatus}`));
+                    reject (new Error(`Places service request failed with status: ${status}`));
                 }
             });
         });
     },
-    getImage(image){
-        if (image == ""){
-            return '/assets/img/DSC00769.jpg'
-        }else if (typeof(image) == 'object'){
-            return image.getUrl({maxWidth:221})
-        }else{
-            return '/assets/img/' + image
-        }
-    },
-    placeAutocomplete(event){
+    processAutocomplete(event){
+        console.log("processing")
         var location = event.target
         var dayId = location.parentNode.parentNode.id[3]
         var startAccoms = this.days[dayId].accoms[0]
-        this.findPlace(startAccoms,['geometry']).then(result=>{
-            this.autocomplete = new google.maps.places.Autocomplete(
-                event.target,  
-                {
-                    componentRestrictions: {'country' : this.country},
-                    locationBias: result,
-                    fields: ['vicinity','url','photos','name']
-                }
-            )
+        this.predictionList = []
+        this.findPlace(startAccoms,['geometry']).then(result=>
+        {   
+            this.placeAutocomplete(location.value,result,this.country).then(suggestions =>{
+                this.predictionList = suggestions
+            })
         })
     },
-    selectedPlace(event){
-        var location = event.target
-        var dayId = location.parentNode.parentNode.id[3]
-        var place = this.autocomplete.getPlace();
-        var actName = place.name
-        var actNum = this.days[dayId].dayActivities.length + 1
-        var image = place.photos[0].getUrl({maxWidth:221})
-        var actDesc = place.vicinity
-        this.days[dayId].dayActivities.push({name:actName, number:actNum, description:actDesc, image:image})
-        
+    async placeAutocomplete(query,bias,c){
+        const {AutocompleteService} = await google.maps.importLibrary("places");
+        var request = {
+            input: query,
+            componentRestrictions: {country:c}, // change later on to be dynamic
+            origin: bias,
+        }
+        var service = new AutocompleteService();
+        return new Promise((resolve,reject) => {
+            service.getPlacePredictions(request, (results, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                resolve(results)
+            }else{
+                reject (new Error(`Places service request failed with status: ${status}`));
+            }
+        })
+    })
     },
-    // async placeAutocomplete(event){ // calls api to get you candidates for search and their place id
-    //     const {AutocompleteService} = await google.maps.importLibrary("places");
-    //     var location = event.target
-    //     var dayId = location.parentNode.parentNode.id[3]
-    //     var startAccoms = this.days[dayId].accoms[0]
-    //     this.findPlace(startAccoms,['geometry']).then(result=>{
-    //         var request = {
-    //             input: location.value,
-    //             componentRestrictions: {country:this.country}, // change later on to be dynamic
-    //             locationBias: result, 
-    //             origin: result,
-    //         }
-    //         console.log(request)
-    //         var service = new AutocompleteService();
-    //         return new Promise((resolve,reject) => {
-    //             service.getPlacePredictions(request, (results, status) => {
-    //             if (status === google.maps.places.PlacesServiceStatus.OK) {
-    //                 this.predictionList = []
-    //                 console.log(results)
-    //             }else{
-    //                 reject (new Error(`Places service requesvar desc = predictions[p].description
-        //                 var listGroupItem = document.createElement('button') // creating the button for each prediction
-        //                 listGroupItem.type = 'button'
-        //                 listGroupItem.classList.add('list-group-item')
-        //                 listGroupItem.classList.add('list-group-item-action')
-        //                 listGroupItem.innerHTML = desc // displaying the place description for each item
-        //                 listGroupItem.addEventListener('click',function(){ //making sure that upon click of the prediction, will add it to the activities
-        //                     var indivDesc = predictions[p].description // requires definition inside so that the eventlistener is using the correct description (desc var will be updated to be the last prediction description)
-        //                     var name = predictions[p].structured_formatting.main_text
-        //                     var place_id = predictions[p].place_id
-        //                     var actNum = dayActivities.length + 1
-        //                     // eslint-disable-next-line vue/no-mutating-props
-        //                     dayActivities.push({name:name, number:actNum, description:indivDesc, image:'DSC00788-3.jpg', placeId: place_id}) // at some point get image, push place id
-        //                     predictionList.classList.add('d-none') // hiding the list upon selection of prediction
-        //                 }.bind(this)) // for eventlistener to have latest data
-        //                 predictionList.appendChild(listGroupItem) // adding the button to the lists
-        //             }t failed with status: ${status}`));
-    //             }
-    //             });
-    //         })
-    //     })
-    // },
-        // axios.get(url,{params})
-        //     .then(response => {
-        //         var predictionList = document.getElementById(`Day${dayId}predictionList`)
-        //         predictionList.innerHTML = '' // clear the list of past predictions on each input
-        //         var predictions = response.data.predictions
-        //         let dayActivities = this.days[dayId].dayActivities
-        //         if (predictions.length > 0 ){ // if there are predictions
-        //             predictionList.classList.remove('d-none') // display the list
-        //             for (let p=0;p<predictions.length;p++){
-        //                 
-        //         }
-        //     })
-        //     .catch(error=>{
-        //         console.log(error)
-        //     })
     delActivity(dayId,actNum){
         var activities = this.days[dayId].dayActivities
         activities.splice(actNum-1,1)

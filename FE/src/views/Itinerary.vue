@@ -1,12 +1,34 @@
+<!-- eslint-disable vue/require-v-for-key -->
 <template>
   <div class="mt-3 container-fluid">  
-    <div class="header row" style="text-align: start; font-size:20px;">
+    <div v-if="slicedArr.length > 0" class="header row" style="text-align: start; font-size:20px;">
       <p class="mb-3 fw-bold">Suggested Activities</p>
     </div>
 
-    <div id="activityCarousel" class="w-50 carousel slide mb-5">
+    <div v-if="slicedArr.length > 0" id="activityCarousel" class="w-50 carousel slide mb-5">
       <div class="carousel-inner">
-        <Activity_Component :allActivities="allActivities" :days="days"></Activity_Component>
+        <div class="carousel-item" v-for='(set,index) in slicedArr' :class="{active: index == 0}">
+        <div class="card-group">
+            <div v-for='activity of set' class="card" style="width: 18rem;">
+                <img :src="getImage(activity.image)" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{activity.name}}</h5>
+                    <p class="card-text">Address: {{activity.address}}</p>
+                    <p class="card-text">Ratings: {{activity.rating[0]}} ({{activity.rating[1]}} reviews)</p>
+                    <a :href="activity.url" class="text-dark fw-bold">Link</a>
+                    <div></div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Day Number</span>
+                        <input type="text" class="form-control" v-model="addTopAttractionDay">
+                        <button class="btn btn-success" type="button" id="button-addon1" @click="addAttraction(addTopAttractionDay,index,activity.name)">Add to Itinerary</button>
+                        <div v-if="addTopAttractionDay<=0 || addTopAttractionDay > days.length" class="invalid-feedback">
+                          Please enter a valid day number.
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
       </div>
         <button class="carousel-control-prev btn" type="button" data-bs-target="#activityCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -33,7 +55,7 @@
           </div>
           <div class="col-4"></div>
     </div>
-      <Day_Component :allActivities="allActivities" :days="days" :date="date"></Day_Component>
+      <Day_Component ref="dayComp" :allActivities="allActivities" :days="days" :date="date"></Day_Component>
     </div>
   </div>
 
@@ -41,7 +63,6 @@
 
 </template>
   <script>
-  import Activity_Component from '../components/ActivityComponent.vue';
   import Day_Component from '../components/DayComponent.vue';
   import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
   import '../../node_modules/@vuepic/vue-datepicker/dist/main.css';
@@ -51,7 +72,6 @@
     name: 'Itinerary_Page',
     components: { 
       // importing components from other places
-      Activity_Component,
       Day_Component,
       Datepicker,
     },
@@ -118,7 +138,9 @@
         ],
         days: [ // days is an array of dayObjects, each dayObject contains dayId, and an array of activity objects (dayActivities)
 
-      ]
+      ],
+        addTopAttractionDay: 1,
+        slicedArr: []
       }
     },
     computed: {
@@ -133,10 +155,30 @@
         const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
         this.date = [startDate, endDate];
       }
+      this.getSlicedArr();
+
+      
     },
   
     methods: {
       // methods defined by ourselves
+      getSlicedArr(){
+        this.$refs.dayComp.getTopAttractions().then(result =>{
+          this.slicedArr = [result.slice(1,3), result.slice(3,6), result.slice(6,9)]
+          console.log(result.slice(1,3))
+        })
+      },
+      addAttraction(dayNum,index,actName){
+            for (let act of dayComp.topAttractions[index]){
+              if (act.name == actName){
+                var actNum = this.days[dayNum-1].dayActivities.length + 1
+                var actDesc = act.address
+                var type = act.type
+                var image = act.photo
+                this.days[dayNum-1].dayActivities.push({'name':actName, 'number':actNum, 'description':actDesc, 'image':image, 'type':type})
+              }
+            }
+        },
       addDaystoEnd(numDays){
         for (let i=0;i<numDays;i++){
           this.days.push({
