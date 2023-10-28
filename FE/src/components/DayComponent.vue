@@ -1,72 +1,59 @@
 <!-- eslint-disable no-redeclare -->
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
-<div id="testingDiv"></div>
-<div v-for="day of days" :key='day.dayId'  class="row">
-    <p class="d-inline">
-         Day {{ day.dayId + 1 }}  ({{getPrintableDate(day.dayId)}})
-        <button type="button" @click="deleteDay(day.dayId)" class="btn btn-outline-danger" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: 0.6rem; margin-left:0.5rem">Delete Day</button>
-        <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 35rem" class="btn btn-secondary d-inline" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" aria-controls="collapseExample">
-            Expand Day 
-        </button>
-        <button type="button" class="btn btn-success btn-circle"><i class="fa fa-check"></i></button>
+    <div id="testingDiv"></div>
 
-    </p>
-    <div class="collapse" :id="'Day' + day.dayId + 'Collapse'">
-        <div v-if="day.dayActivities.length>0" > 
-            <div v-for="activity in day.dayActivities" :key="activity.number" class="card mb-3" style="max-width: 665px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img :src="getImage(activity.image)" class="img-fluid rounded-start" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body row">
-                            <h5 class="card-title col-10">Activity {{activity.number}} - {{activity.name}}</h5>
-                            <button @click="delActivity(day.dayId,activity.number)" type="button" class="btn btn-outline-danger col-2" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem;--bs-btn-font-size: 0.6rem">Delete Activity</button>
-                            <p class="card-text fs-6">{{activity.description}}</p>
-                            <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" @click="source='end', recs=[], selectedRecs=[]" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommend me activities!</button>
+    <div v-for="day of days" :key='day.dayId'  class="row">
+        <p class="d-inline px-0">
+            Day {{ day.dayId + 1 }}  ({{getPrintableDate(day.dayId)}})
+            <button type="button" @click="deleteDay(day.dayId)" class="btn btn-outline-danger" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: 0.6rem; margin-left:0.5rem">Delete Day</button>
+            <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 35rem" class="btn btn-secondary d-inline" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" aria-controls="collapseExample">
+                Expand Day 
+            </button>
+
+        </p>
+        <div class="collapse" :id="'Day' + day.dayId + 'Collapse'">
             <div class="modal fade" :id="'filter'+ day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'#filter'+ day.dayId + 'Label'" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" :id="'filter'+ day.dayId + 'Label'">Filters</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <label :for="'distance' + day.dayId + 'Select'" class="form-label">Please select how far you are willing to travel (in km)</label>
-                            <div class="text-center">Current selection: {{distance}} km</div>
-                            <input type="range" class="form-range" :id="'distance'+ day.dayId + 'Select'" min="1" max="50" v-model="distance"> 
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" :data-bs-target="'#filter'+ day.dayId + 'Collapse'" aria-expanded="false"> <!--aria-controls="collapseExample"-->
-                                Filter
-                            </button>
-                            <div class="collapse" :id="'filter'+ day.dayId + 'Collapse'">
-                                <button class="btn btn-outline-success my-2" type="button" @click="checkAll">
-                                Check/uncheck all
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" :id="'filter'+ day.dayId + 'Label'">Filters</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <label :for="'distance' + day.dayId + 'Select'" class="form-label">Please select how far you are willing to travel (in km)</label>
+                                <div class="text-center">Current selection: {{distance}} km</div>
+                                <input type="range" class="form-range" :id="'distance'+ day.dayId + 'Select'" min="1" max="50" v-model="distance"> 
+                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" :data-bs-target="'#filter'+ day.dayId + 'Collapse'" aria-expanded="false"> <!--aria-controls="collapseExample"-->
+                                    Filter
                                 </button>
-                                <div v-for="(searchType,name) in types">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox"
-                                        v-model="selectedTypes" :value="searchType" :id="day.dayId + searchType + 'Check'">
-                                        <label class="form-check-label" :for="day.dayId + searchType + 'Check'">
-                                            {{ name }}
-                                        </label>
+                                <div class="collapse" :id="'filter'+ day.dayId + 'Collapse'">
+                                    <button class="btn btn-outline-secondary my-2" type="button" @click="checkRecommended">
+                                    Randomise
+                                    </button>
+                                    <p class=" d-inline text-success ms-2 fs-6"> Pick up to 3 types of activities </p>
+                                    <div v-for="(searchType,name) in types">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                            v-model="selectedTypes" :value="searchType" :id="day.dayId + searchType + 'Check'">
+                                            <label class="form-check-label" :for="day.dayId + searchType + 'Check'">
+                                                {{ name }}
+                                            </label>
+                                            <p class="d-inline text-success ms-2 fs-6" v-if="recommendedTypes.includes(searchType)">Recommended</p>
+                                            <p class="d-inline text-success ms-1 fs-6" v-if="searchType == 'tourist_attraction'">(Might overlap) </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div v-if="selectedTypes.length > 0">
-                                <button v-if="mealTypes.includes(day.dayActivities[day.dayActivities.length-1].type)" type="button" class="btn btn-secondary" data-bs-toggle="modal" :data-bs-target="'#mealConsideration' + day.dayId + 'Modal'">Search</button>
-                                <button v-else type="button" class="btn btn-primary" @click="recommendAny(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Search</button>
+                            <div class="modal-footer">
+                                <div v-if="selectedTypes.length > 0 && selectedTypes.length <=3">
+                                    <button v-if="checkPreviousMeal(day.dayId)" type="button" class="btn btn-secondary" data-bs-toggle="modal" :data-bs-target="'#mealConsideration' + day.dayId + 'Modal'">Search</button>
+                                    <button v-else type="button" class="btn btn-primary" @click="recommendAny(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Search</button>
+                                </div>
+                                <p class="fs-5 text-danger" v-else-if="selectedTypes.length > 3">Please select at most 3 categories.</p>
+                                <p class="fs-5 text-danger" v-else>Please select at least one category.</p>
                             </div>
-                            <p class="fs-5 text-danger" v-else>Please select at least one category.</p>
                         </div>
-                    </div>
                 </div>
             </div>
             <div class="modal fade" :id="'recommend' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'recommend' + day.dayId + 'ModalLabel'" aria-hidden="true">
@@ -77,97 +64,29 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body mx-auto">
-                            <div v-if="slicedRecs.length ==0 && anyRecs[0] != anyRecs[1]">
+                            <template v-if="slicedRecs.length ==0 && anyRecs[0] != anyRecs[1]">
                                 <div class="spinner-border text-primary" role="status">
                                 </div>
                                 <div>Loading...</div>
-                            </div>
+                            </template>
                             <div v-if="slicedRecs.length == 0 && anyRecs[0] == anyRecs[1]">There are no results for your search parameters</div>
-                            <div v-if="source=='start'">
-                                <h5> <!--State time of first activity-->
+                            <!-- <div v-if="source=='start'">
+                                <h5>
 
                                 </h5>
                             </div>
                             <div v-else-if="source=='mid'">
-                                <h5> <!--State time of previous and next activity-->
+                                <h5> 
                                     
                                 </h5>
                             </div>
                             <div v-else>
-                                <h5> <!--State time of last activity-->
+                                <h5> 
                                     
                                 </h5>
-                                <!-- Modal -->
-                                <div v-for="(rec,index) in slicedRecs">
-                                    <div class="card mb-3 px-0" style="max-width: 665px;">
-                                        <div class="row g-0">
-                                            <div class="col-md-4">
-                                                <img :src="getImage(rec.photo)" class="img-fluid rounded-start" alt="...">
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body row">
-                                                    <h5 class="card-title col-10"> {{rec.name}} - {{rec.address}} </h5>
-                                                    <p class="card-text fs-6">
-                                                        <span class="fw-bold">Cost:</span> {{displayCost(rec.price_level)}} <br>
-                                                        <span class="fw-bold">Ratings:</span> {{rec.rating[0]}} ({{rec.rating[1]}} reviews)<br>
-                                                        <a :href="rec.url" class="text-dark fw-bold">Link</a>
-                                                    </p>
-                                                </div>
-                                                <button type="button" @click="chooseRec(index)" class="btn btn-primary mx-2 mb-2">Add to Day {{day.dayId + 1}}</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>    
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger me-3" :disabled="sliceCount==0" @click="sliceCount--">Previous Page</button>
-                            <button type="button" class="btn btn-success me-3" :disabled="sliceCount==(numPages-1)" @click="sliceCount++">Next Page</button>
-                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close (Reset recommendations!)</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="addActivityFromReccs(day.dayId)">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" :id="'mealConsideration' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'mealConsideration' + day.dayId + 'Label'" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" :id="'mealConsideration' + day.dayId + 'Label'">Suggestion</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>As your previous activity is a meal, we suggest that you avoid <span class="text-primary">intense activities</span> for an hour or two.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" @click="recommendAny(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Ignore suggestion</button>
-                            <button type="button" class="btn btn-primary" @click="recommendNonIntense(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Choose non-intense activity</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div v-else>
-            <h4 class="p-4">
-                You have no activities currently. <button type="button" class="btn btn-outline-primary" @click="recs=[]" data-bs-toggle="modal" :data-bs-target="'#noActivitiesConsideration' + day.dayId + 'Modal'">Recommend me activities!</button>
-            </h4>
-            <div class="modal fade" :id="'noActivities' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'noActivities' + day.dayId + 'Label'" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" :id="'noActivities' + day.dayId + 'Label'">Recommended activities</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body mx-auto">
-                            <div v-if="day.accoms.length>0" > <!--this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0]})-->
-                                <div v-if="slicedRecs.length==0 && anyRecs[0] != anyRecs[1]">
-                                    <div class="spinner-border text-primary" role="status">
-                                    </div>
-                                    <div>Loading...</div>
-                                </div>
-                                <div v-if="slicedRecs.length == 0 && anyRecs[0] == anyRecs[1]">There are no results for your search parameters</div>
-                                <div v-for="(rec,index) in slicedRecs" class="card mb-3 px-0" style="max-width: 665px;">
+                            </div>   -->
+                            <div v-for="(rec,index) in slicedRecs">
+                                <div class="card mb-3 px-0" style="max-width: 665px;">
                                     <div class="row g-0">
                                         <div class="col-md-4">
                                             <img :src="getImage(rec.photo)" class="img-fluid rounded-start" alt="...">
@@ -178,112 +97,153 @@
                                                 <p class="card-text fs-6">
                                                     <span class="fw-bold">Cost:</span> {{displayCost(rec.price_level)}} <br>
                                                     <span class="fw-bold">Ratings:</span> {{rec.rating[0]}} ({{rec.rating[1]}} reviews)<br>
-                                                    <a :href="rec.url" class="text-dark fw-bold">Link</a>
+                                                    <a :href="rec.url" class="text-dark fw-bold" target="_blank">Link</a>
                                                 </p>
                                             </div>
                                             <button type="button" @click="chooseRec(index)" class="btn btn-primary mx-2 mb-2">Add to Day {{day.dayId + 1}}</button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div v-else>
-                                <p>Unfortunately, you need to have an accommodation for us to accurately recommend places to you</p>
-                            </div>
+                            </div> 
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger me-3" :disabled="sliceCount==0" @click="sliceCount--">Previous Page</button>
                             <button type="button" class="btn btn-success me-3" :disabled="sliceCount==(numPages-1)" @click="sliceCount++">Next Page</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="addActivityFromReccs(day.dayId)">Save changes</button>
+                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close (Reset recommendations!)</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="addActivityFromReccs(day.dayId)" :disabled="selectedRec.length==0">Save changes</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" :id="'noActivitiesConsideration' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'noActivitiesConsideration' + day.dayId + 'Label'" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" :id="'noActivitiesConsideration' + day.dayId + 'Label'">Suggestion</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Since you have no activities added for this day currently, we recommend choosing a breakfast location first. 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" @click="chooseBreakfastFunc(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#noActivities' + day.dayId + 'Modal'" class="btn btn-success mx-2">OK</button>
-                            <button type="button" data-bs-toggle="modal" :data-bs-target="'#filter' + day.dayId + 'Modal2'" class="btn btn-danger mx-2">Skip breakfast for now</button>
-                        </div>
+            <div v-if="day.dayActivities.length>0" > 
+                <div v-for="(activity,actIdx) in day.dayActivities" :key="activity.name">
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-success rounded-circle btn-sm plus-button m-2" data-bs-toggle="dropdown" aria-expanded="false">+</button>
+                        <ul class="dropdown-menu">
+                            <li><button type="button" class="dropdown-item btn btn-outline-primary" data-bs-toggle="modal" @click="initialiseRec(actIdx)" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommend an activity here</button></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" @click="addSearch = actIdx">Search for an activity or add a custom event here</a></li>
+                        </ul>
                     </div>
-                </div>
-            </div>
-            <div class="modal fade" :id="'filter' + day.dayId + 'Modal2'" tabindex="-1" :aria-labelledby="'filter' + day.dayId + 'Label2'" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" :id="'filter' + day.dayId + 'Label2'">Filters</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <template v-if="addSearch === actIdx"> 
+                        <div class="input-group w-50 mb-3">
+                            <span class="input-group-text">
+                                <svg width="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <input type="text" @input="processAutocomplete(actIdx)" class="form-control" placeholder="Add a place" v-model="autocompleteValue">
+                            <div class="dropend">
+                                <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true" style="height:38px;">Custom events</button>
+                                <form class="dropdown-menu dropdown-menu-start p-4" style="width:50%;" data-bs-theme="dark">
+                                    <div class="mb-3">
+                                        <label :for="'Day' + day.dayId + 'EndEventName'" class="form-label">Event Name</label>
+                                        <input type="text" class="form-control" v-model="customEventName">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label :for="'Day' + day.dayId + 'EndNotes'" class="form-label">Notes</label>
+                                        <input type="text" class="form-control" v-model="customEventNotes">
+                                    </div>
+                                    <button type="button" @click="addCustomEvent(day.dayId,actIdx)" class="btn btn-primary">Add event</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <label for="distanceSelect2" class="form-label">Please select how far you are willing to travel (in km)</label>
-                            <div class="text-center">Current selection: {{distance}} km</div>
-                            <input type="range" class="form-range" :id="'distance' + day.dayId + 'Select2'" min="1" max="50" v-model="distance">
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" :data-bs-target="'#filter' + day.dayId + 'Collapse2'" aria-expanded="false"> <!--aria-controls="collapseExample"-->
-                                Filter
-                            </button>
-                            <div class="collapse" :id="'filter' + day.dayId + 'Collapse2'">
-                                <button class="btn btn-outline-success my-2" type="button" @click="checkAll">
-                                Check/uncheck all
-                                </button>
-                                <div v-for="(searchType,name) in types">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox"
-                                        v-model="selectedTypes" :value="searchType" :id="day.dayId + searchType + 'Check'">
-                                        <label class="form-check-label" :for="day.dayId + searchType + 'Check'">
-                                            {{ name }}
-                                        </label>
+                        <div v-if="displayPredictions === actIdx" class="list-group">
+                            <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction,actIdx)">{{prediction.description}}</button>
+                        </div>
+                    </template>
+
+                    <div class="mx-auto mx-md-0 card mb-3" style="max-width: 665px;">
+                        <div class="row g-0">
+                            <div class="col-4">
+                                <img :src="getImage(activity.image)" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-8">
+                                <div class="card-body row">
+                                    <div class="col-md-9 col-12">
+                                        <h5 class="card-title">Activity {{actIdx+1}} - {{activity.name}}</h5>
+                                        <p class="card-text fs-6">{{activity.description}}</p>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <button @click="delActivity(day.dayId,actIdx)" type="button" class="btn btn-outline-danger" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: .5rem;--bs-btn-font-size: 0.6rem">Delete Activity</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button v-if="selectedTypes.length > 0" type="button" class="btn btn-primary" @click="recommendAny(day.dayId,day.dayActivities.length-1)" data-bs-toggle="modal" :data-bs-target="'#noActivities' + day.dayId + 'Modal'">Search</button>
-                            <p class="fs-5 text-danger" v-else>Please select at least one category.</p>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" @click="initialiseRec('end')" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommend me activities!</button>
+                
+                <div class="modal fade" :id="'mealConsideration' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'mealConsideration' + day.dayId + 'Label'" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" :id="'mealConsideration' + day.dayId + 'Label'">Suggestion</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>As your previous activity is a meal, we suggest that you avoid <span class="text-primary">intense activities</span> for an hour or two.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @click="recommendAny(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Ignore suggestion</button>
+                                <button type="button" class="btn btn-primary" @click="recommendNonIntense(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Choose non-intense activity</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-        </div>
-        <div :id="'Day' + day.dayId + 'EndLocation'"> 
+            <div v-else>
+                <h4 class="p-4">
+                    You have no activities currently. <button type="button" class="btn btn-outline-primary" @click="initialiseRec('end')" data-bs-toggle="modal" :data-bs-target="'#noActivitiesConsideration' + day.dayId + 'Modal'">Recommend me activities!</button>
+                </h4>
+                <div class="modal fade" :id="'noActivitiesConsideration' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'noActivitiesConsideration' + day.dayId + 'Label'" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" :id="'noActivitiesConsideration' + day.dayId + 'Label'">Suggestion</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Since you have no activities added for this day currently, we recommend choosing a breakfast location first. 
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" @click="chooseBreakfast" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'" class="btn btn-success mx-2">OK</button>
+                                <button type="button" data-bs-toggle="modal" :data-bs-target="'#filter' + day.dayId + 'Modal'" class="btn btn-danger mx-2">Skip breakfast for now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div> 
             <div class="input-group w-50 mb-3">
-                <span class="input-group-text" :id="'Day' + day.dayId + 'EndLocationInput'">
+                <span class="input-group-text">
                     <svg width="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </span>
-                <input type="text" @input="processAutocomplete" class="form-control" placeholder="Add a place" :aria-describedby="'Day' + day.dayId + 'EndLocationInput'">
+                <input type="text" @input="processAutocomplete('end')" class="form-control" placeholder="Add a place" v-model="autocompleteValue">
                 <div class="dropend">
-                    <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside" style="height:38px;">Custom events</button>
+                    <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true" style="height:38px;">Custom events</button>
                     <form class="dropdown-menu dropdown-menu-start p-4" style="width:50%;" data-bs-theme="dark">
                         <div class="mb-3">
                             <label :for="'Day' + day.dayId + 'EndEventName'" class="form-label">Event Name</label>
-                            <input type="text" class="form-control" :id="'Day' + day.dayId + 'EndEventName'" placeholder="Cook lunch">
+                            <input type="text" class="form-control" v-model="customEventName">
                         </div>
                         <div class="mb-3">
                             <label :for="'Day' + day.dayId + 'EndNotes'" class="form-label">Notes</label>
-                            <input type="text" class="form-control" :id="'Day' + day.dayId + 'EndNotes'" placeholder="Fried rice">
+                            <input type="text" class="form-control" v-model="customEventNotes">
                         </div>
                         <button type="button" @click="addCustomEvent(day.dayId,day.dayActivities.length)" class="btn btn-primary">Add event</button>
                     </form>
                 </div>
             </div>
-            <div v-if="predictionList" class="list-group" :id="'Day' + day.dayId + 'EndPredictionList'">
-                <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction)">{{prediction.description}}</button>
+            <div v-if="displayPredictions === 'end'" class="list-group">
+                <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction,'end')">{{prediction.description}}</button>
             </div>
         </div>
     </div>
-</div>
 </template>
 <script>
 //  import statements
@@ -296,7 +256,9 @@ props: [
     // props
     'allActivities',
     'days',
-    'date'
+    'date',
+    'originLoc',
+    'originName'
 ],
 name: 'Day_Component',
 components: {
@@ -305,10 +267,11 @@ components: {
 data () {
 // local repository of information
     return {
-        allChecked: true,
+        customEventName: '',
+        customEventNotes: '',
         recs: [],
         // respLength: 0,
-        selectedRecs: [],
+        selectedRec: [],
         anyRecs: [],
         distance: 5,
         sliceCount: 0,
@@ -319,16 +282,11 @@ data () {
                 'Art galleries': 'art_gallery',
                 'Bakeries':'bakery',
                 'Bars':'bar',
-                'Bike stores': 'bicycle_store',
                 'Book stores': 'book_store', 
                 'Bowling alleys': 'bowling_alley',
                 'Cafes':'cafe',
                 'Casinos':'casino',
-                'Clothing stores':'clothing_store',
-                'Electronics stores':'electronics_store',
-                'Florists':'florist',
                 'Gyms':'gym', 
-                'Jewelry stores': 'jewelry_store',
                 'Libraries':'library',
                 'Movie theaters':'movie_theater',
                 'Museums':'museum', 
@@ -341,6 +299,7 @@ data () {
                 'Tourist attractions':'tourist_attraction',
                 'Zoos':'zoo'
             },
+
         countryList: {
             'Afghanistan': 'AF',
             'Aland Islands': 'AX',
@@ -593,12 +552,13 @@ data () {
         countryName: "Australia",
         country: "",
         predictionList: [],
-        autocomplete: '',
-        selectedTypes: ['amusement_park','aquarium', 'art_gallery','bakery','bar','bicycle_store','book_store', 
-        'bowling_alley','cafe','casino','clothing_store','electronics_store','florist','gym', 'jewelry_store',
-        'library','movie_theater','museum', 'night_club','park','restaurant','shopping_mall','spa','stadium',
-        'tourist_attraction','zoo'],
-        topAttractions: []
+        selectedTypes: [],
+        topAttractions: [],
+        position: 0,
+        addSearch: '',
+        autocompleteValue: '',
+        displayPredictions: '',
+        recommendedTypes: ['tourist_attraction','park','museum','cafe', 'aquarium', 'zoo'],
     }
 },
 computed: {
@@ -628,37 +588,61 @@ computed: {
 // start of lifecycle
 async mounted () {
     this.country = this.getCountryCode(this.countryName)
-
 },
 
 methods: {
+    checkPreviousMeal(dayId){
+        if (this.days[dayId].dayActivities.length == 0 || this.position == 0){
+            return false
+        }else{
+            return this.mealTypes.includes(this.days[dayId].dayActivities[this.position-1].type)
+        }
+        
+    },
+    initialiseRec(actIndex){
+        this.recs = []
+        this.selectedRec = []
+        if (actIndex == 0){
+            this.source = 'start'
+            this.position = 0
+        }else if (actIndex == "end"){
+            this.source = 'end'
+            this.position = 0
+        }else{
+            this.source = "mid"
+            this.position = actIndex
+        }
+        
+    },
     getImage(image){
-        if (image == ""){
-            return '/assets/img/DSC00769.jpg'
+        if (image == "custom"){
+            return '/assets/img/customevent.jpg'
         }else if (typeof(image) == 'object'){
             return image.getUrl({maxWidth:221})
         }else{
-            return '/assets/img/' + image
+            return '/assets/img/noimage.png'
         }
     },
     getCountryCode(countryName){
         return this.countryList[countryName]
     },
-    checkAll(){
+    checkRecommended(){
         if (this.selectedTypes.length > 0){
             this.selectedTypes = []
         }else{
-            this.selectedTypes = ['amusement_park','aquarium', 'art_gallery','bakery','bar','bicycle_store','book_store', 
-            'bowling_alley','cafe','casino','clothing_store','electronics_store','florist','gym', 'jewelry_store',
-            'library','movie_theater','museum', 'night_club','park','restaurant','shopping_mall','spa','stadium',
-            'tourist_attraction','zoo']
+            const uniqueNumbers = new Set();
+            while (uniqueNumbers.size < 3) {
+                uniqueNumbers.add(Math.floor(Math.random() * 6));
+            }
+            let tempArr = Array.from(uniqueNumbers);
+            this.selectedTypes = [this.recommendedTypes[tempArr[0]],this.recommendedTypes[tempArr[1]],this.recommendedTypes[tempArr[2]]]
         }
     },
     getTopAttractions(){
         var search = "tourist attractions in " + this.countryName
         for (let i=0;i<this.days.length;i++){
-            if (this.days[i].accoms[0]){
-                var search = "tourist attractions near " + this.days[i].accoms[0]
+            if (this.originName != ""){
+                var search = "tourist attractions near " + this.originName
                 break
             }
         }
@@ -701,7 +685,7 @@ methods: {
         return new Promise((resolve, reject) => {
             service.textSearch(request, (results, status, pagination) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-                if (pagination.hasNextPage && pageCount < 2) {
+                if (pagination.hasNextPage && pageCount <1) {
                     final = final.concat(results) 
                     pagination.nextPage(); // Fetches the next 20 results from the next page.
                     pageCount += 1;
@@ -722,40 +706,36 @@ methods: {
             });
         });
     },
-    chooseBreakfastFunc(dayId){
+    chooseBreakfast(){
         var range = this.distance * 1000
         var keyword = 'breakfast'
-        var startAccoms = this.days[dayId].accoms[0]
         this.recs = []
         this.sliceCount = 0
         this.anyRecs = [1,0]
-        this.findPlace(startAccoms,['geometry']).then(result=>
-        {
-            this.nearbySearch(keyword,result,range).then(resp =>{
-                if (resp == "No valid results"){
-                    this.anyRecs[1]++;
-                }else{
-                    for (let p of resp){
-                        this.getPlaceDetails(p.place_id,['url']).then(result =>{   
-                            if (result == "No results"){
-                                var url = ""
-                            }else{
-                                var url = result.url
-                            }
-                            this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, type:"meal"})
-                        })
-                    }
+        this.nearbySearch(keyword,this.originLoc,range,60).then(resp =>{
+            if (resp == "No valid results"){
+                this.anyRecs[1]++;
+            }else{
+                for (let p of resp){
+                    this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                        if (result == "No results"){
+                            var url = ""
+                        }else{
+                            var url = result.url
+                        }
+                        this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, "type":"meal"})
+                    })
                 }
-            })
+            }
         })  
     },
-    recommendAny(dayId,index){
-        if (this.days[dayId].dayActivities.length == 0){
-            var origin = this.days[dayId].accoms[0]
+    recommendAny(dayId){
+        if (this.days[dayId].dayActivities.length == 0 || this.position == 0){
+            var origin = this.originLoc
         }else{
-            var prevAct = this.days[dayId].dayActivities[index]
+            var prevAct = this.days[dayId].dayActivities[this.position]
             if (prevAct.type == "custom"){
-                var origin = this.days[dayId].accoms[0]
+                var origin = this.originLoc
             }else{
                 var origin = prevAct.description
             }
@@ -767,20 +747,29 @@ methods: {
         var reccsLeft = 60
         this.recs = []
         this.anyRecs = [types.length,0]
-        this.findPlace(origin,['geometry']).then(result=>
-        {   
+        var acceptableRating = 4
+        if (typeof origin == 'object'){
             for (let i=0;i<types.length;i++){
-                this.nearbySearch(types[i],result,range).then(resp =>{
+                this.nearbySearch(types[i],origin,range,numReccsPerType).then(resp =>{
                     if (resp == "No valid results"){
                         this.anyRecs[1]++;
                     }
                     else{
+                        if (resp.length < 5){
+                            acceptableRating = 3.5
+                        }
                         var pushCount = 0
                         for (let p of resp){
                             if (pushCount >= numReccsPerType){
                                 break;
                             }
-                            if (p.rating < 4 || p.user_ratings_total < 50){
+                            if (p.rating === undefined){
+                                continue
+                            }
+                            if (p.rating < acceptableRating || p.user_ratings_total < 50 || p.business_status != "OPERATIONAL"){
+                                continue;
+                            }
+                            if (p.types.includes('car_dealer')){
                                 continue;
                             }
                             this.getPlaceDetails(p.place_id,['url']).then(result =>{   
@@ -800,7 +789,7 @@ methods: {
                                     var cost = p.price_level
                                 }
                                 if (p.photos === undefined){
-                                    var photo = 'DSC00769.jpg'
+                                    var photo = ""
                                 }else{
                                     var photo = p.photos[0]
                                 }
@@ -817,18 +806,89 @@ methods: {
                         if (pushCount < numReccsPerType){
                             numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
                         }
+                        if (pushCount == 0){
+                            this.anyRecs[1]++;
+                        }
                     }
                 })
             }
-        })
-    },  
-    recommendNonIntense(dayId,index){
-        if (this.days[dayId].dayActivities.length == 0){
-            var origin = this.days[dayId].accoms[0]
         }else{
-            var prevAct = this.days[dayId].dayActivities[index]
+            this.findPlace(origin,['geometry']).then(result=>
+            {   
+                result = result.geometry.location
+                for (let i=0;i<types.length;i++){
+                    this.nearbySearch(types[i],result,range,numReccsPerType).then(resp =>{
+                        if (resp == "No valid results"){
+                            this.anyRecs[1]++;
+                        }
+                        else{
+                            if (resp.length < 5){
+                                acceptableRating = 3.5
+                            }
+                            var pushCount = 0
+                            for (let p of resp){
+                                if (pushCount >= numReccsPerType){
+                                    break;
+                                }
+                                if (p.rating === undefined){
+                                    continue
+                                }
+                                if (p.rating < acceptableRating || p.user_ratings_total < 50 || p.business_status != "OPERATIONAL"){
+                                    continue;
+                                }
+                                if (p.types.includes('car_dealer')){
+                                    continue;
+                                }
+                                this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                                    if (p.vicinity === undefined){
+                                    var address = ""
+                                    }else{
+                                        var address = p.vicinity
+                                    }
+                                    if (p.rating === undefined){
+                                        var rating = ["-", "-"]
+                                    }else{
+                                        var rating = [p.rating,p.user_ratings_total]
+                                    }
+                                    if (p.price_level === undefined){
+                                        var cost = 0
+                                    }else{
+                                        var cost = p.price_level
+                                    }
+                                    if (p.photos === undefined){
+                                        var photo = ""
+                                    }else{
+                                        var photo = p.photos[0]
+                                    }
+                                    if (result == "No results"){
+                                        var url = ""
+                                    }else{
+                                        var url = result.url
+                                    }
+                                    this.recs.push({"name": p.name, "address" : address, "rating" : rating, "cost": cost, "photo" : photo, "url": url, "type":types[i]})
+                                })
+                                pushCount++;
+                            }
+                            reccsLeft = reccsLeft - pushCount
+                            if (pushCount < numReccsPerType){
+                                numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
+                            }
+                            if (pushCount == 0){
+                                this.anyRecs[1]++;
+                            }
+                        }
+                    })
+                }
+            })
+    }
+    },  
+    recommendNonIntense(dayId){
+        if (this.days[dayId].dayActivities.length == 0 || this.position == 0){
+            var origin = this.originLoc
+        }else{
+            var prevAct = this.days[dayId].dayActivities[this.position]
             if (prevAct.type == "custom"){
-                var origin = this.days[dayId].accoms[0]
+                var origin = this.originLoc
             }else{
                 var origin = prevAct.description
             }
@@ -840,10 +900,9 @@ methods: {
         var reccsLeft = 60
         this.recs = []
         this.anyRecs = [types.length,0]
-        this.findPlace(origin,['geometry']).then(result=>
-        {
+        if (typeof origin == "object"){
             for (let i=0;i<types.length;i++){
-                this.nearbySearch(types[i],result,range).then(resp =>{
+                this.nearbySearch(types[i],origin,range,numReccsPerType).then(resp =>{
                     if (resp == "No valid results"){
                         this.anyRecs[1]++;
                     }else{
@@ -873,48 +932,99 @@ methods: {
                     }
                 })
             }
-        })
+        }else{
+            this.findPlace(origin,['geometry']).then(result=>
+            {   
+                result = result.geometry.location
+                for (let i=0;i<types.length;i++){
+                    this.nearbySearch(types[i],result,range,numReccsPerType).then(resp =>{
+                        if (resp == "No valid results"){
+                            this.anyRecs[1]++;
+                        }else{
+                            var pushCount = 0
+                            // update numReccsPerType if resp.length < numReccsPerType
+                            for (let p of resp){
+                                if (pushCount >= numReccsPerType){
+                                    break;
+                                }
+                                if (p.rating < 4 || p.user_ratings_total < 50){
+                                    continue;
+                                }
+                                this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                                    if (result == "No results"){
+                                        var url = ""
+                                    }else{
+                                        var url = result.url
+                                    }
+                                    this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, "type":types[i]})
+                                })
+                                pushCount++;
+                            }
+                            reccsLeft = reccsLeft - pushCount
+                            if (pushCount < numReccsPerType){
+                                numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
+                            }
+                        }
+                    })
+                }
+            })
+        }
     },  
     displayCost(price_level){
-        let displayedCost = "" 
+        let displayedCost = "-" 
         for (let i=0;i<price_level;i++){
             displayedCost += '$'
         }
         return displayedCost
     },
     chooseRec(index){
-        this.selectedRecs = []
         if (this.sliceCount == 0){
-            this.selectedRecs.push(this.recs.slice(0,20)[index])
+            this.selectedRec = this.recs[index]
         }else if (this.sliceCount == 1){
-            this.selectedRecs.push(this.recs.slice(20,40)[index])
+            this.selectedRec = this.recs[index+20]
         }else{
-            this.selectedRecs.push(this.recs.slice(40,60)[index])
+            this.selectedRec = this.recs[index+40]
         }
     }, 
     addActivityFromReccs(dayId){
-        if (this.selectedRecs.length > 0){
-            var a = this.selectedRecs[0]
+        if (this.selectedRec != []){
+            var a = this.selectedRec
             var actName = a.name
-            var actNum = this.days[dayId].dayActivities.length + 1
             var image = a.photo
             var actDesc = a.address 
             var type = a.type
             // eslint-disable-next-line vue/no-mutating-props
-            this.days[dayId].dayActivities.push({'name':actName, 'number':actNum, 'description':actDesc, 'image':image, 'type':type})
+            if (this.source == "start"){
+                this.days[dayId].dayActivities.unshift({'name':actName, 'description':actDesc, 'image':image, 'type':type})
+
+            }else if (this.source == "end"){
+                this.days[dayId].dayActivities.push({'name':actName, 'description':actDesc, 'image':image, 'type':type})
+            }else{
+                this.days[dayId].dayActivities.splice(this.position,0,{'name':actName, 'description':actDesc, 'image':image, 'type':type})
+            }
         }
     },
-    addActivityFromPrediction(dayId,prediction){
-        var actNum = this.days[dayId].dayActivities.length + 1
-        console.log(prediction.place_id)
+    addActivityFromPrediction(dayId,prediction,position){
+        this.displayPredictions = ""
+        this.autocompleteValue = ""
+        this.addSearch = ""
         this.getPlaceDetails(prediction.place_id,['name','vicinity','photos']).then(result=>{
             // eslint-disable-next-line vue/no-mutating-props
-            this.days[dayId].dayActivities.push({'name':result.name, 'number':actNum, 'description':result.vicinity, 'image':result.photos[0], 'type':'custom'})
+            if (position == "end"){
+                this.days[dayId].dayActivities.push({'name':result.name, 'description':result.vicinity, 'image':result.photos[0], 'type':'prediction'})
+            }
+            else if (position == 0){
+                this.days[dayId].dayActivities.unshift({'name':result.name, 'description':result.vicinity, 'image':result.photos[0], 'type':'prediction'})
+            }
+            else{
+                this.days[dayId].dayActivities.splice(position,0,{'name':result.name, 'description':result.vicinity, 'image':result.photos[0], 'type':'prediction'})
+            }
         })
+
         
         
     },
-    async nearbySearch(kw, loc, dist) {
+    async nearbySearch(kw, loc, dist, numReccs) {
         var testDiv = document.getElementById('testingDiv');
         const { PlacesService } = await google.maps.importLibrary('places');
         if (kw == "breakfast"){
@@ -931,6 +1041,7 @@ methods: {
                 type: kw,
             }   
         }
+
         var service = new PlacesService(testDiv);
         var finished = false;
         var pageCount = 0;
@@ -938,13 +1049,29 @@ methods: {
         return new Promise((resolve, reject) => {
             service.nearbySearch(request, (results, status, pagination) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-                if (pagination.hasNextPage && pageCount < 2) {
-                    final = final.concat(results) 
-                    pagination.nextPage(); // Fetches the next 20 results from the next page.
-                    pageCount += 1;
+                if (numReccs <= 20){
+                    final = results
+                    finished = true
                 }else{
-                    final = final.concat(results)
-                    finished = true;
+                    if (numReccs > 20 && numReccs <= 40){
+                        if (pageCount == 1 || !pagination.hasNextPage){
+                            finished = true
+                            final = final.concat(results)
+                        }else{
+                            final = final.concat(results)
+                            pagination.nextPage(); // Fetches the next 20 results from the next page.
+                            pageCount = 1;
+                        }
+                    }else{
+                        if (pageCount == 2 || !pagination.hasNextPage){
+                            finished = true
+                            final = final.concat(results)
+                        }else{
+                            final = final.concat(results) 
+                            pagination.nextPage(); // Fetches the next 20 results from the next page.
+                            pageCount++;
+                        }
+                    }
                 }
                 if (finished == true){
                     resolve(final)
@@ -969,7 +1096,7 @@ methods: {
         var service = new PlacesService(testDiv);
         return new Promise((resolve, reject) => {service.findPlaceFromQuery(request, (results, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-                resolve(results[0].geometry.location); // Resolve the promise with the results
+                resolve(results[0]); // Resolve the promise with the results
             }
             else if(status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
                 resolve("No results")
@@ -1005,17 +1132,17 @@ methods: {
             });
         });
     },
-    processAutocomplete(event){
-        console.log("processing")
-        var location = event.target
-        var dayId = location.parentNode.parentNode.id[3]
-        var startAccoms = this.days[dayId].accoms[0]
+    processAutocomplete(actIdx){
+        this.displayPredictions = actIdx
+        var location = this.autocompleteValue
         this.predictionList = []
-        this.findPlace(startAccoms,['geometry']).then(result=>
-        {   
-            this.placeAutocomplete(location.value,result,this.country).then(suggestions =>{
+        this.placeAutocomplete(location,this.originLoc,this.country).then(suggestions =>{
+            if (suggestions == "No valid results"){
+                this.predictionList = []
+            }
+            else{
                 this.predictionList = suggestions
-            })
+            }
         })
     },
     async placeAutocomplete(query,bias,c){
@@ -1030,20 +1157,17 @@ methods: {
             service.getPlacePredictions(request, (results, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 resolve(results)
-            }else{
+            }else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
+                resolve("No valid results")
+            }
+            else{
                 reject (new Error(`Places service request failed with status: ${status}`));
             }
         })
     })
     },
-    delActivity(dayId,actNum){
-        var activities = this.days[dayId].dayActivities
-        activities.splice(actNum-1,1)
-        let startNum = 1;
-        for (let a of activities){
-            a.number = startNum;
-            startNum += 1;
-        }
+    delActivity(dayId,actIndex){
+        this.days[dayId].dayActivities.splice(actIndex,1)
     },
     deleteDay(deleteId){
         this.days.splice(deleteId,1)
@@ -1058,18 +1182,27 @@ methods: {
         let printableDate = new Date(new Date().setDate(startDate.getDate() + day));
         return printableDate.toDateString()
     },
-    addCustomEvent(day,position){
+    addCustomEvent(day,actIdx){ // Make dynamic for all positions
         let dayActivities = this.days[day].dayActivities
-        if (position == dayActivities.length){
-            let name = document.getElementById(`Day${day}EndEventName`)
-            let notes = document.getElementById(`Day${day}EndNotes`)
-            let num = dayActivities.length + 1
+        let name = this.customEventName
+        let notes = this.customEventNotes
+        this.customEventName = ""
+        this.customEventNotes = ""
+        if (actIdx == dayActivities.length){
             dayActivities.push({
-                name: name.value, number: num, description:notes.value, image: '', placeId: '', type:'custom'
+                'name': name, 'description':notes, 'image': 'custom', 'placeId': '', 'type':'custom'
             })
-            name.value = ""
-            notes.value = ""
+        }else if (actIdx == 0){
+            dayActivities.unshift({
+                'name': name, 'description':notes, 'image': 'custom', 'placeId': '', 'type':'custom'
+            })
+        }else{
+            console.log(actIdx)
+            dayActivities.splice(actIdx,0,{
+                'name': name, 'description':notes, 'image': 'custom', 'placeId': '', 'type':'custom'
+            })
         }
+        this.addSearch = ""
     }
 },
 }

@@ -9,11 +9,6 @@ import Dashboard from "../views/Dashboard.vue";
 const routes = [
   
   {
-    path: "/",
-    name: "home",
-    component: Home_Page,
-  },
-  {
     path: "/login",
     name: "login",
     component: Login,
@@ -42,6 +37,10 @@ const routes = [
     path: '/',
     name: 'Home_Page',
     component: Home_Page
+  },
+  {
+    path: '/assets',
+    name: 'Assets',
   },
 ];
 
