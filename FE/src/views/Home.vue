@@ -161,9 +161,6 @@ body::after {
   /* Add any other styles you want to make it more engaging */
 }
 
-* {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 
 
 /* Add the following CSS to ensure responsiveness and prevent overlapping */

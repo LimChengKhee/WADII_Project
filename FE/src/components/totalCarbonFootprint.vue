@@ -54,22 +54,7 @@ export default {
 
 
     methods: {
-        updateChart() {
-        // Clear the existing chart
-        d3.select("#chart-container").selectAll("*").remove();
-
-        // Re-create the chart with updated data
-        const chart = dc.barChart("#chart-container");
-        chart
-          .dimension(this.dimension)
-          .group(this.dimension.group().reduceSum((d) => d.carbon_fp)) // Replace with your actual metric
-          .x(d3.scaleBand())
-          .xUnits(dc.units.ordinal)
-          .render();
-
-        // Call renderAll to render all charts
-        dc.renderAll();
-      },
+        
         getInfo(data, category) {
             var total = 0
             for (let itinerary of data) {

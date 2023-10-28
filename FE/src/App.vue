@@ -53,12 +53,21 @@ html, body {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
   width: 100%;
+}
+*{
+  font-family: montserrat;
+  font-weight: bolder;
 }
 
 .no-scroll {
   overflow-y: hidden;
   height: 100%; /* Make sure the container fills the viewport height */
+}
+
+@font-face {
+  font-family: 'montserrat';
+  src: url("./assets/fonts/montserrat.bold.ttf") format("truetype");
+
 }
 </style>
