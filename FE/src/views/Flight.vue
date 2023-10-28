@@ -1,41 +1,80 @@
 <template>
-  <div class="parent-container">
-    <div class="header">
-      <div class="container-fluid mt-5 ms-5 mb-3">
-        <div class="row">
-          <div class="col">
-            <h2 style="text-align: center">Search Flight</h2>
-          </div>
+  <div class="container bg-white main_con my-5">
+    <div class="row p-5">
+    <div class="col header pe-0 ">
+
+      <div class="col-12">
+        <img src="../assets/plane_img.png" alt="" class="img-fluid w-100 h-25">
+      </div>
+
+      <div class="col">
+      <div class="row">
+        <div class="col text-start">
+          One Way
         </div>
-        <div class="row">
-       
+        <div class="col text-start">
+          One Stop
         </div>
       </div>
 
-      <div class="container-fluid ms-5 mb-3">
-        <div class="row">
-          <div class="col">
-            <!--inputted value in it-->
-            <input type="text" v-model="destination_c" class="w-100" />
+      <div class="row mt-4">
+        <div class="col text-start">
+          <div class="mb-2 first_row">
+            From
           </div>
-          <div class="col">
+          <div class="d-flex"><input type="text" v-model="departure_c" class="w-50 d-inline-block input_c" />
+            <!-- <p class="d-inline-block">testing </p> -->
+            <img src="../assets/plane_up.png" alt="" class="">
+          </div>
+          
+
+        </div>
+        <div class="col text-start">
+          <div class="mb-2 first_row">
+            To
+          </div>
+          <div class="d-flex"><input type="text" v-model="destination_c" class="w-50 d-inline-block input_c" />
+            <!-- <p class="d-inline-block">testing </p> -->
+            <img src="../assets/plane_up.png" alt="" class="">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        
+        <div class="col">
+          Date
+          <br>
+          <div>
+
             <Datepicker
             v-model="flight_date"
             placeholder="Departure Date/time"
             :enable-time-picker="false"
+            :teleport="true"
             :text-input="true"
             :min-date="start_date"
             :start-date="start_date"
             :max-date="end_date"
             @update:model-value="mountAllHotelInformation"
             focus-start-date
-            range
-          />
+            range/>
+
           </div>
         </div>
+
       </div>
+
     </div>
-    <div class="card_section" v-if="mounted">
+      
+
+      
+
+      
+  
+    </div>
+    <div class="col card_section" v-if="mounted">
       <FlightCard
         v-for="flight in this.hotelsInCities"
         :flightNumberO="flight.legs[0].segments[0].flightNumber"
@@ -59,14 +98,15 @@
         :eco = "flight.eco.ecoContenderDelta"
       ></FlightCard>
     </div>
-    <div class="spinner_section d-flex flex-column" v-if="!mounted">
+    <!-- <div class="spinner_section d-flex flex-column" v-if="!mounted">
       <div
         class="spinner-border mt-5"
         style="margin: 0 auto; height: 200px; width: 200px"
         role="status"
       ></div>
       <p class="mt-2" style="text-align: center">Loading...Please give us a second</p>
-    </div>
+    </div> -->
+  </div>
   </div>
 </template>
 <script>
@@ -125,7 +165,11 @@ export default {
     this.iti_data = iti_data
     this.start_date = new Date(iti_data.itinerary_data.destination.start_date)
     var dc = iti_data.itinerary_data.destination.trip_country
+    var dec = iti_data.itinerary_data.destination.departure_country
+    console.log(dec)
     this.destination_c = dc
+    this.departure_c = dec
+    this.mountAllHotelInformation()
 
     
   },
@@ -256,5 +300,31 @@ try {
 <style scoped>
 .banner {
   background-color: blue;
+}
+
+.main_con {
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+.header{
+  background-color:#004ee4;
+  color:white;
+}
+
+.input_c{
+  background-color:#004ee4;
+  color:white;
+  border:none;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.first_row{
+  color:#5f8fee;
+}
+
+.info_row{
+  color:#5f8fee;
+  font-size: 10px;
 }
 </style>

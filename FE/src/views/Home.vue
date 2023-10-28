@@ -150,10 +150,13 @@ body::after {
 
 }
 *{
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-
-
+  font-family: Montserrat;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url("../assets/fonts/montserrat.bold.ttf") format("truetype");
 
 }
+
 
 </style>

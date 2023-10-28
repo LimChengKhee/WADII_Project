@@ -21,6 +21,7 @@ export const useItineraryStore = defineStore('itinerary', {
       adult: 0,
       child: 0,
       hotel:'',
+
       errors: {
         country: '',
         trip_date: '',
@@ -138,6 +139,7 @@ export const useItineraryStore = defineStore('itinerary', {
       console.log(Object.keys(hotel).length, Object.keys(flight).length, 'LENGTH')
 
       var json_obj = {
+        display_name: itinerary_name,
         itinerary_name: itinerary_name,
         username: userid,
         itinerary_data: {
@@ -157,6 +159,7 @@ export const useItineraryStore = defineStore('itinerary', {
         var itinerary_date = this.handleDate(this.trip_date)
       }
       res['trip_country'] = this.arrival_country
+      res['departure_country'] = this.departure_country
       res['itinerary_date'] = itinerary_date
       res['start_date'] = itinerary_date.split(',')[0]
       res['end_date'] = itinerary_date.split(',')[1]

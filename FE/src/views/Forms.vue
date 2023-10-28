@@ -26,8 +26,8 @@ const stepStore = useStepStore();
 <style scoped>
 .container {
   background-color:#fafbff;
-  border-radius: 16px;
   padding: 20px;
+  border-radius: 16px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
 }
 
