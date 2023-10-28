@@ -1,11 +1,12 @@
 <template>
-  <div class="parent-container">
+  <div class="parent-container container-fluid">
     <div class="row">
-      <div class="col-2">
+      <div class="col-1">
+        <p></p>
       </div>
-      <div class="col-10 ">
+      <div class="col-11">
         <div class="header">
-          <div class="container-fluid mt-5 ms-5 mb-3">
+          <div class="container-fluid">
             <div class="row">
               <div class="col">
                 <h2 style="text-align: center">Search accomodation</h2>
@@ -19,17 +20,17 @@
           </div>
 
           <div class="container">
-            <div class="row">
-              <div class="col-1"></div>
-              <div class="col-3">
+            <div class="row mb-5" style="position:relative;z-index:1000;">
+              <div class="col-xl-1"></div>
+              <div class="col-xl-3">
                 <input v-model="user_search" type="text">
-                <input type="button" value="Search" @click="searchHotelName()">
+                <button class="btn btn-primary" value="Search" @click="searchHotelName()" type="button">Search</button>
               </div>
-              <div class="col-5"></div>
-              <div class="col-1">
+              <div class="col-xl-5"></div>
+              <div class="col-xl-1">
                 <span>
                   <div class="dropdown" style="width: 100%">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-secondary dropdown-toggle mt-sm-3" type="button" data-bs-toggle="dropdown"
                       aria-expanded="false">
                       Sorting Criteria
                     </button>
@@ -58,7 +59,7 @@
           </div>
 
         </div>
-        <div class="card_section" v-if="mounted && !search">
+        <div class="card_section mt-5" v-if="mounted && !search">
           <HotelCard v-for="hotel in this.hotelsInCities" :hotel_name="hotel.hotel_name"
             :distance_to_cc_formatted="hotel.distance_to_cc_formatted" :review_score="hotel.review_score"
             :review_score_word="hotel.review_score_word" :number_of_reviews="hotel.review_nr"
@@ -231,7 +232,7 @@ export default {
 
       // await flushPromises()
       this.hotelsInCities = test
-        console.log(test)
+
       for (let hotel of this.hotelsInCities) {
         let hotel_id = hotel.hotel_id
         // fire an API call to get description

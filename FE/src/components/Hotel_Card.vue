@@ -6,50 +6,49 @@
 
         <div class="card mb-3">
           <div class="row g-0">
-            <div class="col-sm-3">
+            <div class="col-xl-3">
               <div class="img">
                 <img :src="src" class="img-fluid rounded-start" alt="..." />
               </div>
             </div>
-            <div class="col-sm-7">
+            <div class="col-xl-7">
               <div class="card-body">
-                <h5 class="card-title">
-                    <router-link :to="`/hotel/${this.hotel_name}`" style="text-decoration: none; color:black;font-size: 2rem;">
+                <div class="card-title d-flex p-sm-3 p-xl-0">
+                    <router-link :to="`/hotel/${this.hotel_name}`" style="text-decoration: none; color:black;font-size: 1.5rem;">
                     {{ this.hotel_name }}
                     </router-link>
-                </h5>
-                <div class="row">
-                  <div class="col-3">
+                  </div>
+                <div class="row d-flex justify-content-start p-sm-1 p-xl-0">
+                  <div class="col-md-3 col-sm-3 col-xs-3">
                     <span class="badge rounded-pill text-bg-secondary">{{this.distance_to_cc_formatted}} from centre</span><br/>
                   </div>
-                  <div class="col" style="font-size: 13px; color:rgb(14, 194, 14);font-weight: bolder;text-decoration: underline;">
+                  <div class="col-md-3 col-sm-4 col-xs-5" style="font-size: 13px; color:rgb(14, 194, 14);font-weight: bolder;text-decoration: underline;">
                     {{ this.district + ", " + this.city}}
                   </div>
 
                 </div>
                 <div class="mt-2">
-                  {{(this.updated_object.Description.description).slice(0,300)}}
+                  <p style="color:black;">
+                    {{(this.updated_object.Description.description).slice(0,100)}}
                   <a :href="`/hotel/${this.hotel_name}`" style="text-decoration: none;">....read more.....</a>
+
+                  </p>
                 </div>
               </div>
             </div>
-            <div class="col-sm-2">   
+            <div class="col-xl-2 p-2">   
                 <div class="container">
                     <div class="row mt-4">
                         <!--Ratings / achievements-->
-                        <div class="col-8">
-                          <p  style="font-weight: bold;" class="mb-0">{{ this.review_score_word }}</p>
-                          <p style="font-size:13px">{{ this.number_of_reviews +" Reviews" }}</p>
+                        <div class="col-sm-3 col-xl-7">
+                          <p  style="font-weight: bold; color:black;" class="mb-0 fs-lg-6 fs-md-2">{{ this.review_score_word }}</p>
+                          <p style="color:black;" class="fs-lg-6 fs-md-2">{{ this.number_of_reviews +" Reviews" }}</p>
                         </div>
-                        <div class="col-4 ps-0">
+                        <div class="col-sm-1 col-xl-4 ps-0">
                           <h5>
                             <span class="badge text-bg-info">{{this.review_score}}</span>
                           </h5>
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                      <div class="col">
-
                         <button type="button" class="btn btn-primary mt-2" >
                           <router-link :to="`/hotel/${this.hotel_name}`" style="text-decoration: none; color:black;font-weight: bold;">
                           Details
@@ -57,15 +56,13 @@
                         </button>
 
                         <br/>
+                        
                         <button type="button" class="btn btn-warning mt-2" @click="book_room()">
                           <span style="text-decoration: none; color:black;font-weight: bold;">
                             Book Room
                           </span>
                         </button>
-
-                      </div>
                     </div>
-
                 </div>
             </div>
 
@@ -73,7 +70,7 @@
         </div>
 
       </div>
-      <div class="col-1"></div>
+      <div class="col-sm-1"></div>
     </div>
   </div>
 </template>

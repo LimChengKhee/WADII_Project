@@ -59,7 +59,7 @@
             </ul>
           </div>
 
-          <div class="row facilities">
+          <div class="row facilities" style="background-color: white;">
             <div class="container">
               <div class="row">
                 <div class="col" style="padding-left: 0px;padding-top: 30px;">
