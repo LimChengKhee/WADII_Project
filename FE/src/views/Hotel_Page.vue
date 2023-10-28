@@ -35,13 +35,17 @@
             </div>
           </div>
           <div class="row long_description" style="margin-top: 30px;">
-            <strong style="padding-left: 0px;">About</strong> <br /> {{ this.longDescription }}
+            <strong style="padding-left: 0px;">About</strong> <br /> 
+            <span style="color:white;">
+              {{ this.longDescription }}
+            </span>  
+          
           </div>
           <div class="row long_price" style="margin-top:  30px" v-if="Object.keys((this.specificHotelInfo)).length !== 0">
             <strong style="padding-left: 0px;">Price</strong> <br />
             <ul class="list-group list-group-horizontal" style="margin-top: 10px;">
               <li class="list-group-item">
-                <strong>
+                <strong style="color:black;">
                   All Inclusive Amount
                 </strong>
               </li>
@@ -49,32 +53,34 @@
                 {{ this.specificHotelInfo['composite_price_breakdown']["all_inclusive_amount"]["value"] }}
               </li>
               <li class="list-group-item">
-                <strong>
+                <strong style="color:black;">
                   Price Per Night
                 </strong>
               </li>
               <li class="list-group-item">
-                {{ this.specificHotelInfo['composite_price_breakdown']["gross_amount_per_night"]["value"] }}
+                <strong style="color:black;">
+                  {{ this.specificHotelInfo['composite_price_breakdown']["gross_amount_per_night"]["value"] }}
+                </strong>
               </li>
             </ul>
           </div>
 
-          <div class="row facilities" style="background-color: white;">
+          <div class="row facilities mt-3" style="background-color: white;">
             <div class="container">
               <div class="row">
                 <div class="col" style="padding-left: 0px;padding-top: 30px;">
-                  <strong>Most Popular Facilities</strong><br />
+                  <strong style="color:black;">Most Popular Facilities</strong><br />
                 </div>
               </div>
               <div class="row">
                 <div class="container">
                   <div class="row">
-                    <div v-for="facilities in mostPopularFacilities" class="col-3 mt-2">
+                    <div v-for="facilities in mostPopularFacilities" class="col-xl-3 col-lg-4 col-md-5 col-sm-6 mt-2">
                       <div class="col-4 d-flex mb-4">
                         <span style="margin-right: 30px;">
                           <img :src="`${facilities.src}`" style="width:50px;">
                         </span>
-                        <p style="white-space:nowrap;">{{ facilities["label"] }} </p>
+                        <p style="white-space:nowrap;color:black;">{{ facilities["label"] }} </p>
                       </div>
 
                     </div>
@@ -193,17 +199,17 @@
                   <div class="col-3">
                     <img src="../assets/door.png" style="width: 30px;margin-right:30px;" alt=""> Check In 
                   </div>
-                  <div class="col-9">
+                  <div class="col-3" style="color:black;">
                       {{ "Check In From: " + this.specificHotelInfo["checkin"]["from"] }}
                   </div>
                 </div>
               </li>
               <li class="list-group-item" style="padding: 30px;">
                 <div class="row">
-                  <div class="col-3">
+                  <div class="col-3" >
                     <img src="../assets/door.png" style="width: 30px;margin-right:30px;" alt=""> Check Out 
                   </div>
-                  <div class="col-9">
+                  <div class="col-3" style="color:black;">
                       {{ "Check Out Before: " + this.specificHotelInfo["checkout"]["until"] }}
                   </div>
                 </div>
@@ -448,4 +454,5 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
