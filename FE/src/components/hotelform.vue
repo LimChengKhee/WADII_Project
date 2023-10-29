@@ -386,12 +386,31 @@ p {
 
 </style>
 
-<style lang="scss">
+<!-- <style lang="scss">
 .dp-custom-input {
-  border: 1px solid var(--cool-gray);
+  border: 1px solid red;
+  
+  
+  &:focus {
+    border: 1px solid red;
+  }
 
+}
+
+</style> -->
+
+
+<style lang="scss" scoped>
+  :deep() {
+    .dp-custom-input {
+  border: 1px solid var(--cool-gray);
+  
+  
   &:focus {
     border: 1px solid var(--purplish-blue);
   }
-}
+
+  }
+  
+  }
 </style>

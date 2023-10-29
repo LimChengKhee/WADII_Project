@@ -87,7 +87,6 @@ export const useItineraryStore = defineStore('itinerary', {
       this.validatetripdate(this.trip_date)
     },
     handleDate(date_range) {
-        console.log(date_range,'DATERABE')
       if (date_range == '') {
         return
       }
@@ -188,7 +187,9 @@ export const useItineraryStore = defineStore('itinerary', {
           cost: this.flight_cost ? Number(this.flight_cost) : 0,
           currency: 'sgd',
           carbon_fp: 0,
-          notes: ''
+          notes: '',
+          eco:'NORMAL',
+          img:''
         }
         var flightjson = this.createflight(flight_obj)
         return flightjson

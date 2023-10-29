@@ -56,7 +56,7 @@ let steps = [
 
 @media only screen and (min-width: 992px) {
   .sidebar {
-    background: url("../assets/img/bg-sidebar-desktop.svg");
+    background: url("../assets/img/haikei1.svg");
     background-size: cover;
     border-radius: 16px;
     width:300px;
