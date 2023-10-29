@@ -23,7 +23,7 @@
             <div class="row mb-5" style="position:relative;z-index:1000;">
               <div class="col-xl-1"></div>
               <div class="col-xl-3">
-                <input v-model="user_search" type="text">
+                <input v-model="user_search" type="text" style="color:black;">
                 <button class="btn btn-primary" value="Search" @click="searchHotelName()" type="button">Search</button>
               </div>
               <div class="col-xl-5"></div>
@@ -132,8 +132,8 @@ export default {
   },
 
   methods: {
-    sort_review(direction_to_go) {
-      console.log('sd')
+    sort_review() {
+      console.log("jdsif");
       this.review_sort = !this.review_sort;
       if (!this.review_sort) {
         this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
@@ -146,6 +146,7 @@ export default {
       }
     },
     sort_distance() {
+      console.log("jdsif");
       this.distance_sort = !this.distance_sort;
       if (!this.distance_sort) {
         this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
