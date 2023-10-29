@@ -43,40 +43,47 @@
       </button>
     </div>
     <div class="header" style="text-align: start; font-size:22px;">
-        <div class="row">
-            <div class="col-2 px-0">
+        <div class="row ms-3">
+            <div class="col-md-2 col-1">
               <p class="d-inline fw-bold"> Itinerary </p>
             </div>
-            <div class="col-3 px-0" style="width:28%">
+            <div class="col-md-4 col-xl-3 offset-md-0 col-5 offset-4 px-0">
               <Datepicker id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range class="d-inline" :enable-time-picker="false"/>
             </div>
-            <div class="col-2"></div>
-            <div class="col-4">
+            <div class="col-md-4 col-xl-4 col-2">
               <button id='addDay' @click="addDaystoEnd(1)" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-warning d-none" type="button">
               Add day
               </button>
             </div>
-            <div class="col-4"></div>
         </div>
-        <div class="row mt-4">
-          <div class="col-2 px-0 fs-5 fw-semibold">
+        <div class="row mt-4 ms-3">
+          <div class="col-12 fs-5 fw-semibold" >
             Origin location
+            <svg id="originElement" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="This would be used as a starting point to recommend you activities if there are no previous activities" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill ms-1" viewBox="0 0 16 16">
+              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </svg>
           </div>
           <div class="col"></div>
         </div>
 
-        <div class="row mt-2 mb-4" id="chooseOrigin">
+        <div class="row mt-2 mb-4 ms-3" id="chooseOrigin">
           <template v-if="!editOrigin">
-            <div class="col-3 mx-0 px-0 fs-6">
-              <input class="form-control" type="text" v-model="origin" disabled>
-            </div>
-            <div class="col-2">
-              <button type="button" class="btn" @click="editOrigin = true">
+            <div class="input-group mb-3 col-6 col-sm-5 col-lg-3 pe-0 fs-6">
+              <input class="form-control d-inline-block" style="max-width:350px;" type="text" v-model="origin" disabled>
+              <span class="input-group-text">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
                   <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
                 </svg>
-              </button>
+              </span>
             </div>
+            <!-- <div class="col-6 col-sm-5 col-lg-3 pe-0 fs-6">
+              <input class="form-control d-inline-block" style="min-width:300px" type="text" v-model="origin" disabled>
+            </div>
+            <div class="col-1 ps-0">
+              <button type="button" class="btn d-inline-block position-relative" @click="editOrigin = true">
+                
+              </button>
+            </div> -->
           </template>
           <template v-else>
               <div class="col px-0 input-group w-50">
@@ -125,7 +132,8 @@
   <script>
   import Day_Component from '../components/DayComponent.vue';
   import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
-  import '../../node_modules/@vuepic/vue-datepicker/dist/main.css';
+  import '/node_modules/@vuepic/vue-datepicker/dist/main.css';
+  import * as bootstrap from 'bootstrap'
   //  import statements
   // import example from '@/utils/string_formatter'
   export default {
@@ -165,8 +173,9 @@
         this.date = [startDate, endDate];
       }
       this.initialiseOrigin();
-      
-      
+      var originElem = document.getElementById('originElement')
+      new bootstrap.Tooltip(originElem)
+
     },
   
     methods: {

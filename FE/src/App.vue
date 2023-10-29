@@ -9,7 +9,7 @@
       </div>
       <div class="row">
         <!-- Content -->
-        <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12">
+        <div class="col-lg-10 offset-lg-2 col-12 px-0">
           <router-view/>
         </div>
       </div>

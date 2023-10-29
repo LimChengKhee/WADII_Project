@@ -3,15 +3,26 @@
 <template>
     <div id="testingDiv"></div>
 
-    <div v-for="day of days" :key='day.dayId'  class="row">
-        <p class="d-inline px-0">
-            Day {{ day.dayId + 1 }}  ({{getPrintableDate(day.dayId)}})
-            <button type="button" @click="deleteDay(day.dayId)" class="btn btn-outline-danger" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: 0.6rem; margin-left:0.5rem">Delete Day</button>
-            <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 35rem" class="btn btn-secondary d-inline" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" aria-controls="collapseExample">
-                Expand Day 
+    <div v-for="day of days" :key='day.dayId' class="row my-3 ms-3">
+        <div>
+            <button class="btn px-0 pt-0 pb-auto" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" @click="changeCollapseArrow(day.dayId)">
+                    <svg :id="'arrow' + day.dayId + 'right'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                    </svg>
+                    <svg :id="'arrow' + day.dayId + 'down'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="d-none bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                    </svg>
             </button>
-
-        </p>
+            <p class="d-inline mx-1">
+                Day {{ day.dayId + 1 }}  ({{getPrintableDate(day.dayId)}})
+            </p>
+            <button type="button" @click="deleteDay(day.dayId)" class="btn btn-outline-danger" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: 0.6rem;">Delete Day</button>
+        </div>
+           
+           
+            <!-- <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 35rem" class="btn btn-secondary d-inline" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" aria-controls="collapseExample">
+                Expand Day 
+            </button> -->
         <div class="collapse" :id="'Day' + day.dayId + 'Collapse'">
             <div class="modal fade" :id="'filter'+ day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'#filter'+ day.dayId + 'Label'" aria-hidden="true">
                     <div class="modal-dialog">
@@ -133,23 +144,23 @@
                                     <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </span>
-                            <input type="text" @input="processAutocomplete(actIdx)" class="form-control" placeholder="Add a place" v-model="autocompleteValue">
+                            <input type="text" @input="processAutocomplete" :id="actIdx + 'autocomplete' + day.dayId" class="form-control" placeholder="Add a place">
                             <div class="dropend">
-                                <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true" style="height:38px;">Custom events</button>
+                                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true" style="height:38px;">Custom events</button>
                                 <form class="dropdown-menu dropdown-menu-start p-4" style="width:50%;" data-bs-theme="dark">
                                     <div class="mb-3">
                                         <label :for="'Day' + day.dayId + 'EndEventName'" class="form-label">Event Name</label>
-                                        <input type="text" class="form-control" v-model="customEventName">
+                                        <input type="text" class="form-control" :id="actIdx + 'customName' + day.dayId">
                                     </div>
                                     <div class="mb-3">
                                         <label :for="'Day' + day.dayId + 'EndNotes'" class="form-label">Notes</label>
-                                        <input type="text" class="form-control" v-model="customEventNotes">
+                                        <input type="text" class="form-control" :id="actIdx + 'customName' + day.dayId">
                                     </div>
-                                    <button type="button" @click="addCustomEvent(day.dayId,actIdx)" class="btn btn-primary">Add event</button>
+                                    <button type="button" @click="addCustomEvent" :id="actIdx + 'customEvent' + day.dayId" class="btn btn-primary">Add event</button>
                                 </form>
                             </div>
                         </div>
-                        <div v-if="displayPredictions === actIdx" class="list-group">
+                        <div v-if="displayPredictions.day == day.dayId && displayPredictions.psn == actIdx" class="list-group">
                             <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction,actIdx)">{{prediction.description}}</button>
                         </div>
                     </template>
@@ -223,23 +234,23 @@
                         <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </span>
-                <input type="text" @input="processAutocomplete('end')" class="form-control" placeholder="Add a place" v-model="autocompleteValue">
+                <input type="text" @input="processAutocomplete" :id="'end'+'autocomplete'+ day.dayId" class="form-control" placeholder="Add a place">
                 <div class="dropend">
-                    <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true" style="height:38px;">Custom events</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true" style="height:38px;">Custom events</button>
                     <form class="dropdown-menu dropdown-menu-start p-4" style="width:50%;" data-bs-theme="dark">
                         <div class="mb-3">
                             <label :for="'Day' + day.dayId + 'EndEventName'" class="form-label">Event Name</label>
-                            <input type="text" class="form-control" v-model="customEventName">
+                            <input type="text" class="form-control" :id="'end' + 'customName' + day.dayId">
                         </div>
                         <div class="mb-3">
                             <label :for="'Day' + day.dayId + 'EndNotes'" class="form-label">Notes</label>
-                            <input type="text" class="form-control" v-model="customEventNotes">
+                            <input type="text" class="form-control" :id="'end' + 'customNotes' + day.dayId">
                         </div>
-                        <button type="button" @click="addCustomEvent(day.dayId,day.dayActivities.length)" class="btn btn-primary">Add event</button>
+                        <button type="button" @click="addCustomEvent" :id="'end' + 'customEvent' + day.dayId" class="btn btn-primary">Add event</button>
                     </form>
                 </div>
             </div>
-            <div v-if="displayPredictions === 'end'" class="list-group">
+            <div v-if="displayPredictions.day == day.dayId && displayPredictions.psn == 'end'" class="list-group">
                 <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction,'end')">{{prediction.description}}</button>
             </div>
         </div>
@@ -267,8 +278,6 @@ components: {
 data () {
 // local repository of information
     return {
-        customEventName: '',
-        customEventNotes: '',
         recs: [],
         // respLength: 0,
         selectedRec: [],
@@ -556,8 +565,7 @@ data () {
         topAttractions: [],
         position: 0,
         addSearch: '',
-        autocompleteValue: '',
-        displayPredictions: '',
+        displayPredictions: {},
         recommendedTypes: ['tourist_attraction','park','museum','cafe', 'aquarium', 'zoo'],
     }
 },
@@ -591,6 +599,17 @@ async mounted () {
 },
 
 methods: {
+    changeCollapseArrow(dayId){
+        let arrowdown = document.getElementById('arrow' + dayId + 'down')
+        let arrowright = document.getElementById('arrow' + dayId + 'right')
+        if (arrowdown.classList.contains('d-none')){
+            arrowdown.classList.remove('d-none')
+            arrowright.classList.add('d-none')
+        }else{
+            arrowdown.classList.add('d-none')
+            arrowright.classList.remove('d-none')
+        }        
+    },
     checkPreviousMeal(dayId){
         if (this.days[dayId].dayActivities.length == 0 || this.position == 0){
             return false
@@ -618,7 +637,7 @@ methods: {
         if (image == "custom"){
             return '/assets/img/customevent.jpg'
         }else if (typeof(image) == 'object'){
-            return image.getUrl({maxWidth:221})
+            return image.getUrl({maxHeight:300})
         }else{
             return '/assets/img/noimage.png'
         }
@@ -1005,19 +1024,30 @@ methods: {
         }
     },
     addActivityFromPrediction(dayId,prediction,position){
-        this.displayPredictions = ""
-        this.autocompleteValue = ""
+        let autoInput = document.getElementById(position + "autocomplete" + dayId)
+        autoInput.value = ""
+        this.displayPredictions = {}
         this.addSearch = ""
         this.getPlaceDetails(prediction.place_id,['name','vicinity','photos']).then(result=>{
             // eslint-disable-next-line vue/no-mutating-props
+            if (result.photos === undefined){
+                var image = ""
+            }else{
+                var image = result.photos[0]
+            }
+            if(result.vicinity === undefined){
+                var address  = "No result found"
+            }else{
+                var address  = result.vicinity
+            }
             if (position == "end"){
-                this.days[dayId].dayActivities.push({'name':result.name, 'description':result.vicinity, 'image':result.photos[0], 'type':'prediction'})
+                this.days[dayId].dayActivities.push({'name':result.name, 'description':address, 'image':image, 'type':'prediction'})
             }
             else if (position == 0){
-                this.days[dayId].dayActivities.unshift({'name':result.name, 'description':result.vicinity, 'image':result.photos[0], 'type':'prediction'})
+                this.days[dayId].dayActivities.unshift({'name':result.name, 'description':address, 'image':image, 'type':'prediction'})
             }
             else{
-                this.days[dayId].dayActivities.splice(position,0,{'name':result.name, 'description':result.vicinity, 'image':result.photos[0], 'type':'prediction'})
+                this.days[dayId].dayActivities.splice(position,0,{'name':result.name, 'description':address, 'image':image, 'type':'prediction'})
             }
         })
 
@@ -1132,9 +1162,13 @@ methods: {
             });
         });
     },
-    processAutocomplete(actIdx){
-        this.displayPredictions = actIdx
-        var location = this.autocompleteValue
+    processAutocomplete(event){
+        let startindex = event.target.id.indexOf('autocomplete')
+        let actIdx = event.target.id.slice(0,startindex)
+        let dayId = event.target.id.slice(startindex+12)
+        this.displayPredictions = {day: dayId, psn: actIdx}
+        console.log(this.displayPredictions)
+        var location = event.target.value
         this.predictionList = []
         this.placeAutocomplete(location,this.originLoc,this.country).then(suggestions =>{
             if (suggestions == "No valid results"){
@@ -1182,12 +1216,18 @@ methods: {
         let printableDate = new Date(new Date().setDate(startDate.getDate() + day));
         return printableDate.toDateString()
     },
-    addCustomEvent(day,actIdx){ // Make dynamic for all positions
-        let dayActivities = this.days[day].dayActivities
-        let name = this.customEventName
-        let notes = this.customEventNotes
-        this.customEventName = ""
-        this.customEventNotes = ""
+    addCustomEvent(event){ // Make dynamic for all positions
+        console.log(event.target.id)
+        let startindex = event.target.id.indexOf('customEvent')
+        let actIdx = event.target.id.slice(0,startindex)
+        let dayId = event.target.id.slice(startindex+11)
+        let dayActivities = this.days[dayId].dayActivities
+        let nameElem = document.getElementById(actIdx + 'customName' + dayId)
+        let notesElem = document.getElementById(actIdx + 'customNotes' + dayId)
+        let name = nameElem.value
+        let notes = notesElem.value
+        nameElem.value = ""
+        notesElem.value = ""
         if (actIdx == dayActivities.length){
             dayActivities.push({
                 'name': name, 'description':notes, 'image': 'custom', 'placeId': '', 'type':'custom'

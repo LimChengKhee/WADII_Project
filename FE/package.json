@@ -10,8 +10,6 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@fawmi/vue-google-maps": "^0.9.79",
-    "@googlemaps/js-api-loader": "^1.16.2",
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^7.0.0",
     "axios": "^1.5.1",
@@ -23,7 +21,6 @@
     "vue-date-pick": "^1.5.1",
     "vue-router": "^4.2.4",
     "vue-social-auth": "^1.4.9",
-    "vue3-google-map": "^0.18.0",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
