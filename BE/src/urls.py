@@ -19,8 +19,8 @@ from django.urls import path,include
 #webapp12
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api_d/v1/', include('djoser.urls')),
-    path('api_d/v1/', include('djoser.urls.authtoken')),
-    path('api_d/',include('api_d.urls'))
+    path('api/v1/', include('djoser.urls')),
+    path('api/v1/', include('djoser.urls.authtoken')),
+    path('api/',include('api.urls'))
 
 ]

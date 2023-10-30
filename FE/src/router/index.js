@@ -8,7 +8,6 @@ import SignUp from "../views/SignUp.vue";
 import Form from "../views/Forms.vue";
 import Itinerary_Page from '../views/Itinerary.vue'
 import Dashboard from "../views/Dashboard.vue";
-import Flight from "../views/Flight.vue"
 
 import { useAuthStore } from "../store/piniaStore/authStore";
 
@@ -38,6 +37,10 @@ const routes =  [
       name: 'Your-Component',
       component: 'Component'
     },
+    {
+      path: '/assets',
+      name: 'Assets',
+    },
     
 //     {
 //     path: "/",
@@ -46,7 +49,7 @@ const routes =  [
 //   },
   {
     path: "/login",
-    name: "Login",
+    name: "login",
     component: Login,
   },
   {
@@ -65,46 +68,24 @@ const routes =  [
     component: Dashboard,
   },
   {
-    path: '/itinerary/:username/:itinerary_name',
+    path: '/itinerary',
     name: 'Itinerary_Page',
     component: Itinerary_Page
   },
-  // {
-  //   path: '/itinerary',
-  //   name: 'Itinerary_Page',
-  //   component: Itinerary_Page
-  // },
   {
-    path: '/flight',
-    name: 'Flight',
-    component: Flight
+    path: '/',
+    name: 'Home_Page',
+    component: Home_Page
   },
   {
-    path: '/flight/:username/:itinerary_name',
-    name: 'Flight_specific',
-    component: Flight
+    path: '/assets',
+    name: 'Assets',
   },
 ];
 
-
 const router = createRouter({
-  mode: 'history',
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-})
-
-router.beforeEach(async (to) => {
-  // clear alert on route change
-
-  // redirect to login page if not logged in and trying to access a restricted page 
-  const publicPages = ['/login', '/sign-up'];
-  const authRequired = !publicPages.includes(to.path);
-  const authStore = useAuthStore();
-  console.log(authRequired,!authStore.user,to.path)
-  if (authRequired && !authStore.user) {
-      authStore.returnUrl = to.fullPath;
-      return '/login';
-  }
 })
 
 export default router;

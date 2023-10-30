@@ -17,17 +17,16 @@
   </div>
 </template>
 
+<script setup>
+import { RouterLink, RouterView } from 'vue-router';
+</script>
 
 <script>
 import Navbar from "./components/Navbar.vue";
 import Login from "./views/Login.vue";
-import Itinerary from "./views/Itinerary.vue";
-
-// import Dashboard from "./views/dashboard.vue";
+import SignUp from "./views/SignUp.vue";
+import Dashboard from "./views/dashboard.vue";
 import axios from 'axios';
-// var VueRouter = require('vue-router')
-// Vue.use (VueRouter)
-import { RouterLink, RouterView } from 'vue-router'
 
 export default { 
   name: "App",
@@ -35,10 +34,20 @@ export default {
   components:{
     Navbar,
     Login,
-    // Dashboard,
+    SignUp,
+    Dashboard,
   },
   methods:{
+    beforeCreate(){
+    this.$store.commit('initalizeStore')
+    const token = this.$store.state.token
 
+    if (token){
+      axios.defaults.headers.common['Authorization'] = "Token " + token
+    }else{
+      axios.defaults.headers.common['Authorization'] = ''
+    }
+  },
   }
 };
 </script>

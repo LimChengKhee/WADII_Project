@@ -62,7 +62,7 @@ import { useAuthStore } from '../store/piniaStore/authStore';
 import { useUsersStore } from '../store/piniaStore/userStore';
 
 export default {
-  name: 'Home',
+  name: 'Home_Page',
   components: {
     // importing components from other places
   },
@@ -265,5 +265,7 @@ body::after {
 .carousel-control-next {
   right: -2%;
 }
+
+</style>
 
 </style>
