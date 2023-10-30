@@ -99,18 +99,18 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(async (to) => {
-  // clear alert on route change
+// router.beforeEach(async (to) => {
+//   // clear alert on route change
 
-  // redirect to login page if not logged in and trying to access a restricted page 
-  const publicPages = ['/login', '/sign-up'];
-  const authRequired = !publicPages.includes(to.path);
-  const authStore = useAuthStore();
-  console.log(authRequired,!authStore.user,to.path)
-  if (authRequired && !authStore.user) {
-      authStore.returnUrl = to.fullPath;
-      return '/login';
-  }
-})
+//   // redirect to login page if not logged in and trying to access a restricted page 
+//   const publicPages = ['/login', '/sign-up'];
+//   const authRequired = !publicPages.includes(to.path);
+//   const authStore = useAuthStore();
+//   console.log(authRequired,!authStore.user,to.path)
+//   if (authRequired && !authStore.user) {
+//       authStore.returnUrl = to.fullPath;
+//       return '/login';
+//   }
+// })
 
 export default router;
