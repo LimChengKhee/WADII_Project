@@ -3,7 +3,7 @@
 <template>
     <div id="testingDiv"></div>
 
-    <div v-for="day of days" :key='day.dayId' class="row my-3 ms-3">
+    <div v-for="day of days" :key='day.dayId' class="row my-3 ms-3" :id="'Day' + day.dayId + 'Row'">
         <div>
             <button class="btn px-0 pt-0 pb-auto" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" @click="changeCollapseArrow(day.dayId)">
                     <svg :id="'arrow' + day.dayId + 'right'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
