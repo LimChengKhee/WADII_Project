@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h2>Line Chart</h2>
     <div id="chartContainer">
       <svg ref="chart"></svg>
     </div>
@@ -307,12 +306,6 @@ svg {
 #chartContainer {
   width: 100%;
   max-width: 100%;
-
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-  /* Add a drop shadow */
-
 }
 
 * {
@@ -321,6 +314,6 @@ svg {
 }
 
 h2 {
-  color: white;
+  color: black;
 }
 </style>

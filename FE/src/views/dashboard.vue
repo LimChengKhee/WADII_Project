@@ -1,40 +1,40 @@
 <template>
   <div class="container-fluid">
-    <div class="row d-flex justify-content-center align-items-center my-4">
-      <div class="col-lg-4">
-        <div class="rounded-rectangle p-4 m-2" style="background-color:#5271FF;">
-          <!-- Your content goes here -->
-          <Totaltrips :dataTT="fetchedData" />
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
-          <!-- Your content goes here -->
-          <TotalCarbonFootprint :dataCP="fetchedData" />
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
-          <!-- Your content goes here -->
-          <Totaltrips :dataTT="fetchedData" />
-        </div>
-      </div>
-
+    <div class="row float-left pt-5">
+      <h1> {{ userid }}'s Dashboard</h1>
+      <h1 style="text-align: left;">Your Total Distance Travelled</h1>
+      <hr>
     </div>
-    <div class="row my-4">
-      <div class="col-9 d-flex justify-content-center">
-        <Linechart :dataLC="fetchedData" />
-      </div>
-
-      <div class="col-3 d-flex justify-content-center align-items-center">
-        <div class="rounded-rectangle p-4 m-2" style="background-color: white; height:500px;">
-          <Piechart :dataPC="fetchedData" />
+    <div class="row d-flex justify-content-center rounded-rect-container">
+      <div class="col-lg-12">
+        <div class="row d-flex justify-content-around">
+          <div class="card card-waves col-lg-3 col-md-6 col-sm-6 m-2">
+            <Totaltrips :dataTT="fetchedData" />
+          </div>
+          <div class="card card-waves col-lg-3 col-md-6 col-sm-6 m-2">
+            <TotalCarbonFootprint :dataCP="fetchedData" />
+          </div>
+          <div class="card card-waves col-lg-3 col-md-6 col-sm-6 m-2">
+            <DaysTravelled :dataDT="fetchedData" />
+          </div>
+        </div>
+        <div class="parent-chart-container ">
+          <div class="row d-flex justify-content-center">
+            <div class="col-lg-8 col-md-12">
+              <Linechart :dataLC="fetchedData" />
+            </div>
+            <div class="col-lg-4 col-md-12 mt-2">
+              <Itidetails :dataDC="fetchedData" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-  
+
+
+
 <script>
 import * as d3 from "d3";
 import * as crossfilter from "crossfilter";
@@ -46,6 +46,8 @@ import Piechart from "../components/piechart.vue";
 import Barchart from "../components/barchart.vue";
 import Totaltrips from "../components/totaltrips.vue";
 import TotalCarbonFootprint from "../components/totalCarbonFootprint.vue";
+import Itidetails from "../components/itidetails.vue";
+import DaysTravelled from "../components/daysTravelled.vue";
 
 
 
@@ -57,6 +59,8 @@ export default {
     Barchart,
     Totaltrips,
     TotalCarbonFootprint,
+    Itidetails,
+    DaysTravelled,
   },
   data() {
     return {
@@ -187,24 +191,62 @@ export default {
       return result
     }
   },
+  generatePieChartDetails(data) {
+    const countriesCount = {};
+    for (let trip of data) {
+      if (trip.itinerary_data.destination && trip.itinerary_data.destination.country) {
+        const country = trip.itinerary_data.destination.country;
+        countriesCount[country] = (countriesCount[country] || 0) + 1;
+      }
+    }
+
+    let details = 'Countries visited:';
+    for (const [country, count] of Object.entries(countriesCount)) {
+      details += ` ${country}: ${count},`;
+    }
+    // Removing the last comma
+    details = details.slice(0, -1);
+    return details;
+  },
+
 };
 </script>
   
   
 <style scoped>
 .rounded-rectangle {
-  border-radius: 25px;
+  border-radius: 15px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  height: 150px;
+  height: 500px;
   display: flex;
   justify-content: center;
-  
-
-
+  align-items: center;
+  background-color: white;
 }
+
+.card-waves {
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 30%; /* Adjust the width as needed */
+  margin: 0.5rem; /* Adjust the margin between the cards */
+}
+
 
 * {
   font-weight: bold;
+}
+
+.rounded-rect-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 85%;
+  height: 100%;
+  margin: auto;
+  padding: 2%;
+  background-color: white;
 }
 </style>
