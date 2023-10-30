@@ -40,6 +40,7 @@
             :clearable="false"
             @update:model-value="selectDate"
             v-model="itinerary_date"
+            :teleport="true"
             range
             class="d-inline"
             :enable-time-picker="false"
