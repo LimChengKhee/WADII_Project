@@ -200,7 +200,7 @@ body::after {
   /* background: url(https://i.ibb.co/M9LB3Kq/Glassmorphism-Background.png); */
   background-size:cover;
   padding:2rem;
-  width:310px;
+  /* width:310px; */
   height:640px;
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
   backdrop-filter: blur( 16.5px );
