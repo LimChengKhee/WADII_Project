@@ -16,7 +16,7 @@
               <ul class="navbar-nav">
                 <li class="nav-item menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
                   :ref="'menu-item_' + link.id">
-                  <a href="#" class="nav-link menu-link" :class="link.id === selectedIndex ? 'active' : null">
+                  <a href="#" class="nav-link menu-link" :class="link.id === selectedIndex ? 'active' : null" style="color:white">
                     <i class="menu-icon" :class="link.icon"></i>
                     <span>{{ link.text }}</span>
                   </a>
@@ -218,6 +218,7 @@ body {
   /* Span the entire screen width */
   list-style-type: none;
   overflow: hidden;
+  
 
 }
 
@@ -226,6 +227,7 @@ body {
   height: 100%;
   /* Ensure each menu item stretches to the full height of the navbar */
   align-items: center;
+  
   /* Vertically center the menu items */
 }
 

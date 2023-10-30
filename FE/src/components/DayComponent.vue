@@ -161,7 +161,7 @@
                                 <span class="input-group-text" id="basic-addon1">End</span>
                                 <input type="time" class="form-control" placeholder="Username" aria-label="Username"
                                     aria-describedby="basic-addon1">
-                            </div> 
+                            </div>
 
             </div>
         </div>

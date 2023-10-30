@@ -1,56 +1,34 @@
 <template>
   <div class="container-fluid">
-    <div class="row px-0">
-      <div class="col-lg-3 col-md-4 col-12 p-5 sidebar">
-        <img class="shadow-4-strong img-circle rounded-circle custom-width my-3" alt="profileImg"
-          src="../img/steve.jpg" />
-        <div class="profileInfo">
-          <h5>{{ profileInfo[0].Name }}</h5>
-          <p>{{ profileInfo[0].Birthday }}</p>
-          <div class="d-flex align-items-center mt-2">
-            <img src="../img/leaf.png" class="mr-2" alt="leafImg" style="height: 20px;" />
-            <p>Carbon Footprint: {{ carbonFootprint }}</p>
-          </div>
+    <div class="row d-flex justify-content-center align-items-center my-4">
+      <div class="col-lg-4">
+        <div class="rounded-rectangle p-4 m-2" style="background-color:#5271FF;">
+          <!-- Your content goes here -->
+          <Totaltrips :dataTT="fetchedData" />
         </div>
       </div>
-      <div class="col-lg-9 col-md-8 col-sm-12 main-content">
-        <div class="row keyStats mb-4">
-          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-primary text-white p-3 m-2">
-            <!-- Content for the first key stat column -->
-            <Totaltrips />
-          </div>
-          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-secondary text-white p-3 m-2">
-            <!-- Content for the second key stat column -->
-            <Totaltrips />
-          </div>
-          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-success text-white p-3 m-2">
-            <!-- Content for the third key stat column -->
-          </div>
-          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-danger text-white p-3 m-2">
-            <!-- Content for the fourth key stat column -->
-          </div>
+      <div class="col-lg-4">
+        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
+          <!-- Your content goes here -->
+          <TotalCarbonFootprint :dataCP="fetchedData" />
         </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
+          <!-- Your content goes here -->
+          <Totaltrips :dataTT="fetchedData" />
+        </div>
+      </div>
 
-        <div class="row priChart mb-4">
-          <div class="col-lg-12">
-            <Linechart :data="data" />
-          </div>
-        </div>
-        <div class="row secCharts mb-4">
-          <div class="col-lg-4 col-md-6 col-12">
-            <Piechart />
-          </div>
-          <div class="col-lg-4 col-md-6 col-12">
-            <!-- Content for the second secondary chart column -->
-          </div>
-          <div class="col-lg-4 col-12">
-            <!-- Content for the third secondary chart column -->
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
+    </div>
+    <div class="row my-4">
+      <div class="col-9 d-flex justify-content-center">
+        <Linechart :dataLC="fetchedData" />
+      </div>
 
-          </div>
+      <div class="col-3 d-flex justify-content-center align-items-center">
+        <div class="rounded-rectangle p-4 m-2" style="background-color: white; height:500px;">
+          <Piechart :dataPC="fetchedData" />
         </div>
       </div>
     </div>
@@ -60,10 +38,14 @@
 <script>
 import * as d3 from "d3";
 import * as crossfilter from "crossfilter";
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
+import { mapStores } from 'pinia';
 import Linechart from "../components/linechart.vue";
 import Piechart from "../components/piechart.vue";
 import Barchart from "../components/barchart.vue";
 import Totaltrips from "../components/totaltrips.vue";
+import TotalCarbonFootprint from "../components/totalCarbonFootprint.vue";
 
 
 
@@ -74,23 +56,29 @@ export default {
     Piechart,
     Barchart,
     Totaltrips,
+    TotalCarbonFootprint,
   },
   data() {
     return {
-      profileInfo: [
-        {
-          id: 1,
-          Name: "Mike Tyson",
-          Birthday: "01 Sep 2000",
-        },
-      ],
-      data: '',
-
+      fetchedData: [],
     };
   },
-  mounted() {
-    },
-  
+  async mounted() {
+    const authStore = useAuthStore();
+    const userStore = useUsersStore();
+    this.userid = authStore.user;
+    this.token = authStore.token;
+
+    // fetches the data 
+    this.fetchedData = await userStore.getItinerary(this.userid, this.token);
+
+  },
+
+  computed: {
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore)
+  },
+
   methods: {
 
     getDates(startDate, stopDate) {
@@ -204,34 +192,19 @@ export default {
   
   
 <style scoped>
-.img-circle {
-  height: 200px;
-  border: 2px solid black;
-}
-
-div.row img.rounded-circle.custom-width {
-  width: auto;
-}
-
-.sidebar {
-  background-color: black;
-  text-align: center;
-}
-
-.main-content {
-  background-color: grey;
-}
-
-.profileInfo {
-  color: white;
-}
-
 .rounded-rectangle {
-  border-radius: 15px;
-  padding: 15px;
-  margin: 10px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-  /* Add a drop shadow */
+  border-radius: 25px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  
+
+
+}
+
+* {
+  font-weight: bold;
 }
 </style>
-  

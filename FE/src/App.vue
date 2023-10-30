@@ -3,13 +3,13 @@
     <div class="container-fluid">
       <!-- Navbar takes up the entire width -->
       <div class="row">
-        <div class="px-0">
+        <div class="px-0 mx-0">
           <Navbar/>
         </div>
       </div>
       <div class="row">
         <!-- Content -->
-        <div class="px-0">
+        <div class="px-0 mx-0">
           <router-view/>
         </div>
       </div>
@@ -53,8 +53,11 @@ html, body {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
   width: 100%;
+}
+*{
+  font-family: montserrat;
+  font-weight: bolder;
 }
 
 .no-scroll {
@@ -62,8 +65,9 @@ body {
   height: 100%; /* Make sure the container fills the viewport height */
 }
 
+@font-face {
+  font-family: 'montserrat';
+  src: url("./assets/fonts/montserrat.bold.ttf") format("truetype");
 
-
-
-
+}
 </style>
