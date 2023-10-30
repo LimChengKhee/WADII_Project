@@ -116,7 +116,7 @@
         </div>
         <Day_Component ref="dayComp" :days="days" :date="date" :originLoc="originLoc" :originName="origin"></Day_Component>
     </div>
-
+      <button @click="save()" class="btn btn-primary">save</button>
 
   </div>
 
@@ -128,6 +128,12 @@
   import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
   import '/node_modules/@vuepic/vue-datepicker/dist/main.css';
   import * as bootstrap from 'bootstrap'
+
+  import { mapStores } from 'pinia'
+import { useAuthStore } from '../store/piniaStore/authStore'
+import { useUsersStore } from '../store/piniaStore/userStore'
+import { useItineraryStore } from '../store/piniaStore/itinerary'
+
   //  import statements
   // import example from '@/utils/string_formatter'
   export default {
@@ -145,6 +151,19 @@
         days: [ // days is an array of dayObjects, each dayObject contains dayId, and an array of activity objects (dayActivities)
 
       ],
+      iti_data: {
+        itinerary_name: '',
+        username: '',
+        itinerary_data: {
+          destination: {},
+          flights: [{}],
+          hotels: [{}],
+          itinerary_days: []
+        }
+      },
+      itinerary_date: '',
+      user: '',
+      iti_name: '',
         addTopAttractionDay: [[1,1,1],[1,1,1],[1,1,1]],
         slicedArr: [],
         baseOrigin: "The Fullerton Hotel Sydney",
@@ -156,7 +175,9 @@
     },
     computed: {
       // computed
-  
+      ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore),
+    ...mapStores(useItineraryStore)
     },
   
     // start of lifecycle
@@ -170,10 +191,49 @@
       var originElem = document.getElementById('originElement')
       new bootstrap.Tooltip(originElem)
 
+      const authStore = useAuthStore()
+      const userStore = useUsersStore()
+      const itineraryStore = useItineraryStore()
+      this.user = this.$route.params.username
+      this.iti_name = this.$route.params.itinerary_name
+
+      var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+      console.log(iti_data)
+
+      let item = iti_data.itinerary_data.destination.itinerary_date.split(',')
+      let date_range = [new Date(item[0]), new Date(item[1])]
+      this.iti_data = iti_data
+      this.selectDate(date_range)
+      this.itinerary_date = date_range
+      this.days = iti_data.itinerary_data.itinerary_days
+
+    },
+    async created() {
+    //  const authStore = useAuthStore();
+    // const userStore = useUsersStore();
+    // const itineraryStore = useItineraryStore();
+    this.user = this.$route.params.username
+    this.iti_name = this.$route.params.itinerary_name
+    const userStore = useUsersStore()
+    this.iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+    // console.log(iti_data)
+    // if (iti_data.itinerary_data.hotels.length == 0){
+
+    //   this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
+    // }
+
+    // this.iti_data = iti_data
     },
   
     methods: {
       // methods defined by ourselves
+      async save() {
+      const userStore = useUsersStore()
+      const authStore = useAuthStore()
+      console.log(this.iti_data)
+      this.iti_data.itinerary_data.itinerary_days = this.days
+      await userStore.updateItinerary(this.iti_data, this.user, this.iti_name)
+    },
       initialiseOrigin(){
         this.$refs.dayComp.findPlace(this.origin,['geometry']).then(result => {
           if (result == "No results"){
@@ -291,6 +351,26 @@
           }
         }
       },
+
+      getHotels() {
+      var result = []
+      var hotels = this.iti_data.itinerary_data.hotels
+      for (let h of hotels) {
+        result.push(h.hotelname)
+      }
+      return result
+    },
+    deleteAllDays() {
+      // for future use
+      confirm('This will delete ALL days and clear your ENTIRE itinerary! Please confirm!')
+    },
+    addHotel() {
+      this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
+    },
+    addFlight() {
+      this.$router.push({ path: `/flight/${this.user}/${this.iti_name}` })
+    },
+
     }
     
       }
