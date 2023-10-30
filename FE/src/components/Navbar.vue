@@ -55,6 +55,9 @@
 
 
 <script>
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { mapStores } from 'pinia';
+
 export default {
   data() {
     return {
@@ -111,6 +114,7 @@ export default {
     }
   },
   computed: {
+    ...mapStores(useAuthStore),
     positionToMove() {
       return this.sliderPosition + "px";
     },

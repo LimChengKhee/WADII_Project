@@ -7,8 +7,8 @@
   font-family: 'CenturyGothic';
   text-align: center;
   margin-top: 0;
-  height: 100% !important; 
-  width: 100% !important;
+  height: 100%; 
+  width: 100%;
   
 }
 
@@ -28,3 +28,4 @@
     outline: black;
     background-color: #808080;
 }
+

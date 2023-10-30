@@ -1,251 +1,372 @@
-<!-- eslint-disable vue/require-v-for-key -->
 <template>
-  <div class="mt-3">  
-    <div v-if="slicedArr.length > 0 && days.length > 0" class="header" style="text-align: start; font-size:20px;">
+  <div class="container-fluid">
+    <div class="header row" style="text-align: start; font-size: 20px">
       <p class="mb-3 fw-bold">Suggested Activities</p>
     </div>
 
-    <div v-if="slicedArr.length > 0 && days.length > 0" id="activityCarousel" class="carousel slide w-75 mb-5">
-      <div class="carousel-inner position-relative">
-        <div class="carousel-item" v-for='(set,index) in slicedArr' :class="{active: index == 0}">
-          <div class="card-group">
-              <div v-for='(activity,itemIndex) in set' class="card" style="width: 18rem;">
-                  <img :src="this.$refs.dayComp.getImage(activity.photo)" height="210" class="card-img-top" alt="...">
-                  <div class="card-body">
-                      <h5 class="card-title fw-semibold" style="height:48px">{{activity.name}}</h5>
-                      <p class="card-text" style="height:48px">Address: {{activity.address}}</p>
-                      <p class="card-text">Ratings: {{activity.rating[0]}} ({{activity.rating[1]}} reviews)</p>
-                      <a :href="activity.url" class=" text-dark fw-bold" target="_blank">Link</a>
-                      <div class="input-group my-3">
-                        <span class="input-group-text col" id="basic-addon1">Day Number</span>
-                        <input type="number" min="1" max="days.length" class="col form-control" v-model="addTopAttractionDay[index][itemIndex]">
-                      </div>
-                      <div class="row">
-                        <button v-if="addTopAttractionDay[index][itemIndex] > 0 && addTopAttractionDay[index][itemIndex] <= days.length" class="btn btn-success" type="button" @click="addAttraction(index,itemIndex)">
-                            Add to Itinerary
-                          </button>
-                        <p v-else class="text-danger">
-                          Please enter a valid day number.
-                        </p>
-                      </div>
-                  </div>
-              </div>
-          </div>
-        </div>
+    <div id="carouselExample" class="w-50 carousel slide">
+      <div class="carousel-inner">
+        <Activity_Component :allActivities="allActivities" :days="days"></Activity_Component>
       </div>
-      <button class="carousel-control-prev carousel-back-button" type="button" data-bs-target="#activityCarousel" data-bs-slide="prev">
+      <button
+        class="carousel-control-prev btn"
+        type="button"
+        data-bs-target="#carouselExample"
+        data-bs-slide="prev"
+      >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button class="carousel-control-next carousel-next-button" type="button" data-bs-target="#activityCarousel" data-bs-slide="next">
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExample"
+        data-bs-slide="next"
+      >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-    <div class="header" style="text-align: start; font-size:22px;">
-        <div class="row ms-3">
-            <div class="col-md-2 col-1">
-              <p class="d-inline fw-bold"> Itinerary </p>
-            </div>
-            <div class="col-md-4 col-xl-3 offset-md-0 col-5 offset-4 px-0">
-              <Datepicker id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range class="d-inline" :enable-time-picker="false"/>
-            </div>
-            <div class="col-md-4 col-xl-4 col-2">
-              <button id='addDay' @click="addDaystoEnd(1)" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-warning d-none" type="button">
-              Add day
-              </button>
-            </div>
+    <div class="header mt-5" style="text-align: start; font-size: 22px">
+      <div class="row">
+        <div class="col-2 mb-5">
+          <h2 class="d-inline fw-bold">Itinerary</h2>
         </div>
-        <div class="row mt-4 ms-3">
-          <div class="col-12 fs-5 fw-semibold" >
-            Origin location
-            <svg id="originElement" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="This would be used as a starting point to recommend you activities if there are no previous activities" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill ms-1" viewBox="0 0 16 16">
-              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-            </svg>
-          </div>
-          <div class="col"></div>
+        <div class="col-3" style="width: 28%">
+          <Datepicker
+            id="datepick"
+            :min-date="date[0]"
+            :model-value="date"
+            :clearable="false"
+            @update:model-value="selectDate"
+            v-model="itinerary_date"
+            range
+            class="d-inline"
+            :enable-time-picker="false"
+          />
         </div>
-
-        <div class="row mt-2 mb-4 ms-3" id="chooseOrigin">
-          <template v-if="!editOrigin">
-            <div class="input-group mb-3 col-6 col-sm-5 col-lg-3 pe-0 fs-6">
-              <input class="form-control d-inline-block" style="max-width:350px;" type="text" v-model="origin" disabled>
-              <span class="input-group-text">
-                <button type="button" class="btn" @click="editOrigin = true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-                  </svg>
-                </button>
-              </span>
-            </div>
-            <!-- <div class="col-6 col-sm-5 col-lg-3 pe-0 fs-6">
-              <input class="form-control d-inline-block" style="min-width:300px" type="text" v-model="origin" disabled>
-            </div>
-            <div class="col-1 ps-0">
-              <button type="button" class="btn d-inline-block position-relative" @click="editOrigin = true">
-                
-              </button>
-            </div> -->
-          </template>
-          <template v-else>
-              <div class="col px-0 input-group w-50">
-                <input type="text" class="form-control" v-model="origin">
-                <button class="btn btn-secondary" type="button" @click="verifyLocation()" data-bs-toggle="modal" data-bs-target="#confirmLocModal">Verify location</button>
-                <button class="btn btn-danger" type="button" @click="origin = baseOrigin, editOrigin = false">Cancel</button>
-              </div>
-              <div class="modal fade" id="confirmLocModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5">Confirm place</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="editOrigin = false"></button>
-                    </div>
-                    <template v-if="originResult != 'Place not found'">
-                      <div class="modal-body">
-                        <p class="fw-semibold text-primary">Is this the place you are looking for?</p>
-                        <p><span class="fw-semibold">Name:</span> {{originResult.name}}</p>
-                        <p><span class="fw-semibold">Address:</span> {{originResult.formatted_address}}</p>
-                      </div>
-                    </template>
-                    <template v-else>
-                      <div class="modal-body">
-                        <p class="fw-semibold text-danger">We couldn't find the place you entered. Please try again</p>
-                      </div>
-                    </template>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="editOrigin = false, origin = baseOrigin">No</button>
-                      <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="setOrigin">Yes</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </template>
-          <div class="col"></div>
+        <div class="col-2"></div>
+        <div class="col-4">
+          <button
+            id="addDay"
+            @click="addDaystoEnd(1)"
+            style="
+              --bs-btn-padding-y: 0.25rem;
+              --bs-btn-padding-x: 0.5rem;
+              --bs-btn-font-size: 0.5rem;
+            "
+            class="btn btn-warning d-none"
+            type="button"
+          >
+            Add day
+          </button>
+          <!-- <button @click="deleteAllDays" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-danger d-inline mx-2" type="button">
+            Delete all days
+            </button> -->
         </div>
-        <Day_Component ref="dayComp" :days="days" :date="date" :originLoc="originLoc" :originName="origin"></Day_Component>
+        <div class="col-4"></div>
+      </div>
+      <Day_Component :allActivities="allActivities" :days="days" :date="date"></Day_Component>
     </div>
+    <button class="btn btn-primary" @click="save">Save</button>
+    <div class="row">
+      <button class="btn btn-warning" @click="addHotel">Add Hotel</button>
 
+      <div class="col">
+        <div class="row">
+          <div v-for="(hotel,ind) in this.iti_data.itinerary_data.hotels" class="mt-5">
+            <p v-if="ind==0"> Recommendation based on this</p>
+            {{ hotel.hotelname }}
+            {{ hotel.check_indates }}
+            {{ hotel.cost }}
+            <button class="btn btn-danger" @click="deleteHotel(ind)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn btn-warning" @click="addFlight">Add Flight</button>
+      <div class="col">
+        <div class="row">
+          <div v-for="(flight,ind) in this.iti_data.itinerary_data.flights" class="mt-5">
+            <div class="card mb-3 rounded-0">
+              <div class="row">
+                <div class="col">
+                  {{ flight.flight_no }}
+                </div>
+                <div class="col">
+                  {{ flight.departure_country }}
+                  {{ flight.departure_datetime }}
+                </div>
+                <div class="col">{{ flight.duration }}min</div>
+                <div class="col">
+                  COuntry{{ flight.arrival_country }}
+                  ||{{ flight.arrival_datetime }}
+                </div>
+                <div class="col bg-primary"></div>
+              </div>
+              <div class="row mt-5">
+                <div class="col mt-5">${{ flight.cost }}</div>
+                
 
+                <br />
+              </div>
+              <button class="btn btn-danger" @click="deleteFlight(ind)">Delete</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-
-
 </template>
-  <script>
-  import Day_Component from '../components/DayComponent.vue';
-  import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
-  import '/node_modules/@vuepic/vue-datepicker/dist/main.css';
-  import * as bootstrap from 'bootstrap'
-  //  import statements
-  // import example from '@/utils/string_formatter'
-  export default {
-    name: 'Itinerary_Page',
-    components: { 
-      // importing components from other places
-      Day_Component,
-      Datepicker,
-    },
-    data () {
-      // local repository of information
-      return {
-        date : [],
-        itemNum : 0,
-        days: [ // days is an array of dayObjects, each dayObject contains dayId, and an array of activity objects (dayActivities)
-
-      ],
-        addTopAttractionDay: [[1,1,1],[1,1,1],[1,1,1]],
-        slicedArr: [],
-        baseOrigin: "The Fullerton Hotel Sydney",
-        origin: "The Fullerton Hotel Sydney",
-        editOrigin: false,
-        originResult: "",
-        originLoc: "",
-      }
-    },
-    computed: {
-      // computed
-  
-    },
-  
-    // start of lifecycle
-    async mounted () {
-      if (this.date.length == 0){
-        const startDate = new Date();
-        const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-        this.date = [startDate, endDate];
-      }
-      this.initialiseOrigin();
-      var originElem = document.getElementById('originElement')
-      new bootstrap.Tooltip(originElem)
-
-    },
-  
-    methods: {
-      // methods defined by ourselves
-      initialiseOrigin(){
-        this.$refs.dayComp.findPlace(this.origin,['geometry']).then(result => {
-          if (result == "No results"){
-            this.originLoc = ''
-          }else{
-            this.originLoc = result.geometry.location
-          }
-        })
+<script>
+import Activity_Component from '../components/ActivityComponent.vue'
+import Day_Component from '../components/DayComponent.vue'
+import Datepicker from '../../node_modules/@vuepic/vue-datepicker'
+import '../../node_modules/@vuepic/vue-datepicker/dist/main.css'
+import { mapStores } from 'pinia'
+import { useAuthStore } from '../store/piniaStore/authStore'
+import { useUsersStore } from '../store/piniaStore/userStore'
+import { useItineraryStore } from '../store/piniaStore/itinerary'
+// import {GMapAutocomplete} from '../../node_modules/@fawmi/vue-google-maps'
+//  import statements
+// import example from '@/utils/string_formatter'
+export default {
+  name: 'Itinerary_Page',
+  components: {
+    // importing components from other places
+    // GMapAutocomplete,
+    // DatePick
+    Activity_Component,
+    Day_Component,
+    Datepicker
+  },
+  data() {
+    // local repository of information
+    return {
+      iti_data: {
+        itinerary_data:{hotels:[]},
       },
-      setOrigin(){
-        this.originLoc = this.originResult.geometry.location
-        this.origin = this.originResult.name
-        this.baseOrigin = this.origin
-        this.editOrigin = false
-      },
-      verifyLocation(){
-        this.originResult = ""
-        this.$refs.dayComp.findPlace(this.origin,['geometry','name','formatted_address']).then(result =>{
-          if (result == "No results"){
-              this.originResult = "Place not found"
-          }else{
-            this.originResult = result
-          }
-        })
-      },
-      getSlicedArr(){
-        this.$refs.dayComp.getTopAttractions().then(result =>{
-          setTimeout(() => {
-            this.slicedArr = [result.slice(0,3), result.slice(3,6), result.slice(6,9)]
-          }, 5000);
-        })
-      },
-      addAttraction(index,itemIndex){
-        var dayNum = this.addTopAttractionDay[index][itemIndex]
-        this.addTopAttractionDay[index][itemIndex] = 1
-        var act = this.slicedArr[index][itemIndex]
-        var actName = act.name
-        var actDesc = act.address
-        var type = act.type
-        var image = act.photo
-        this.days[dayNum-1].dayActivities.push({'name':actName, 'description':actDesc, 'image':image, 'type':type})
-
+      itinerary_date: '',
+      user: '',
+      iti_name: '',
+      date: [],
+      itemNum: 0,
+      allActivities: [
+        {
+          id: 0,
+          name: 'Museum',
+          description: 'This museum was built in 1669 (nice)',
+          image: 'DSC00625.jpg'
         },
-      addDaystoEnd(numDays){
-        for (let i=0;i<numDays;i++){
+        {
+          id: 1,
+          name: 'Castle',
+          description: 'This castle was built in 1669 (nice)',
+          image: 'DSC00630.jpg'
+        },
+        {
+          id: 2,
+          name: 'Atrium',
+          description: 'This atrium was built in 1669 (nice)',
+          image: 'DSC00701.jpg'
+        },
+        {
+          id: 3,
+          name: 'Mountains',
+          description: 'These mountains were built in 1669 (nice)',
+          image: 'DSC00729.jpg'
+        },
+        {
+          id: 4,
+          name: 'Village',
+          description: 'This village was built in 1669 (nice)',
+          image: 'DSC00746.jpg'
+        },
+        {
+          id: 5,
+          name: 'Fast-food Restaurant',
+          description: 'This fast-food restaurant was built in 1669 (nice)',
+          image: 'DSC00757.jpg'
+        },
+        {
+          id: 6,
+          name: 'Hill',
+          description: 'This hill was built in 1669 (nice)',
+          image: 'DSC00769.jpg'
+        },
+        {
+          id: 7,
+          name: 'Sunset',
+          description: 'This sunset was built in 1669 (nice)',
+          image: 'DSC00788-3.jpg'
+        },
+        {
+          id: 8,
+          name: 'Colorful buildings',
+          description: 'These colorful buildings were built in 1669 (nice)',
+          image: 'DSC00601.jpg'
+        }
+      ],
+      days: [
+        // days is an array of dayObjects, each dayObject contains dayId, and an array of activity objects (dayActivities)
+      ]
+    }
+  },
+  computed: {
+    // computed
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore),
+    ...mapStores(useItineraryStore)
+    // activeFlight() {
+    //   let res = this.iti_data.itinerary_data.flights
+    //   return res == null ? []: res
+    // },
+  },
+
+  // start of lifecycle
+  async mounted() {
+    if (this.date.length == 0) {
+      const startDate = new Date()
+      const endDate = new Date(new Date().setDate(startDate.getDate() + 7))
+      this.date = [startDate, endDate]
+    }
+    const authStore = useAuthStore()
+    const userStore = useUsersStore()
+    const itineraryStore = useItineraryStore()
+    this.user = this.$route.params.username
+    this.iti_name = this.$route.params.itinerary_name
+
+    var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+    console.log(iti_data)
+    // if (iti_data.itinerary_data.hotels.length == 0) {
+    //   this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
+    // }
+    console.log(iti_data.itinerary_data.destination.itinerary_date)
+    let item = iti_data.itinerary_data.destination.itinerary_date.split(',')
+    let date_range = [new Date(item[0]), new Date(item[1])]
+    this.iti_data = iti_data
+    this.selectDate(date_range)
+    this.itinerary_date = date_range
+    console.log(this.iti_data)
+
+
+    this.$nextTick(() => this.activeFlight())
+  },
+  async created() {
+    //  const authStore = useAuthStore();
+    // const userStore = useUsersStore();
+    // const itineraryStore = useItineraryStore();
+    this.user = this.$route.params.username
+    this.iti_name = this.$route.params.itinerary_name
+    const userStore = useUsersStore()
+    this.iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+    // console.log(iti_data)
+    // if (iti_data.itinerary_data.hotels.length == 0){
+
+    //   this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
+    // }
+
+    // this.iti_data = iti_data
+  },
+
+  methods: {
+    async save() {
+      const userStore = useUsersStore()
+      const itineraryStore = useItineraryStore()
+      console.log(itineraryStore.handleDate(this.date))
+      for (let i in this.days){
+        if (!('accoms' in this.days[i])){
+          this.days[i]['accoms'] = this.getHotels()
+        }
+      }
+      this.iti_data.itinerary_data.itinerary_days = this.days
+      this.iti_data.itinerary_data.destination.itinerary_date = itineraryStore.handleDate(this.date)
+      await userStore.updateItinerary(this.iti_data, this.user, this.iti_name)
+    },
+    async deleteFlight(id){
+      this.iti_data.itinerary_data.flights.splice(id,1)
+    },
+    async deleteHotel(id){
+      this.iti_data.itinerary_data.hotels.splice(id,1)
+    },
+    async activeFlight() {
+      let res = this.iti_data.itinerary_data.flights
+      console.log(res, 'func')
+      return res == null ? [] : res
+    },
+
+    // methods defined by ourselves
+    addDaystoEnd(numDays) {
+      for (let i = 0; i < numDays; i++) {
+        this.days.push({
+          dayId: this.days.length,
+          dayActivities: []
+        })
+
+      }
+      let currentEnd = this.date[1]
+      this.date[1].setDate(currentEnd.getDate() + numDays)
+      // this.date[1] = new Date(this.date[1].getTime() + (i * 24 * 60 * 60 * 1000));
+    },
+    addDaystoStart(numDays) {
+      for (let i = 0; i < numDays; i++) {
+        this.days.unshift({
+          dayId: 0,
+          dayActivities: []
+        })
+      }
+      for (let i = 0; i < this.days.length; i++) {
+        this.days[i].dayId = i
+      }
+      let currentStart = this.date[0]
+      this.date[0].setDate(currentStart.getDate() - numDays)
+    },
+    removeDaysfromStart(diff) {
+      this.days.splice(0, diff);
+      for (let i = 0; i < this.days.length; i++) {
+        this.days[i].dayId = i;
+      }
+      let currentStart = this.date[0]
+      this.date[0].setDate(currentStart.getDate() + diff)
+    },
+    removeDaysfromEnd(diff) {
+      this.days = this.days.slice(0, this.days.length - diff)
+      let currentEnd = this.date[1]
+      this.date[1].setDate(currentEnd.getDate() - diff)
+    },
+    selectDate(newDate) {
+      if (this.days.length == 0) {
+        let start = newDate[0]
+        let end = newDate[1]
+        let days = Math.floor((end - start) / (1000 * 60 * 60 * 24))
+        for (let i = 0; i < days + 1; i++) {
           this.days.push({
             dayId: this.days.length,
-            dayActivities: []
+            dayActivities: [],
+            accoms: this.getHotels() // PLACEHOLDER!!!!
           })
         }
-          let currentEnd = this.date[1]
-          this.date[1].setDate(currentEnd.getDate() + numDays)
-          // this.date[1] = new Date(this.date[1].getTime() + (i * 24 * 60 * 60 * 1000));
-      },
-      addDaystoStart(numDays){
-        for (let i=0;i<numDays;i++){
-          this.days.unshift({
-            dayId: 0,
-            dayActivities: []
-          })
+        let addDay = document.getElementById('addDay')
+        addDay.classList.remove('d-none')
+        addDay.classList.add('d-inline')
+        this.date = newDate
+      } else {
+        let newStart = newDate[0]
+        let newEnd = newDate[1]
+        let startDate = this.date[0]
+        let endDate = this.date[1]
+        if (startDate > newStart) {
+          console.log('startDate > newStart')
+          let numDays = Math.floor((startDate - newStart) / (1000 * 60 * 60 * 24))
+          this.addDaystoStart(numDays)
+        } else if (startDate < newStart) {
+          console.log('startDate < newStart')
+          let diff = Math.floor((newStart - startDate) / (1000 * 60 * 60 * 24))
+          this.removeDaysfromStart(diff)
         }
-        for (let i=0;i<this.days.length;i++){
-          this.days[i].dayId = i
-        }
+
         let currentStart = this.date[0]
         this.date[0].setDate(currentStart.getDate() - numDays)
       }
@@ -264,7 +385,6 @@
         this.date[1].setDate(currentEnd.getDate() - diff)
       },
       selectDate(newDate){
-        // this.getSlicedArr()
         if (this.days.length == 0){
           let start = newDate[0];
           let end = newDate[1];
@@ -273,6 +393,7 @@
               this.days.push({
                 dayId: this.days.length,
                 dayActivities: [],
+                accoms: ["The Fullerton Hotel Sydney", "Sydney Harbour Marriott Hotel at Circular Quay"] // PLACEHOLDER!!!!
             })
           }
           let addDay = document.getElementById('addDay')
@@ -285,27 +406,51 @@
           let startDate = this.date[0];
           let endDate = this.date[1];
           if (startDate > newStart){
+            console.log("startDate > newStart")
             let numDays = Math.floor((startDate - newStart) / (1000 * 60 * 60 * 24));
             this.addDaystoStart(numDays)
           }else if (startDate < newStart){
+            console.log("startDate < newStart")
             let diff = Math.floor((newStart-startDate) / (1000 * 60 * 60 * 24));
             this.removeDaysfromStart(diff)
           }
           if (endDate > newEnd){
+            console.log("endDate > newEnd")
             let diff = Math.floor((endDate-newEnd) / (1000 * 60 * 60 * 24));
             this.removeDaysfromEnd(diff)
           }else if (endDate < newEnd){
+            console.log("endDate < newEnd")
             let numDays = Math.floor((newEnd - endDate) / (1000 * 60 * 60 * 24));
+            console.log(numDays)
             this.addDaystoEnd(numDays);
           }
+
         }
       },
-    }
     
-      
-  </script>
-  
-  <style scoped>
-  
-  </style>
-  
+    getHotels() {
+      var result = []
+      var hotels = this.iti_data.itinerary_data.hotels
+      for (let h of hotels) {
+        result.push(h.hotelname)
+        break
+      }
+      return result
+    },
+    deleteAllDays() {
+      // for future use
+      confirm('This will delete ALL days and clear your ENTIRE itinerary! Please confirm!')
+    },
+    addHotel() {
+      this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
+    },
+    addFlight() {
+      this.$router.push({ path: `/flight/${this.user}/${this.iti_name}` })
+    }
+  }
+}
+
+
+</script>
+
+<style scoped></style>
