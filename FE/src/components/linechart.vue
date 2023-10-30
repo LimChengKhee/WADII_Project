@@ -36,7 +36,7 @@ export default {
     // this.dataLC = await userStore.getItinerary(this.userid, this.token);
 
 
-    
+
     window.addEventListener('resize', this.handleResize);
 
 
@@ -57,6 +57,17 @@ export default {
 
 
   methods: {
+    parseTime(date) {
+      const currentDate = new Date();
+      const lastYear = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
+      const providedDate = new Date(date);
+      if (providedDate < lastYear) {
+        return lastYear;
+      } else {
+        return providedDate;
+      }
+    },
+
     handleResize() {
       this.screenWidth = window.innerWidth * 0.8;
       const container = d3.select("#chartContainer");
@@ -77,8 +88,13 @@ export default {
         return dateA - dateB;
 
       });
+
+      this.dataLC.forEach((itinerary) => {
+        itinerary.totalCost = itinerary.itinerary_data.itinerary_data.hotels.reduce((acc, cur) => acc + cur.cost, 0) +
+          itinerary.itinerary_data.itinerary_data.flights.reduce((acc, cur) => acc + cur.cost, 0);
+      });
       // Calculate total cost
-      const totalCost = this.dataLC.reduce((acc, cur) => acc + cur.itinerary_data.itinerary_data.hotels[0].cost, 0);
+      const totalCost = this.dataLC.reduce((acc, cur) => acc + cur.totalCost, 0);
 
       // Calculate average cost
       const averageCost = totalCost / this.dataLC.length;
@@ -87,9 +103,9 @@ export default {
       const container = d3.select("#chartContainer");
       container.select("svg").remove();
       const containerWidth = container.node().getBoundingClientRect().width;
-      const margin = { top: 20, right: 100, bottom: 40, left: 100 };
+      const margin = { top: 30, right: 50, bottom: 40, left: 100 };
       const width = Math.min(this.screenWidth, containerWidth) - margin.left - margin.right;
-      const height = 500 - margin.top - margin.bottom;
+      const height = 625 - margin.top - margin.bottom;
 
       const svg = d3
         .select("#chartContainer")
@@ -143,7 +159,7 @@ export default {
         .scaleLinear()
         .domain([
           0,
-          d3.max(this.dataLC, d => d.itinerary_data.itinerary_data.hotels[0].cost) * 1.2 // Adjust the multiplier to expand the y-axis
+          d3.max(this.dataLC, d => d.totalCost) * 1.2 // Adjust the multiplier to expand the y-axis
         ])
         .nice()
         .range([height, 0]);
@@ -151,8 +167,7 @@ export default {
       const line = d3
         .line()
         .x(d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
-        .y(d => y(d.itinerary_data.itinerary_data.hotels[0].cost));
-
+        .y(d => y(d.totalCost)); // Adjusted to use totalCost
 
 
       g.append("text")
@@ -177,7 +192,7 @@ export default {
         .attr("x1", d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
         .attr("x2", d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
         .attr("y1", height)
-        .attr("y2", d => y(d.itinerary_data.itinerary_data.hotels[0].cost))
+        .attr("y2", d => y(d.totalCost))
         .style("stroke", "gray")
         .style("stroke-dasharray", "3,3");
 
@@ -186,19 +201,20 @@ export default {
         .enter()
         .append("circle")
         .attr("cx", d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
-        .attr("cy", d => y(d.itinerary_data.itinerary_data.hotels[0].cost))
+        .attr("cy", d => y(d.totalCost)) // Updated to use totalCost
         .attr("r", 5)
         .attr("fill", "steelblue")
+
         .on("mouseover", function (event, d) {
           const xPos = x(parseTime(d.itinerary_data.itinerary_data.destination.start_date));
-          const yPos = y(d.itinerary_data.itinerary_data.hotels[0].cost);
+          const yPos = y(d.totalCost); // Change to totalCost
 
           const containerRect = g.node().getBoundingClientRect();
           const containerLeft = containerRect.left;
           const containerTop = containerRect.top;
 
-          const descriptionWidth = 250;
-          const descriptionHeight = 50;
+          const descriptionWidth = 400;
+          const descriptionHeight = 400;
 
           const maxPosX = containerRect.width - descriptionWidth - 10;
           const maxPosY = containerRect.height - descriptionHeight - 10;
@@ -216,9 +232,10 @@ export default {
             .attr("class", "description-box")
             .attr("transform", `translate(${constrainedXPos},${constrainedYPos})`);
 
+
           foreignObjectGroup
             .append("foreignObject")
-            .attr("width", descriptionWidth)
+            .attr("width", descriptionWidth) // Use string interpolation to include 'px'
             .attr("height", descriptionHeight)
             .append("xhtml:div")
             .style("position", "absolute")
@@ -226,18 +243,29 @@ export default {
             .style("color", "black")
             .style("padding", "5px")
             .style("border", "1px solid #333")
-            .text(`Date: ${d.itinerary_data.itinerary_data.destination.start_date}, cost: ${d.itinerary_data.itinerary_data.hotels[0].cost}`);
-
+            .html(`
+    <div style=" width: 300px; background: white; color: black; padding: 5px;">
+      <div style="display:flex; justify-content: space-between;">
+        <p style="text-align: left; margin: 0;">To: ${d.itinerary_data.itinerary_data.destination.trip_country}</p>
+      </div>
+      <div style="display:flex; justify-content: space-between;">
+        <p style="text-align: left; margin: 0;">Date: ${d.itinerary_data.itinerary_data.destination.start_date}</p>
+      </div>
+      <div style="display:flex; justify-content: space-between;">
+        <p style="text-align: left; margin: 0;">Hotel Cost:</p>
+        <p style="text-align: right; margin: 0;">$${d.itinerary_data.itinerary_data.hotels.reduce((acc, cur) => acc + cur.cost, 0).toFixed(2)}</p>
+      </div>
+      <div style="display:flex; justify-content: space-between;">
+        <p style="text-align: left; margin: 0;">Flight Cost:</p>
+        <p style="text-align: right; margin: 0;">$${d.itinerary_data.itinerary_data.flights.reduce((acc, cur) => acc + cur.cost, 0).toFixed(2)}</p>
+      </div>
+      <div style="display:flex; justify-content: space-between;">
+        <p style="text-align: left; margin: 0;">Total Cost:</p>
+        <p style="text-align: right; margin: 0;">$${d.totalCost.toFixed(2)}</p>
+      </div>
+    </div>
+  `);
           // Dotted lines
-          g.append("line")
-            .attr("class", "x-hover-line hover-line")
-            .attr("x1", xPos)
-            .attr("y1", yPos)
-            .attr("x2", xPos)
-            .attr("y2", height)
-            .style("stroke", "black")
-            .style("stroke-dasharray", "3,3");
-
           g.append("line")
             .attr("class", "y-hover-line hover-line")
             .attr("x1", 0)
@@ -257,7 +285,7 @@ export default {
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).tickFormat(formatTime).ticks(this.dataLC.length));
 
-        
+
 
       g.append("g")
         .call(d3.axisLeft(y).tickSizeOuter(0))
@@ -269,14 +297,14 @@ export default {
         .attr("y", 30)
         .attr("text-anchor", "end")
         .attr("fill", "white")
-        .text(`Total Cost: ${totalCost.toFixed(2)}`);
+        .text(`Total Cost: $${totalCost.toFixed(2)}`);
 
       g.append("text")
         .attr("x", width - 10)
         .attr("y", 10)
         .attr("text-anchor", "end")
         .attr("fill", "white")
-        .text(`Average Cost: ${averageCost.toFixed(2)}`);
+        .text(`Average Cost: $${averageCost.toFixed(2)}`);
 
       // Style x-axis labels
       svg.selectAll(".tick text")
@@ -292,12 +320,13 @@ export default {
 </script>
 
 <style scoped>
-.container{
-  width:100%;
+.container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 svg {
   max-width: 100%;
   height: auto;
@@ -316,4 +345,5 @@ svg {
 h2 {
   color: black;
 }
+
 </style>

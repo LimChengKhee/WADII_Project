@@ -1,7 +1,6 @@
 <template>
-    <div class="card-container">
-      <div class="card">
-        <div class="card-header">Top 5 Countries Visited</div>
+    <p>Days Travelled</p>
+      <hr class="divider">
         <div class="card-body">
           <div class="table-container">
             <table class="details-table fill-table">
@@ -20,8 +19,8 @@
             </table>
           </div>
         </div>
-      </div>
-    </div>
+
+    
   </template>
   
   <script>
@@ -110,5 +109,11 @@
   .details-table th {
     background-color: #f2f2f2;
   }
+  .divider{
+    width: 100%;
+    height: 1px;
+    background-color: #000; /* Adjust the color as needed */
+    margin-top: -10px;
+}
   </style>
   

@@ -1,30 +1,38 @@
 <template>
   <div class="container-fluid">
-    <div class="row float-left pt-5">
-      <h1> {{ userid }}'s Dashboard</h1>
-      <h1 style="text-align: left;">Your Total Distance Travelled</h1>
-      <hr>
-    </div>
-    <div class="row d-flex justify-content-center rounded-rect-container">
+    <div class="row rounded-rect-container align-items-start">
+      <div class="row float-left">
+        <h1 style="text-transform: capitalize;">{{ userid }}'s Dashboard</h1>
+        <hr />
+      </div>
       <div class="col-lg-12">
-        <div class="row d-flex justify-content-around">
-          <div class="card card-waves col-lg-3 col-md-6 col-sm-6 m-2">
-            <Totaltrips :dataTT="fetchedData" />
-          </div>
-          <div class="card card-waves col-lg-3 col-md-6 col-sm-6 m-2">
-            <TotalCarbonFootprint :dataCP="fetchedData" />
-          </div>
-          <div class="card card-waves col-lg-3 col-md-6 col-sm-6 m-2">
-            <DaysTravelled :dataDT="fetchedData" />
-          </div>
-        </div>
-        <div class="parent-chart-container ">
-          <div class="row d-flex justify-content-center">
+        <div class="parent-chart-container mt-4">
+          <div class="row">
             <div class="col-lg-8 col-md-12">
               <Linechart :dataLC="fetchedData" />
             </div>
-            <div class="col-lg-4 col-md-12 mt-2">
-              <Itidetails :dataDC="fetchedData" />
+            <div class="col-lg-4 col-md-12">
+              <button class="btn btn-primary w-100 mt-4">Your Button</button>
+              <div class="card card-waves col-sm-12 col-lg-12 col-md-12 mt-4">
+                <Itidetails :dataDC="fetchedData" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <div class="card card-waves w-100 mt-4">
+                <Totaltrips :dataTT="fetchedData" />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <div class="card card-waves w-100 mt-4">
+                <DaysTravelled :dataDT="fetchedData" />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <div class="card card-waves w-100 mt-4">
+                <TotalCarbonFootprint :dataCP="fetchedData" />
+              </div>
             </div>
           </div>
         </div>
@@ -214,29 +222,6 @@ export default {
   
   
 <style scoped>
-.rounded-rectangle {
-  border-radius: 15px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  height: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-}
-
-.card-waves {
-  border-radius: 15px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  width: 30%; /* Adjust the width as needed */
-  margin: 0.5rem; /* Adjust the margin between the cards */
-}
-
-
-* {
-  font-weight: bold;
-}
-
 .rounded-rect-container {
   display: flex;
   justify-content: center;
@@ -249,4 +234,17 @@ export default {
   padding: 2%;
   background-color: white;
 }
+
+
+.card-waves {
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+
+* {
+  font-weight: bold;
+}
+
 </style>

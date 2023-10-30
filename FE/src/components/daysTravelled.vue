@@ -1,6 +1,7 @@
 <template>
     <div class="total-days-pill">
-      <p>Total Days Traveled:</p>
+      <p>Days Travelled</p>
+      <hr class="divider">
       <p><span style="font-size: 40px;">{{ totalDays }}</span></p>
     </div>
   </template>
@@ -62,5 +63,11 @@ import { useUsersStore } from '../store/piniaStore/userStore';
     text-align: center;
     margin: 0;
   }
+  .divider{
+    width: 100%;
+    height: 1px;
+    background-color: #000; /* Adjust the color as needed */
+    margin-top: -10px;
+}
   </style>
   
