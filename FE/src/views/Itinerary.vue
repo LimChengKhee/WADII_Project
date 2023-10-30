@@ -105,14 +105,16 @@
               </div>
               <button class="btn btn-danger" @click="deleteFlight(ind)">Delete</button>
             </div>
+          </template>
 
           </div>
         </div>
       </div>
     </div>
+    </div>
   </div>
 </template>
-  <script>
+<script>
   import Day_Component from '../components/DayComponent.vue';
   import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
   import '/node_modules/@vuepic/vue-datepicker/dist/main.css';
@@ -308,7 +310,7 @@
       this.$router.push({ path: `/flight/${this.user}/${this.iti_name}` })
     }
   }
-}
+
 
 
 </script>
