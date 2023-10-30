@@ -120,7 +120,7 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
-  background: url("../assets/img/dddepth-327.jpg") no-repeat center center fixed;
+  background: url("../img/heroImg.jpg") no-repeat center center fixed;
   background-size: cover;
   /* Ensures the background covers the entire container */
   overflow-x: hidden;
@@ -265,6 +265,5 @@ body::after {
 .carousel-control-next {
   right: -2%;
 }
-
 
 </style>
