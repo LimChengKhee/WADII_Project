@@ -78,19 +78,11 @@
                 </button>
               </span>
             </div>
-            <!-- <div class="col-6 col-sm-5 col-lg-3 pe-0 fs-6">
-              <input class="form-control d-inline-block" style="min-width:300px" type="text" v-model="origin" disabled>
-            </div>
-            <div class="col-1 ps-0">
-              <button type="button" class="btn d-inline-block position-relative" @click="editOrigin = true">
-                
-              </button>
-            </div> -->
           </template>
           <template v-else>
               <div class="col px-0 input-group w-50">
                 <input type="text" class="form-control" v-model="origin">
-                <button class="btn btn-secondary" type="button" @click="verifyLocation()" data-bs-toggle="modal" data-bs-target="#confirmLocModal">Verify location</button>
+                <button class="btn btn-secondary" type="button" @click="verifyLocation" data-bs-toggle="modal" data-bs-target="#confirmLocModal">Verify location</button>
                 <button class="btn btn-danger" type="button" @click="origin = baseOrigin, editOrigin = false">Cancel</button>
               </div>
               <div class="modal fade" id="confirmLocModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
@@ -199,7 +191,7 @@
       },
       verifyLocation(){
         this.originResult = ""
-        this.$refs.dayComp.findPlace(this.origin,['geometry','name','formatted_address']).then(result =>{
+        this.$refs.dayComp.findPlace(this.origin,['geometry','name','formatted_address'],this.originLoc).then(result =>{
           if (result == "No results"){
               this.originResult = "Place not found"
           }else{

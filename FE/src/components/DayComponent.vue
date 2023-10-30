@@ -561,7 +561,7 @@ data () {
         countryName: "Australia",
         country: "",
         predictionList: [],
-        selectedTypes: [],
+        selectedTypes: ['tourist_attraction','museum','cafe'],
         topAttractions: [],
         position: 0,
         addSearch: '',
@@ -832,7 +832,7 @@ methods: {
                 })
             }
         }else{
-            this.findPlace(origin,['geometry']).then(result=>
+            this.findPlace(origin,['geometry'],this.originLoc).then(result=>
             {   
                 result = result.geometry.location
                 for (let i=0;i<types.length;i++){
@@ -952,7 +952,7 @@ methods: {
                 })
             }
         }else{
-            this.findPlace(origin,['geometry']).then(result=>
+            this.findPlace(origin,['geometry'],this.originLoc).then(result=>
             {   
                 result = result.geometry.location
                 for (let i=0;i<types.length;i++){
@@ -1116,12 +1116,13 @@ methods: {
             });
         });
     },
-    async findPlace(query,fieldList){
+    async findPlace(query,fieldList,locBias){
         var testDiv = document.getElementById('testingDiv');
         const {PlacesService} = await google.maps.importLibrary("places");
         let request = {
             query: query,
-            fields: fieldList
+            fields: fieldList,
+            locationBias: locBias,
         }
         var service = new PlacesService(testDiv);
         return new Promise((resolve, reject) => {service.findPlaceFromQuery(request, (results, status) => {
