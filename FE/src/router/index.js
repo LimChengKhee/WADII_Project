@@ -82,7 +82,11 @@ const routes = [
     path: '/flight/:username/:itinerary_name',
     name: 'Flight_specific',
     component: Flight
-  }
+  },
+  {
+    path: '/assets',
+    name: 'Assets',
+  },
 ]
 
 const router = createRouter({

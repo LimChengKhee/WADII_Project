@@ -191,9 +191,7 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
       var originElem = document.getElementById('originElement')
       new bootstrap.Tooltip(originElem)
 
-      const authStore = useAuthStore()
       const userStore = useUsersStore()
-      const itineraryStore = useItineraryStore()
       this.user = this.$route.params.username
       this.iti_name = this.$route.params.itinerary_name
 
@@ -205,24 +203,22 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
       this.iti_data = iti_data
       this.selectDate(date_range)
       this.itinerary_date = date_range
-      this.days = iti_data.itinerary_data.itinerary_days
+      // this.days =  this.iti_data.itinerary_data.itinerary_days
+      
 
     },
     async created() {
-    //  const authStore = useAuthStore();
-    // const userStore = useUsersStore();
-    // const itineraryStore = useItineraryStore();
+     const authStore = useAuthStore();
+    const userStore = useUsersStore();
+    const itineraryStore = useItineraryStore();
+
     this.user = this.$route.params.username
     this.iti_name = this.$route.params.itinerary_name
-    const userStore = useUsersStore()
+    // const userStore = useUsersStore()
     this.iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
-    // console.log(iti_data)
-    // if (iti_data.itinerary_data.hotels.length == 0){
+    let item = this.iti_data.itinerary_data.destination.itinerary_date.split(',')
+    this.days =  this.iti_data.itinerary_data.itinerary_days
 
-    //   this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
-    // }
-
-    // this.iti_data = iti_data
     },
   
     methods: {
@@ -316,6 +312,7 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
       },
       selectDate(newDate){
         // this.getSlicedArr()
+        console.log(this.days,'hello')
         if (this.days.length == 0){
           let start = newDate[0];
           let end = newDate[1];

@@ -258,7 +258,7 @@
 </template>
 <script>
 //  import statements
-// import '../assets/day.css';
+import '../assets/day.css';
 // import axios from 'axios';
 
 
@@ -637,8 +637,12 @@ methods: {
         if (image == "custom"){
             return '/assets/img/customevent.jpg'
         }else if (typeof(image) == 'object'){
+            console.log(image.getUrl({maxHeight:300}))
             return image.getUrl({maxHeight:300})
-        }else{
+        }else if (typeof(image) == 'string'){
+            return image
+        }
+        else{
             return '/assets/img/noimage.png'
         }
     },
@@ -1008,8 +1012,9 @@ methods: {
     addActivityFromReccs(dayId){
         if (this.selectedRec != []){
             var a = this.selectedRec
+            // console.log(a.photo.getUrl())
             var actName = a.name
-            var image = a.photo
+            var image = a.photo.getUrl()
             var actDesc = a.address 
             var type = a.type
             // eslint-disable-next-line vue/no-mutating-props
@@ -1033,7 +1038,7 @@ methods: {
             if (result.photos === undefined){
                 var image = ""
             }else{
-                var image = result.photos[0]
+                var image = result.photos[0].getUrl()
             }
             if(result.vicinity === undefined){
                 var address  = "No result found"
