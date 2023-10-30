@@ -5,7 +5,8 @@
         <p></p>
       </div>
       <div class="col-11">
-        <div class="header">
+        <div class="row">
+          <div class="header">
           <div class="container-fluid">
             <div class="row">
               <div class="col">
@@ -57,7 +58,20 @@
               </div>
             </div>
           </div>
-
+        </div>
+        </div>
+        <div class="row" style="position:relative;z-index:1000;">
+              <div class="col-xl-1"></div>
+              <div class="col-xl-3" >
+                <Datepicker 
+                v-model="this.date"
+                placeholder="Start Date | End Date"
+                :min-date="mindate"
+                position="right"
+                />
+              </div>
+              <div class="col-xl-5"></div>
+              <div class="col-xl-1"></div>
         </div>
         <div class="card_section mt-5" v-if="mounted && !search">
           <HotelCard v-for="hotel in this.hotelsInCities" :hotel_name="hotel.hotel_name"
@@ -95,24 +109,28 @@ import axios from 'axios'
 import flushPromises from 'flush-promises'
 import Side_Bar from "../components/SideBar.vue"
 import test from "../views/static/test.json"
+import Datepicker from '@vuepic/vue-datepicker';
 
 export default {
   name: 'Hotel',
   components: {
     // importing components from other places
     Side_Bar,
-    HotelCard
+    HotelCard,
+    Datepicker
   },
   data() {
     // local repository of information
     return {
+      date: "default_data",
       hotelsInCities: [],
       mounted: false,
       user_search: "",
       search: false,
       sub_hotels: [],
       review_sort: true,
-      distance_sort: true
+      distance_sort: true,
+      mindate: this.getDate(),
     }
   },
   computed: {
@@ -132,6 +150,10 @@ export default {
   },
 
   methods: {
+    getDate() {
+      var today = new Date()
+      return today
+    },
     sort_review() {
       console.log("jdsif");
       this.review_sort = !this.review_sort;
