@@ -1,6 +1,7 @@
 <template>
   <div class="total-trips-pill">
-    <p>Total Trips Travelled:</p>
+    <p>Planned Itineraries</p>
+    <hr class="divider">
     <p><span style="font-size:40px  ;">{{ totalTrips }}</span></p>
   </div>
 </template>
@@ -61,12 +62,18 @@ export default {
 <style scoped>
 .total-trips-pill {
   display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin:0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 
+
+}
+.divider{
+    width: 100%;
+    height: 1px;
+    background-color: #000; /* Adjust the color as needed */
+    margin-top: -10px;
 }
 </style>
   

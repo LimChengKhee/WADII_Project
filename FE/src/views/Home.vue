@@ -22,7 +22,7 @@
               <div class="row">
                 <div v-for="subIndex in 3" :key="subIndex" class="col-lg-4 col-md-6 col-12">
                   <div v-if="(iti - 1) * 3 + (subIndex - 1) < itinerarys.length" class="m-3">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card homecard" style="width: 18rem;">
                       <h5 class="card-title">{{ itinerarys[(iti - 1) * 3 + (subIndex -
                         1)].itinerary_data.itinerary_data.destination.trip_country }}</h5>
                       <img class="card-img-top" src="../assets/img/japan.jpg" alt="..."
@@ -127,18 +127,7 @@ body {
   /* Prevent horizontal scrolling */
 }
 
-body::after {
-  content: '';
-  background: rgba(0, 0, 0, 0.5);
-  /* Adjust the alpha value to control the darkness of the overlay */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  /* Place the overlay behind the content */
-}
+
 
 .row {
   margin: 0;
@@ -187,7 +176,7 @@ body::after {
   font-size: .875rem;
 }
 
-.card {
+.homecard {
   position: relative;
   display: flex;
   flex-direction: column;

@@ -1,0 +1,73 @@
+<template>
+    <div class="total-days-pill">
+      <p>Days Travelled</p>
+      <hr class="divider">
+      <p><span style="font-size: 40px;">{{ totalDays }}</span></p>
+    </div>
+  </template>
+  
+  <script>
+  import { useAuthStore } from '../store/piniaStore/authStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
+  import { mapStores } from 'pinia';
+  
+  export default {
+    name: "TotalDays",
+    props: {
+      dataDT: {
+        type: Array,
+        default: () => [],
+      },
+    },
+    data() {
+      return {
+        totalDays: 0,
+      };
+    },
+    computed: {
+      ...mapStores(useAuthStore),
+      ...mapStores(useUsersStore),
+      
+    },
+    watch: {
+      dataDT: {
+        immediate: true,
+        handler(newVal, oldVal) {
+          this.calculateTotalDays(newVal);
+          
+        },
+      },
+    },
+    methods: {
+      calculateTotalDays(itineraries) {
+        let totalDays = 0;
+        itineraries.forEach((itinerary) => {
+          const start = new Date(itinerary.itinerary_data.itinerary_data.destination.start_date);
+          const end = new Date(itinerary.itinerary_data.itinerary_data.destination.end_date);
+          const timeDiff = Math.abs(end.getTime() - start.getTime());
+          const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+          totalDays += diffDays + 1; // including the start day
+        });
+        this.totalDays = totalDays;
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  .total-days-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0;
+  }
+  .divider{
+    width: 100%;
+    height: 1px;
+    background-color: #000; /* Adjust the color as needed */
+    margin-top: -10px;
+}
+  </style>
+  

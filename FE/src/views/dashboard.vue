@@ -1,40 +1,48 @@
 <template>
   <div class="container-fluid">
-    <div class="row d-flex justify-content-center align-items-center my-4">
-      <div class="col-lg-4">
-        <div class="rounded-rectangle p-4 m-2" style="background-color:#5271FF;">
-          <!-- Your content goes here -->
-          <Totaltrips :dataTT="fetchedData" />
-        </div>
+    <div class="row rounded-rect-container align-items-start">
+      <div class="row float-left">
+        <h1 style="text-transform: capitalize;">{{ userid }}'s Dashboard</h1>
+        <hr />
       </div>
-      <div class="col-lg-4">
-        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
-          <!-- Your content goes here -->
-          <TotalCarbonFootprint :dataCP="fetchedData" />
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="rounded-rectangle p-4 m-2" style="background-color: white;">
-          <!-- Your content goes here -->
-          <Totaltrips :dataTT="fetchedData" />
-        </div>
-      </div>
-
-    </div>
-    <div class="row my-4">
-      <div class="col-9 d-flex justify-content-center">
-        <Linechart :dataLC="fetchedData" />
-      </div>
-
-      <div class="col-3 d-flex justify-content-center align-items-center">
-        <div class="rounded-rectangle p-4 m-2" style="background-color: white; height:500px;">
-          <Piechart :dataPC="fetchedData" />
+      <div class="col-lg-12">
+        <div class="parent-chart-container mt-4">
+          <div class="row">
+            <div class="col-lg-8 col-md-12">
+              <Linechart :dataLC="fetchedData" />
+            </div>
+            <div class="col-lg-4 col-md-12">
+              <button class="btn btn-primary w-100 " @click="createitinerary">Create Itinerary Now</button>
+              <div class="card card-waves col-sm-12 col-lg-12 col-md-12 mt-4" style="height: 90%">
+                <Itidetails :dataDC="fetchedData" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <div class="card card-waves w-100 mt-4">
+                <Totaltrips :dataTT="fetchedData" />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <div class="card card-waves w-100 mt-4">
+                <DaysTravelled :dataDT="fetchedData" />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <div class="card card-waves w-100 mt-4">
+                <TotalCarbonFootprint :dataCP="fetchedData" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-  
+
+
+
 <script>
 import * as d3 from "d3";
 import * as crossfilter from "crossfilter";
@@ -46,6 +54,8 @@ import Piechart from "../components/piechart.vue";
 import Barchart from "../components/barchart.vue";
 import Totaltrips from "../components/totaltrips.vue";
 import TotalCarbonFootprint from "../components/totalCarbonFootprint.vue";
+import Itidetails from "../components/itidetails.vue";
+import DaysTravelled from "../components/daysTravelled.vue";
 
 
 
@@ -57,6 +67,8 @@ export default {
     Barchart,
     Totaltrips,
     TotalCarbonFootprint,
+    Itidetails,
+    DaysTravelled,
   },
   data() {
     return {
@@ -80,6 +92,9 @@ export default {
   },
 
   methods: {
+    createitinerary() {
+      this.$router.push('/form');
+    },
 
     getDates(startDate, stopDate) {
       Date.prototype.addDays = function (days) {
@@ -187,24 +202,52 @@ export default {
       return result
     }
   },
+  generatePieChartDetails(data) {
+    const countriesCount = {};
+    for (let trip of data) {
+      if (trip.itinerary_data.destination && trip.itinerary_data.destination.country) {
+        const country = trip.itinerary_data.destination.country;
+        countriesCount[country] = (countriesCount[country] || 0) + 1;
+      }
+    }
+
+    let details = 'Countries visited:';
+    for (const [country, count] of Object.entries(countriesCount)) {
+      details += ` ${country}: ${count},`;
+    }
+    // Removing the last comma
+    details = details.slice(0, -1);
+    return details;
+  },
+
 };
 </script>
   
   
 <style scoped>
-.rounded-rectangle {
-  border-radius: 25px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  height: 150px;
+.rounded-rect-container {
   display: flex;
   justify-content: center;
-  
+  align-items: center;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 85%;
+  height: 100%;
+  margin: auto;
+  padding: 2%;
+  background-color: white;
+}
 
+
+.card-waves {
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 
 }
+
 
 * {
   font-weight: bold;
 }
+
 </style>

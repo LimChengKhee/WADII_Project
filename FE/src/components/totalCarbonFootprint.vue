@@ -1,6 +1,7 @@
 <template>
     <div class="total-trips-pill">
-        <p>Total Carbon Footprint:</p>
+        <p>Total Carbon Footprint</p>
+        <hr class="divider">
         <p><span style="font-size:40px;">{{ totalCarbonFootprint }}</span></p>
         
     </div>
@@ -113,6 +114,13 @@ export default {
     text-align: center;
     margin:0;
 
+}
+
+.divider{
+    width: 100%;
+    height: 1px;
+    background-color: #000; /* Adjust the color as needed */
+    margin-top: -10px;
 }
 </style>
   
