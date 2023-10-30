@@ -302,4 +302,9 @@ export default {
 #search_input {
   position: absolute;
 }
+
+*{
+  color:white;
+}
 </style>
+
