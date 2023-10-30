@@ -75,7 +75,7 @@
               <div class="row">
                 <div class="container">
                   <div class="row">
-                    <div v-for="facilities in mostPopularFacilities" class="col-xl-3 col-lg-4 col-md-5 col-sm-6 mt-2">
+                    <div v-for="facilities in mostPopularFacilities" class="col-xl-3 col-lg-4 col-md-5 col-sm-6 mt-2 m-2">
                       <div class="col-4 d-flex mb-4">
                         <span style="margin-right: 30px;">
                           <img :src="`${facilities.src}`" style="width:50px;">
@@ -277,7 +277,7 @@ export default {
           src: '/src/assets/air-conditioner.png'
         },
         frontdesk: {
-          label: "24 hour front desk",
+          label: "Front Desk",
           src: '/src/assets/information-desk.png'
         },
         key_card: {
