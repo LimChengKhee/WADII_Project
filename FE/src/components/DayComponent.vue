@@ -322,259 +322,265 @@ data () {
                 'Tourist attractions':'tourist_attraction',
                 'Zoos':'zoo'
             },
-            countryList: {
-                'Afghanistan': 'AF',
-                'Aland Islands': 'AX',
-                'Albania': 'AL',
-                'Algeria': 'DZ',
-                'American Samoa': 'AS',
-                'Andorra': 'AD',
-                'Angola': 'AO',
-                'Anguilla': 'AI',
-                'Antarctica': 'AQ',
-                'Antigua And Barbuda': 'AG',
-                'Argentina': 'AR',
-                'Armenia': 'AM',
-                'Aruba': 'AW',
-                'Australia': 'AU',
-                'Austria': 'AT',
-                'Azerbaijan': 'AZ',
-                'Bahamas': 'BS',
-                'Bahrain': 'BH',
-                'Bangladesh': 'BD',
-                'Barbados': 'BB',
-                'Belarus': 'BY',
-                'Belgium': 'BE',
-                'Belize': 'BZ',
-                'Benin': 'BJ',
-                'Bermuda': 'BM',
-                'Bhutan': 'BT',
-                'Bolivia': 'BO',
-                'Bosnia And Herzegovina': 'BA',
-                'Botswana': 'BW',
-                'Bouvet Island': 'BV',
-                'Brazil': 'BR',
-                'British Indian Ocean Territory': 'IO',
-                'Brunei Darussalam': 'BN',
-                'Bulgaria': 'BG',
-                'Burkina Faso': 'BF',
-                'Burundi': 'BI',
-                'Cambodia': 'KH',
-                'Cameroon': 'CM',
-                'Canada': 'CA',
-                'Cape Verde': 'CV',
-                'Cayman Islands': 'KY',
-                'Central African Republic': 'CF',
-                'Chad': 'TD',
-                'Chile': 'CL',
-                'China': 'CN',
-                'Christmas Island': 'CX',
-                'Cocos (Keeling) Islands': 'CC',
-                'Colombia': 'CO',
-                'Comoros': 'KM',
-                'Congo': 'CG',
-                'Congo, Democratic Republic': 'CD',
-                'Cook Islands': 'CK',
-                'Costa Rica': 'CR',
-                "Cote D'Ivoire": 'CI',
-                'Croatia': 'HR',
-                'Cuba': 'CU',
-                'Cyprus': 'CY',
-                'Czech Republic': 'CZ',
-                'Denmark': 'DK',
-                'Djibouti': 'DJ',
-                'Dominica': 'DM',
-                'Dominican Republic': 'DO',
-                'Ecuador': 'EC',
-                'Egypt': 'EG',
-                'El Salvador': 'SV',
-                'Equatorial Guinea': 'GQ',
-                'Eritrea': 'ER',
-                'Estonia': 'EE',
-                'Ethiopia': 'ET',
-                'Falkland Islands (Malvinas)': 'FK',
-                'Faroe Islands': 'FO',
-                'Fiji': 'FJ',
-                'Finland': 'FI',
-                'France': 'FR',
-                'French Guiana': 'GF',
-                'French Polynesia': 'PF',
-                'French Southern Territories': 'TF',
-                'Gabon': 'GA',
-                'Gambia': 'GM',
-                'Georgia': 'GE',
-                'Germany': 'DE',
-                'Ghana': 'GH',
-                'Gibraltar': 'GI',
-                'Greece': 'GR',
-                'Greenland': 'GL',
-                'Grenada': 'GD',
-                'Guadeloupe': 'GP',
-                'Guam': 'GU',
-                'Guatemala': 'GT',
-                'Guernsey': 'GG',
-                'Guinea': 'GN',
-                'Guinea-Bissau': 'GW',
-                'Guyana': 'GY',
-                'Haiti': 'HT',
-                'Heard Island & Mcdonald Islands': 'HM',
-                'Holy See (Vatican City State)': 'VA',
-                'Honduras': 'HN',
-                'Hong Kong': 'HK',
-                'Hungary': 'HU',
-                'Iceland': 'IS',
-                'India': 'IN',
-                'Indonesia': 'ID',
-                'Iran, Islamic Republic Of': 'IR',
-                'Iraq': 'IQ',
-                'Ireland': 'IE',
-                'Isle Of Man': 'IM',
-                'Israel': 'IL',
-                'Italy': 'IT',
-                'Jamaica': 'JM',
-                'Japan': 'JP',
-                'Jersey': 'JE',
-                'Jordan': 'JO',
-                'Kazakhstan': 'KZ',
-                'Kenya': 'KE',
-                'Kiribati': 'KI',
-                'Korea': 'KR',
-                'Kuwait': 'KW',
-                'Kyrgyzstan': 'KG',
-                "Lao People's Democratic Republic": 'LA',
-                'Latvia': 'LV',
-                'Lebanon': 'LB',
-                'Lesotho': 'LS',
-                'Liberia': 'LR',
-                'Libyan Arab Jamahiriya': 'LY',
-                'Liechtenstein': 'LI',
-                'Lithuania': 'LT',
-                'Luxembourg': 'LU',
-                'Macao': 'MO',
-                'Macedonia': 'MK',
-                'Madagascar': 'MG',
-                'Malawi': 'MW',
-                'Malaysia': 'MY',
-                'Maldives': 'MV',
-                'Mali': 'ML',
-                'Malta': 'MT',
-                'Marshall Islands': 'MH',
-                'Martinique': 'MQ',
-                'Mauritania': 'MR',
-                'Mauritius': 'MU',
-                'Mayotte': 'YT',
-                'Mexico': 'MX',
-                'Micronesia, Federated States Of': 'FM',
-                'Moldova': 'MD',
-                'Monaco': 'MC',
-                'Mongolia': 'MN',
-                'Montenegro': 'ME',
-                'Montserrat': 'MS',
-                'Morocco': 'MA',
-                'Mozambique': 'MZ',
-                'Myanmar': 'MM',
-                'Namibia': 'NA',
-                'Nauru': 'NR',
-                'Nepal': 'NP',
-                'Netherlands': 'NL',
-                'Netherlands Antilles': 'AN',
-                'New Caledonia': 'NC',
-                'New Zealand': 'NZ',
-                'Nicaragua': 'NI',
-                'Niger': 'NE',
-                'Nigeria': 'NG',
-                'Niue': 'NU',
-                'Norfolk Island': 'NF',
-                'Northern Mariana Islands': 'MP',
-                'Norway': 'NO',
-                'Oman': 'OM',
-                'Pakistan': 'PK',
-                'Palau': 'PW',
-                'Palestinian Territory, Occupied': 'PS',
-                'Panama': 'PA',
-                'Papua New Guinea': 'PG',
-                'Paraguay': 'PY',
-                'Peru': 'PE',
-                'Philippines': 'PH',
-                'Pitcairn': 'PN',
-                'Poland': 'PL',
-                'Portugal': 'PT',
-                'Puerto Rico': 'PR',
-                'Qatar': 'QA',
-                'Reunion': 'RE',
-                'Romania': 'RO',
-                'Russian Federation': 'RU',
-                'Rwanda': 'RW',
-                'Saint Barthelemy': 'BL',
-                'Saint Helena': 'SH',
-                'Saint Kitts And Nevis': 'KN',
-                'Saint Lucia': 'LC',
-                'Saint Martin': 'MF',
-                'Saint Pierre And Miquelon': 'PM',
-                'Saint Vincent And Grenadines': 'VC',
-                'Samoa': 'WS',
-                'San Marino': 'SM',
-                'Sao Tome And Principe': 'ST',
-                'Saudi Arabia': 'SA',
-                'Senegal': 'SN',
-                'Serbia': 'RS',
-                'Seychelles': 'SC',
-                'Sierra Leone': 'SL',
-                'Singapore': 'SG',
-                'Slovakia': 'SK',
-                'Slovenia': 'SI',
-                'Solomon Islands': 'SB',
-                'Somalia': 'SO',
-                'South Africa': 'ZA',
-                'South Georgia And Sandwich Isl.': 'GS',
-                'Spain': 'ES',
-                'Sri Lanka': 'LK',
-                'Sudan': 'SD',
-                'Suriname': 'SR',
-                'Svalbard And Jan Mayen': 'SJ',
-                'Swaziland': 'SZ',
-                'Sweden': 'SE',
-                'Switzerland': 'CH',
-                'Syrian Arab Republic': 'SY',
-                'Taiwan': 'TW',
-                'Tajikistan': 'TJ',
-                'Tanzania': 'TZ',
-                'Thailand': 'TH',
-                'Timor-Leste': 'TL',
-                'Togo': 'TG',
-                'Tokelau': 'TK',
-                'Tonga': 'TO',
-                'Trinidad And Tobago': 'TT',
-                'Tunisia': 'TN',
-                'Turkey': 'TR',
-                'Turkmenistan': 'TM',
-                'Turks And Caicos Islands': 'TC',
-                'Tuvalu': 'TV',
-                'Uganda': 'UG',
-                'Ukraine': 'UA',
-                'United Arab Emirates': 'AE',
-                'United Kingdom': 'GB',
-                'United States': 'US',
-                'United States Outlying Islands': 'UM',
-                'Uruguay': 'UY',
-                'Uzbekistan': 'UZ',
-                'Vanuatu': 'VU',
-                'Venezuela': 'VE',
-                'Viet Nam': 'VN',
-                'Virgin Islands, British': 'VG',
-                'Virgin Islands, U.S.': 'VI',
-                'Wallis And Futuna': 'WF',
-                'Western Sahara': 'EH',
-                'Yemen': 'YE',
-                'Zambia': 'ZM',
-                'Zimbabwe': 'ZW',
-                'North Macedonia': 'MK',
-                'Češka': 'CZ'
-            },
-            country: "Australia",
-            predictionList: [],
-            autocomplete: '',
-            selectedTypes: []
+
+        countryList: {
+            'Afghanistan': 'AF',
+            'Aland Islands': 'AX',
+            'Albania': 'AL',
+            'Algeria': 'DZ',
+            'American Samoa': 'AS',
+            'Andorra': 'AD',
+            'Angola': 'AO',
+            'Anguilla': 'AI',
+            'Antarctica': 'AQ',
+            'Antigua And Barbuda': 'AG',
+            'Argentina': 'AR',
+            'Armenia': 'AM',
+            'Aruba': 'AW',
+            'Australia': 'AU',
+            'Austria': 'AT',
+            'Azerbaijan': 'AZ',
+            'Bahamas': 'BS',
+            'Bahrain': 'BH',
+            'Bangladesh': 'BD',
+            'Barbados': 'BB',
+            'Belarus': 'BY',
+            'Belgium': 'BE',
+            'Belize': 'BZ',
+            'Benin': 'BJ',
+            'Bermuda': 'BM',
+            'Bhutan': 'BT',
+            'Bolivia': 'BO',
+            'Bosnia And Herzegovina': 'BA',
+            'Botswana': 'BW',
+            'Bouvet Island': 'BV',
+            'Brazil': 'BR',
+            'British Indian Ocean Territory': 'IO',
+            'Brunei Darussalam': 'BN',
+            'Bulgaria': 'BG',
+            'Burkina Faso': 'BF',
+            'Burundi': 'BI',
+            'Cambodia': 'KH',
+            'Cameroon': 'CM',
+            'Canada': 'CA',
+            'Cape Verde': 'CV',
+            'Cayman Islands': 'KY',
+            'Central African Republic': 'CF',
+            'Chad': 'TD',
+            'Chile': 'CL',
+            'China': 'CN',
+            'Christmas Island': 'CX',
+            'Cocos (Keeling) Islands': 'CC',
+            'Colombia': 'CO',
+            'Comoros': 'KM',
+            'Congo': 'CG',
+            'Congo, Democratic Republic': 'CD',
+            'Cook Islands': 'CK',
+            'Costa Rica': 'CR',
+            "Cote D'Ivoire": 'CI',
+            'Croatia': 'HR',
+            'Cuba': 'CU',
+            'Cyprus': 'CY',
+            'Czech Republic': 'CZ',
+            'Denmark': 'DK',
+            'Djibouti': 'DJ',
+            'Dominica': 'DM',
+            'Dominican Republic': 'DO',
+            'Ecuador': 'EC',
+            'Egypt': 'EG',
+            'El Salvador': 'SV',
+            'Equatorial Guinea': 'GQ',
+            'Eritrea': 'ER',
+            'Estonia': 'EE',
+            'Ethiopia': 'ET',
+            'Falkland Islands (Malvinas)': 'FK',
+            'Faroe Islands': 'FO',
+            'Fiji': 'FJ',
+            'Finland': 'FI',
+            'France': 'FR',
+            'French Guiana': 'GF',
+            'French Polynesia': 'PF',
+            'French Southern Territories': 'TF',
+            'Gabon': 'GA',
+            'Gambia': 'GM',
+            'Georgia': 'GE',
+            'Germany': 'DE',
+            'Ghana': 'GH',
+            'Gibraltar': 'GI',
+            'Greece': 'GR',
+            'Greenland': 'GL',
+            'Grenada': 'GD',
+            'Guadeloupe': 'GP',
+            'Guam': 'GU',
+            'Guatemala': 'GT',
+            'Guernsey': 'GG',
+            'Guinea': 'GN',
+            'Guinea-Bissau': 'GW',
+            'Guyana': 'GY',
+            'Haiti': 'HT',
+            'Heard Island & Mcdonald Islands': 'HM',
+            'Holy See (Vatican City State)': 'VA',
+            'Honduras': 'HN',
+            'Hong Kong': 'HK',
+            'Hungary': 'HU',
+            'Iceland': 'IS',
+            'India': 'IN',
+            'Indonesia': 'ID',
+            'Iran, Islamic Republic Of': 'IR',
+            'Iraq': 'IQ',
+            'Ireland': 'IE',
+            'Isle Of Man': 'IM',
+            'Israel': 'IL',
+            'Italy': 'IT',
+            'Jamaica': 'JM',
+            'Japan': 'JP',
+            'Jersey': 'JE',
+            'Jordan': 'JO',
+            'Kazakhstan': 'KZ',
+            'Kenya': 'KE',
+            'Kiribati': 'KI',
+            'Korea': 'KR',
+            'Kuwait': 'KW',
+            'Kyrgyzstan': 'KG',
+            "Lao People's Democratic Republic": 'LA',
+            'Latvia': 'LV',
+            'Lebanon': 'LB',
+            'Lesotho': 'LS',
+            'Liberia': 'LR',
+            'Libyan Arab Jamahiriya': 'LY',
+            'Liechtenstein': 'LI',
+            'Lithuania': 'LT',
+            'Luxembourg': 'LU',
+            'Macao': 'MO',
+            'Macedonia': 'MK',
+            'Madagascar': 'MG',
+            'Malawi': 'MW',
+            'Malaysia': 'MY',
+            'Maldives': 'MV',
+            'Mali': 'ML',
+            'Malta': 'MT',
+            'Marshall Islands': 'MH',
+            'Martinique': 'MQ',
+            'Mauritania': 'MR',
+            'Mauritius': 'MU',
+            'Mayotte': 'YT',
+            'Mexico': 'MX',
+            'Micronesia, Federated States Of': 'FM',
+            'Moldova': 'MD',
+            'Monaco': 'MC',
+            'Mongolia': 'MN',
+            'Montenegro': 'ME',
+            'Montserrat': 'MS',
+            'Morocco': 'MA',
+            'Mozambique': 'MZ',
+            'Myanmar': 'MM',
+            'Namibia': 'NA',
+            'Nauru': 'NR',
+            'Nepal': 'NP',
+            'Netherlands': 'NL',
+            'Netherlands Antilles': 'AN',
+            'New Caledonia': 'NC',
+            'New Zealand': 'NZ',
+            'Nicaragua': 'NI',
+            'Niger': 'NE',
+            'Nigeria': 'NG',
+            'Niue': 'NU',
+            'Norfolk Island': 'NF',
+            'Northern Mariana Islands': 'MP',
+            'Norway': 'NO',
+            'Oman': 'OM',
+            'Pakistan': 'PK',
+            'Palau': 'PW',
+            'Palestinian Territory, Occupied': 'PS',
+            'Panama': 'PA',
+            'Papua New Guinea': 'PG',
+            'Paraguay': 'PY',
+            'Peru': 'PE',
+            'Philippines': 'PH',
+            'Pitcairn': 'PN',
+            'Poland': 'PL',
+            'Portugal': 'PT',
+            'Puerto Rico': 'PR',
+            'Qatar': 'QA',
+            'Reunion': 'RE',
+            'Romania': 'RO',
+            'Russian Federation': 'RU',
+            'Rwanda': 'RW',
+            'Saint Barthelemy': 'BL',
+            'Saint Helena': 'SH',
+            'Saint Kitts And Nevis': 'KN',
+            'Saint Lucia': 'LC',
+            'Saint Martin': 'MF',
+            'Saint Pierre And Miquelon': 'PM',
+            'Saint Vincent And Grenadines': 'VC',
+            'Samoa': 'WS',
+            'San Marino': 'SM',
+            'Sao Tome And Principe': 'ST',
+            'Saudi Arabia': 'SA',
+            'Senegal': 'SN',
+            'Serbia': 'RS',
+            'Seychelles': 'SC',
+            'Sierra Leone': 'SL',
+            'Singapore': 'SG',
+            'Slovakia': 'SK',
+            'Slovenia': 'SI',
+            'Solomon Islands': 'SB',
+            'Somalia': 'SO',
+            'South Africa': 'ZA',
+            'South Georgia And Sandwich Isl.': 'GS',
+            'Spain': 'ES',
+            'Sri Lanka': 'LK',
+            'Sudan': 'SD',
+            'Suriname': 'SR',
+            'Svalbard And Jan Mayen': 'SJ',
+            'Swaziland': 'SZ',
+            'Sweden': 'SE',
+            'Switzerland': 'CH',
+            'Syrian Arab Republic': 'SY',
+            'Taiwan': 'TW',
+            'Tajikistan': 'TJ',
+            'Tanzania': 'TZ',
+            'Thailand': 'TH',
+            'Timor-Leste': 'TL',
+            'Togo': 'TG',
+            'Tokelau': 'TK',
+            'Tonga': 'TO',
+            'Trinidad And Tobago': 'TT',
+            'Tunisia': 'TN',
+            'Turkey': 'TR',
+            'Turkmenistan': 'TM',
+            'Turks And Caicos Islands': 'TC',
+            'Tuvalu': 'TV',
+            'Uganda': 'UG',
+            'Ukraine': 'UA',
+            'United Arab Emirates': 'AE',
+            'United Kingdom': 'GB',
+            'United States': 'US',
+            'United States Outlying Islands': 'UM',
+            'Uruguay': 'UY',
+            'Uzbekistan': 'UZ',
+            'Vanuatu': 'VU',
+            'Venezuela': 'VE',
+            'Viet Nam': 'VN',
+            'Virgin Islands, British': 'VG',
+            'Virgin Islands, U.S.': 'VI',
+            'Wallis And Futuna': 'WF',
+            'Western Sahara': 'EH',
+            'Yemen': 'YE',
+            'Zambia': 'ZM',
+            'Zimbabwe': 'ZW',
+            'North Macedonia': 'MK',
+            'Češka': 'CZ'
+        },
+        countryName: "Australia",
+        country: "",
+        predictionList: [],
+        selectedTypes: ['tourist_attraction','museum','cafe'],
+        topAttractions: [],
+        position: 0,
+        addSearch: '',
+        displayPredictions: {},
+        recommendedTypes: ['tourist_attraction','park','museum','cafe', 'aquarium', 'zoo'],
     }
 },
 computed: {
@@ -649,34 +655,141 @@ methods: {
         var numReccsPerType = Math.floor(60/types.length)
         var reccsLeft = 60
         this.recs = []
-        // this.findPlace(prevAct.name,['geometry']).then(result=>
-        this.findPlace("Two Good Eggs Cafe",['geometry']).then(result=>
-        {
+        this.anyRecs = [types.length,0]
+        var acceptableRating = 4
+        if (typeof origin == 'object'){
             for (let i=0;i<types.length;i++){
-                console.log(types[i])
-                this.nearbySearch(types[i],result,range).then(resp =>{
-                    var pushCount = 0
-                    // update numReccsPerType if resp.length < numReccsPerType
-                    for (let p of resp){
-                        if (pushCount >= numReccsPerType){
-                            break;
-                        }
-                        if (p.rating < 4 || p.user_ratings_total < 50){
-                            continue;
-                        }
-                        this.getPlaceDetails(p.place_id,['url']).then(url =>{
-                            this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url})
-                        })
-                        pushCount++;
+                this.nearbySearch(types[i],origin,range,numReccsPerType).then(resp =>{
+                    if (resp == "No valid results"){
+                        this.anyRecs[1]++;
                     }
-                    reccsLeft = reccsLeft - pushCount
-                    if (pushCount < numReccsPerType){
-                        numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
+                    else{
+                        if (resp.length < 5){
+                            acceptableRating = 3.5
+                        }
+                        var pushCount = 0
+                        for (let p of resp){
+                            if (pushCount >= numReccsPerType){
+                                break;
+                            }
+                            if (p.rating === undefined){
+                                continue
+                            }
+                            if (p.rating < acceptableRating || p.user_ratings_total < 50 || p.business_status != "OPERATIONAL"){
+                                continue;
+                            }
+                            if (p.types.includes('car_dealer')){
+                                continue;
+                            }
+                            this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                                if (p.vicinity === undefined){
+                                var address = ""
+                                }else{
+                                    var address = p.vicinity
+                                }
+                                if (p.rating === undefined){
+                                    var rating = ["-", "-"]
+                                }else{
+                                    var rating = [p.rating,p.user_ratings_total]
+                                }
+                                if (p.price_level === undefined){
+                                    var cost = 0
+                                }else{
+                                    var cost = p.price_level
+                                }
+                                if (p.photos === undefined){
+                                    var photo = ""
+                                }else{
+                                    var photo = p.photos[0]
+                                }
+                                if (result == "No results"){
+                                    var url = ""
+                                }else{
+                                    var url = result.url
+                                }
+                                this.recs.push({"name": p.name, "address" : address, "rating" : rating, "cost": cost, "photo" : photo, "url": url, "type":types[i]})
+                            })
+                            pushCount++;
+                        }
+                        reccsLeft = reccsLeft - pushCount
+                        if (pushCount < numReccsPerType){
+                            numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
+                        }
+                        if (pushCount == 0){
+                            this.anyRecs[1]++;
+                        }
                     }
                 })
-                
             }
-        })
+        }else{
+            this.findPlace(origin,['geometry'],this.originLoc).then(result=>
+            {   
+                result = result.geometry.location
+                for (let i=0;i<types.length;i++){
+                    this.nearbySearch(types[i],result,range,numReccsPerType).then(resp =>{
+                        if (resp == "No valid results"){
+                            this.anyRecs[1]++;
+                        }
+                        else{
+                            if (resp.length < 5){
+                                acceptableRating = 3.5
+                            }
+                            var pushCount = 0
+                            for (let p of resp){
+                                if (pushCount >= numReccsPerType){
+                                    break;
+                                }
+                                if (p.rating === undefined){
+                                    continue
+                                }
+                                if (p.rating < acceptableRating || p.user_ratings_total < 50 || p.business_status != "OPERATIONAL"){
+                                    continue;
+                                }
+                                if (p.types.includes('car_dealer')){
+                                    continue;
+                                }
+                                this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                                    if (p.vicinity === undefined){
+                                    var address = ""
+                                    }else{
+                                        var address = p.vicinity
+                                    }
+                                    if (p.rating === undefined){
+                                        var rating = ["-", "-"]
+                                    }else{
+                                        var rating = [p.rating,p.user_ratings_total]
+                                    }
+                                    if (p.price_level === undefined){
+                                        var cost = 0
+                                    }else{
+                                        var cost = p.price_level
+                                    }
+                                    if (p.photos === undefined){
+                                        var photo = ""
+                                    }else{
+                                        var photo = p.photos[0]
+                                    }
+                                    if (result == "No results"){
+                                        var url = ""
+                                    }else{
+                                        var url = result.url
+                                    }
+                                    this.recs.push({"name": p.name, "address" : address, "rating" : rating, "cost": cost, "photo" : photo, "url": url, "type":types[i]})
+                                })
+                                pushCount++;
+                            }
+                            reccsLeft = reccsLeft - pushCount
+                            if (pushCount < numReccsPerType){
+                                numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
+                            }
+                            if (pushCount == 0){
+                                this.anyRecs[1]++;
+                            }
+                        }
+                    })
+                }
+            })
+    }
     },  
     recommendNonIntense(dayId,index){
         // var prevAct = this.days[dayId].dayActivities[index]
@@ -686,34 +799,76 @@ methods: {
         var numReccsPerType = Math.floor(60/types.length)
         var reccsLeft = 60
         this.recs = []
-        // this.findPlace(prevAct.name,['geometry']).then(result=>
-        this.findPlace("Two Good Eggs Cafe",['geometry']).then(result=>
-        {
+        this.anyRecs = [types.length,0]
+        if (typeof origin == "object"){
             for (let i=0;i<types.length;i++){
-                console.log(types[i])
-                this.nearbySearch(types[i],result,range).then(resp =>{
-                    var pushCount = 0
-                    // update numReccsPerType if resp.length < numReccsPerType
-                    for (let p of resp){
-                        if (pushCount >= numReccsPerType){
-                            break;
+                this.nearbySearch(types[i],origin,range,numReccsPerType).then(resp =>{
+                    if (resp == "No valid results"){
+                        this.anyRecs[1]++;
+                    }else{
+                        var pushCount = 0
+                        // update numReccsPerType if resp.length < numReccsPerType
+                        for (let p of resp){
+                            if (pushCount >= numReccsPerType){
+                                break;
+                            }
+                            if (p.rating < 4 || p.user_ratings_total < 50){
+                                continue;
+                            }
+                            this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                                if (result == "No results"){
+                                    var url = ""
+                                }else{
+                                    var url = result.url
+                                }
+                                this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, "type":types[i]})
+                            })
+                            pushCount++;
                         }
-                        if (p.rating < 4 || p.user_ratings_total < 50){
-                            continue;
+                        reccsLeft = reccsLeft - pushCount
+                        if (pushCount < numReccsPerType){
+                            numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
                         }
-                        this.getPlaceDetails(p.place_id,['url']).then(url =>{
-                            this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url})
-                        })
-                        pushCount++;
-                    }
-                    reccsLeft = reccsLeft - pushCount
-                    if (pushCount < numReccsPerType){
-                        numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
                     }
                 })
-                
             }
-        })
+        }else{
+            this.findPlace(origin,['geometry'],this.originLoc).then(result=>
+            {   
+                result = result.geometry.location
+                for (let i=0;i<types.length;i++){
+                    this.nearbySearch(types[i],result,range,numReccsPerType).then(resp =>{
+                        if (resp == "No valid results"){
+                            this.anyRecs[1]++;
+                        }else{
+                            var pushCount = 0
+                            // update numReccsPerType if resp.length < numReccsPerType
+                            for (let p of resp){
+                                if (pushCount >= numReccsPerType){
+                                    break;
+                                }
+                                if (p.rating < 4 || p.user_ratings_total < 50){
+                                    continue;
+                                }
+                                this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                                    if (result == "No results"){
+                                        var url = ""
+                                    }else{
+                                        var url = result.url
+                                    }
+                                    this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, "type":types[i]})
+                                })
+                                pushCount++;
+                            }
+                            reccsLeft = reccsLeft - pushCount
+                            if (pushCount < numReccsPerType){
+                                numReccsPerType = Math.floor(reccsLeft / (types.length-1-i))
+                            }
+                        }
+                    })
+                }
+            })
+        }
     },  
     displayCost(price_level){
         let displayedCost = "" 
@@ -779,26 +934,14 @@ methods: {
             }
             });
         });
-
-        // var url = '/api/place/nearbysearch/json'
-        // console.log(kw, loc)
-        // var params = {
-        //     keyword: kw,
-        //     location: loc,
-        //     radius: 5000,
-        //     key: 'AIzaSyC27_uXwB2Wdx05nP3pezmdAH5svn1oqr4',
-        // }
-        // return axios.get(url,{params})
-        // .then(response=>{
-        //     return response.data.results
-        // })
-    },
-    async findPlace(query,fieldList){
+   },
+    async findPlace(query,fieldList,locBias){
         var testDiv = document.getElementById('testingDiv');
         const {PlacesService} = await google.maps.importLibrary("places");
         let request = {
             query: query,
-            fields: fieldList
+            fields: fieldList,
+            locationBias: locBias,
         }
         var service = new PlacesService(testDiv);
         return new Promise((resolve, reject) => {service.findPlaceFromQuery(request, (results, status) => {

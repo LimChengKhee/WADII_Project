@@ -83,34 +83,25 @@
             <button class="btn btn-danger" @click="deleteHotel(ind)">Delete</button>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <button class="btn btn-warning" @click="addFlight">Add Flight</button>
-      <div class="col">
-        <div class="row">
-          <div v-for="(flight,ind) in this.iti_data.itinerary_data.flights" class="mt-5">
-            <div class="card mb-3 rounded-0">
-              <div class="row">
-                <div class="col">
-                  {{ flight.flight_no }}
-                </div>
-                <div class="col">
-                  {{ flight.departure_country }}
-                  {{ flight.departure_datetime }}
-                </div>
-                <div class="col">{{ flight.duration }}min</div>
-                <div class="col">
-                  COuntry{{ flight.arrival_country }}
-                  ||{{ flight.arrival_datetime }}
-                </div>
-                <div class="col bg-primary"></div>
-              </div>
-              <div class="row mt-5">
-                <div class="col mt-5">${{ flight.cost }}</div>
-                
 
-                <br />
+        <div class="row mt-2 mb-4 ms-3" id="chooseOrigin">
+          <template v-if="!editOrigin">
+            <div class="input-group mb-3 col-6 col-sm-5 col-lg-3 pe-0 fs-6">
+              <input class="form-control d-inline-block" style="max-width:350px;" type="text" v-model="origin" disabled>
+              <span class="input-group-text">
+                <button type="button" class="btn" @click="editOrigin = true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                  </svg>
+                </button>
+              </span>
+            </div>
+          </template>
+          <template v-else>
+              <div class="col px-0 input-group w-50">
+                <input type="text" class="form-control" v-model="origin">
+                <button class="btn btn-secondary" type="button" @click="verifyLocation" data-bs-toggle="modal" data-bs-target="#confirmLocModal">Verify location</button>
+                <button class="btn btn-danger" type="button" @click="origin = baseOrigin, editOrigin = false">Cancel</button>
               </div>
               <button class="btn btn-danger" @click="deleteFlight(ind)">Delete</button>
             </div>
@@ -121,253 +112,121 @@
     </div>
   </div>
 </template>
-<script>
-import Activity_Component from '../components/ActivityComponent.vue'
-import Day_Component from '../components/DayComponent.vue'
-import Datepicker from '../../node_modules/@vuepic/vue-datepicker'
-import '../../node_modules/@vuepic/vue-datepicker/dist/main.css'
-import { mapStores } from 'pinia'
-import { useAuthStore } from '../store/piniaStore/authStore'
-import { useUsersStore } from '../store/piniaStore/userStore'
-import { useItineraryStore } from '../store/piniaStore/itinerary'
-// import {GMapAutocomplete} from '../../node_modules/@fawmi/vue-google-maps'
-//  import statements
-// import example from '@/utils/string_formatter'
-export default {
-  name: 'Itinerary_Page',
-  components: {
-    // importing components from other places
-    // GMapAutocomplete,
-    // DatePick
-    Activity_Component,
-    Day_Component,
-    Datepicker
-  },
-  data() {
-    // local repository of information
-    return {
-      iti_data: {
-        itinerary_data:{hotels:[]},
-      },
-      itinerary_date: '',
-      user: '',
-      iti_name: '',
-      date: [],
-      itemNum: 0,
-      allActivities: [
-        {
-          id: 0,
-          name: 'Museum',
-          description: 'This museum was built in 1669 (nice)',
-          image: 'DSC00625.jpg'
-        },
-        {
-          id: 1,
-          name: 'Castle',
-          description: 'This castle was built in 1669 (nice)',
-          image: 'DSC00630.jpg'
-        },
-        {
-          id: 2,
-          name: 'Atrium',
-          description: 'This atrium was built in 1669 (nice)',
-          image: 'DSC00701.jpg'
-        },
-        {
-          id: 3,
-          name: 'Mountains',
-          description: 'These mountains were built in 1669 (nice)',
-          image: 'DSC00729.jpg'
-        },
-        {
-          id: 4,
-          name: 'Village',
-          description: 'This village was built in 1669 (nice)',
-          image: 'DSC00746.jpg'
-        },
-        {
-          id: 5,
-          name: 'Fast-food Restaurant',
-          description: 'This fast-food restaurant was built in 1669 (nice)',
-          image: 'DSC00757.jpg'
-        },
-        {
-          id: 6,
-          name: 'Hill',
-          description: 'This hill was built in 1669 (nice)',
-          image: 'DSC00769.jpg'
-        },
-        {
-          id: 7,
-          name: 'Sunset',
-          description: 'This sunset was built in 1669 (nice)',
-          image: 'DSC00788-3.jpg'
-        },
-        {
-          id: 8,
-          name: 'Colorful buildings',
-          description: 'These colorful buildings were built in 1669 (nice)',
-          image: 'DSC00601.jpg'
-        }
+  <script>
+  import Day_Component from '../components/DayComponent.vue';
+  import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
+  import '/node_modules/@vuepic/vue-datepicker/dist/main.css';
+  import * as bootstrap from 'bootstrap'
+  //  import statements
+  // import example from '@/utils/string_formatter'
+  export default {
+    name: 'Itinerary_Page',
+    components: { 
+      // importing components from other places
+      Day_Component,
+      Datepicker,
+    },
+    data () {
+      // local repository of information
+      return {
+        date : [],
+        itemNum : 0,
+        days: [ // days is an array of dayObjects, each dayObject contains dayId, and an array of activity objects (dayActivities)
+
       ],
-      days: [
-        // days is an array of dayObjects, each dayObject contains dayId, and an array of activity objects (dayActivities)
-      ]
-    }
-  },
-  computed: {
-    // computed
-    ...mapStores(useAuthStore),
-    ...mapStores(useUsersStore),
-    ...mapStores(useItineraryStore)
-    // activeFlight() {
-    //   let res = this.iti_data.itinerary_data.flights
-    //   return res == null ? []: res
-    // },
-  },
-
-  // start of lifecycle
-  async mounted() {
-    if (this.date.length == 0) {
-      const startDate = new Date()
-      const endDate = new Date(new Date().setDate(startDate.getDate() + 7))
-      this.date = [startDate, endDate]
-    }
-    const authStore = useAuthStore()
-    const userStore = useUsersStore()
-    const itineraryStore = useItineraryStore()
-    this.user = this.$route.params.username
-    this.iti_name = this.$route.params.itinerary_name
-
-    var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
-    console.log(iti_data)
-    // if (iti_data.itinerary_data.hotels.length == 0) {
-    //   this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
-    // }
-    console.log(iti_data.itinerary_data.destination.itinerary_date)
-    let item = iti_data.itinerary_data.destination.itinerary_date.split(',')
-    let date_range = [new Date(item[0]), new Date(item[1])]
-    this.iti_data = iti_data
-    this.selectDate(date_range)
-    this.itinerary_date = date_range
-    console.log(this.iti_data)
-
-
-    this.$nextTick(() => this.activeFlight())
-  },
-  async created() {
-    //  const authStore = useAuthStore();
-    // const userStore = useUsersStore();
-    // const itineraryStore = useItineraryStore();
-    this.user = this.$route.params.username
-    this.iti_name = this.$route.params.itinerary_name
-    const userStore = useUsersStore()
-    this.iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
-    // console.log(iti_data)
-    // if (iti_data.itinerary_data.hotels.length == 0){
-
-    //   this.$router.push({ path: `/hotel/${this.user}/${this.iti_name}` })
-    // }
-
-    // this.iti_data = iti_data
-  },
-
-  methods: {
-    async save() {
-      const userStore = useUsersStore()
-      const itineraryStore = useItineraryStore()
-      console.log(itineraryStore.handleDate(this.date))
-      for (let i in this.days){
-        if (!('accoms' in this.days[i])){
-          this.days[i]['accoms'] = this.getHotels()
-        }
+        addTopAttractionDay: [[1,1,1],[1,1,1],[1,1,1]],
+        slicedArr: [],
+        baseOrigin: "The Fullerton Hotel Sydney",
+        origin: "The Fullerton Hotel Sydney",
+        editOrigin: false,
+        originResult: "",
+        originLoc: "",
       }
-      this.iti_data.itinerary_data.itinerary_days = this.days
-      this.iti_data.itinerary_data.destination.itinerary_date = itineraryStore.handleDate(this.date)
-      await userStore.updateItinerary(this.iti_data, this.user, this.iti_name)
     },
-    async deleteFlight(id){
-      this.iti_data.itinerary_data.flights.splice(id,1)
+    computed: {
+      // computed
+  
     },
-    async deleteHotel(id){
-      this.iti_data.itinerary_data.hotels.splice(id,1)
-    },
-    async activeFlight() {
-      let res = this.iti_data.itinerary_data.flights
-      console.log(res, 'func')
-      return res == null ? [] : res
-    },
+  
+    // start of lifecycle
+    async mounted () {
+      if (this.date.length == 0){
+        const startDate = new Date();
+        const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+        this.date = [startDate, endDate];
+      }
+      this.initialiseOrigin();
+      var originElem = document.getElementById('originElement')
+      new bootstrap.Tooltip(originElem)
 
-    // methods defined by ourselves
-    addDaystoEnd(numDays) {
-      for (let i = 0; i < numDays; i++) {
-        this.days.push({
-          dayId: this.days.length,
-          dayActivities: []
+    },
+  
+    methods: {
+      // methods defined by ourselves
+      initialiseOrigin(){
+        this.$refs.dayComp.findPlace(this.origin,['geometry']).then(result => {
+          if (result == "No results"){
+            this.originLoc = ''
+          }else{
+            this.originLoc = result.geometry.location
+          }
         })
-
-      }
-      let currentEnd = this.date[1]
-      this.date[1].setDate(currentEnd.getDate() + numDays)
-      // this.date[1] = new Date(this.date[1].getTime() + (i * 24 * 60 * 60 * 1000));
-    },
-    addDaystoStart(numDays) {
-      for (let i = 0; i < numDays; i++) {
-        this.days.unshift({
-          dayId: 0,
-          dayActivities: []
+      },
+      setOrigin(){
+        this.originLoc = this.originResult.geometry.location
+        this.origin = this.originResult.name
+        this.baseOrigin = this.origin
+        this.editOrigin = false
+      },
+      verifyLocation(){
+        this.originResult = ""
+        this.$refs.dayComp.findPlace(this.origin,['geometry','name','formatted_address'],this.originLoc).then(result =>{
+          if (result == "No results"){
+              this.originResult = "Place not found"
+          }else{
+            this.originResult = result
+          }
         })
-      }
-      for (let i = 0; i < this.days.length; i++) {
-        this.days[i].dayId = i
-      }
-      let currentStart = this.date[0]
-      this.date[0].setDate(currentStart.getDate() - numDays)
-    },
-    removeDaysfromStart(diff) {
-      this.days.splice(0, diff);
-      for (let i = 0; i < this.days.length; i++) {
-        this.days[i].dayId = i;
-      }
-      let currentStart = this.date[0]
-      this.date[0].setDate(currentStart.getDate() + diff)
-    },
-    removeDaysfromEnd(diff) {
-      this.days = this.days.slice(0, this.days.length - diff)
-      let currentEnd = this.date[1]
-      this.date[1].setDate(currentEnd.getDate() - diff)
-    },
-    selectDate(newDate) {
-      if (this.days.length == 0) {
-        let start = newDate[0]
-        let end = newDate[1]
-        let days = Math.floor((end - start) / (1000 * 60 * 60 * 24))
-        for (let i = 0; i < days + 1; i++) {
+      },
+      getSlicedArr(){
+        this.$refs.dayComp.getTopAttractions().then(result =>{
+          setTimeout(() => {
+            this.slicedArr = [result.slice(0,3), result.slice(3,6), result.slice(6,9)]
+          }, 5000);
+        })
+      },
+      addAttraction(index,itemIndex){
+        var dayNum = this.addTopAttractionDay[index][itemIndex]
+        this.addTopAttractionDay[index][itemIndex] = 1
+        var act = this.slicedArr[index][itemIndex]
+        var actName = act.name
+        var actDesc = act.address
+        var type = act.type
+        var image = act.photo
+        this.days[dayNum-1].dayActivities.push({'name':actName, 'description':actDesc, 'image':image, 'type':type})
+
+        },
+      addDaystoEnd(numDays){
+        for (let i=0;i<numDays;i++){
           this.days.push({
             dayId: this.days.length,
-            dayActivities: [],
-            accoms: this.getHotels() // PLACEHOLDER!!!!
+            dayActivities: []
           })
         }
-        let addDay = document.getElementById('addDay')
-        addDay.classList.remove('d-none')
-        addDay.classList.add('d-inline')
-        this.date = newDate
-      } else {
-        let newStart = newDate[0]
-        let newEnd = newDate[1]
-        let startDate = this.date[0]
-        let endDate = this.date[1]
-        if (startDate > newStart) {
-          console.log('startDate > newStart')
-          let numDays = Math.floor((startDate - newStart) / (1000 * 60 * 60 * 24))
-          this.addDaystoStart(numDays)
-        } else if (startDate < newStart) {
-          console.log('startDate < newStart')
-          let diff = Math.floor((newStart - startDate) / (1000 * 60 * 60 * 24))
-          this.removeDaysfromStart(diff)
+          let currentEnd = this.date[1]
+          this.date[1].setDate(currentEnd.getDate() + numDays)
+          // this.date[1] = new Date(this.date[1].getTime() + (i * 24 * 60 * 60 * 1000));
+      },
+      addDaystoStart(numDays){
+        for (let i=0;i<numDays;i++){
+          this.days.unshift({
+            dayId: 0,
+            dayActivities: []
+          })
         }
-
+        for (let i=0;i<this.days.length;i++){
+          this.days[i].dayId = i
+        }
         let currentStart = this.date[0]
         this.date[0].setDate(currentStart.getDate() - numDays)
       }
