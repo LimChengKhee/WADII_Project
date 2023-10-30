@@ -12,8 +12,8 @@
               <Linechart :dataLC="fetchedData" />
             </div>
             <div class="col-lg-4 col-md-12">
-              <button class="btn btn-primary w-100 mt-4">Your Button</button>
-              <div class="card card-waves col-sm-12 col-lg-12 col-md-12 mt-4">
+              <button class="btn btn-primary w-100 " @click="createitinerary">Create Itinerary Now</button>
+              <div class="card card-waves col-sm-12 col-lg-12 col-md-12 mt-4" style="height: 90%">
                 <Itidetails :dataDC="fetchedData" />
               </div>
             </div>
@@ -92,6 +92,9 @@ export default {
   },
 
   methods: {
+    createitinerary() {
+      this.$router.push('/form');
+    },
 
     getDates(startDate, stopDate) {
       Date.prototype.addDays = function (days) {
