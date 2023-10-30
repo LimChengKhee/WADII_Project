@@ -1,10 +1,10 @@
 <template>
   <div class="container bg-white main_con my-5">
-    <div class="row p-5 ">
+    <div class="row p-3">
     <div class="col header px-0 left-side">
 
       <div class="col-12">
-        <img src="../assets/plane_img.png" alt="" class="img-fluid w-100 h-25">
+        <img src="../assets/plane_img.png" alt="" class="img-fluid w-100" style="height:360px">
       </div>
 
       <div class="col">
@@ -74,7 +74,7 @@
             :min-date="start_date"
             :start-date="start_date"
             @update:model-value="mountAllHotelInformation"
-            input-class-name="dp-custom-input py-2 rounded-3 dp-color"
+            input-class-name="dp-custom-input rounded-3 dp-color"
 
             focus-start-date/>
 
@@ -159,7 +159,7 @@
       
 
     </div>
-    <div class="col card_section" v-if="mounted">
+    <div class="col card_section ms-3 scroll-big" v-if="mounted">
       <FlightCard
         v-for="flight in this.hotelsInCities"
         :flightNumberO="flight.legs[0].segments[0].flightNumber"
@@ -454,10 +454,6 @@ svg{
   display:none;
 
 }
-
-
-
-
   
   }
 
@@ -466,8 +462,35 @@ svg{
 .left-side-mobile{
   display:none
 }
+.scroll-big{
+  height: 580px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
 }
+
+
+@media only screen and (max-width: 1200px) {
+   
+   :deep() {
+     .dp-color{
+     font-size: 20px;
+     
+   }
+     }
+
+     .input_c{
+  background-color:#004ee4;
+  color:white;
+  border:none;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+     }
+   
+
 @media only screen and (max-width: 992px) {
     .left-side {
     display:none
@@ -508,12 +531,18 @@ svg{
   display:block;
 
 }
-
-
-
-
-  
   }
 
+
+
 }
+
+@media only screen and (max-width: 576px) {
+  .main_con{
+    width:95%;
+  }
+   
+     }
+
+
 </style>

@@ -28,7 +28,7 @@
 
             <hr>
            <div class="row">
-            <div class="col-4">
+            <div class="col-4 px-0">
               {{this.originDisplayCode}} {{ format_date(this.departure)[1] }}
             </div>
 
@@ -41,7 +41,7 @@
               </div>
             </div>
 
-            <div class="col-4">
+            <div class="col-4 px-0">
               {{ this.destinationDisplayCode }} {{ format_date(this.arrival)[1] }}
             </div>
             
@@ -50,8 +50,16 @@
             
           </div>
 
-            <div class="col-2 px-0">
+            <div class="col-2 px-0 book_big">
               {{ this.totalPrice }}
+              <button class="btn btn-success" @click="book_flight()">Book</button>
+            </div>
+
+            <div class="col-2 px-0 book_small">
+              <div class="">
+                {{ this.totalPrice }} 
+              </div>
+             
               <button class="btn btn-success" @click="book_flight()">Book</button>
             </div>
             
@@ -219,11 +227,35 @@ export default {
       const hours = Math.floor(time / 60); 
       const remainingMinutes = time % 60; 
 
-      return String(`${hours}h, ${remainingMinutes}m`);
+      return String(`${hours}h ${remainingMinutes}m`);
     }
   
   }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+
+@media only screen and (min-width: 992px) {
+  .book_big{
+    display:block;
+  }
+
+  .book_small{
+    display:none;
+  }
+   
+     }
+
+@media only screen and (max-width: 992px) {
+  .book_small{
+    display:block;
+  }
+
+  .book_big{
+    display:none;
+  }
+   
+     }
+
+</style>
