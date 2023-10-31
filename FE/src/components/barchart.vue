@@ -9,18 +9,40 @@
 
 <script>
 import * as d3 from "d3";
-import itiData from "./data.json";
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
+import { mapStores } from 'pinia';
 
 export default {
   name: 'Barchart',
+  props: {
+    dataBC: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       data: itiData,
       screenWidth: window.innerWidth * 0.8,
     };
   },
+  watch: {
+    dataLC: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        console.log(this.dataLC)
+        this.drawChart();
+      }
+    }
+  },
+  computed: {
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore)
+  },
+
   mounted() {
-    this.drawChart();
+    
     window.addEventListener('resize', this.handleResize);
   },
   methods: {

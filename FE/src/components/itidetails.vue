@@ -1,29 +1,13 @@
 <template>
-    <p>Days Travelled</p>
+    <div>
+      <p>Days Travelled</p>
       <hr class="divider">
-        <div class="card-body">
-          <div class="table-container">
-            <table class="details-table fill-table">
-              <thead>
-                <tr>
-                  <th>Country</th>
-                  <th>Count</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, index) in accumulatedData" :key="index">
-                  <td>{{ item.country }}</td>
-                  <td>{{ item.count }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-    
+      <div class="chart-container"></div>
+    </div>
   </template>
   
   <script>
+  import * as d3 from 'd3';
   import { useAuthStore } from '../store/piniaStore/authStore';
   import { useUsersStore } from '../store/piniaStore/userStore';
   import { mapStores } from 'pinia';
@@ -42,8 +26,7 @@
       accumulatedData() {
         const countryCounts = {};
         this.dataDC.forEach((item) => {
-          const country =
-            item.itinerary_data.itinerary_data.destination.trip_country || 'Unknown';
+          const country = item.itinerary_data.itinerary_data.destination.trip_country || 'Unknown';
           if (countryCounts[country]) {
             countryCounts[country] += 1;
           } else {
@@ -51,9 +34,7 @@
           }
         });
   
-        const sortedCountries = Object.keys(countryCounts).sort(
-          (a, b) => countryCounts[b] - countryCounts[a]
-        );
+        const sortedCountries = Object.keys(countryCounts).sort((a, b) => countryCounts[b] - countryCounts[a]);
   
         const top5Countries = sortedCountries.slice(0, 5);
   
@@ -67,53 +48,58 @@
       dataDC: {
         immediate: true,
         handler(newVal, oldVal) {
-          console.log(newVal);
+          this.drawChart();
         },
+      },
+    },
+    methods: {
+      drawChart() {
+        const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+        const width = 960 - margin.left - margin.right;
+        const height = 500 - margin.top - margin.bottom;
+  
+        const svg = d3
+          .select('.chart-container')
+          .append('svg')
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .append('g')
+          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+  
+        const x = d3.scaleBand().range([0, width]).padding(0.1).domain(this.accumulatedData.map((d) => d.country));
+        const y = d3.scaleLinear().range([height, 0]).domain([0, d3.max(this.accumulatedData, (d) => d.count)]);
+  
+        svg.append('g').attr('transform', 'translate(0,' + height + ')').call(d3.axisBottom(x));
+  
+        svg.append('g').call(d3.axisLeft(y));
+  
+        svg
+          .selectAll('.bar')
+          .data(this.accumulatedData)
+          .enter()
+          .append('rect')
+          .attr('class', 'bar')
+          .attr('x', (d) => x(d.country))
+          .attr('width', x.bandwidth())
+          .attr('y', (d) => y(d.count))
+          .attr('height', (d) => height - y(d.count))
+          .attr('fill', 'steelblue');
       },
     },
   };
   </script>
   
   <style scoped>
-  .card-container {
-    width: 100%;
-  }
-  
-  .card {
-    width: 100%;
-  }
-  
-  .table-container {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .fill-table {
-    width: 100%;
-  }
-  
-  .details-table {
-    border-collapse: collapse;
-    margin-top: 20px;
-    width: 100%;
-  }
-  
-  .details-table th,
-  .details-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-    width: 50%; /* Adjust the width as needed */
-  }
-  
-  .details-table th {
-    background-color: #f2f2f2;
-  }
-  .divider{
+  .divider {
     width: 100%;
     height: 1px;
-    background-color: #000; /* Adjust the color as needed */
+    background-color: #000;
+    /* Adjust the color as needed */
     margin-top: -10px;
-}
+  }
+  .chart-container {
+    width: 100%;
+    height: 500px;
+  }
   </style>
   

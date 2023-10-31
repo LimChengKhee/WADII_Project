@@ -105,7 +105,7 @@ export default {
       const containerWidth = container.node().getBoundingClientRect().width;
       const margin = { top: 30, right: 50, bottom: 40, left: 100 };
       const width = Math.min(this.screenWidth, containerWidth) - margin.left - margin.right;
-      const height = 625 - margin.top - margin.bottom;
+      const height = 475 - margin.top - margin.bottom;
 
       const svg = d3
         .select("#chartContainer")
@@ -311,6 +311,15 @@ export default {
         .attr("fill", "white")
         .attr("text-anchor", "middle")
         .attr("dy", "1em");
+
+      g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 15 - margin.left)
+        .attr("x", 0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .attr("fill", "white")
+        .text("Total Cost"); // Add the label for the y-axis
     },
   },
   beforeDestroy() {
@@ -345,5 +354,4 @@ svg {
 h2 {
   color: black;
 }
-
 </style>
