@@ -20,6 +20,8 @@ export const useItineraryStore = defineStore('itinerary', {
       room: 0,
       adult: 0,
       child: 0,
+      hotel:'',
+
       errors: {
         country: '',
         trip_date: '',
@@ -32,7 +34,8 @@ export const useItineraryStore = defineStore('itinerary', {
         room: '',
         arrival_country: '',
         adult: '',
-        child: ''
+        child: '',
+        hotel:'',
       },
       flag: {
         hotel: false,
@@ -48,15 +51,26 @@ export const useItineraryStore = defineStore('itinerary', {
         this.errors.arrival_country = ''
       }
     },
-    // validateEmail(email) {
-    //     if (email.length == 0) {
-    //         this.errors.email = 'This field is required';
-    //     } else if (!email.includes('@')) {
-    //         this.errors.email = 'Email must contain @';
-    //     } else {
-    //         this.errors.email = '';
-    //     }
-    // },
+    validateHotel(hotel) {
+        if (hotel == null) {
+            this.errors.hotel = 'This field is required';
+        } else if (hotel.length == 0) {
+            this.errors.hotel = 'Email must contain @';
+        } else {
+            this.errors.hotel = '';
+        }
+    },
+    validatetripdate(trip_date) {
+      console.log(trip_date)
+      
+      if (trip_date == null) {
+          this.errors.trip_date = 'This field is required';
+      } else if (trip_date[0] == null || trip_date[1] == null) {
+          this.errors.trip_date = 'Date not completed';
+      } else {
+          this.errors.trip_date = '';
+      }
+  },
     // validatePhoneNumber(phoneNumber) {
     //     if (phoneNumber.length == 0) {
     //         this.errors.phoneNumber = 'This field is required';
@@ -65,11 +79,14 @@ export const useItineraryStore = defineStore('itinerary', {
     //         this.errors.phoneNumber = '';
     //     }
     // },
+    validateH() {
+      this.validateHotel(this.hotel)
+    },
     validateAll() {
       this.validateDestination(this.arrival_country)
+      this.validatetripdate(this.trip_date)
     },
     handleDate(date_range) {
-        console.log(date_range,'DATERABE')
       if (date_range == '') {
         return
       }
@@ -121,6 +138,7 @@ export const useItineraryStore = defineStore('itinerary', {
       console.log(Object.keys(hotel).length, Object.keys(flight).length, 'LENGTH')
 
       var json_obj = {
+        display_name: itinerary_name,
         itinerary_name: itinerary_name,
         username: userid,
         itinerary_data: {
@@ -140,6 +158,7 @@ export const useItineraryStore = defineStore('itinerary', {
         var itinerary_date = this.handleDate(this.trip_date)
       }
       res['trip_country'] = this.arrival_country
+      res['departure_country'] = this.departure_country
       res['itinerary_date'] = itinerary_date
       res['start_date'] = itinerary_date.split(',')[0]
       res['end_date'] = itinerary_date.split(',')[1]
@@ -168,7 +187,9 @@ export const useItineraryStore = defineStore('itinerary', {
           cost: this.flight_cost ? Number(this.flight_cost) : 0,
           currency: 'sgd',
           carbon_fp: 0,
-          notes: ''
+          notes: '',
+          eco:'NORMAL',
+          img:''
         }
         var flightjson = this.createflight(flight_obj)
         return flightjson

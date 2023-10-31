@@ -1,0 +1,31 @@
+.plus-button{
+    padding-top:0.1rem !important;
+    padding-bottom:0.1rem !important;
+    padding-left:0.5rem !important;
+    padding-right:0.5rem !important;
+}
+
+/* .carousel-back-button{
+    height:32px !important;
+    width:32px !important;
+    position:absolute !important; 
+    top: 50% !important;
+    left: 10px !important;
+}
+.carousel-next-button{
+    height:32px !important;
+    width:32px !important;
+    position:absolute !important; 
+    top: 50% !important;
+    right: 10px !important;
+} */
+
+:root {
+    --dp-input-padding: 6px 10px 6px 12px; /*Padding in the input*/
+}
+
+.img-fluid{
+    width:100% !important;
+    height:100% !important;
+    object-fit: cover !important;
+}

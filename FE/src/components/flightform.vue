@@ -49,11 +49,15 @@ export default {
 
 <template>
   <div>
-    <h2 class="title">Select your flight</h2>
-    <p class="subtitle">Fill up your flight details (Optional)</p>
 
-    <div class="form-group">
-      <div class="form-group-label">
+    <div class="text-start">
+      <h2 class="mt-3  d-none d-md-block">Select your flight</h2>
+      <h2 class="d-md-none mt-3">FLight</h2>
+      <p class="">Fill up your flight details (Optional)</p>
+    </div>
+
+    <div class="form-group ">
+      <div class="form-group-label mb-2">
         <label for="name">Flight Number</label>
         <span v-if="itineraryStore.errors.flight_no">{{ itineraryStore.errors.flight_no }}</span>
       </div>
@@ -61,39 +65,41 @@ export default {
         type="text"
         id="name"
         placeholder="e.g. Stephen King"
-        autofocus
+        class="py-2 ps-3"
         v-model="itineraryStore.flight_no"
       />
     </div>
 
-    <div class="form-group">
-      <div class="form-group-label">
+    <div class="form-group ">
+      <div class="form-group-label mb-2 ">
         <!-- <label for="name">Departure</label>/ -->
         <span v-if="itineraryStore.errors.departure_date">{{
           itineraryStore.errors.departure_date
         }}</span>
       </div>
-      <div class="row">
-        <div class="col">
-          <label for="name" class="text-start">Departure</label
+      <div class="row ">
+        <div class="col-xl-6  col-lg-6 col-md-6">
+          <label for="name" class="text-start mb-2">Departure</label
           ><Datepicker
             v-model="itineraryStore.departure_date"
             placeholder="Departure Date/time"
             :enable-time-picker="true"
             :text-input="true"
+            input-class-name="dp-custom-input py-2 rounded-3"
             :min-date="itineraryStore.trip_date[0]"
             :start-date="itineraryStore.departure_date"
             :max-date="itineraryStore.trip_date[1]"
+            :teleport="true"
             focus-start-date
           />
         </div>
-        <div class="col">
-          <label for="name" class="text-start">Departure Country</label
+        <div class="col-xl-6 col-lg-6 col-md-6">
+          <label for="name" class="text-start mb-2">Departure Country</label
           ><input
             type="text"
             id="name"
             placeholder="SIN"
-            autofocus
+            class="py-2 ps-3"
             v-model="itineraryStore.departure_country"
            
           />
@@ -101,41 +107,43 @@ export default {
       </div>
     </div>
     <div class="form-group">
-      <div class="form-group-label">
+      <div class="form-group-label mb-2">
         <span v-if="itineraryStore.errors.arrival_date">{{
           itineraryStore.errors.arrival_date
         }}</span>
       </div>
-      <div class="row">
-        <div class="col">
-          <label for="name" class="text-start">Arrival</label
+      <div class="row ">
+        <div class="col-xl-6 col-lg-6 col-md-6">
+          <label for="name" class="text-start mb-2">Arrival</label
           ><Datepicker
             v-model="itineraryStore.arrival_date"
             placeholder="Arrival Date/time"
             :enable-time-picker="true"
             :text-input="true"
+            input-class-name="dp-custom-input py-2 rounded-3"
             :min-date="itineraryStore.departure_date"
             :start-date="itineraryStore.departure_date"
             :max-date="itineraryStore.trip_date[1]"
+            :teleport="true"
             focus-start-date
             
           />
         </div>
-        <div class="col">
-          <label for="name" class="text-start">Arrival Country</label
+        <div class="col-xl-6 col-lg-6 col-md-6">
+          <label for="name" class="text-start mb-2">Arrival Country</label
           ><input
             type="text"
             id="name"
             placeholder="SIN"
-            autofocus
+            class="py-2 ps-3"
             v-model="itineraryStore.arrival_country"
           />
         </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <div class="form-group-label">
+    <div class="form-group ">
+      <div class="form-group-label mb-2">
         <label for="name">Cost</label>
         <span v-if="itineraryStore.errors.flight_cost">{{
           itineraryStore.errors.flight_cost
@@ -147,7 +155,7 @@ export default {
             type="Number"
             id="name"
             placeholder=""
-            autofocus
+            class="py-2 ps-3"
             v-model="itineraryStore.flight_cost"
           />
         </div>
@@ -157,36 +165,41 @@ export default {
 </template>
 
 <style scoped>
+
+h2,p{
+  font-family: 'Ubuntu';
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../assets/fonts/Ubuntu-Regular.ttf") format("truetype");
+}
+
+
 h2 {
   font-size: 2.5rem;
   font-weight: 600;
-  padding: 20px 0;
+  /* padding: 20px 0; */
 }
 
 p {
   font-size: 18px;
-  margin-bottom: 60px;
   color: var(--cool-gray);
-}
-
-.form-group {
-  margin-bottom: 40px;
 }
 
 .form-group label {
   display: block;
   font-size: 18px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .form-group input {
   width: 100%;
-  height: 50px;
+  /* height: 50px; */
   border: 1px solid var(--cool-gray);
   border-radius: 8px;
-  padding: 0 20px;
+  /* padding: 0 20px; */
   font-size: 18px;
-  padding: 24px 16px;
+  /* padding: 24px 16px; */
 }
 
 .form-group input:focus {
@@ -216,4 +229,24 @@ p {
   color: var(--strawberry-red);
   font-size: 14px;
 }
+
+*{
+  background-color: white;
+}
+</style>
+
+
+<style lang="scss" scoped>
+  :deep() {
+    .dp-custom-input {
+  border: 1px solid var(--cool-gray);
+  
+  
+  &:focus {
+    border: 1px solid var(--purplish-blue);
+  }
+
+  }
+  
+  }
 </style>

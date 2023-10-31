@@ -1,19 +1,9 @@
 <template>
-  <div id="app">
-    <div class="container-fluid">
-      <!-- Navbar takes up the entire width -->
-      <div class="row">
-        <div class="px-0">
-          <Navbar/>
-        </div>
-      </div>
-      <div class="row">
-        <!-- Content -->
-        <div class="px-0">
-          <router-view/>
-        </div>
-      </div>
-    </div>
+  <div id="app" class="w-100">
+    <!-- Content -->
+    <!-- <div class="col-lg-10 offset-lg-2 col-12 px-0"> -->
+    <router-view/>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -53,12 +43,21 @@ html, body {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
   width: 100%;
+}
+*{
+  font-family: montserrat;
+  font-weight: bolder;
 }
 
 .no-scroll {
   overflow-y: hidden;
   height: 100%; /* Make sure the container fills the viewport height */
+}
+
+@font-face {
+  font-family: 'montserrat';
+  src: url("./assets/fonts/montserrat.bold.ttf") format("truetype");
+
 }
 </style>

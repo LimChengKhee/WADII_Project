@@ -1,69 +1,133 @@
 <template>
-  <div>
+  <div class = "chart-container" ref="chartContainer">
     <h2>Pie Chart</h2>
-    <svg ref="chart"></svg>
+    <svg :width="width" :height="height" ref="chart"></svg>
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
-import itiData from "./data.json";
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
+import { mapStores } from 'pinia';
 
 export default {
   name: 'Piechart',
+  props: {
+    dataPC: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
-      data: itiData
+      width: 400,
+      height: 400,
+      margin: 40,
     };
   },
   mounted() {
-    // console.log(this.data)
     this.createPieChart();
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  computed: {
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore),
+  },
+  watch: {
+    dataPC: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        this.createPieChart();
+      },
+    },
   },
   methods: {
-    createPieChart() {
-      // defining dimnesions of svg
-      const width = 200;
-      const height = 200;
-      const margin = 40;
-      const radius = Math.min(width, height) / 2 - margin;
+    handleResize() {
+      this.updateDimensions();
+      this.createPieChart();
+    },
 
-      // $refs allow direct access to child elements or components
-      const svg = d3.select(this.$refs.chart)
-        .attr('width', width)
-        .attr('height', height)
+    updateDimensions() {
+      const containerWidth = this.$refs.chart.parentElement.clientWidth;
+      this.width = containerWidth;
+      this.height = containerWidth;
+    },
+
+    createPieChart() {
+      if (this.dataPC.length === 0) {
+        console.error('Data is not available or empty.');
+        return;
+      }
+
+      const countryCounts = {};
+      this.dataPC.forEach((item) => {
+        const country =
+          item.itinerary_data?.itinerary_data?.destination?.trip_country || 'Unknown';
+        if (countryCounts[country]) {
+          countryCounts[country] += 1;
+        } else {
+          countryCounts[country] = 1;
+        }
+      });
+
+      const data = Object.keys(countryCounts).map((country) => ({
+        country,
+        count: countryCounts[country],
+      }));
+
+      const radius = Math.min(this.width, this.height) / 2 - this.margin;
+
+      const svg = d3.select(this.$refs.chart);
+
+      svg.selectAll('*').remove(); // Clear existing elements before re-rendering
+
+      const chartGroup = svg
         .append('g')
-        .attr('transform', `translate(${width / 2},${height / 2})`);
+        .attr('transform', `translate(${this.width / 2},${this.height / 2})`);
 
       const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-      const pie = d3.pie().value(d => d.cost); // Use 'cost' as the value
+      const pie = d3.pie().value((d) => d.count);
 
-      const dataReady = pie(this.data[0].itinerary_data.flights); // Use the flights data for the pie chart
-      
+      const dataReady = pie(data);
 
-      const arcGenerator = d3.arc()
-        .innerRadius(0)
-        .outerRadius(radius);
+      const innerRadius = radius * 0.5;
 
-      const arcs = svg.selectAll('arc')
-        .data(dataReady)
-        .enter()
-        .append('g');
+      const arcGenerator = d3.arc().innerRadius(innerRadius).outerRadius(radius);
 
-      arcs.append('path')
+      const arcs = chartGroup.selectAll('arc').data(dataReady).enter().append('g');
+
+      arcs
+        .append('path')
         .attr('d', arcGenerator)
-        .attr('fill', (d, i) => color(i));
+        .attr('fill', (_, i) => color(i));
 
-      arcs.append('text')
-        .attr('transform', d => `translate(${arcGenerator.centroid(d)})`)
+      arcs
+        .append('text')
+        .attr('transform', (d) => `translate(${arcGenerator.centroid(d)})`)
         .attr('text-anchor', 'middle')
-        .text(d => d.data.flight_no); // Use 'flight_no' for labels
-    }
-  }
-}
+        .style('font-size', `${Math.min(this.width, this.height) / 20}px`)
+        .text((d) => d.data.country);
+    },
+  },
+};
 </script>
-
 <style scoped>
 /* Add your styles here */
+.chart-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-container svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 </style>

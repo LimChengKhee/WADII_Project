@@ -1,41 +1,165 @@
 <template>
-  <div class="parent-container">
-    <div class="header">
-      <div class="container-fluid mt-5 ms-5 mb-3">
-        <div class="row">
-          <div class="col">
-            <h2 style="text-align: center">Search Flight</h2>
-          </div>
+  <div class="container bg-white main_con my-5">
+    <div class="row p-3">
+    <div class="col header px-0 left-side">
+
+      <div class="col-12">
+        <img src="../assets/plane_img.png" alt="" class="img-fluid w-100" style="height:360px">
+      </div>
+
+      <div class="col">
+      <div class="row info_row">
+        <div class="col text-center">
+          One Way
         </div>
-        <div class="row">
-       
+        <div class="col text-center">
+          One Stop
         </div>
       </div>
 
-      <div class="container-fluid ms-5 mb-3">
-        <div class="row">
-          <div class="col">
-            <!--inputted value in it-->
-            <input type="text" v-model="destination_c" class="w-100" />
+      <div class="row first_row mt-4">
+        <div class="col text-center">
+          From
+        </div>
+        <div class="col text-center">
+          To
+        </div>
+      </div>
+
+      <div class="row mt-4 ">
+        <div class="col text-center ">
+          
+          <input type="text" v-model="departure_c" class="w-50  input_c ms-4" />
+            <!-- <p class="d-inline-block">testing </p> -->
+
+            <!-- <img src="../assets/plane_up.png" alt="" style="width:80px;" class="z-n1"> -->
+          
+          
+
+        </div>
+          <div class="col-2" >
+            <div >
+              
+              <img class="" src="../assets/plane.svg" style="width:50px;height:50px; text-decoration: underline;"/>
+            </div>
+            
           </div>
-          <div class="col">
+          
+  
+        
+        <div class="col text-center ">
+         
+          <input type="text" v-model="destination_c" class="w-50  input_c ms-4" />
+            <!-- <p class="d-inline-block">testing </p> -->
+
+            <!-- <img src="../assets/plane_up.png" style="transform: rotate(50deg); width:80px;" alt="" class="z-n1"> -->
+          
+        </div>
+
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-3"></div>
+        <div class="col-6">
+          Date
+          <br>
+
+
             <Datepicker
-            v-model="flight_date"
+            v-model="start_date"
             placeholder="Departure Date/time"
             :enable-time-picker="false"
+            :teleport="true"
             :text-input="true"
             :min-date="start_date"
             :start-date="start_date"
-            :max-date="end_date"
             @update:model-value="mountAllHotelInformation"
-            focus-start-date
-            range
-          />
-          </div>
+            input-class-name="dp-custom-input rounded-3 dp-color"
+
+            focus-start-date/>
+
+
+          <div class="col-3"></div>
         </div>
+
       </div>
+
     </div>
-    <div class="card_section" v-if="mounted">
+      
+
+      
+
+      
+  
+    </div>
+    <div class="left-side-mobile">
+
+      <div class="col">
+    
+
+      <div class="row mt-4 ">
+        <div class="col text-center ">
+          
+          <input type="text" v-model="departure_c" class="w-50  input_c ms-4 " />
+            <!-- <p class="d-inline-block">testing </p> -->
+
+            <!-- <img src="../assets/plane_up.png" alt="" style="width:80px;" class="z-n1"> -->
+          
+          
+
+        </div>
+          <div class="col-2" >
+            <div >
+              
+              <img class="" src="../assets/plane.svg" style="width:50px;height:50px; text-decoration: underline;"/>
+            </div>
+            
+          </div>
+          
+  
+        
+        <div class="col text-center ">
+         
+          <input type="text" v-model="destination_c" class="w-50  input_c ms-4" />
+            <!-- <p class="d-inline-block">testing </p> -->
+
+            <!-- <img src="../assets/plane_up.png" style="transform: rotate(50deg); width:80px;" alt="" class="z-n1"> -->
+          
+        </div>
+
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-3"></div>
+        <div class="col-6">
+          Date
+          <br>
+
+
+            <Datepicker
+            v-model="start_date"
+            placeholder="Departure Date/time"
+            :enable-time-picker="false"
+            :teleport="true"
+            :text-input="true"
+            :min-date="start_date"
+            :start-date="start_date"
+            @update:model-value="mountAllHotelInformation"
+            input-class-name="dp-custom-input py-2 rounded-3 dp-color"
+
+            focus-start-date/>
+
+
+          <div class="col-3"></div>
+        </div>
+
+      </div>
+
+    </div>
+      
+
+    </div>
+    <div class="col card_section ms-3 scroll-big" v-if="mounted">
       <FlightCard
         v-for="flight in this.hotelsInCities"
         :flightNumberO="flight.legs[0].segments[0].flightNumber"
@@ -57,16 +181,19 @@
         :totalPrice="flight.price.formatted"
         :tag = "flight.tags"
         :eco = "flight.eco.ecoContenderDelta"
+        :img = "flight.legs[0].carriers.marketing[0].logoUrl"
+        :eco_best="flight.eco.eco_best"
       ></FlightCard>
     </div>
-    <div class="spinner_section d-flex flex-column" v-if="!mounted">
+    <!-- <div class="spinner_section d-flex flex-column" v-if="!mounted">
       <div
         class="spinner-border mt-5"
         style="margin: 0 auto; height: 200px; width: 200px"
         role="status"
       ></div>
       <p class="mt-2" style="text-align: center">Loading...Please give us a second</p>
-    </div>
+    </div> -->
+  </div>
   </div>
 </template>
 <script>
@@ -125,7 +252,11 @@ export default {
     this.iti_data = iti_data
     this.start_date = new Date(iti_data.itinerary_data.destination.start_date)
     var dc = iti_data.itinerary_data.destination.trip_country
+    var dec = iti_data.itinerary_data.destination.departure_country
+    console.log(dec)
     this.destination_c = dc
+    this.departure_c = dec
+    this.mountAllHotelInformation()
 
     
   },
@@ -233,7 +364,7 @@ try {
       }
     },
     async filterby(data,stops){
-      console.log(data)
+      
       var result = []
       if (stops == 'one'){
         var flight_list = data.data.itineraries
@@ -241,12 +372,27 @@ try {
         for (let f of flight_list){
           if (f.legs[0].segments.length == 1 && f.legs[1].segments.length == 1 ){
             if (!('eco' in f)){
-              f['eco'] = {'ecoContenderDelta':"NORMAL"}
+              f['eco'] = {'ecoContenderDelta':0}
             }
             result.push(f)
           }
         }
       }
+      function compareByEco(a, b) {
+        return  b.eco.ecoContenderDelta -  a.eco.ecoContenderDelta ;
+      }
+
+      // // Sort the array by age in ascending order
+      result.sort(compareByEco);
+
+      for (const [i, obj] of (result.entries())) {
+      if (i == 0){
+        obj.eco['eco_best']= true
+      }else{
+        obj.eco['eco_best'] = false
+      }
+}
+      console.log(result)
       return result
     }
   }
@@ -257,4 +403,153 @@ try {
 .banner {
   background-color: blue;
 }
+
+.main_con {
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+.header{
+  background-color:#004ee4;
+  color:white;
+}
+
+.input_c{
+  background-color:#004ee4;
+  color:white;
+  border:none;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.first_row{
+  color:#5f8fee;
+}
+
+.info_row{
+  color:#5f8fee;
+  font-size: 20px;
+}
+</style>
+
+
+<style lang="scss" scoped>
+  :deep() {
+    .dp-custom-input {
+      border: none;
+      color:white;
+  
+  
+  &:focus {
+    border: 1px solid var(--purplish-blue);
+  }
+
+  }
+  .dp-color{
+  background-color:#004ee4;
+  text-align: center;
+  font-size: 30px;
+  
+}
+svg{
+  display:none;
+
+}
+  
+  }
+
+
+  @media only screen and (min-width: 992px) {
+.left-side-mobile{
+  display:none
+}
+.scroll-big{
+  height: 80vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+}
+
+
+@media only screen and (max-width: 1200px) {
+   
+   :deep() {
+     .dp-color{
+     font-size: 20px;
+     
+   }
+     }
+
+     .input_c{
+  background-color:#004ee4;
+  color:white;
+  border:none;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+     }
+   
+
+@media only screen and (max-width: 992px) {
+    .left-side {
+    display:none
+    /* padding: 60px 40px; */
+}
+.left-side-mobile{
+  display:block
+}
+
+.input_c{
+  background-color:white;
+  color:black;
+  border:1px solid black;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.scroll-big{
+  height: 60vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border:3px solid black;
+}
+
+
+:deep() {
+    .dp-custom-input {
+      border: 1px solid black;
+      color:white;
+  
+  
+  &:focus {
+    border: 1px solid var(--purplish-blue);
+  }
+
+  }
+  .dp-color{
+  background-color:white;
+  text-align: center;
+  color:black;
+  font-size: 20px;
+  
+}
+svg{
+  display:block;
+
+}
+  }
+
+
+
+}
+
+@media only screen and (max-width: 576px) {
+  .main_con{
+    width:95%;
+  }
+   
+     }
+
+
 </style>

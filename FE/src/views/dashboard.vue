@@ -1,69 +1,64 @@
 <template>
   <div class="container-fluid">
-    <div class="row px-0">
-      <div class="col-lg-3 col-md-4 col-12 p-5 sidebar">
-        <img class="shadow-4-strong img-circle rounded-circle custom-width my-3" alt="profileImg"
-          src="../img/steve.jpg" />
-        <div class="profileInfo">
-          <h5>{{ profileInfo[0].Name }}</h5>
-          <p>{{ profileInfo[0].Birthday }}</p>
-          <div class="d-flex align-items-center mt-2">
-            <img src="../img/leaf.png" class="mr-2" alt="leafImg" style="height: 20px;" />
-            <p>Carbon Footprint: {{ carbonFootprint }}</p>
-          </div>
-        </div>
+    <div class="row rounded-rect-container align-items-start">
+      <div class="row float-left">
+        <h1 style="text-transform: capitalize;">{{ userid }}'s Dashboard</h1>
+        <hr />
       </div>
-      <div class="col-lg-9 col-md-8 col-sm-12 main-content">
-        <div class="row keyStats mb-4">
-          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-primary text-white p-3 m-2">
-            <!-- Content for the first key stat column -->
-            <Totaltrips />
+      <div class="col-lg-12">
+        <div class="parent-chart-container mt-4">
+          <div class="row">
+            <div class="col-lg-8 col-md-12">
+              <Linechart :dataLC="fetchedData" />
+            </div>
+            <div class="col-lg-4 col-md-12">
+              <button class="btn btn-primary w-100 " @click="createitinerary">Create Itinerary Now</button>
+              <div class="card card-waves col-sm-12 col-lg-12 col-md-12 mt-4" style="height: 80%">
+                <Itidetails :dataDC="fetchedData" />  
+              </div>
+            </div>
           </div>
-          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-secondary text-white p-3 m-2">
-            <!-- Content for the second key stat column -->
-            <Totaltrips />
-          </div>
-          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-success text-white p-3 m-2">
-            <!-- Content for the third key stat column -->
-          </div>
-          <div class="col-lg-2 col-md-6 col-12 rounded-rectangle bg-danger text-white p-3 m-2">
-            <!-- Content for the fourth key stat column -->
-          </div>
-        </div>
-
-        <div class="row priChart mb-4">
-          <div class="col-lg-12">
-            <Linechart :data="data" />
-          </div>
-        </div>
-        <div class="row secCharts mb-4">
-          <div class="col-lg-4 col-md-6 col-12">
-            <Piechart />
-          </div>
-          <div class="col-lg-4 col-md-6 col-12">
-            <!-- Content for the second secondary chart column -->
-          </div>
-          <div class="col-lg-4 col-12">
-            <!-- Content for the third secondary chart column -->
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <div class="w-100 mt-4">
+                <Totaltrips :dataTT="fetchedData" />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <div class="w-100 mt-4">
+                <DaysTravelled :dataDT="fetchedData" />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <div class="w-100 mt-4">
+                <TotalCarbonFootprint :dataCP="fetchedData" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div>
+
+  </div>
 </template>
-  
+
+
+
 <script>
 import * as d3 from "d3";
 import * as crossfilter from "crossfilter";
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
+import { mapStores } from 'pinia';
 import Linechart from "../components/linechart.vue";
 import Piechart from "../components/piechart.vue";
 import Barchart from "../components/barchart.vue";
 import Totaltrips from "../components/totaltrips.vue";
+import TotalCarbonFootprint from "../components/totalCarbonFootprint.vue";
+import Itidetails from "../components/itidetails.vue";
+import DaysTravelled from "../components/daysTravelled.vue";
 
 
 
@@ -74,24 +69,35 @@ export default {
     Piechart,
     Barchart,
     Totaltrips,
+    TotalCarbonFootprint,
+    Itidetails,
+    DaysTravelled,
   },
   data() {
     return {
-      profileInfo: [
-        {
-          id: 1,
-          Name: "Mike Tyson",
-          Birthday: "01 Sep 2000",
-        },
-      ],
-      data: '',
-
+      fetchedData: [],
     };
   },
-  mounted() {
-    },
-  
+  async mounted() {
+    const authStore = useAuthStore();
+    const userStore = useUsersStore();
+    this.userid = authStore.user;
+    this.token = authStore.token;
+
+    // fetches the data 
+    this.fetchedData = await userStore.getItinerary(this.userid, this.token);
+
+  },
+
+  computed: {
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore)
+  },
+
   methods: {
+    createitinerary() {
+      this.$router.push('/form');
+    },
 
     getDates(startDate, stopDate) {
       Date.prototype.addDays = function (days) {
@@ -199,39 +205,55 @@ export default {
       return result
     }
   },
+  generatePieChartDetails(data) {
+    const countriesCount = {};
+    for (let trip of data) {
+      if (trip.itinerary_data.destination && trip.itinerary_data.destination.country) {
+        const country = trip.itinerary_data.destination.country;
+        countriesCount[country] = (countriesCount[country] || 0) + 1;
+      }
+    }
+
+    let details = 'Countries visited:';
+    for (const [country, count] of Object.entries(countriesCount)) {
+      details += ` ${country}: ${count},`;
+    }
+    // Removing the last comma
+    details = details.slice(0, -1);
+    return details;
+  },
+
 };
 </script>
   
   
-<style>
-.img-circle {
-  height: 200px;
-  border: 2px solid black;
-}
-
-div.row img.rounded-circle.custom-width {
-  width: auto;
-}
-
-.sidebar {
-  background-color: black;
-  text-align: center;
-}
-
-.main-content {
-  background-color: grey;
-}
-
-.profileInfo {
-  color: white;
-}
-
-.rounded-rectangle {
+<style scoped>
+.rounded-rect-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 15px;
-  padding: 15px;
-  margin: 10px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-  /* Add a drop shadow */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 85%;
+  height: 100%;
+  margin: auto;
+  padding: 2%;
+  background-color: white;
 }
+
+
+.card-waves {
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Make sure it takes up the entire height of the parent container */
+  max-width: 100%; /* Restrict the width to prevent protrusion */
+  /* other properties */
+}
+
+
+
+* {
+  font-weight: bold;
+}
+
 </style>
-  

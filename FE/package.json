@@ -31,6 +31,7 @@
     "vue-date-pick": "^1.5.1",
     "vue-loader": "^17.3.0",
     "vue-router": "^4.2.4",
+    "vue-sidebar-menu": "^5.2.11",
     "vue-social-auth": "^1.4.9",
     "vue3-google-map": "^0.18.0",
     "vuex": "^4.1.0"

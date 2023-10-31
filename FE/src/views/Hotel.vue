@@ -1,11 +1,13 @@
 <template>
-  <div class="parent-container">
+  <div class="parent-container container-fluid">
     <div class="row">
-      <div class="col-2">
+      <div class="col-1">
+        <p></p>
       </div>
-      <div class="col-10 ">
-        <div class="header">
-          <div class="container-fluid mt-5 ms-5 mb-3">
+      <div class="col-11">
+        <div class="row">
+          <div class="header">
+          <div class="container-fluid">
             <div class="row">
               <div class="col">
                 <h2 style="text-align: center">Search accomodation</h2>
@@ -19,17 +21,17 @@
           </div>
 
           <div class="container">
-            <div class="row">
-              <div class="col-1"></div>
-              <div class="col-3">
-                <input v-model="user_search" type="text">
-                <input type="button" value="Search" @click="searchHotelName()">
+            <div class="row mb-5" style="position:relative;z-index:1000;">
+              <div class="col-xl-1"></div>
+              <div class="col-xl-3">
+                <input v-model="user_search" type="text" style="color:black;">
+                <button class="btn btn-primary" value="Search" @click="searchHotelName()" type="button">Search</button>
               </div>
-              <div class="col-5"></div>
-              <div class="col-1">
+              <div class="col-xl-5"></div>
+              <div class="col-xl-1">
                 <span>
                   <div class="dropdown" style="width: 100%">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-secondary dropdown-toggle mt-sm-3" type="button" data-bs-toggle="dropdown"
                       aria-expanded="false">
                       Sorting Criteria
                     </button>
@@ -56,9 +58,22 @@
               </div>
             </div>
           </div>
-
         </div>
-        <div class="card_section" v-if="mounted && !search">
+        </div>
+        <div class="row" style="position:relative;z-index:1000;">
+              <div class="col-xl-1"></div>
+              <div class="col-xl-3" >
+                <Datepicker 
+                v-model="this.date"
+                placeholder="Start Date | End Date"
+                :min-date="mindate"
+                position="right"
+                />
+              </div>
+              <div class="col-xl-5"></div>
+              <div class="col-xl-1"></div>
+        </div>
+        <div class="card_section mt-5" v-if="mounted && !search">
           <HotelCard v-for="hotel in this.hotelsInCities" :hotel_name="hotel.hotel_name"
             :distance_to_cc_formatted="hotel.distance_to_cc_formatted" :review_score="hotel.review_score"
             :review_score_word="hotel.review_score_word" :number_of_reviews="hotel.review_nr"
@@ -92,26 +107,28 @@
 import HotelCard from '../components/Hotel_Card.vue'
 import axios from 'axios'
 import flushPromises from 'flush-promises'
-import Side_Bar from "../components/SideBar.vue"
 import test from "../views/static/test.json"
+import Datepicker from '@vuepic/vue-datepicker';
 
 export default {
   name: 'Hotel',
   components: {
     // importing components from other places
-    Side_Bar,
+    Datepicker,
     HotelCard
   },
   data() {
     // local repository of information
     return {
+      date: "default_data",
       hotelsInCities: [],
       mounted: false,
       user_search: "",
       search: false,
       sub_hotels: [],
       review_sort: true,
-      distance_sort: true
+      distance_sort: true,
+      mindate: this.getDate(),
     }
   },
   computed: {
@@ -131,8 +148,12 @@ export default {
   },
 
   methods: {
-    sort_review(direction_to_go) {
-      console.log('sd')
+    getDate() {
+      var today = new Date()
+      return today
+    },
+    sort_review() {
+      console.log("jdsif");
       this.review_sort = !this.review_sort;
       if (!this.review_sort) {
         this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
@@ -145,6 +166,7 @@ export default {
       }
     },
     sort_distance() {
+      console.log("jdsif");
       this.distance_sort = !this.distance_sort;
       if (!this.distance_sort) {
         this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
@@ -231,30 +253,30 @@ export default {
 
       // await flushPromises()
       this.hotelsInCities = test
-        console.log(test)
-      for (let hotel of this.hotelsInCities) {
-        let hotel_id = hotel.hotel_id
-        // fire an API call to get description
-        const options = {
-          method: 'GET',
-          url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
-          params: {
-            hotel_id: hotel_id,
-            locale: 'en-gb'
-          },
-          headers: {
-            'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
-            'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-          }
-        };
-        try {
-          const response = await axios.request(options)
-          hotel['Description'] = response.data
-        } catch (error) {
-          console.error(error)
-        }
-      }
-      await flushPromises()
+
+      // for (let hotel of this.hotelsInCities) {
+      //   let hotel_id = hotel.hotel_id
+      //   // fire an API call to get description
+      //   const options = {
+      //     method: 'GET',
+      //     url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
+      //     params: {
+      //       hotel_id: hotel_id,
+      //       locale: 'en-gb'
+      //     },
+      //     headers: {
+      //       'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
+      //       'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+      //     }
+      //   };
+      //   try {
+      //     const response = await axios.request(options)
+      //     hotel['Description'] = response.data
+      //   } catch (error) {
+      //     console.error(error)
+      //   }
+      // }
+      // await flushPromises()
     },
     async savePersistedData() {
       // Use localStorage to save data
@@ -280,4 +302,9 @@ export default {
 #search_input {
   position: absolute;
 }
+
+*{
+  color:white;
+}
 </style>
+
