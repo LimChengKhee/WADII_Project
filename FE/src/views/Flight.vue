@@ -463,7 +463,7 @@ svg{
   display:none
 }
 .scroll-big{
-  height: 580px;
+  height: 80vh;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -506,6 +506,13 @@ svg{
   border:1px solid black;
   font-size: 18px;
   font-weight: bold;
+}
+
+.scroll-big{
+  height: 60vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border:3px solid black;
 }
 
 

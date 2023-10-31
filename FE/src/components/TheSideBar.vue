@@ -49,14 +49,16 @@ let steps = [
 }
 .sidebar {
     /* padding: 60px 40px; */
-    background: url("../assets/img/bg-sidebar-desktop.svg");
+    /* background: url("../assets/img/bg-sidebar-desktop.svg"); */
+    background: url("../assets/sidebar_img2.jpg");
     background-size: cover;
     border-radius: 16px;
 }
 
 @media only screen and (min-width: 992px) {
   .sidebar {
-    background: url("../assets/img/haikei1.svg");
+    background: url("../assets/sidebar_img3.jpg");
+    /* background: url("../assets/img/haikei1.svg"); */
     background-size: cover;
     border-radius: 16px;
     width:300px;

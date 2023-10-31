@@ -218,6 +218,7 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
     this.iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
     let item = this.iti_data.itinerary_data.destination.itinerary_date.split(',')
     this.days =  this.iti_data.itinerary_data.itinerary_days
+    console.log(this.days)
 
     },
   
@@ -317,7 +318,11 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
           let start = newDate[0];
           let end = newDate[1];
           let days = Math.floor((end - start) / (1000 * 60 * 60 * 24));
-          for (let i=0;i<days+1;i++){
+          var d_31 = 0
+          if(start.getDate() == 31){
+            d_31 = 1
+          }
+          for (let i=0;i<days+1+d_31;i++){
               this.days.push({
                 dayId: this.days.length,
                 dayActivities: [],
@@ -374,6 +379,8 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
   </script>
   
   <style scoped>
-  
+  *{
+    color:white;
+  }
   </style>
   

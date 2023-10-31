@@ -1,6 +1,6 @@
 <template>
   <!-- <div class="container mt-4 mb-2"> -->
-    <div class="row">
+    <div class="row p-1">
       <div class="col px-0">
         <p v-if="this.eco" class="card-header text-white" style="background-color:#52a568; font-size:15px">{{ parseInt(this.eco) }}% Lesser Carbon Footprint</p>
         <div class="card mb-3 rounded-0 p-3 pb-1 shadow" >

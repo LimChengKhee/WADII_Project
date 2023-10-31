@@ -48,8 +48,8 @@ const props = defineProps({
 
 
 .sidebar-step-number.active {
-    background-color: lightblue;
-    color: purple;
+    background: white;
+    color: black;
 }
 
 .sidebar-step span {

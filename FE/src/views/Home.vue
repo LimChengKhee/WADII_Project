@@ -115,7 +115,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 body {
   margin: 0;
   padding: 0;
@@ -128,14 +128,14 @@ body {
 }
 
 
-
-.row {
+/* Ensure the content is above the overlay */
+/* .row {
   margin: 0;
   padding: 0;
   position: relative;
   z-index: 1;
-  /* Ensure the content is above the overlay */
-}
+  
+} */
 
 .entranceMsg {
   font-size: 2.5rem;

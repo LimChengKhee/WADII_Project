@@ -572,6 +572,7 @@ data () {
 computed: {
     // computed properties
     slicedRecs(){
+        this.recs = this.recs.filter((v,i,a)=>a.findIndex(v2=>(v2.name===v.name))===i)
         if (this.sliceCount == 0){
             return this.recs.slice(0,20)
         }else if (this.sliceCount == 1){
