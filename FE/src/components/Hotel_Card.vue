@@ -27,7 +27,7 @@
                     ><br />
                   </div>
                   <div
-                    class="col-md-3 col-sm-4 col-xs-5"
+                    class="col-md-3 col-sm-5 col-xs-5"
                     style="
                       font-size: 13px;
                       color: rgb(14, 194, 14);
@@ -52,7 +52,7 @@
               <div class="container">
                 <div class="row mt-4">
                   <!--Ratings / achievements-->
-                  <div class="col-sm-3 col-xl-7">
+                  <div class="review_word col-sm-5 col-xl-7">
                     <p style="font-weight: bold; color: black" class="mb-0 fs-lg-6 fs-md-2">
                       {{ this.review_score_word }}
                     </p>
@@ -188,4 +188,11 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+@media only screen and (min-width: 1200px) {
+  /* Your CSS styles go here */
+.review_word {
+  font-size: 11px;
+}
+}
+</style>
