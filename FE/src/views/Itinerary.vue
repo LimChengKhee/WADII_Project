@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="min-height-400 position-absolute w-100 px-0" style="background-color: #5E72E4; right:0px"></div>
-    <div class="col-2">
+    <div class="col-3">
       <div class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
         <div class="sidenav-header">
           <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-10 col-12 px-0 me-0" style="text-align: start; font-size:22px;">
+    <div class="col-lg-9 col-12 px-0 me-0" style="text-align: start; font-size:22px;">
       <div class="container-fluid p-4">
         <div class="row">
           <div class="col-xl-4 mb-4">
@@ -83,7 +83,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="offset-1 col-xl-5 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5 col-sm-6 mb-xl-0 mb-4">
             <div class="card" id="originCard">
               <div class="card-body p-3">
                 <div class="row">
@@ -152,7 +152,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xl-5 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5 offset-xxl-1 col-sm-6 mb-xl-0 mb-4">
             <div class="card" id="editCard">
               <div class="card-body p-3">
                 <div class="row">
@@ -183,7 +183,7 @@
           </div>
         </div>
         <div class="row mt-4">
-          <div class="offset-1 col-xl-5 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5  col-sm-6 mb-xl-0 mb-4">
             <div class="card">
               <div class="card-body p-3">
                 <div class="row">
@@ -206,7 +206,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xl-5 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5 offset-xxl-1 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
               <div class="card-body p-3">
                 <div class="row">
@@ -231,8 +231,8 @@
           </div>
         </div>
         <div class="row mt-4">
-          <div class="offset-1 col-lg-5 mb-lg-0 mb-4">
-          <div class="card ">
+          <div class="col-lg-6 mb-lg-0 mb-4">
+          <div class="card">
             <div class="card-header pb-0 p-3">
               <div class="d-flex justify-content-between">
                 <h6 class="mb-2">Days at a Glance</h6>
@@ -319,7 +319,7 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div> -->
-        <div class="col-lg-5">
+        <div class="col-lg-6"> <!--Possible condition to not show unless loaded? Add to day? Link?-->
           <div class="card card-carousel overflow-hidden h-100 p-0">
             <div id="activityCarousel" class="carousel slide h-100" data-bs-ride="carousel">
               <div class="carousel-inner border-radius-lg h-100">
@@ -342,78 +342,7 @@
             </div>
           </div>
         </div>
-      </div>
-        <!-- <div class="row ms-3">
-            <div class="col-md-2 col-1">
-              <p class="d-inline fw-bold"> Itinerary </p>
-            </div>
-            <div class="col-md-4 col-xl-3 offset-md-0 col-5 offset-4 px-0">
-              <Datepicker id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range class="d-inline" :enable-time-picker="false"/>
-            </div>
-            <div class="col-md-4 col-xl-4 col-2">
-              <button id='addDay' @click="addDaystoEnd(1)" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem;" class="btn btn-warning d-none" type="button">
-              Add day
-              </button>
-            </div>
         </div>
-        <div class="row mt-4 ms-3">
-          <div class="col-12 fs-5 fw-semibold" >
-            Origin location
-            <svg id="" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="This would be used as a starting point to recommend you activities if there are no previous activities" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill ms-1" viewBox="0 0 16 16">
-              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-            </svg>
-          </div>
-          <div class="col"></div>
-        </div> -->
-
-        <!-- <div class="row mt-2 mb-4 ms-3" id="chooseOrigin">
-          <template v-if="!editOrigin">
-            <div class="input-group mb-3 col-6 col-sm-5 col-lg-3 pe-0 fs-6">
-              <input class="form-control d-inline-block" style="max-width:350px;" type="text" v-model="origin" disabled>
-              <span class="input-group-text">
-                <button type="button" class="btn" @click="editOrigin = true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-                  </svg>
-                </button>
-              </span>
-            </div>
-          </template>
-          <template v-else>
-              <div class="col px-0 input-group w-50">
-                <input type="text" class="form-control" v-model="origin">
-                <button class="btn btn-secondary" type="button" @click="verifyLocation" data-bs-toggle="modal" data-bs-target="#confirmLocModal">Verify location</button>
-                <button class="btn btn-danger" type="button" @click="origin = baseOrigin, editOrigin = false">Cancel</button>
-              </div>
-              <div class="modal fade" id="confirmLocModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5">Confirm place</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="editOrigin = false"></button>
-                    </div>
-                    <template v-if="originResult != 'Place not found'">
-                      <div class="modal-body">
-                        <p class="fw-semibold text-primary">Is this the place you are looking for?</p>
-                        <p><span class="fw-semibold">Name:</span> {{originResult.name}}</p>
-                        <p><span class="fw-semibold">Address:</span> {{originResult.formatted_address}}</p>
-                      </div>
-                    </template>
-                    <template v-else>
-                      <div class="modal-body">
-                        <p class="fw-semibold text-danger">We couldn't find the place you entered. Please try again</p>
-                      </div>
-                    </template>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="editOrigin = false, origin = baseOrigin">No</button>
-                      <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="setOrigin">Yes</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </template>
-          <div class="col"></div>
-        </div> -->
         <Day_Component ref="dayComp" :days="days" :date="date" :originLoc="originLoc" :originName="origin"></Day_Component>
       </div>
     </div>
