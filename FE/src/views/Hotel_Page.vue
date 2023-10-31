@@ -75,7 +75,7 @@
               <div class="row">
                 <div class="container">
                   <div class="row">
-                    <div v-for="facilities in mostPopularFacilities" class="col-xl-3 col-lg-4 col-md-5 col-sm-6 mt-2">
+                    <div v-for="facilities in mostPopularFacilities" class="col-xl-3 col-lg-4 col-md-5 col-sm-6 mt-2 m-2">
                       <div class="col-4 d-flex mb-4">
                         <span style="margin-right: 30px;">
                           <img :src="`${facilities.src}`" style="width:50px;">
@@ -103,62 +103,55 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-3 mb-3">
+                <div class="col-sm-3 col-xs-4 mb-3">
                   Staff
                   <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0"
                     aria-valuemax="100">
                     <div class="progress-bar w-0"></div>
                   </div>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-sm-3 col-xs-4 mb-3">
                   Facilities
                   <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0"
                     aria-valuemax="100">
                     <div class="progress-bar w-75"></div>
                   </div>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-sm-3 col-xs-4 mb-3">
                   Cleanliness
                   <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0"
                     aria-valuemax="100">
                     <div class="progress-bar w-50"></div>
                   </div>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-sm-3 col-xs-4 mb-3">
                   Comfort
                   <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0"
                     aria-valuemax="100">
                     <div class="progress-bar w-75"></div>
                   </div>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-sm-3 col-xs-4 mb-3">
                   Value for Money
                   <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0"
                     aria-valuemax="100">
                     <div class="progress-bar w-25"></div>
                   </div>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-sm-3 col-xs-4 mb-3">
                   Location
                   <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0"
                     aria-valuemax="100">
                     <div class="progress-bar w-30"></div>
                   </div>
                 </div>
-                <div class="col-3 mb-3">
+                <div class="col-sm-3 col-xs-4 mb-3">
                   Free Wifi
                   <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0"
                     aria-valuemax="100">
-                    <div class="progress-bar w-40"></div>
-                  </div>
+                    </div>
                 </div>
-                <div class="col-3 mb-3">
-                  <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0"
-                    aria-valuemax="100">
-                    <div class="progress-bar w-0"></div>
-                  </div>
-                </div>
-                <div class="col-3 mb-3">
+                <div class="col-sm-3 col-xs-4 mb-3">
                   Sanitation
                   <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0"
                     aria-valuemax="100">
@@ -199,7 +192,7 @@
                   <div class="col-3">
                     <img src="../assets/door.png" style="width: 30px;margin-right:30px;" alt=""> Check In 
                   </div>
-                  <div class="col-3" style="color:black;">
+                  <div class="col d-flex justify-content-start" style="color:black;">
                       {{ "Check In From: " + this.specificHotelInfo["checkin"]["from"] }}
                   </div>
                 </div>
@@ -209,7 +202,7 @@
                   <div class="col-3" >
                     <img src="../assets/door.png" style="width: 30px;margin-right:30px;" alt=""> Check Out 
                   </div>
-                  <div class="col-3" style="color:black;">
+                  <div class="col d-flex justify-content-start" style="color:black;">
                       {{ "Check Out Before: " + this.specificHotelInfo["checkout"]["until"] }}
                   </div>
                 </div>
@@ -277,7 +270,7 @@ export default {
           src: '/src/assets/air-conditioner.png'
         },
         frontdesk: {
-          label: "24 hour front desk",
+          label: "Front Desk",
           src: '/src/assets/information-desk.png'
         },
         key_card: {
