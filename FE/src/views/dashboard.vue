@@ -13,24 +13,24 @@
             </div>
             <div class="col-lg-4 col-md-12">
               <button class="btn btn-primary w-100 " @click="createitinerary">Create Itinerary Now</button>
-              <div class="card card-waves col-sm-12 col-lg-12 col-md-12 mt-4" style="height: 90%">
-                <Itidetails :dataDC="fetchedData" />
+              <div class="card card-waves col-sm-12 col-lg-12 col-md-12 mt-4" style="height: 80%">
+                <Itidetails :dataDC="fetchedData" />  
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-12">
-              <div class="card card-waves w-100 mt-4">
+              <div class="w-100 mt-4">
                 <Totaltrips :dataTT="fetchedData" />
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12">
-              <div class="card card-waves w-100 mt-4">
+              <div class="w-100 mt-4">
                 <DaysTravelled :dataDT="fetchedData" />
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12">
-              <div class="card card-waves w-100 mt-4">
+              <div class="w-100 mt-4">
                 <TotalCarbonFootprint :dataCP="fetchedData" />
               </div>
             </div>
@@ -38,6 +38,9 @@
         </div>
       </div>
     </div>
+  </div>
+  <div>
+
   </div>
 </template>
 
@@ -242,8 +245,11 @@ export default {
 .card-waves {
   border-radius: 15px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-
+  height: 100%; /* Make sure it takes up the entire height of the parent container */
+  max-width: 100%; /* Restrict the width to prevent protrusion */
+  /* other properties */
 }
+
 
 
 * {
