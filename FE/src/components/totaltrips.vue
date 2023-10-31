@@ -3,7 +3,7 @@
     <div class="card bg-c-blue order-card">
       <div class="card-block">
         <h6 class="m-b-20">Planned Itineraries</h6>
-        <h2 class="text-right"><i class="fa fa-cart-plus f-left"></i><span>{{ totalTrips }}</span></h2>
+        <h2 class="text-right"><i class="fa fa-book f-left"></i><span>{{ totalTrips }}</span></h2>
       </div>
     </div>
   </div>

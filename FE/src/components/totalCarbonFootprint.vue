@@ -2,7 +2,7 @@
     <div class="card bg-c-yellow order-card">
       <div class="card-block">
         <h6 class="m-b-20">Total Carbon Footprint</h6>
-        <h2 class="text-right"><i class="fa fa-cart-plus f-left"></i><span>{{ totalCarbonFootprint}}</span></h2>
+        <h2 class="text-right"><i class="fa fa-leaf f-left"></i><span>{{ totalCarbonFootprint}}</span></h2>
       </div>
   </div>
 </template>

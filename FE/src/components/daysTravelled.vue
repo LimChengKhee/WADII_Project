@@ -3,7 +3,7 @@
     <div class="card bg-c-pink order-card">
       <div class="card-block">
         <h6 class="m-b-20">Days Travelled</h6>
-        <h2 class="text-right"><i class="fa fa-cart-plus f-left"></i><span>{{ totalDays }}</span></h2>
+        <h2 class="text-right"><i class="fa fa-plane f-left"></i><span>{{ totalDays }}</span></h2>
       </div>
     </div>
   </div>
