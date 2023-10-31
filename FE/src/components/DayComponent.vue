@@ -1,9 +1,226 @@
-<!-- eslint-disable no-redeclare -->
-<!-- eslint-disable vue/require-v-for-key -->
 <template>
     <div id="testingDiv"></div>
+    <div class="row" v-for="day of days" :key="day.dayId" :id="'Day' + day.dayId + 'Row'">
+        <div class="modal fade" :id="'filter'+ day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'#filter'+ day.dayId + 'Label'" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" :id="'filter'+ day.dayId + 'Label'">Filters</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label :for="'distance' + day.dayId + 'Select'" class="form-label">Please select how far you are willing to travel (in km)</label>
+                        <div class="text-center">Current selection: {{distance}} km</div>
+                        <input type="range" class="form-range" :id="'distance'+ day.dayId + 'Select'" min="1" max="50" v-model="distance"> 
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" :data-bs-target="'#filter'+ day.dayId + 'Collapse'" aria-expanded="false">
+                            Filter
+                        </button>
+                        <div class="collapse" :id="'filter'+ day.dayId + 'Collapse'">
+                            <button class="btn btn-outline-secondary my-2" type="button" @click="checkRecommended">
+                            Randomise
+                            </button>
+                            <p class=" d-inline text-success ms-2 fs-6"> Pick up to 3 types of activities </p>
+                            <div v-for="(searchType,name) in types">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                    v-model="selectedTypes" :value="searchType" :id="day.dayId + searchType + 'Check'">
+                                    <label class="form-check-label" :for="day.dayId + searchType + 'Check'">
+                                        {{ name }}
+                                    </label>
+                                    <p class="d-inline text-success text-sm ms-2 fs-6" v-if="recommendedTypes.includes(searchType)">Recommended</p>
+                                    <p class="d-inline text-success ms-1 fs-6" v-if="searchType == 'tourist_attraction'">(Might overlap) </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div v-if="selectedTypes.length > 0 && selectedTypes.length <=3">
+                            <button v-if="checkPreviousMeal(day.dayId)" type="button" class="btn btn-secondary" data-bs-toggle="modal" :data-bs-target="'#mealConsideration' + day.dayId + 'Modal'">Search</button>
+                            <button v-else type="button" class="btn btn-primary" @click="recommendAny(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Search</button>
+                        </div>
+                        <p class="fs-5 text-danger" v-else-if="selectedTypes.length > 3">Please select at most 3 categories.</p>
+                        <p class="fs-5 text-danger" v-else>Please select at least one category.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" :id="'recommend' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'recommend' + day.dayId + 'ModalLabel'" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" :id="'recommend' + day.dayId + 'ModalLabel'">Recommended activities</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body mx-auto">
+                        <template v-if="slicedRecs.length ==0 && anyRecs[0] != anyRecs[1]">
+                            <div class="spinner-border text-primary" role="status">
+                            </div>
+                            <div>Loading...</div>
+                        </template>
+                        <div v-if="slicedRecs.length == 0 && anyRecs[0] == anyRecs[1]">There are no results for your search parameters</div>
+                        <div v-for="(rec,index) in slicedRecs">
+                            <div class="card mb-3 px-0" style="max-width: 665px;">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img :src="getImage(rec.photo)" class="img-fluid border-radius-lg" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body row">
+                                            <h5 class="card-title col-10"> {{rec.name}} - {{rec.address}} </h5>
+                                            <p class="card-text fs-6">
+                                                <span class="fw-bold">Cost:</span> {{displayCost(rec.price_level)}} <br>
+                                                <span class="fw-bold">Ratings:</span> {{rec.rating[0]}} ({{rec.rating[1]}} reviews)<br>
+                                                <a :href="rec.url" class="text-dark fw-bold" target="_blank">Link</a>
+                                            </p>
+                                        </div>
+                                        <button type="button" @click="chooseRec(index)" class="btn btn-primary mx-2 mb-2">Add to Day {{day.dayId + 1}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger me-3" :disabled="sliceCount==0" @click="sliceCount--">Previous Page</button>
+                        <button type="button" class="btn btn-success me-3" :disabled="sliceCount==(numPages-1)" @click="sliceCount++">Next Page</button>
+                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close (Reset recommendations!)</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="addActivityFromReccs(day.dayId)" :disabled="selectedRec.length==0">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" :id="'mealConsideration' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'mealConsideration' + day.dayId + 'Label'" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" :id="'mealConsideration' + day.dayId + 'Label'">Suggestion</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>As your previous activity is a meal, we suggest that you avoid <span class="text-primary">intense activities</span> for an hour or two.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="recommendAny(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Ignore suggestion</button>
+                        <button type="button" class="btn btn-primary" @click="recommendNonIntense(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Choose non-intense activity</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" :id="'noActivitiesConsideration' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'noActivitiesConsideration' + day.dayId + 'Label'" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" :id="'noActivitiesConsideration' + day.dayId + 'Label'">Suggestion</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Since you have no activities added for this day currently, we recommend choosing a breakfast location first. 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" @click="chooseBreakfast" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'" class="btn btn-success mx-2">OK</button>
+                        <button type="button" data-bs-toggle="modal" :data-bs-target="'#filter' + day.dayId + 'Modal'" class="btn btn-danger mx-2">Skip breakfast for now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" :id="'customEvent' + day.dayId + 'Modal'" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Creating custom event</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label :for="day.dayId + 'customName'" class="form-label">Event Name</label>
+                            <input type="text" class="form-control" :id="day.dayId + 'customName'">
+                        </div>
+                        <div class="mb-3">
+                            <label :for="day.dayId + 'customNotes'" class="form-label">Event Notes</label>
+                            <input type="text" class="form-control" :id="day.dayId + 'customNotes'">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success" @click="addCustomEvent(day.dayId)" data-bs-dismiss="modal">Add custom activity</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col mt-4">
+          <div class="card">
+            <div class="card-header m-0 row pb-0">
+                <h6 class="p-0 col-2 my-auto">Day {{ day.dayId+1 }}</h6>
+                <button v-if="day.dayActivities.length > 0" type="button" class="col-3 btn btn-link text-warning text-gradient px-0 mb-0" data-bs-toggle="modal" @click="initialiseRec(-1)" :data-bs-target="'#filter'+ day.dayId + 'Modal'"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill me-1" style="margin-bottom:0.15rem" viewBox="0 0 16 16">
+                        <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                    Add recommended activities
+                </button>
+                <button v-else type="button" class="col-3 btn btn-link text-warning text-gradient px-0 mb-0" @click="initialiseRec(-1)" data-bs-toggle="modal" :data-bs-target="'#noActivitiesConsideration' + day.dayId + 'Modal'">  
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill me-1" style="margin-bottom:0.15rem" viewBox="0 0 16 16">
+                        <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                    Add recommended activities
+                </button>
+                <button type="button" class="col-3 btn btn-link text-primary text-gradient px-0 mb-0" @click="position = -1" data-bs-toggle="modal" :data-bs-target="'#customEvent' + day.dayId + 'Modal'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-1" style="margin-bottom:0.15rem" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                    Add custom activity
+                </button>
+                <div class="col-4 p-0 d-inline align-items-center">
+                    <div class="input-group bg-gray-100">
+                        <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control"  :id="'0'+'autocomplete'+ day.dayId" placeholder="Enter a location..."> <!--@input="processAutocomplete"-->
+                    </div>
+                </div>
+            </div>
+            <div v-if="displayPredictions.day == day.dayId && displayPredictions.psn == '0'" class="list-group position-absolute bg-gray-100" style="z-index: 2; right:2rem; top:64px; width:17rem">
+                <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction,0)">{{prediction.description}}</button>
+            </div>
+            <div class="card-body row pt-4 p-3" style="z-index:1">
+              <ul class="list-group px-3">
+                <li v-if="day.dayActivities.length==0" class="text-center list-group-item border-0 p-4 mb-2 bg-gray-100 border-radius-lg">
+                    <h4 class="my-auto d-inline">No activities found</h4>
+                </li>
+                <li v-else v-for="(activity,actIdx) in day.dayActivities" :key="activity.name" class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                    <div class="col-md-4"><img :src="getImage(activity.image)" class="img-fluid border-radius-lg" alt="..."></div>
+                    <div class="col-md-8 position-relative">
+                        <div class="ms-4 d-flex flex-column">
+                            <span class="row">
+                                <h4 class="mb-3 col-9">Activity {{actIdx+1}} - <span class="text-dark fw-medium">{{activity.name}}</span></h4>
+                                <a class="col-3 px-0 btn btn-link text-danger text-gradient mb-0" @click="delActivity(day.dayId,actIdx)"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                            </span>
+                            <h4 class="mb-5 text-sm font-weight-bolder">Address/Description:<span class="text-dark fw-medium ms-sm-2">{{activity.description}}</span></h4>
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="dropdown position-absolute bottom-0" >
+                                        <button class="btn btn-link text-dark p-0 mb-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-square-fill me-2" viewBox="0 0 16 16">
+                                                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/>
+                                            </svg>Insert activity below
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal" @click="initialiseRec(actIdx)" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommended activities</button></li>
+                                            <li><hr class="dropdown-divider" style="background-color:lightgray"></li>
+                                            <li><button type="button" class="dropdown-item" @click="position=actIdx" data-bs-toggle="modal" :data-bs-target="'#customEvent' + day.dayId + 'Modal'">Custom event</button></li> <!--INSERT STUFF-->
+                                            <li><hr class="dropdown-divider" style="background-color:lightgray"></li>
+                                            <li><a class="dropdown-item">Activity search</a></li> <!--INSERT STUFF-->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <div v-for="day of days" :key='day.dayId' class="row my-3 ms-3">
+    <!-- <div v-for="day of days" :key='day.dayId' class="row my-3 ms-3" :id="'Day' + day.dayId + 'Row'">
         <div>
             <button class="btn px-0 pt-0 pb-auto" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" @click="changeCollapseArrow(day.dayId)">
                     <svg :id="'arrow' + day.dayId + 'right'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
@@ -18,114 +235,14 @@
             </p>
             <button type="button" @click="deleteDay(day.dayId)" class="btn btn-outline-danger" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: 0.6rem;">Delete Day</button>
         </div>
-           
+            -->
            
             <!-- <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 35rem" class="btn btn-secondary d-inline" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" aria-controls="collapseExample">
                 Expand Day 
             </button> -->
-        <div class="collapse" :id="'Day' + day.dayId + 'Collapse'">
-            <div class="modal fade" :id="'filter'+ day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'#filter'+ day.dayId + 'Label'" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" :id="'filter'+ day.dayId + 'Label'">Filters</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <label :for="'distance' + day.dayId + 'Select'" class="form-label">Please select how far you are willing to travel (in km)</label>
-                                <div class="text-center">Current selection: {{distance}} km</div>
-                                <input type="range" class="form-range" :id="'distance'+ day.dayId + 'Select'" min="1" max="50" v-model="distance"> 
-                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" :data-bs-target="'#filter'+ day.dayId + 'Collapse'" aria-expanded="false"> <!--aria-controls="collapseExample"-->
-                                    Filter
-                                </button>
-                                <div class="collapse" :id="'filter'+ day.dayId + 'Collapse'">
-                                    <button class="btn btn-outline-secondary my-2" type="button" @click="checkRecommended">
-                                    Randomise
-                                    </button>
-                                    <p class=" d-inline text-success ms-2 fs-6"> Pick up to 3 types of activities </p>
-                                    <div v-for="(searchType,name) in types">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox"
-                                            v-model="selectedTypes" :value="searchType" :id="day.dayId + searchType + 'Check'">
-                                            <label class="form-check-label" :for="day.dayId + searchType + 'Check'">
-                                                {{ name }}
-                                            </label>
-                                            <p class="d-inline text-success ms-2 fs-6" v-if="recommendedTypes.includes(searchType)">Recommended</p>
-                                            <p class="d-inline text-success ms-1 fs-6" v-if="searchType == 'tourist_attraction'">(Might overlap) </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <div v-if="selectedTypes.length > 0 && selectedTypes.length <=3">
-                                    <button v-if="checkPreviousMeal(day.dayId)" type="button" class="btn btn-secondary" data-bs-toggle="modal" :data-bs-target="'#mealConsideration' + day.dayId + 'Modal'">Search</button>
-                                    <button v-else type="button" class="btn btn-primary" @click="recommendAny(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Search</button>
-                                </div>
-                                <p class="fs-5 text-danger" v-else-if="selectedTypes.length > 3">Please select at most 3 categories.</p>
-                                <p class="fs-5 text-danger" v-else>Please select at least one category.</p>
-                            </div>
-                        </div>
-                </div>
-            </div>
-            <div class="modal fade" :id="'recommend' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'recommend' + day.dayId + 'ModalLabel'" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" :id="'recommend' + day.dayId + 'ModalLabel'">Recommended activities</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body mx-auto">
-                            <template v-if="slicedRecs.length ==0 && anyRecs[0] != anyRecs[1]">
-                                <div class="spinner-border text-primary" role="status">
-                                </div>
-                                <div>Loading...</div>
-                            </template>
-                            <div v-if="slicedRecs.length == 0 && anyRecs[0] == anyRecs[1]">There are no results for your search parameters</div>
-                            <!-- <div v-if="source=='start'">
-                                <h5>
-
-                                </h5>
-                            </div>
-                            <div v-else-if="source=='mid'">
-                                <h5> 
-                                    
-                                </h5>
-                            </div>
-                            <div v-else>
-                                <h5> 
-                                    
-                                </h5>
-                            </div>   -->
-                            <div v-for="(rec,index) in slicedRecs">
-                                <div class="card mb-3 px-0" style="max-width: 665px;">
-                                    <div class="row g-0">
-                                        <div class="col-md-4">
-                                            <img :src="getImage(rec.photo)" class="img-fluid rounded-start" alt="...">
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body row">
-                                                <h5 class="card-title col-10"> {{rec.name}} - {{rec.address}} </h5>
-                                                <p class="card-text fs-6">
-                                                    <span class="fw-bold">Cost:</span> {{displayCost(rec.price_level)}} <br>
-                                                    <span class="fw-bold">Ratings:</span> {{rec.rating[0]}} ({{rec.rating[1]}} reviews)<br>
-                                                    <a :href="rec.url" class="text-dark fw-bold" target="_blank">Link</a>
-                                                </p>
-                                            </div>
-                                            <button type="button" @click="chooseRec(index)" class="btn btn-primary mx-2 mb-2">Add to Day {{day.dayId + 1}}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger me-3" :disabled="sliceCount==0" @click="sliceCount--">Previous Page</button>
-                            <button type="button" class="btn btn-success me-3" :disabled="sliceCount==(numPages-1)" @click="sliceCount++">Next Page</button>
-                            <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close (Reset recommendations!)</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="addActivityFromReccs(day.dayId)" :disabled="selectedRec.length==0">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- <div class="collapse" :id="'Day' + day.dayId + 'Collapse'">
+            
+            
             <div v-if="day.dayActivities.length>0" > 
                 <div v-for="(activity,actIdx) in day.dayActivities" :key="activity.name">
                     <div class="dropdown">
@@ -186,45 +303,13 @@
                 </div>
                 <button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" @click="initialiseRec('end')" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommend me activities!</button>
                 
-                <div class="modal fade" :id="'mealConsideration' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'mealConsideration' + day.dayId + 'Label'" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" :id="'mealConsideration' + day.dayId + 'Label'">Suggestion</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>As your previous activity is a meal, we suggest that you avoid <span class="text-primary">intense activities</span> for an hour or two.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" @click="recommendAny(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Ignore suggestion</button>
-                                <button type="button" class="btn btn-primary" @click="recommendNonIntense(day.dayId)" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'">Choose non-intense activity</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <div v-else>
                 <h4 class="p-4">
                     You have no activities currently. <button type="button" class="btn btn-outline-primary" @click="initialiseRec('end')" data-bs-toggle="modal" :data-bs-target="'#noActivitiesConsideration' + day.dayId + 'Modal'">Recommend me activities!</button>
                 </h4>
-                <div class="modal fade" :id="'noActivitiesConsideration' + day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'noActivitiesConsideration' + day.dayId + 'Label'" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" :id="'noActivitiesConsideration' + day.dayId + 'Label'">Suggestion</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Since you have no activities added for this day currently, we recommend choosing a breakfast location first. 
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" @click="chooseBreakfast" data-bs-toggle="modal" :data-bs-target="'#recommend' + day.dayId + 'Modal'" class="btn btn-success mx-2">OK</button>
-                                <button type="button" data-bs-toggle="modal" :data-bs-target="'#filter' + day.dayId + 'Modal'" class="btn btn-danger mx-2">Skip breakfast for now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
                 
             </div> 
             <div class="input-group w-50 mb-3">
@@ -253,8 +338,8 @@
             <div v-if="displayPredictions.day == day.dayId && displayPredictions.psn == 'end'" class="list-group">
                 <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction,'end')">{{prediction.description}}</button>
             </div>
-        </div>
-    </div>
+        </div> -->
+    <!-- </div> -->
 </template>
 <script>
 //  import statements
@@ -284,7 +369,6 @@ data () {
         anyRecs: [],
         distance: 5,
         sliceCount: 0,
-        source: '',
         mealTypes: ['meal','bakery','cafe','restaurant'],
         types: {'Amusement parks':'amusement_park',
                 'Aquariums':'aquarium', 
@@ -564,7 +648,6 @@ data () {
         selectedTypes: ['tourist_attraction','museum','cafe'],
         topAttractions: [],
         position: 0,
-        addSearch: '',
         displayPredictions: {},
         recommendedTypes: ['tourist_attraction','park','museum','cafe', 'aquarium', 'zoo'],
     }
@@ -611,26 +694,18 @@ methods: {
         }        
     },
     checkPreviousMeal(dayId){
-        if (this.days[dayId].dayActivities.length == 0 || this.position == 0){
+        if (this.days[dayId].dayActivities.length == 0 || this.position == -1){
             return false
         }else{
-            return this.mealTypes.includes(this.days[dayId].dayActivities[this.position-1].type)
+            return this.mealTypes.includes(this.days[dayId].dayActivities[this.position].type)
         }
         
     },
     initialiseRec(actIndex){
         this.recs = []
         this.selectedRec = []
-        if (actIndex == 0){
-            this.source = 'start'
-            this.position = 0
-        }else if (actIndex == "end"){
-            this.source = 'end'
-            this.position = 0
-        }else{
-            this.source = "mid"
-            this.position = actIndex
-        }
+        this.position = actIndex
+
         
     },
     getImage(image){
@@ -749,7 +824,7 @@ methods: {
         })  
     },
     recommendAny(dayId){
-        if (this.days[dayId].dayActivities.length == 0 || this.position == 0){
+        if (this.days[dayId].dayActivities.length == 0 || this.position == -1){
             var origin = this.originLoc
         }else{
             var prevAct = this.days[dayId].dayActivities[this.position]
@@ -902,7 +977,7 @@ methods: {
     }
     },  
     recommendNonIntense(dayId){
-        if (this.days[dayId].dayActivities.length == 0 || this.position == 0){
+        if (this.days[dayId].dayActivities.length == 0 || this.position == -1){
             var origin = this.originLoc
         }else{
             var prevAct = this.days[dayId].dayActivities[this.position]
@@ -969,13 +1044,38 @@ methods: {
                                 if (p.rating < 4 || p.user_ratings_total < 50){
                                     continue;
                                 }
+                                if (p.vicinity === undefined){
+                                    var address = ""
+                                }else{
+                                    var address = p.vicinity
+                                }
+                                if (p.rating === undefined){
+                                    var rating = ["-", "-"]
+                                }else{
+                                    var rating = [p.rating,p.user_ratings_total]
+                                }
+                                if (p.price_level === undefined){
+                                    var cost = 0
+                                }else{
+                                    var cost = p.price_level
+                                }
+                                if (p.photos === undefined){
+                                    var photo = ""
+                                }else{
+                                    var photo = p.photos[0]
+                                }
+                                if (result == "No results"){
+                                    var url = ""
+                                }else{
+                                    var url = result.url
+                                }
                                 this.getPlaceDetails(p.place_id,['url']).then(result =>{   
                                     if (result == "No results"){
                                         var url = ""
                                     }else{
                                         var url = result.url
                                     }
-                                    this.recs.push({"name": p.name, "address" : p.vicinity, "rating" : [p.rating,p.user_ratings_total], "cost": p.price_level, "photo" : p.photos[0], "url": url, "type":types[i]})
+                                    this.recs.push({"name": p.name, "address" : address, "rating" : rating, "cost": cost, "photo" : photo, "url": url, "type":types[i]})
                                 })
                                 pushCount++;
                             }
@@ -1012,14 +1112,10 @@ methods: {
             var image = a.photo
             var actDesc = a.address 
             var type = a.type
-            // eslint-disable-next-line vue/no-mutating-props
-            if (this.source == "start"){
+            if (this.position == -1){
                 this.days[dayId].dayActivities.unshift({'name':actName, 'description':actDesc, 'image':image, 'type':type})
-
-            }else if (this.source == "end"){
-                this.days[dayId].dayActivities.push({'name':actName, 'description':actDesc, 'image':image, 'type':type})
             }else{
-                this.days[dayId].dayActivities.splice(this.position,0,{'name':actName, 'description':actDesc, 'image':image, 'type':type})
+                this.days[dayId].dayActivities.splice(this.position+1,0,{'name':actName, 'description':actDesc, 'image':image, 'type':type})
             }
         }
     },
@@ -1027,7 +1123,6 @@ methods: {
         let autoInput = document.getElementById(position + "autocomplete" + dayId)
         autoInput.value = ""
         this.displayPredictions = {}
-        this.addSearch = ""
         this.getPlaceDetails(prediction.place_id,['name','vicinity','photos']).then(result=>{
             // eslint-disable-next-line vue/no-mutating-props
             if (result.photos === undefined){
@@ -1040,14 +1135,11 @@ methods: {
             }else{
                 var address  = result.vicinity
             }
-            if (position == "end"){
-                this.days[dayId].dayActivities.push({'name':result.name, 'description':address, 'image':image, 'type':'prediction'})
-            }
-            else if (position == 0){
+            if (position == 0){
                 this.days[dayId].dayActivities.unshift({'name':result.name, 'description':address, 'image':image, 'type':'prediction'})
             }
             else{
-                this.days[dayId].dayActivities.splice(position,0,{'name':result.name, 'description':address, 'image':image, 'type':'prediction'})
+                this.days[dayId].dayActivities.splice(position+1,0,{'name':result.name, 'description':address, 'image':image, 'type':'prediction'})
             }
         })
 
@@ -1217,33 +1309,24 @@ methods: {
         let printableDate = new Date(new Date().setDate(startDate.getDate() + day));
         return printableDate.toDateString()
     },
-    addCustomEvent(event){ // Make dynamic for all positions
-        console.log(event.target.id)
-        let startindex = event.target.id.indexOf('customEvent')
-        let actIdx = event.target.id.slice(0,startindex)
-        let dayId = event.target.id.slice(startindex+11)
+    addCustomEvent(dayId){ // Make dynamic for all positions
         let dayActivities = this.days[dayId].dayActivities
-        let nameElem = document.getElementById(actIdx + 'customName' + dayId)
-        let notesElem = document.getElementById(actIdx + 'customNotes' + dayId)
+        let nameElem = document.getElementById(dayId + 'customName')
+        console.log(nameElem)
+        let notesElem = document.getElementById(dayId + 'customNotes')
         let name = nameElem.value
         let notes = notesElem.value
         nameElem.value = ""
         notesElem.value = ""
-        if (actIdx == dayActivities.length){
-            dayActivities.push({
-                'name': name, 'description':notes, 'image': 'custom', 'placeId': '', 'type':'custom'
-            })
-        }else if (actIdx == 0){
+        if (this.position == -1){
             dayActivities.unshift({
-                'name': name, 'description':notes, 'image': 'custom', 'placeId': '', 'type':'custom'
-            })
+                'name': name, 'description':notes, 'image': 'custom', 'type':'custom'
+        })
         }else{
-            console.log(actIdx)
-            dayActivities.splice(actIdx,0,{
+            dayActivities.splice(this.position+1,0,{
                 'name': name, 'description':notes, 'image': 'custom', 'placeId': '', 'type':'custom'
             })
         }
-        this.addSearch = ""
     }
 },
 }
