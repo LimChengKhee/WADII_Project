@@ -346,8 +346,9 @@
         <Day_Component ref="dayComp" :days="days" :date="date" :originLoc="originLoc" :originName="origin"></Day_Component>
       </div>
     </div>
-      <button @click="save()" class="btn btn-primary">save</button>
-
+    <div>
+      <button @click="save()" class="btn btn-primary float-end" style="width:75%;">save</button>
+    </div>
   </div>
 
 
