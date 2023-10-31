@@ -1,19 +1,9 @@
 <template>
-  <div id="app">
-    <div class="container-fluid">
-      <!-- Navbar takes up the entire width -->
-      <div class="row">
-        <div class="px-0 mx-0">
-          <Navbar/>
-        </div>
-      </div>
-      <div class="row">
-        <!-- Content -->
-        <div class="px-0 mx-0">
-          <router-view/>
-        </div>
-      </div>
-    </div>
+  <div id="app" class="w-100">
+    <!-- Content -->
+    <!-- <div class="col-lg-10 offset-lg-2 col-12 px-0"> -->
+    <router-view/>
+    <!-- </div> -->
   </div>
 </template>
 

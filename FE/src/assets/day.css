@@ -5,7 +5,7 @@
     padding-right:0.5rem !important;
 }
 
-.carousel-back-button{
+/* .carousel-back-button{
     height:32px !important;
     width:32px !important;
     position:absolute !important; 
@@ -18,7 +18,7 @@
     position:absolute !important; 
     top: 50% !important;
     right: 10px !important;
-}
+} */
 
 :root {
     --dp-input-padding: 6px 10px 6px 12px; /*Padding in the input*/
