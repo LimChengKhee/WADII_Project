@@ -254,29 +254,29 @@ export default {
       // await flushPromises()
       this.hotelsInCities = test
 
-      for (let hotel of this.hotelsInCities) {
-        let hotel_id = hotel.hotel_id
-        // fire an API call to get description
-        const options = {
-          method: 'GET',
-          url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
-          params: {
-            hotel_id: hotel_id,
-            locale: 'en-gb'
-          },
-          headers: {
-            'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
-            'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-          }
-        };
-        try {
-          const response = await axios.request(options)
-          hotel['Description'] = response.data
-        } catch (error) {
-          console.error(error)
-        }
-      }
-      await flushPromises()
+      // for (let hotel of this.hotelsInCities) {
+      //   let hotel_id = hotel.hotel_id
+      //   // fire an API call to get description
+      //   const options = {
+      //     method: 'GET',
+      //     url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
+      //     params: {
+      //       hotel_id: hotel_id,
+      //       locale: 'en-gb'
+      //     },
+      //     headers: {
+      //       'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
+      //       'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+      //     }
+      //   };
+      //   try {
+      //     const response = await axios.request(options)
+      //     hotel['Description'] = response.data
+      //   } catch (error) {
+      //     console.error(error)
+      //   }
+      // }
+      // await flushPromises()
     },
     async savePersistedData() {
       // Use localStorage to save data

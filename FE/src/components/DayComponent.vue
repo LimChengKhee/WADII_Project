@@ -713,7 +713,7 @@ methods: {
         if (image == "custom"){
             return '/assets/img/customevent.jpg'
         }else if (typeof(image) == 'object'){
-            console.log(image.getUrl({maxHeight:300}))
+            // console.log(image.getUrl({maxHeight:300}))
             return image.getUrl({maxHeight:300})
         }else if (typeof(image) == 'string'){
             return image
