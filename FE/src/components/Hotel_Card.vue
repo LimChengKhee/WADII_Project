@@ -3,7 +3,7 @@
     <div class="row h-25s">
       <div class="col-sm-1"></div>
       <div class="col-sm-10">
-        <div class="card mb-3">
+        <div class="card mb-3 disabled">
           <div class="row g-0">
             <div class="col-xl-3">
               <div class="img">
@@ -194,5 +194,11 @@ export default {
 .review_word {
   font-size: 11px;
 }
+}
+
+
+
+    .disabled ,.disabled:hover{
+    color:grey !important;
 }
 </style>
