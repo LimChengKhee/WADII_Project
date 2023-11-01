@@ -40,7 +40,7 @@
                           <span v-if="review_sort" @click="sort_review()"><img src="../assets/sort-up.png"
                               style="width:10px" alt=""></span>
 
-                          <span @click="sort_review()" v-else><img src="../assets/caret-down.png" style="width:10px"
+                          <span v-else @click="sort_review()" ><img src="../assets/caret-down.png" style="width:10px"
                               alt=""></span>
                         </a></li>
                       <li><a class="dropdown-item" href="#">Distance
@@ -153,7 +153,7 @@ export default {
       return today
     },
     sort_review() {
-      console.log("jdsif");
+      console.log("test");
       this.review_sort = !this.review_sort;
       if (!this.review_sort) {
         this.hotelsInCities = this.hotelsInCities.sort((a, b) => {

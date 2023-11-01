@@ -2,7 +2,9 @@
   <div id="app" class="w-100">
     <!-- Content -->
     <!-- <div class="col-lg-10 offset-lg-2 col-12 px-0"> -->
+
     <router-view/>
+
     <!-- </div> -->
   </div>
 </template>
@@ -44,6 +46,7 @@ html, body {
 
 body {
   width: 100%;
+  
 }
 *{
   font-family: montserrat;
