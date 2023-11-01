@@ -22,7 +22,7 @@
     </div>
     <div class="min-height-400 position-absolute w-100 px-0" style="background-color: #5E72E4; right:0px"></div>
     <div class="col-3">
-      <div class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
+      <div v-if="!openModal" style="transition: 3s;" class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
         <div class="sidenav-header">
           <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
           <img src="../assets/img/EcoBound.png" class="navbar-brand-img" style="max-height:78px!important;" alt="main_logo">
@@ -78,12 +78,12 @@
     <div class="col-lg-9 col-12 px-0 me-0" style="text-align: start; font-size:22px;">
       <div class="container-fluid p-4">
         <div class="row">
-          <div class="col-xl-4 mb-4">
-            <h6 class="font-weight-bolder text-white">Itinerary</h6>
+          <div class="col-xl-4 mb-4" style="z-index: 99;">
+            <h5 class="font-weight-bolder text-white ms-2">Itinerary</h5>
           </div>
         </div>
         <div class="row">
-          <div class="col-xxl-5 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5 col-md-6 col-12 mb-4">
             <div class="card" id="originCard">
               <div class="card-body p-3">
                 <div class="row">
@@ -152,7 +152,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xxl-5 offset-xxl-1 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5 offset-xxl-1 col-md-6 col-12 mb-4">
             <div class="card" id="editCard">
               <div class="card-body p-3">
                 <div class="row">
@@ -161,8 +161,8 @@
                       <p class="text-sm mb-2 text-uppercase font-weight-bold">Edit dates<svg data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Use the datepicker to alter your itinerary length, or add days manually." xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill ms-1" viewBox="0 0 16 16">
                         <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
                       </svg></p> 
-                      <div class="input-group pe-0 mt-3 mb-0">
-                        <Datepicker style="height:40px; max-width:250px;" id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range :enable-time-picker="false"/>
+                      <div class="input-group pe-0 mt-3 mb-0" style="max-width:380px">
+                        <Datepicker class="w-md-75" style="height:40px" id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range :enable-time-picker="false"/>
                         <button id='addDay' @click="addDaystoEnd(1)" style="height:38px; margin-top:1px;" class="btn btn-success mb-0" :disabled="this.days.length==0" type="button">
                           ✚
                         </button>
@@ -182,8 +182,8 @@
             </div>
           </div>
         </div>
-        <div class="row mt-4">
-          <div class="col-xxl-5  col-sm-6 mb-xl-0 mb-4">
+        <div class="row mt-lg-4 m">
+          <div class="col-xxl-5 col-12 col-md-6 mb-xl-0 mb-4">
             <div class="card">
               <div class="card-body p-3">
                 <div class="row">
@@ -206,7 +206,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xxl-5 offset-xxl-1 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5 offset-xxl-1 col-md-6 col-12 mb-xl-0 mb-4">
             <div class="card">
               <div class="card-body p-3">
                 <div class="row">
@@ -268,7 +268,7 @@
                     <td>
                       <div class="text-end me-3">
                         <h6 class="text-sm mb-0"> 
-                          <button type="button" @click="deletingDay = day.dayId" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-outline-danger mb-0" style="width: 50px; --bs-btn-font-size: 0.6rem;">✖</button>
+                          <button type="button" @click="deletingDay = day.dayId, openModal = true" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-outline-danger mb-0" style="width: 50px; --bs-btn-font-size: 0.6rem;">✖</button>
                         </h6>
                       </div>
                     </td>
@@ -343,9 +343,10 @@
           </div>
         </div>
         </div>
-        <Day_Component ref="dayComp" :days="days" :date="date" :originLoc="originLoc" :originName="origin"></Day_Component>
+        <Day_Component ref="dayComp" :days="days" :date="date" :originLoc="originLoc" :originName="origin" :openModal="openModal"></Day_Component>
       </div>
     </div>
+    
 
 
   </div>
@@ -370,6 +371,7 @@
     data () {
       // local repository of information
       return {
+        openModal: false,
         deletingDay: 0,
         date : [],
         itemNum : 0,
@@ -408,9 +410,26 @@
       // if (this.topAttractions.length == 0){
       //     this.getSlicedArr()
       //   }
+
+      // const modalTriggerList = document.querySelectorAll('[data-bs-toggle="modal"]')
+      // console.log(modalTriggerList)
+      // for (let modal of modalTriggerList){
+
+      //   let testModal = document.getElementById("deleteModal")
+      //   testModal.addEventListener('hidden.bs.modal', event => {
+      //   this.openModal = false
+      //   // do something...
+      // })
     },
   
     methods: {
+      changeOpenModal(){
+        if (this.openModal == true){
+          this.openModal = false
+        }else{
+          this.openModal = true
+        }
+      },
       // methods defined by ourselves
       initialiseOrigin(){
         this.$refs.dayComp.findPlace(this.origin,['geometry']).then(result => {
@@ -441,9 +460,6 @@
         this.$refs.dayComp.getTopAttractions().then(result =>{
           this.topAttractions = result
           console.log(this.topAttractions)
-          // setTimeout(() => {
-          //   this.slicedArr = [result.slice(0,3), result.slice(3,6), result.slice(6,9)]
-          // }, 5000);
         })
       },
       addAttraction(index,itemIndex){
@@ -526,6 +542,7 @@
             this.addDaystoEnd(numDays);
           }
         }
+        this.$refs.dayComp.setTriggers()
       },
     }
     
