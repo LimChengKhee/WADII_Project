@@ -1,13 +1,11 @@
 <template>
     <div class="card order-card">
         <div class="card-block">
-        <p>Top 5 Countries Visited</p>
-        <hr class="divider" />
+            <p>Top 5 Countries Visited</p>
+            <hr class="divider" />
         </div>
         <div class="chart-container"></div>
     </div>
-
-
 </template>
 
   
@@ -59,7 +57,7 @@ export default {
     },
     methods: {
         drawChart() {
-            const margin = { top: 20, right: 50, bottom: 100, left: 50 }; // Adjusted left margin for longer labels
+            const margin = { top: 20, right: 50, bottom: 50, left: 50 }; // Adjusted left margin for longer labels
             const width = 400 - margin.left - margin.right;
             const height = 400 - margin.top - margin.bottom;
 
@@ -67,8 +65,7 @@ export default {
             const svg = d3
                 .select('.chart-container')
                 .append('svg')
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom)
+                .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
                 .append('g')
                 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
@@ -87,17 +84,45 @@ export default {
                 .style("text-anchor", "middle"); // Adjust the text anchor as needed
 
             svg.append('g').call(d3.axisLeft(y));
-            svg
-                .selectAll('.bar')
-                .data(this.accumulatedData)
-                .enter()
-                .append('rect')
-                .attr('class', 'bar')
-                .attr('x', (d) => x(d.country))
-                .attr('width', x.bandwidth()) // Adjust the width of each bar
-                .attr('y', (d) => y(d.count))
-                .attr('height', (d) => height - y(d.count))
-                .attr('fill', 'steelblue');
+            const bar = svg
+        .selectAll('.bar')
+        .data(this.accumulatedData)
+        .enter()
+        .append('path')
+        .attr('class', 'bar')
+        .attr('d', (d) => {
+            const radius = 10; // Adjust the radius as needed
+            const xVal = x(d.country);
+            const yVal = y(d.count);
+            const barWidth = x.bandwidth();
+            const barHeight = height - y(d.count);
+            return `M ${xVal} ${yVal + radius}
+                    a ${radius} ${radius} 0 0 1 ${radius} -${radius}
+                    h ${barWidth - 2 * radius}
+                    a ${radius} ${radius} 0 0 1 ${radius} ${radius}
+                    v ${barHeight - radius}
+                    h ${-barWidth}
+                    v ${-barHeight + radius}
+                    Z`;
+        })
+        .attr('fill', 'url(#gradient)');
+        svg.append('linearGradient')
+        .attr('id', 'gradient')
+        .attr('gradientUnits', 'userSpaceOnUse')
+        .attr('x1', 0).attr('y1', 0)
+        .attr('x2', 0).attr('y2', height)
+        .selectAll('stop')
+        .data([
+            { offset: '0%', color: '#e66465' }, // Adjust the colors as needed
+            { offset: '100%', color: '#9198e5' }
+        ])
+        .enter().append('stop')
+        .attr('offset', (d) => d.offset)
+        .attr('stop-color', (d) => d.color);
+
+
+            
+
 
             svg
                 .selectAll('.text-label')
@@ -109,6 +134,9 @@ export default {
                 .attr('y', (d) => y(d.count) - 5)
                 .attr('text-anchor', 'middle')
                 .text((d) => d.count);
+
+            const barRadius = 10; // Adjust the radius as needed
+            
         },
     },
 };
@@ -145,46 +173,46 @@ export default {
 
 
 .bg-c-blue {
-  background: linear-gradient(45deg, #4099ff, #73b4ff);
+    background: linear-gradient(45deg, #4099ff, #73b4ff);
 }
 
 .bg-c-green {
-  background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 
 .bg-c-yellow {
-  background: linear-gradient(45deg, #FFB64D, #ffcb80);
+    background: linear-gradient(45deg, #FFB64D, #ffcb80);
 }
 
 .bg-c-pink {
-  background: linear-gradient(45deg, #FF5370, #ff869a);
+    background: linear-gradient(45deg, #FF5370, #ff869a);
 }
 
 
 .card {
-  border-radius: 5px;
-  -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
-  box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
-  border: none;
-  margin-bottom: 30px;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+    border: none;
+    margin-bottom: 30px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .card .card-block {
-  padding: 25px;
+    padding: 25px;
 }
 
 .order-card i {
-  font-size: 26px;
+    font-size: 26px;
 }
 
 .f-left {
-  float: left;
+    float: left;
 }
 
 .f-right {
-  float: right;
+    float: right;
 }
 </style>
   

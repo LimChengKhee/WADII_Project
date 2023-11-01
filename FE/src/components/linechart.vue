@@ -24,7 +24,7 @@ export default {
   data() {
     return {
 
-      screenWidth: window.innerWidth * 0.8, // Adjust the multiplier to set the desired width proportion
+      screenWidth: window.innerWidth * 0.8,
     };
   },
 
@@ -46,7 +46,7 @@ export default {
     dataLC: {
       immediate: true,
       handler(newVal, oldVal) {
-        console.log(this.dataLC)
+        
         this.drawChart();
       }
     }
@@ -113,7 +113,7 @@ export default {
         .select("#chartContainer")
         .append("svg")
         .style("color", "white")
-        .attr("border-radius", "15px")
+        .attr("border-radius", "5px")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom);
 
@@ -128,18 +128,18 @@ export default {
 
       gradient.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#ff7e5f"); // Adjust the color as per your preference
+        .attr("stop-color", "#ff7e5f"); 
 
       gradient.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#feb47b"); // Adjust the color as per your preference
+        .attr("stop-color", "#feb47b"); 
 
       svg.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
         .style("fill", "#204E59")
-        .attr("rx", "15") // Horizontal radius for rounded corners
-        .attr("ry", "15"); // Vertical radius for rounded corners
+        .attr("rx", "5") 
+        .attr("ry", "5"); 
 
 
 
@@ -147,7 +147,7 @@ export default {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       const formatTime = d3.timeFormat("%Y-%m-%d");
-      const parseTime = d3.timeParse("%Y-%m-%d"); // Adjust the format according to the date format you have
+      const parseTime = d3.timeParse("%Y-%m-%d"); 
       const formatTimeMonthYear = d3.timeFormat("%b %Y");
 
       const x = d3
@@ -162,7 +162,7 @@ export default {
         .scaleLinear()
         .domain([
           0,
-          d3.max(this.dataLC, d => d.totalCost) * 1.2 // Adjust the multiplier to expand the y-axis
+          d3.max(this.dataLC, d => d.totalCost) * 1.2 
         ])
         .nice()
         .range([height, 0]);
@@ -170,12 +170,12 @@ export default {
       const line = d3
         .line()
         .x(d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
-        .y(d => y(d.totalCost)); // Adjusted to use totalCost
+        .y(d => y(d.totalCost)); 
 
 
       g.append("text")
-        .attr("x", width - 10) // Adjust the x position
-        .attr("y", 10) // Adjust the y position
+        .attr("x", width - 10) 
+        .attr("y", 10) 
         .attr("text-anchor", "end")
         .attr("fill", "white")
 
@@ -204,13 +204,13 @@ export default {
         .enter()
         .append("circle")
         .attr("cx", d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
-        .attr("cy", d => y(d.totalCost)) // Updated to use totalCost
+        .attr("cy", d => y(d.totalCost)) 
         .attr("r", 5)
         .attr("fill", "steelblue")
 
         .on("mouseover", function (event, d) {
           const xPos = x(parseTime(d.itinerary_data.itinerary_data.destination.start_date));
-          const yPos = y(d.totalCost); // Change to totalCost
+          const yPos = y(d.totalCost); 
 
           const containerRect = g.node().getBoundingClientRect();
 
@@ -236,7 +236,7 @@ export default {
 
           foreignObjectGroup
             .append("foreignObject")
-            .attr("width", descriptionWidth) // Use string interpolation to include 'px'
+            .attr("width", descriptionWidth) 
             .attr("height", descriptionHeight)
             .append("xhtml:div")
             .style("position", "absolute")
@@ -284,12 +284,12 @@ export default {
           d3.select(".y-hover-line").remove();
         });
       const calculateTickCount = () => {
-        const maxTickCount = 10; // Maximum number of ticks you want to display
-        const minWidthPerTick = 50; // Minimum width per tick to ensure readability
+        const maxTickCount = 10; 
+        const minWidthPerTick = 100; 
 
-        const tickCount = Math.floor(containerWidth / minWidthPerTick); // Calculate tick count based on available width
+        const tickCount = Math.floor(containerWidth / minWidthPerTick); 
 
-        return Math.min(tickCount, maxTickCount, this.dataLC.length); // Choose the minimum of the calculated tick count, max limit, and data length
+        return Math.min(tickCount, maxTickCount, this.dataLC.length); 
       };
 
       const tickCount = calculateTickCount();
@@ -315,7 +315,7 @@ export default {
         .call(d3.axisLeft(y).tickSizeOuter(0))
         .selectAll("text")
         .attr("x", this.screenWidth <= 600 ? 0 : -30)
-        .attr("y", -10); // Adjust the vertical alignment of the labels
+        .attr("y", -10); 
       g.append("text")
         .attr("x", width - 10)
         .attr("y", this.screenWidth <= 600 ? 10 : 30)
@@ -343,7 +343,7 @@ export default {
         .attr("dy", "1em")
         .style("text-anchor", "middle")
         .attr("fill", "white")
-        .text("Total Cost"); // Add the label for the y-axis
+        .text("Total Cost"); 
     },
   },
   beforeDestroy() {
