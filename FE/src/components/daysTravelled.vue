@@ -58,6 +58,28 @@ export default {
 </script>
   
 <style scoped>
+.total-days-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #000;
+  /* Adjust the color as needed */
+  margin-top: -10px;
+}
+
+body {
+  margin-top: 20px;
+  background: #FAFAFA;
+}
+
 .order-card {
   color: #fff;
 }
@@ -84,6 +106,7 @@ export default {
   -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
   box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
   border: none;
+  margin-bottom: 30px;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }

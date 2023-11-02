@@ -124,7 +124,6 @@ body {
   background-size: cover;
   /* Ensures the background covers the entire container */
   overflow-x: hidden;
-
   /* Prevent horizontal scrolling */
 }
 
@@ -255,7 +254,5 @@ body {
 .carousel-control-next {
   right: -2%;
 }
-
-
 
 </style>
