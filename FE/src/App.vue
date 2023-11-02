@@ -5,7 +5,7 @@
     </div>
     <!-- Content -->
     <!-- <div class="col-lg-10 offset-lg-2 col-12 px-0"> -->
-      <Navbar></Navbar>
+
     <router-view/>
 
     <!-- </div> -->
@@ -56,10 +56,7 @@ body {
   font-weight: bolder;
 }
 
-.no-scroll {
-  overflow-y: hidden;
-  height: 100%; /* Make sure the container fills the viewport height */
-}
+
 
 @font-face {
   font-family: 'montserrat';

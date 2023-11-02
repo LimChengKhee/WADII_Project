@@ -123,7 +123,7 @@ body {
   background: url("../img/heroImg.jpg") no-repeat center center fixed;
   background-size: cover;
   /* Ensures the background covers the entire container */
-  overflow: hidden;
+  overflow-x: hidden;
 
   /* Prevent horizontal scrolling */
 }
