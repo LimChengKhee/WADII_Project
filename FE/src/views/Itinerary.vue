@@ -378,6 +378,9 @@
         const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
         this.date = [startDate, endDate];
       }
+      this.$refs.dayComp.country = this.$refs.dayComp.getCountryCode("Zimbabwe")
+      this.$refs.dayComp.countryName = "Zimbabwe"
+      console.log(this.$refs.dayComp.country)
       this.initialiseOrigin();
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
       const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
@@ -396,7 +399,7 @@
       },
       // methods defined by ourselves
       initialiseOrigin(){
-        this.$refs.dayComp.findPlace(this.origin,['geometry']).then(result => {
+        this.$refs.dayComp.findPlace(this.origin,['geometry'],"").then(result => {
           if (result == "No results"){
             this.originLoc = ''
           }else{

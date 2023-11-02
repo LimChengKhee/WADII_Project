@@ -619,7 +619,7 @@ computed: {
 
 // start of lifecycle
 async mounted () {
-    this.country = this.getCountryCode(this.countryName)
+    // this.country = this.getCountryCode(this.countryName)
     this.setTriggers()
 },
 
@@ -1164,10 +1164,17 @@ methods: {
     async findPlace(query,fieldList,locBias){
         var testDiv = document.getElementById('testingDiv');
         const {PlacesService} = await google.maps.importLibrary("places");
-        let request = {
-            query: query,
-            fields: fieldList,
-            locationBias: locBias,
+        if (locBias !== ""){
+            var request = {
+                query: query,
+                fields: fieldList,
+                locationBias: locBias,
+            }
+        }else{
+            var request = {
+                query: query,
+                fields: fieldList
+            }
         }
         var service = new PlacesService(testDiv);
         return new Promise((resolve, reject) => {service.findPlaceFromQuery(request, (results, status) => {
