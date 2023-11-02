@@ -73,7 +73,7 @@ const props = defineProps({
     align-items: center;
     color: var(--white);
     margin-bottom: 40px !important;
-    /* padding: 60px 40px; */
+    
 }
 
 .sidebar-step-number {

@@ -105,101 +105,84 @@ mindate = getDate()
     </div>
 
     <div class="row mb-4 people_row">
-      <div class="col d-flex ">
-        <label for="exampleFormControlInput1" class="form-label my-auto">Room</label>
-        <div class="input-group ">
-          <span class="input-group-btn">
+      <div class="col d-flex">
+        <div class="pt-2 pe-1">Room</div>
+        <span class="input-group-btn">
             <button
               type="button"
-              class="btn btn-default btn-number"
+              class="btn btn-number "
               data-type="minus"
               @click="changeCounter('-1', 'room')"
             >
               <i class="fa fa-minus"></i>
             </button>
           </span>
-          <input
-            type="text"
-            name="quant[1]"
-            v-model="itineraryStore.room"
-            class="form-control input-number px-2"
-          />
+          <h5 class="p-1 pt-2">{{ itineraryStore.room }}</h5>
           <span class="input-group-btn">
             <button
               type="button"
-              class="btn btn-default btn-number"
+              class="btn btn-number "
+              data-type="plus"
               @click="changeCounter('1', 'room')"
             >
               <i class="fa fa-plus"></i>
             </button>
           </span>
-        </div>
+        
       </div>
       <div class="col d-flex">
-        <label for="exampleFormControlInput1" class="form-label my-auto">Adult</label>
-        <div class="input-group">
-          <span class="input-group-btn">
+        <div class="pt-2 pe-1">Adult</div>
+        <span class="input-group-btn">
             <button
               type="button"
-              class="btn btn-default btn-number"
+              class="btn btn-number "
               data-type="minus"
               @click="changeCounter('-1', 'adult')"
             >
               <i class="fa fa-minus"></i>
             </button>
           </span>
-          <input
-            type="text"
-            name="quant[1]"
-            class="form-control input-number px-2"
-            v-model="itineraryStore.adult"
-          />
+          <h5 class="p-1 pt-2">{{ itineraryStore.child }}</h5>
           <span class="input-group-btn">
             <button
               type="button"
-              class="btn btn-default btn-number"
+              class="btn btn-number  "
               data-type="plus"
               @click="changeCounter('1', 'adult')"
             >
               <i class="fa fa-plus"></i>
             </button>
           </span>
-        </div>
+        
       </div>
 
       <div class="col d-flex">
-        <label for="exampleFormControlInput1" class="form-label my-auto">Child</label>
-        <div class="input-group">
-          <span class="input-group-btn">
+        <div class="pt-2 pe-1">Child</div>
+        <span class="input-group-btn">
             <button
               type="button"
-              class="btn btn-default btn-number"
+              class="btn btn-number "
               data-type="minus"
               @click="changeCounter('-1', 'child')"
             >
               <i class="fa fa-minus"></i>
             </button>
           </span>
-          <input
-            type="text"
-            name="quant[1]"
-            class="form-control input-number px-2"
-            v-model="itineraryStore.child"
-          />
+          <h5 class="p-1 pt-2">{{ itineraryStore.child }}</h5>
           <span class="input-group-btn">
             <button
               type="button"
-              class="btn btn-default btn-number"
+              class="btn btn-number  "
               data-type="plus"
               @click="changeCounter('1', 'child')"
             >
               <i class="fa fa-plus"></i>
             </button>
           </span>
-        </div>
+        
       </div>
     </div>
-    <div class="dropdown d-lg-none" >
+    <div class="dropdown small_drop" >
   <button type="button" class="btn btn-white dropdown-toggle border border-secondary w-100" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
     {{ itineraryStore.adult }} adults, {{ itineraryStore.child }} child,
     {{ itineraryStore.room }} rooms
@@ -377,27 +360,29 @@ p {
     color:black;
 }
 
-@media only screen and (max-width: 991px) {
-    .people_row {
-    display:none
-    /* padding: 60px 40px; */
+.input-group-btn button {
+  box-shadow: none;
+  border:1px solid black;
 }
+
+
+@media only screen and (min-width: 1090px) {
+    
+  .small_drop{
+    display:none;
+  }
+}
+
+@media only screen and (max-width: 1090px) {
+    .small_drop {
+    display:block
+}
+  .people_row{
+    display:none;
+  }
 }
 
 </style>
-
-<!-- <style lang="scss">
-.dp-custom-input {
-  border: 1px solid red;
-  
-  
-  &:focus {
-    border: 1px solid red;
-  }
-
-}
-
-</style> -->
 
 
 <style lang="scss" scoped>

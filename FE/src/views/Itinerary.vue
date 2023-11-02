@@ -22,8 +22,8 @@
     </div>
     <div class="min-height-400 position-absolute w-100 px-0" style="background-color: #5E72E4; right:0px"></div>
     <div class="col-3">
-      <div class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start ms-4" style="margin-top:90px;" id="sidenav-main">
-        <!-- <div class="sidenav-header" @click="route_link('home')">
+      <div  v-if="!openModal" class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4" style="margin-top:90px;" id="sidenav-main">
+        <div class="sidenav-header" @click="route_link('home')">
           <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
           <img src="../assets/img/EcoBound.png" class="navbar-brand-img" style="max-height:78px!important;" alt="main_logo" >
         </div> -->
@@ -67,23 +67,33 @@
                 <span class="nav-link-text ms-1">Hotels</span>
               </a>
             </li>
+            <li v-for="day in days" :key="day.dayId" class="nav-item">
+              <a class="nav-link " :href="'#Day' + day.dayId + 'Row'">
+                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-brightness-high-fill" viewBox="0 0 16 16">
+                    <path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+                  </svg>
+                </div>
+                <span class="nav-link-text ms-1">Day {{ day.dayId + 1 }}</span>
+              </a>
+            </li>
           </ul>
         </div>
-        <div class="sidenav-footer mx-3">
-          <a href="#originCard" class="btn btn-dark btn-sm w-100 mb-3">Change origin location</a>
-          <a class="btn btn-dark btn-sm mb-0 w-100" href="#editCard" type="button">Add days / alter dates</a>
+        <div class="sidenav-footer mt-auto mx-3">
+          <hr color="black">
+          <a href="#" class="btn btn-dark btn-sm w-100 mb-3">Jump to top</a>
         </div>
       </div>
     </div>
     <div class="col-lg-9 col-12 px-0 me-0" style="text-align: start; font-size:22px;">
       <div class="container-fluid p-4">
         <div class="row">
-          <div class="col-xl-4 mb-4">
-            <h6 class="font-weight-bolder text-white">Itinerary</h6>
+          <div class="col-xl-4 mb-4" style="z-index: 99;">
+            <h5 class="font-weight-bolder text-white ms-2">Itinerary</h5>
           </div>
         </div>
         <div class="row">
-          <div class="col-xxl-5 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5 col-md-6 col-12 mb-4">
             <div class="card" id="originCard">
               <div class="card-body p-3">
                 <div class="row">
@@ -152,7 +162,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xxl-5 offset-xxl-1 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5 offset-xxl-1 col-md-6 col-12 mb-4">
             <div class="card" id="editCard">
               <div class="card-body p-3">
                 <div class="row">
@@ -162,7 +172,7 @@
                         <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
                       </svg></p> 
                       <div class="input-group pe-0 mt-3 mb-0">
-                        <Datepicker style="height:40px; max-width:250px;" id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range :enable-time-picker="false"/>
+                        <Datepicker class="w-md-75" style="height:40px; max-width:350px" id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range :enable-time-picker="false"/>
                         <button id='addDay' @click="addDaystoEnd(1)" style="height:38px; margin-top:1px;" class="btn btn-success mb-0" :disabled="this.days.length==0" type="button">
                           ✚
                         </button>
@@ -182,8 +192,8 @@
             </div>
           </div>
         </div>
-        <div class="row mt-4">
-          <div class="col-xxl-5  col-sm-6 mb-xl-0 mb-4">
+        <div class="row mt-lg-4 m">
+          <div class="col-xxl-5 col-12 col-md-6 mb-xl-0 mb-4">
             <div class="card">
               <div class="card-body p-3">
                 <div class="row">
@@ -206,7 +216,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xxl-5 offset-xxl-1 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5 offset-xxl-1 col-md-6 col-12 mb-xl-0 mb-4">
             <div class="card">
               <div class="card-body p-3">
                 <div class="row">
@@ -231,7 +241,7 @@
           </div>
         </div>
         <div class="row mt-4">
-          <div class="col-lg-6 mb-lg-0 mb-4">
+          <div class="col-xl-6 col-12 mb-xl-0 mb-4">
           <div class="card">
             <div class="card-header pb-0 p-3">
               <div class="d-flex justify-content-between">
@@ -268,7 +278,7 @@
                     <td>
                       <div class="text-end me-3">
                         <h6 class="text-sm mb-0"> 
-                          <button type="button" @click="deletingDay = day.dayId" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-outline-danger mb-0" style="width: 50px; --bs-btn-font-size: 0.6rem;">✖</button>
+                          <button type="button" @click="deletingDay = day.dayId, openModal = true" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-outline-danger mb-0" style="width: 50px; --bs-btn-font-size: 0.6rem;">✖</button>
                         </h6>
                       </div>
                     </td>
@@ -278,53 +288,12 @@
             </div>
           </div>
         </div>
-         <!--<div v-if="slicedArr.length > 0 && days.length > 0" class="header" style="text-align: start; font-size:20px;">
-      <p class="mb-3 fw-bold">Suggested Activities</p>
-    </div>
-
-    <div v-if="slicedArr.length > 0 && days.length > 0" id="activityCarousel" class="carousel slide w-75 mb-5">
-      <div class="carousel-inner position-relative">
-        <div class="carousel-item" v-for='(set,index) in slicedArr' :class="{active: index == 0}">
-          <div class="card-group">
-              <div v-for='(activity,itemIndex) in set' class="card" style="width: 18rem;">
-                  <img :src="this.$refs.dayComp.getImage(activity.photo)" height="210" class="card-img-top" alt="...">
-                  <div class="card-body">
-                      <h5 class="card-title fw-semibold" style="height:48px">{{activity.name}}</h5>
-                      <p class="card-text" style="height:48px">Address: {{activity.address}}</p>
-                      <p class="card-text">Ratings: {{activity.rating[0]}} ({{activity.rating[1]}} reviews)</p>
-                      <a :href="activity.url" class=" text-dark fw-bold" target="_blank">Link</a>
-                      <div class="input-group my-3">
-                        <span class="input-group-text col" id="basic-addon1">Day Number</span>
-                        <input type="number" min="1" max="days.length" class="col form-control" v-model="addTopAttractionDay[index][itemIndex]">
-                      </div>
-                      <div class="row">
-                        <button v-if="addTopAttractionDay[index][itemIndex] > 0 && addTopAttractionDay[index][itemIndex] <= days.length" class="btn btn-success" type="button" @click="addAttraction(index,itemIndex)">
-                            Add to Itinerary
-                          </button>
-                        <p v-else class="text-danger">
-                          Please enter a valid day number.
-                        </p>
-                      </div>
-                  </div>
-              </div>
-          </div>
-        </div>
-      </div>
-      <button class="carousel-control-prev carousel-back-button" type="button" data-bs-target="#activityCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next carousel-next-button" type="button" data-bs-target="#activityCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div> -->
-        <div class="col-lg-6"> <!--Possible condition to not show unless loaded? Add to day? Link?-->
-          <div class="card card-carousel overflow-hidden h-100 p-0">
+        <div style="min-height:500px" class="col-xl-6 col-12"> <!--Possible condition to not show unless loaded? Add to day? Link?-->
+          <div v-if="topAttractions.length > 0" id="actCarouselParent" class="card card-carousel overflow-hidden h-100 p-0">
             <div id="activityCarousel" class="carousel slide h-100" data-bs-ride="carousel">
               <div class="carousel-inner border-radius-lg h-100">
                 <div v-for="(attr,index) in topAttractions" :key="attr.name" class="carousel-item h-100" :class="{active: index == 0}" :style="{'backgroundImage': 'url(' + this.$refs.dayComp.getImage(attr.photo)+ ')', 'background-size': 'cover'}">
-                  <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
+                  <div class="carousel-caption d-block bottom-0 text-start start-0 ms-5">
                     <h5 class="text-white mb-1">{{attr.name}}</h5>
                     <p class="fw-bold">{{ attr.address }}</p>
                     <p class="fw-bold">{{attr.rating[0]}} ({{attr.rating[1]}} reviews)</p>
@@ -341,9 +310,19 @@
               </button>
             </div>
           </div>
+          <div v-else class="">
+            <div class="card p-4">
+              <span class="font-weight-bolder">Loading... 
+                <a href="#" class="btn" style="border:1px solid gray;margin-bottom:0px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+              </svg></a>
+              </span>
+            </div>
+          </div>
         </div>
         </div>
-        <Day_Component ref="dayComp" :days="days" :date="date" :originLoc="originLoc" :originName="origin"></Day_Component>
+        <Day_Component ref="dayComp" :days="days" :date="date" :originLoc="originLoc" :originName="origin" :openModal="openModal"></Day_Component>
       </div>
     </div>
     <div>
@@ -359,6 +338,8 @@
   import Datepicker from '../../node_modules/@vuepic/vue-datepicker';
   import '/node_modules/@vuepic/vue-datepicker/dist/main.css';
   import * as bootstrap from 'bootstrap'
+
+  // 
 
   import { mapStores } from 'pinia'
 import { useAuthStore } from '../store/piniaStore/authStore'
@@ -377,6 +358,7 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
     data () {
       // local repository of information
       return {
+        openModal: false,
         deletingDay: 0,
         date : [],
         itemNum : 0,
@@ -422,11 +404,14 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
       this.initialiseOrigin();
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
       const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-      const myCarouselElement = document.querySelector('#activityCarousel')
-      const carousel = new bootstrap.Carousel(myCarouselElement, {
-      interval: 3000,
-      touch: true
-      })
+      if (this.topAttractions.length == 0){
+          this.getSlicedArr()
+        }
+      // const myCarouselElement = document.querySelector('#activityCarousel')
+      // const carousel = new bootstrap.Carousel(myCarouselElement, {
+      // interval: 3000,
+      // touch: true
+      // })
       // if (this.topAttractions.length == 0){
       //     this.getSlicedArr()
       //   }
@@ -462,6 +447,13 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
     },
   
     methods: {
+      changeOpenModal(){
+        if (this.openModal == true){
+          this.openModal = false
+        }else{
+          this.openModal = true
+        }
+      },
       route_link(path){
       var routes = { 'itinerary':`/itinerary/${this.user}/${this.iti_name}`,'hotel':`/hotel/${this.user}/${this.iti_name}`,'flight':`/flight/${this.user}/${this.iti_name}`,'home':'/','dashboard':`/dashboard` }
       var page = routes[path]
@@ -505,10 +497,7 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
         this.$refs.dayComp.getTopAttractions().then(result =>{
           this.topAttractions = result
           console.log(this.topAttractions)
-          // setTimeout(() => {
-          //   this.slicedArr = [result.slice(0,3), result.slice(3,6), result.slice(6,9)]
-          // }, 5000);
-        })
+          })
       },
       addAttraction(index,itemIndex){
         var dayNum = this.addTopAttractionDay[index][itemIndex]
@@ -594,7 +583,7 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
             this.addDaystoEnd(numDays);
           }
         }
-      },
+      }, 
 
       getHotels() {
       var result = []
@@ -622,10 +611,10 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
   </script>
   
   <style scoped>
+  
   *{
     color:black;
   }
-
   /*!
  * Bootstrap v5.2.0-beta1 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -5267,7 +5256,7 @@ fieldset:disabled .btn {
   display: block;
 }
 
-/* .navbar {
+.navbar {
   --bs-navbar-padding-x: 1rem;
   --bs-navbar-padding-y: 0.5rem;
   --bs-navbar-color: #344767;
@@ -5294,7 +5283,7 @@ fieldset:disabled .btn {
   align-items: center;
   justify-content: space-between;
   padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
-} */
+}
 
 .navbar>.container,
 .navbar>.container-fluid,

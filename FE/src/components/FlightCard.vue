@@ -1,28 +1,28 @@
 <template>
   <!-- <div class="container mt-4 mb-2"> -->
-    <div class="row p-1">
-      <div class="col px-0">
-        <p v-if="this.eco" class="card-header text-white" style="background-color:#52a568; font-size:15px">{{ parseInt(this.eco) }}% Lesser Carbon Footprint</p>
-        <div class="card mb-3 rounded-0 p-3 pb-1 shadow" >
+    <!-- <div class="row p-1">
+      <div class="col px-0"> -->
+        <!-- <p v-if="this.eco" class="card-header text-white rounded-top shadow" style="background-color:#52a568; font-size:15px">{{ parseInt(this.eco) }}% Lesser Carbon Footprint</p> -->
+        <div class="card mb-3 rounded-top  pb-1 shadow" >
+          <p v-if="this.eco" class="card-header text-white rounded-top p-0 shadow" style="background-color:#52a568; font-size:15px" >
+            {{ parseInt(this.eco) }}% Lesser Carbon Footprint
+          </p>
           
-          <div class="row">
+          <div class="row p-2 pe-5">
 
-            <div class="col-2">
+            <div class="col-2 pe-0">
               <div class="" style="">
                 <img :src="this.img" alt="" class="img-fluid w-100 h-100 mb-3" style ="" />
                 
             </div>
           </div>
 
-          <div class="col-8">
+          <div class="col-8 p-0">
             <div class="row">
             <div class="d-flex">
               <p class="me-3 my-0">{{this.carrierNameO}} 
-                <!-- ({{this.alternateIdO }}-{{ this.flightNumberO }}) -->
               </p>
-              <!-- <div v-if="eco_flag()" style="display:flex;">
-               <img  src="../assets/carbon_fp.png" alt="" class="img-fluid"  style="width:30px;height:30px;">
-              </div> -->
+
             </div>
           </div>
 
@@ -51,8 +51,18 @@
           </div>
 
             <div class="col-2 px-0 book_big">
-              {{ this.totalPrice }}
-              <button class="btn btn-success" @click="book_flight()">Book</button>
+              <div class="row">
+                <div class="col">
+                  {{ this.totalPrice }}
+                </div>
+              </div>
+              <div class="row m-0">
+                <div class="col">
+                  <button class="btn btn-success" @click="book_flight()">Book</button>
+                </div>
+                
+              </div>
+             
             </div>
 
             <div class="col-2 px-0 book_small">
@@ -64,45 +74,7 @@
             </div>
             
           </div>
-
-          <!-- <div class="row">
-            
-            <div class="col">
-              <div class="" style="height:50px;width:50px">
-                <img :src="this.img" alt="" class="img-fluid w-100 h-100" style ="" >
-                
-              </div>
-              {{this.carrierNameO}} 
-              {{this.alternateIdO }}-{{ this.flightNumberO }}
-               
-            </div>
-            <div class="col">
-              {{this.originDisplayCode}}
-
-            {{ format_date(this.departure)[0] }} 
-            {{ format_date(this.departure)[1] }}
-            {{ format_date(this.arrival)[1] }}
-            </div>
-            <div class="col">{{ hour(this.duration) }}</div>
-            <div class="col">
-              {{ this.destinationDisplayCode }}
-
-            </div>
-            <div class="col ">
-               {{this.alternateIdD }}-{{ this.flightNumberD }} 
-            </div>
-          </div>
-          <div class="row mt-5">
-            <div class="col mt-5">{{ this.totalPrice }}</div>
-            {{ this.tag }}
-            <br>
-            {{ this.eco }}
-            
-          </div> -->
         </div>
-      </div>
-    </div>
-  <!-- </div> -->
 </template>
 <script>
 
