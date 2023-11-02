@@ -424,9 +424,9 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
       this.days =  this.iti_data.itinerary_data.itinerary_days
       this.countryName = this.iti_data.itinerary_data.destination.trip_country
 
+      
       this.$refs.dayComp.country = this.$refs.dayComp.getCountryCode(this.countryName)
       console.log(this.$refs.dayComp.country)
-      
       this.initialiseOrigin();
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
       const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))

@@ -620,7 +620,7 @@ computed: {
 
 // start of lifecycle
 async mounted () {
-    this.country = this.getCountryCode(this.countryName)
+    // this.country = this.getCountryCode(this.countryName)
     this.setTriggers()
 },
 
