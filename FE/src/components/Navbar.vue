@@ -1,17 +1,17 @@
 <template>
   <div class="container-fluid">
-    <div class="row" style="background-color: white;">
+    <div class="row">
       <div class="col-12 px-0 ms-4">
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-lg bg-white px-0">
           <div class="container-fluid position-relative">
             <img class="" src="../img/EcoBound.png" style="height: 50px; cursor: pointer; max-width: 100%;"
               alt="EcoBound Logo" @click="sliderIndicator(1)" />
-              <div class="me-4 d-lg-none">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </div>
+            <div class="me-4 d-lg-none">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            </div>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <li class="nav-item menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
@@ -21,30 +21,18 @@
                     <span>{{ link.text }}</span>
                   </a>
                 </li>
-                <!-- <li class="nav-item menu-item" v-if="authStore.user">
-                  <div class="profile" style="margin-right: 20px;">{{ authStore.user }}</div>
-                  <button
-                    class="btn tton-80"
-                    @click="authStore.logout()"
-                    style="margin-right: 10px; color:white;"
-                  >
-                    Logout
-                  </button>
-                </li> -->
               </ul>
             </div>
             <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
-            <div class="d-flex align-items-center ml-auto" v-if="!authStore.user">
-              <router-link to="/login">
-                <button type="button" class="button m-3 px-6 button-80" @click="login()">
+            <div class="d-flex align-items-center ml-auto">
+              <router-link v-if="!authStore.user" to="/login">
+                <button type="button" class="button button-80" @click="login()">
                   Log in
                 </button>
               </router-link>
-              <router-link to="/Sign-Up">
-                <button type="button" class="button m-3 px-6 button-80">
-                  Sign up
-                </button>
-              </router-link>
+              <button v-if="authStore.user" type="button" class="button button-80" @click="logout()">
+                Sign out
+              </button>
             </div>
           </div>
         </nav>
@@ -58,6 +46,7 @@
 import { useAuthStore } from '../store/piniaStore/authStore';
 import { mapStores } from 'pinia';
 
+
 export default {
   data() {
     return {
@@ -66,6 +55,7 @@ export default {
       selectedIndex: 0,
       userid: "",
       userflag: false,
+
       links: [
         {
           id: 1,
@@ -74,7 +64,7 @@ export default {
         },
         {
           id: 2,
-          icon: "fa fa-house-user",
+          icon: "fa fa-hotel",
           text: "Hotel",
         },
         {
@@ -84,7 +74,7 @@ export default {
         },
         {
           id: 4,
-          icon: "fa fa-question",
+          icon: "fa fa-chart-line",
           text: "Dashboard",
         },
       ],
@@ -109,9 +99,14 @@ export default {
         this.userflag = false;
       }
     },
+    logout() {
+      this.authStore.logout();
+      this.$router.push('/login')
+    },
     login() {
       this.$router.push('/login')
-    }
+    },
+
   },
   computed: {
     ...mapStores(useAuthStore),
@@ -129,7 +124,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .profile {
   color: white;
 }
@@ -203,7 +198,7 @@ body {
   --active-color: #5a47eb;
   --link-text-color: black;
   --menu-background-color: rgba(255, 0, 0, 0);
-  ;
+
   --active-background-color: #EB4F47;
 }
 
@@ -285,6 +280,8 @@ body {
 * {
   /* color: white; */
   font-weight: var(--menu-background-color);
+  color: black;
+  
 }
 
 /* Styling the navbar dropdown */
@@ -297,7 +294,8 @@ body {
 .navbar-toggler-icon {
   width: 1.5rem;
   height: 1.5rem;
-  background-image: url("path_to_your_hamburger_icon");
+  background-image: url(../img/menu.png);
+  
   /* Replace "path_to_your_hamburger_icon" with the actual path to your hamburger icon */
   background-size: cover;
 }
@@ -327,4 +325,6 @@ body {
 .navbar {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+
 </style>

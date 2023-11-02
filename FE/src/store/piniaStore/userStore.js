@@ -13,13 +13,16 @@ export const useUsersStore = defineStore({
     persist: true,
     actions: {
         async register(formData) {
+        
 
         try {
             this.userData = await axios.post('http://127.0.0.1:8000/api_d/v1/users/',formData)
             return  this.userData
           } catch (error) {
             // let the form component display the error
+            console.log(error)
             return null
+            
           }
         },
         async getItinerary(userid,token){

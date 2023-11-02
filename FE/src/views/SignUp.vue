@@ -50,8 +50,8 @@ export default {
         const resp = await userStore.register(formdata);
         console.log(resp)
         if (resp){
-          alert("Successful Registeration")
-          await this.$router.push('login')
+          alert("Successful Registration")
+          await this.$router.push('/login')
         }else{
           alert("error")
         }
