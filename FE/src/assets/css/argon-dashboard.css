@@ -4639,7 +4639,7 @@ fieldset:disabled .btn {
   display: block;
 }
 
-.navbar {
+/* .navbar {
   --bs-navbar-padding-x: 1rem;
   --bs-navbar-padding-y: 0.5rem;
   --bs-navbar-color: #344767;
@@ -4666,7 +4666,7 @@ fieldset:disabled .btn {
   align-items: center;
   justify-content: space-between;
   padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
-}
+} */
 
 .navbar>.container,
 .navbar>.container-fluid,

@@ -59,7 +59,7 @@ export default {
         drawChart() {
             const margin = { top: 20, right: 50, bottom: 50, left: 50 }; // Adjusted left margin for longer labels
             const width = 400 - margin.left - margin.right;
-            const height = 400 - margin.top - margin.bottom;
+            const height = 300 - margin.top - margin.bottom;
 
 
             const svg = d3
@@ -144,18 +144,7 @@ export default {
   
 <style scoped>
 /* Your existing styles */
-.divider {
-    width: 100%;
-    height: 1px;
-    background-color: #000;
-    /* Adjust the color as needed */
-    margin-top: -10px;
-}
 
-.chart-container {
-    width: 100%;
-    height: 100%;
-}
 
 .bar {
     fill: steelblue;
@@ -194,7 +183,6 @@ export default {
     -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
     box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
     border: none;
-    margin-bottom: 30px;
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }

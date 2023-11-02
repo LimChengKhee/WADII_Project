@@ -123,7 +123,8 @@ body {
   background: url("../img/heroImg.jpg") no-repeat center center fixed;
   background-size: cover;
   /* Ensures the background covers the entire container */
-  overflow-x: hidden;
+  overflow: hidden;
+
   /* Prevent horizontal scrolling */
 }
 
@@ -254,5 +255,7 @@ body {
 .carousel-control-next {
   right: -2%;
 }
+
+
 
 </style>

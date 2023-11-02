@@ -1,113 +1,124 @@
 <template>
   <div class="container-fluid p-0">
-  <div class="row">
-  <div class="col-3">
-      <div class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
-        <div class="sidenav-header" @click="route_link('home')">
-          <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-          <img src="../assets/img/EcoBound.png" class="navbar-brand-img" style="max-height:78px!important;" alt="main_logo" >
+    <div class="row">
+      <!-- <div class="col-3">
+        <div
+          class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
+          id="sidenav-main">
+          <div class="sidenav-header" @click="route_link('home')">
+            <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-resolute end-0 top-0 d-none d-xl-none"
+              aria-hidden="true" id="iconSidenav"></i>
+            <img src="../assets/img/EcoBound.png" class="navbar-brand-img" style="max-height:78px!important;"
+              alt="main_logo">
+          </div>
+          <hr class="horizontal dark mt-0">
+          <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" @click="route_link('itinerary')">
+                  <div
+                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
+                  </div>
+                  <span class="nav-link-text ms-1">Itinerary</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" @click="route_link('dashboard')">
+                  <div
+                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                  </div>
+                  <span class="nav-link-text ms-1">Dashboard</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " @click="route_link('flight')">
+                  <div
+                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                      class="bi bi-airplane" viewBox="0 0 16 16" style="color:red">
+                      <path
+                        d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Zm.894.448C7.111 2.02 7 2.569 7 3v4a.5.5 0 0 1-.276.447l-5.448 2.724a.5.5 0 0 0-.276.447v.792l5.418-.903a.5.5 0 0 1 .575.41l.5 3a.5.5 0 0 1-.14.437L6.708 15h2.586l-.647-.646a.5.5 0 0 1-.14-.436l.5-3a.5.5 0 0 1 .576-.411L15 11.41v-.792a.5.5 0 0 0-.276-.447L9.276 7.447A.5.5 0 0 1 9 7V3c0-.432-.11-.979-.322-1.401C8.458 1.159 8.213 1 8 1c-.213 0-.458.158-.678.599Z" />
+                    </svg>
+                  </div>
+                  <span class="nav-link-text ms-1">Flights</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " @click="route_link('hotel')">
+                  <div
+                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                      class="bi bi-building" viewBox="0 0 16 16" style="color:green">
+                      <path
+                        d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1ZM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Z" />
+                      <path
+                        d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1Zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3V1Z" />
+                    </svg>
+                  </div>
+                  <span class="nav-link-text ms-1">Hotels</span>
+                </a>
+              </li>
+              <button class="btn btn-primary w-80" @click="createitinerary">Create Itinerary Now</button>
+            </ul>
+          </div>
         </div>
-        <hr class="horizontal dark mt-0">
-        <div class="collapse navbar-collapse w-auto" style="min-height:700px" id="sidenav-collapse-main">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" @click="route_link('itinerary')" >
-                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
-                </div>
-                <span class="nav-link-text ms-1">Itinerary</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" @click="route_link('dashboard')" >
-                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-                </div>
-                <span class="nav-link-text ms-1">Dashboard</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link " @click="route_link('flight')" >
-                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-airplane" viewBox="0 0 16 16" style="color:red">
-                    <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Zm.894.448C7.111 2.02 7 2.569 7 3v4a.5.5 0 0 1-.276.447l-5.448 2.724a.5.5 0 0 0-.276.447v.792l5.418-.903a.5.5 0 0 1 .575.41l.5 3a.5.5 0 0 1-.14.437L6.708 15h2.586l-.647-.646a.5.5 0 0 1-.14-.436l.5-3a.5.5 0 0 1 .576-.411L15 11.41v-.792a.5.5 0 0 0-.276-.447L9.276 7.447A.5.5 0 0 1 9 7V3c0-.432-.11-.979-.322-1.401C8.458 1.159 8.213 1 8 1c-.213 0-.458.158-.678.599Z"/>
-                  </svg>
-                </div>
-                <span class="nav-link-text ms-1">Flights</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link " @click="route_link('hotel')">
-                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16" style="color:green">
-                    <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1ZM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Z"/>
-                    <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1Zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3V1Z"/>
-                  </svg>
-                </div>
-                <span class="nav-link-text ms-1">Hotels</span>
-              </a>
-            </li>
-            <button class="btn btn-primary w-80" @click="createitinerary">Create Itinerary Now</button>
-          </ul>
-        </div>
-      </div>
-    </div>
-  
+      </div> -->
 
-  <!-- dashboard components -->
-  <div class="col-lg-9 ms-5 mt-3" style="width:80%;position: absolute; left:15%;">
-  <div class="container-fluid ">
-    <div class="row rounded-rect-container w-100 h-100">
-      <div class="row">
-        <h1 style="text-transform: capitalize;">{{ userid }}'s Dashboard</h1>
-        <hr />
-      </div>
-      <div class="col-lg-12">
-        <div class="parent-chart-container mt-4">
-          <div class="row">
-            <div class="col-lg-8 col-md-12">
-              <Linechart :dataLC="fetchedData" />
+
+      <!-- dashboard components -->
+      <div class="col-lg-12 mt-3" style="width:80%;position: absolute; left:15%;">
+        <div class="container-fluid ">
+          <div class="row rounded-rect-container w-100 h-100">
+            <div class="row">
+              <h1 style="text-transform: capitalize;">{{ userid }}'s Dashboard</h1>
+              <hr />
             </div>
-            <div class="col-lg-4 col-md-12">
-              
-              <div class="col-sm-12 col-lg-12 col-md-12">
-                <Itidetails :dataDC="fetchedData" />  
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-12">
-              <div class="w-100 mt-4">
-                <Totaltrips :dataTT="fetchedData" />
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-              <div class="w-100 mt-4">
-                <DaysTravelled :dataDT="fetchedData" />
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-12">
-              <div class="w-100 mt-4">
-                <TotalCarbonFootprint :dataCP="fetchedData" />
+            <div class="col-lg-12">
+              <div class="parent-chart-container mt-4">
+                <div class="row">
+                  <div class="col-lg-8 col-md-12">
+                    <Linechart :dataLC="fetchedData" />
+                  </div>
+                  <div class="col-lg-4 col-md-12">
+
+                    <div class="col-sm-12 col-lg-12 col-md-12">
+                      <Itidetails :dataDC="fetchedData" />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="w-100 mt-4">
+                      <Totaltrips :dataTT="fetchedData" />
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="w-100 mt-4">
+                      <DaysTravelled :dataDT="fetchedData" />
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="w-100 mt-4">
+                      <TotalCarbonFootprint :dataCP="fetchedData" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div>
+        </div>
       </div>
     </div>
-  </div>
-  <div>
-    </div>
-</div>
-  </div>
   </div>
 </template>
 
 
 
 <script>
-import * as d3 from "d3";
-import * as crossfilter from "crossfilter";
 import { useAuthStore } from '../store/piniaStore/authStore';
 import { useUsersStore } from '../store/piniaStore/userStore';
 import { mapStores } from 'pinia';
@@ -136,6 +147,7 @@ export default {
   data() {
     return {
       fetchedData: [],
+      isSidebarOpen: true,
     };
   },
   async mounted() {
@@ -155,8 +167,11 @@ export default {
   },
 
   methods: {
-    route_link(path){
-      var routes = { 'itinerary':`/itinerary/${this.user}/${this.iti_name}`,'hotel':`/hotel/${this.user}/${this.iti_name}`,'flight':`/flight/${this.user}/${this.iti_name}`,'home':'/','dashboard':`/dashboard` }
+    toggleSidebar() {
+      this.isSidebarOpen = !this.isSidebarOpen;
+    },
+    route_link(path) {
+      var routes = { 'itinerary': `/itinerary/${this.user}/${this.iti_name}`, 'hotel': `/hotel/${this.user}/${this.iti_name}`, 'flight': `/flight/${this.user}/${this.iti_name}`, 'home': '/', 'dashboard': `/dashboard` }
       var page = routes[path]
       this.$router.push(page)
     },
@@ -311,8 +326,10 @@ export default {
 .card-waves {
   border-radius: 15px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  height: 100%; /* Make sure it takes up the entire height of the parent container */
-  max-width: 100%; /* Restrict the width to prevent protrusion */
+  height: 100%;
+  /* Make sure it takes up the entire height of the parent container */
+  max-width: 100%;
+  /* Restrict the width to prevent protrusion */
   /* other properties */
 }
 
@@ -320,6 +337,4 @@ export default {
 
 * {
   font-weight: bold;
-}
-
-</style>
+}</style>

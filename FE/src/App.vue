@@ -1,5 +1,8 @@
 <template>
   <div id="app" class="w-100">
+    <div class="row">
+      <Navbar />
+    </div>
     <!-- Content -->
     <!-- <div class="col-lg-10 offset-lg-2 col-12 px-0"> -->
     <router-view/>
@@ -59,5 +62,9 @@ body {
   font-family: 'montserrat';
   src: url("./assets/fonts/montserrat.bold.ttf") format("truetype");
 
+}
+
+*{
+  color:black;
 }
 </style>

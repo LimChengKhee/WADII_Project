@@ -107,7 +107,6 @@ export default {
   
 <style scoped>
 body{
-    margin-top:20px;
     background:#FAFAFA;
 }
 .order-card {
@@ -157,11 +156,5 @@ body{
     float: right;
 }
 
-.divider{
-    width: 100%;
-    height: 1px;
-    background-color: #000; /* Adjust the color as needed */
-    margin-top: -10px;
-}
 </style>
   
