@@ -3,11 +3,11 @@
     <div class="row h-25s">
       <div class="col-sm-1"></div>
       <div class="col-sm-10">
-        <div class="card mb-3 disabled">
+        <div class="card mb-3">
           <div class="row g-0">
             <div class="col-xl-3">
-              <div class="img">
-                <img :src="src" class="img-fluid rounded-start" alt="..." />
+              <div class="img" style="width:100%; height:100%; ">
+                <img :src="src" class="img-fluid rounded-start"  alt="..." />
               </div>
             </div>
             <div class="col-xl-7">
@@ -15,7 +15,7 @@
                 <div class="card-title d-flex p-sm-3 p-xl-0">
                   <router-link
                     :to="`/hotel/${this.hotel_name}`"
-                    style="text-decoration: none; color: black; font-size: 1.5rem"
+                    style="text-decoration: none; color: black; font-size: 20px; font-weight: bold"
                   >
                     {{ this.hotel_name }}
                   </router-link>
@@ -26,20 +26,29 @@
                       >{{ this.distance_to_cc_formatted }} from centre</span
                     ><br />
                   </div>
-                  <div
-                    class="col-md-3 col-sm-5 col-xs-5"
-                    style="
-                      font-size: 13px;
-                      color: rgb(14, 194, 14);
-                      font-weight: bolder;
-                      text-decoration: underline;
-                    "
-                  >
-                    {{ this.district + ', ' + this.city }}
+                  
+                  <div class="col-md-3 col-sm-3 col-xs-3">
+                    <span class="badge rounded-pill text-bg-secondary"
+                      >{{ this.currency_code}}</span
+                    ><br />
+                  </div>
+                
+                  <div class="review_word d-flex mt-2 align-items-center">
+                    <!-- <span style="font-weight: bold; color: black" class="mb-0">
+                      {{ this.review_score_word }}
+                    </span>
+                    <br> -->
+                    <h6>Rating: </h6>
+                    <h6 style="color: black; text-align: left;">
+                      <span style="width:30px; height: 30px; font-size: 15px;" class="badge text-bg-info d-flex justify-content-center align-items-center ms-2">{{ this.review_score }}</span>
+                      
+                    </h6>
+                    
+                    <div class="m-2 fs-6">({{ this.number_of_reviews + ' Reviews' }})</div>
                   </div>
                 </div>
-                <div class="mt-2">
-                  <p style="color: black">
+                <div class="mt-5">
+                  <p style="color: black; text-align:left;">
                     {{ this.updated_object.Description.description.slice(0, 100) }}
                     <a :href="`/hotel/${this.hotel_name}`" style="text-decoration: none"
                       >....read more.....</a
@@ -50,22 +59,9 @@
             </div>
             <div class="col-xl-2 p-2">
               <div class="container">
-                <div class="row mt-4">
+                <div class="row mt-5">
                   <!--Ratings / achievements-->
-                  <div class="review_word col-sm-5 col-xl-7">
-                    <p style="font-weight: bold; color: black" class="mb-0 fs-lg-6 fs-md-2">
-                      {{ this.review_score_word }}
-                    </p>
-                    <p style="color: black" class="fs-lg-6 fs-md-2">
-                      {{ this.number_of_reviews + ' Reviews' }}
-                    </p>
-                  </div>
-                  <div class="col-sm-1 col-xl-4 ps-0">
-                    <h5>
-                      <span class="badge text-bg-info">{{ this.review_score }}</span>
-                    </h5>
-                  </div>
-                  <button type="button" class="btn btn-primary mt-2">
+                  <button type="button" class="btn btn-primary">
                     <router-link
                       :to="`/hotel/${this.hotel_name}`"
                       style="text-decoration: none; color: black; font-weight: bold"
@@ -189,16 +185,14 @@ export default {
 </script>
 
 <style scoped>
+*{
+  font-family: 'Century Gothic', sans-serif;
+}
+
 @media only screen and (min-width: 1200px) {
   /* Your CSS styles go here */
 .review_word {
   font-size: 11px;
 }
-}
-
-
-
-    .disabled ,.disabled:hover{
-    color:grey !important;
 }
 </style>

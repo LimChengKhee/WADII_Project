@@ -3,10 +3,12 @@
   <div class="row bg-gray-100">
     <button
       v-if="isSmallScreen"
-      class="btn btn-primary floating-button"
+      class="btn btn-primary floating-button mb-0"
       @click="toggleSidebarVisibility()"
     >
-      Toggle Sidebar
+    <svg xmlns="http://www.w3.org/2000/svg" style="color:white" width="32" height="32" fill="white" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8Zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5Z"/>
+</svg>
     </button>
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
@@ -104,7 +106,7 @@
     </div>
 
     <div
-      class="min-height-400 position-absolute w-100 px-0"
+      class="min-height-400 position-absolute w-100"
       style="background-color: #5e72e4; right: 0px; top: -2%"
     ></div>
     <div class="col-3">
@@ -589,7 +591,7 @@
         </div>
         <div class="row mt-4">
           <div class="col-xl-6 col-12 mb-xl-0 mb-4">
-            <div class="card">
+            <div class="card border-radius-lg" >
               <div class="card-header pb-0 p-3">
                 <div class="d-flex justify-content-between">
                   <h6 class="mb-2">Days at a Glance</h6>
@@ -607,7 +609,7 @@
                           <div class="ms-4">
                             <p class="text-xs font-weight-bold mb-0">Date</p>
                             <h6 class="text-sm mb-0">
-                              {{ this.$refs.dayComp.getPrintableDate(day.dayId) }}
+                              {{ this.getPrintableDate(day.dayId) }}
                             </h6>
                           </div>
                         </div>
@@ -827,7 +829,7 @@ export default {
     console.log(this.days,'b4')
      this.selectDate(this.date)
      console.log(this.days,'aft')
-    
+    let hotel = this.iti_data.itinerary_data.hotels
 
     if (hotel.length > 0) {
       this.baseOrigin = hotel[0].hotelname + ' ' + this.countryName
@@ -872,6 +874,11 @@ export default {
   },
 
   methods: {
+    getPrintableDate(day){
+        let startDate = this.date[0]
+        let printableDate = new Date(new Date().setDate(startDate.getDate() + day));
+        return printableDate.toDateString()
+    },
     checkScreenSize() {
       this.isSmallScreen = window.innerWidth <= 1010 // Adjust the threshold as needed
     },
@@ -1104,8 +1111,7 @@ export default {
   }
 }
 </script>
-
-<style scoped>
+ <style scoped>
 * {
   color: black;
 }
@@ -28444,7 +28450,7 @@ pre[class*='language-'] {
 }
 
 .card {
-  border-radius: 5px;
+  border-radius: 0.75rem !important;
   -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
   box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
   border: none;
@@ -28495,5 +28501,9 @@ pre[class*='language-'] {
   }
 }
 
+ .border-radius-lg {
+  border-radius:0.75rem;
+}
+
 /*# sourceMappingURL=dashboard-free.css.map */
-</style>
+</style> 

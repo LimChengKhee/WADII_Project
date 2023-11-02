@@ -1,11 +1,11 @@
 <template>
-  <div class="container-fluid px-0">
-    <div class="row">
-      <div class="col-12 px-0 ms-4">
-        <nav class="navbar navbar-expand-lg bg-white px-0">
-          <div class="container-fluid position-relative d-flex align-items-center">
+  <div class="container-fluid px-0 ">
+    <div class="row ">
+      <div class="col-12 w-100 px-0">
+        <nav class="navbar navbar-expand-lg bg-white ">
+          <div class="container-fluid position-relative d-flex ">
             <img
-              class=""
+              class="ms-5"
               src="../img/EcoBound.png"
               style="height: 50px; cursor: pointer; max-width: 100%;"
               alt="EcoBound Logo"

@@ -122,7 +122,8 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" :id="'recommend' + day.dayId + 'ModalLabel'">Recommended activities  Selected:<span class="text-primary"> {{ this.selectedRec.name }}</span></h1>
+                        <h1 class="modal-title fs-5" :id="'recommend' + day.dayId + 'ModalLabel'">Recommended activities  </h1>
+                        <span class="text-primary ms-auto ">Selected: {{ this.selectedRec.name }}</span>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body mx-auto">

@@ -1,5 +1,5 @@
 <template>
-  <div class="parent-container container rounded-4 bg-white">
+  <div class="parent-container container rounded-4 bg-white mt-5">
     <div class="row">
 
       <div class="col-12">
@@ -18,7 +18,7 @@
             </div> -->
           </div>
 
-          <div class="container big">
+          <div class="container big d-flex justify-content-center">
             <div class="me-2" style="display:flex;">
               
 
@@ -190,7 +190,8 @@ export default {
       this.search = true;
       let hotels_sub = []
       for (let element of this.hotelsInCities) {
-        if ((element["hotel_name"].includes(this.user_search))) {
+        var hotel = element["hotel_name"].toLowerCase()
+        if (hotel.includes(this.user_searc.toLowerCase())) {
           hotels_sub.push(element)
         }
       }
@@ -315,6 +316,7 @@ export default {
   color:white;
 }
 
+
 @media only screen and (min-width: 576px) {
 
 
@@ -340,4 +342,3 @@ export default {
     
    }
 </style>
-
