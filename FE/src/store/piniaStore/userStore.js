@@ -19,7 +19,8 @@ export const useUsersStore = defineStore({
             return  this.userData
           } catch (error) {
             // let the form component display the error
-            return null
+            console.log(error)
+            return error
           }
         },
         async getItinerary(userid,token){

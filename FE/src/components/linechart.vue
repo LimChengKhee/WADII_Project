@@ -285,7 +285,7 @@ export default {
         });
       const calculateTickCount = () => {
         const maxTickCount = 10; 
-        const minWidthPerTick = 120; 
+        const minWidthPerTick = 100; 
 
         const tickCount = Math.floor(containerWidth / minWidthPerTick); 
 
@@ -295,19 +295,19 @@ export default {
       const tickCount = calculateTickCount();
 
       g.append("g")
-        .attr("style", "color: white;")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).ticks(tickCount).tickFormat((date, index, dates) => {
-          if (this.screenWidth <= 600) {
-            if (index === 0 || (index > 0 && dates[index - 1].getMonth() !== date.getMonth())) {
-              return formatTimeMonthYear(date);
-            } else {
-              return "";
-            }
-          } else {
-            return formatTime(date);
-          }
-        }));
+  .attr("style", "color: white;")
+  .attr("transform", "translate(0," + height + ")")
+  .call(d3.axisBottom(x).ticks(tickCount).tickFormat((date, index) => {
+    if (this.screenWidth <= 600) {
+      if (index === 0 || (index > 0 && d3.timeMonth(date) < d3.timeMonth(this.dataLC[index - 1].itinerary_data.itinerary_data.destination.start_date))) {
+        return formatTimeMonthYear(date);
+      } else {
+        return "";
+      }
+    } else {
+      return formatTime(date);
+    }
+  }));
 
 
 

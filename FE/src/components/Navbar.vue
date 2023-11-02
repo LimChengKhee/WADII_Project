@@ -1,50 +1,71 @@
 <template>
-  <div class="container-fluid">
-    <div class="row" >
+  <div class="container-fluid px-0">
+    <div class="row">
       <div class="col-12 px-0 ms-4">
         <nav class="navbar navbar-expand-lg bg-white px-0">
-          <div class="container-fluid position-relative">
-            <img class="" src="../img/EcoBound.png" style="height: 50px; cursor: pointer; max-width: 100%;"
-              alt="EcoBound Logo" @click="sliderIndicator(1)" />
-              <div class="me-4 d-lg-none">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </div>
+          <div class="container-fluid position-relative d-flex align-items-center">
+            <img
+              class=""
+              src="../img/EcoBound.png"
+              style="height: 50px; cursor: pointer; max-width: 100%;"
+              alt="EcoBound Logo"
+              @click="sliderIndicator(1)"
+            />
+
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
-                <li class="nav-item menu-item" v-for="link in links" :key="link.id" @click="sliderIndicator(link.id)"
-                  :ref="'menu-item_' + link.id">
-                  <a href="#" class="nav-link menu-link" :class="link.id === selectedIndex ? 'active' : null" style="color:white">
-                    <i class="menu-icon" :class="link.icon"></i>
+                <li
+                  v-for="link in links"
+                  :key="link.id"
+                  class="nav-item menu-item"
+                  @click="link.action ? this[link.action]() : sliderIndicator(link.id)"
+                  :ref="'menu-item_' + link.id"
+                >
+                  <a href="#" class="nav-link menu-link" :class="link.id === selectedIndex ? 'active' : ''" style="color: black">
+                    <i v-if="link.icon" :class="link.icon"></i>
                     <span>{{ link.text }}</span>
                   </a>
                 </li>
-                <!-- <li class="nav-item menu-item" v-if="authStore.user">
-                  <div class="profile" style="margin-right: 20px;">{{ authStore.user }}</div>
-                  <button
-                    class="btn tton-80"
-                    @click="authStore.logout()"
-                    style="margin-right: 10px; color:white;"
+
+                <!-- Align login and sign-out to the right -->
+                <li
+                  v-if="!authStore.user || authStore.user"
+                  :key="authStore.user ? 6 : 5"
+                  class="nav-item menu-item d-flex align-items-center justify-content-start"
+                  
+                >
+                  <a
+                    v-if="!authStore.user"
+                    href="#"
+                    class="nav-link menu-link"
+                    @click="login"
+                    style="color: black"
                   >
-                    Logout
-                  </button>
-                </li> -->
+                    <span>Log in</span>
+                  </a>
+                  <a
+                    v-if="authStore.user"
+                    href="#"
+                    class="nav-link menu-link"
+                    @click="logout"
+                    style="color: black"
+                  >
+                    <span>Sign out</span>
+                  </a>
+                </li>
               </ul>
-            </div>
-            <div class="menu-indicator" :style="{ left: positionToMove, width: sliderWidth }"></div>
-            <div class="d-flex align-items-center ml-auto" v-if="!authStore.user">
-              <router-link to="/login">
-                <button type="button" class="button m-3 px-6 button-80" @click="login()">
-                  Log in
-                </button>
-              </router-link>
-              <router-link to="/Sign-Up">
-                <button type="button" class="button m-3 px-6 button-80">
-                  Sign up
-                </button>
-              </router-link>
             </div>
           </div>
         </nav>
@@ -58,38 +79,49 @@
 import { useAuthStore } from '../store/piniaStore/authStore';
 import { mapStores } from 'pinia';
 
+
 export default {
   data() {
-    return {
-      sliderPosition: 0,
-      selectedElementWidth: 0,
-      selectedIndex: 0,
-      userid: "",
-      userflag: false,
-      links: [
-        {
-          id: 1,
-          icon: "fa fa-home",
-          text: "Home",
-        },
-        {
-          id: 2,
-          icon: "fa fa-hotel",
-          text: "Hotel",
-        },
-        {
-          id: 3,
-          icon: "fa fa-plane",
-          text: "Flights",
-        },
-        {
-          id: 4,
-          icon: "fa fa-chart-line",
-          text: "Dashboard",
-        },
-      ],
-    };
-  },
+  return {
+    sliderPosition: 0,
+    selectedElementWidth: 0,
+    selectedIndex: 0,
+    userid: "",
+    userflag: false,
+    links: [
+      {
+        id: 1,
+        icon: "fa fa-home",
+        text: "Home",
+      },
+      {
+        id: 2,
+        icon: "fa fa-hotel",
+        text: "Hotel",
+      },
+      {
+        id: 3,
+        icon: "fa fa-plane",
+        text: "Flights",
+      },
+      {
+        id: 4,
+        icon: "fa fa-chart-line",
+        text: "Dashboard",
+      },
+      // {
+      //   id: 5,
+      //   text: "Log in",
+      //   action: "login",
+      // },
+      // {
+      //   id: 6,
+      //   text: "Sign out",
+      //   action: "logout",
+      // },
+    ],
+  };
+},
   methods: {
     sliderIndicator(id) {
       let el = this.$refs[`menu-item_${id}`][0];
@@ -109,9 +141,14 @@ export default {
         this.userflag = false;
       }
     },
+    logout() {
+      this.authStore.logout();
+      this.$router.push('/login')
+    },
     login() {
       this.$router.push('/login')
-    }
+    },
+
   },
   computed: {
     ...mapStores(useAuthStore),
@@ -203,7 +240,7 @@ body {
   --active-color: #5a47eb;
   --link-text-color: black;
   --menu-background-color: rgba(255, 0, 0, 0);
-  ;
+
   --active-background-color: #EB4F47;
 }
 
@@ -299,7 +336,7 @@ body {
 .navbar-toggler-icon {
   width: 1.5rem;
   height: 1.5rem;
-  background-image: url("../img/menu.png");
+  background-image: url(../img/menu.png);
   
   /* Replace "path_to_your_hamburger_icon" with the actual path to your hamburger icon */
   background-size: cover;

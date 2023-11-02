@@ -148,4 +148,3 @@ export default {
   background-color: #ccc;
   /* Divider color */
 }</style>
-  

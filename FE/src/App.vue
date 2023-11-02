@@ -1,11 +1,10 @@
 <template>
-  <div id="app" class="w-100">
-    <div class="row " style="margin-bottom:5%">
-      <Navbar class="px-0" style="position: fixed; z-index: 2;"/>
+  <div id="app" class="w-100" style="overflow-x:hidden">
+    <div class="row">
+      <Navbar class="px-0" style="position: fixed; z-index: 1000;"/>
     </div>
     <!-- Content -->
     <!-- <div class="col-lg-10 offset-lg-2 col-12 px-0"> -->
-
     <router-view/>
     <!-- </div> -->
   </div>
@@ -25,6 +24,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
 export default { 
   name: "App",
+
   components:{
     Navbar,
     Login,

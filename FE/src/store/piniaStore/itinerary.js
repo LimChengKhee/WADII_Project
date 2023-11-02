@@ -174,6 +174,12 @@ export const useItineraryStore = defineStore('itinerary', {
       res['end_date'] = itinerary_date.split(',')[1]
       return res
     },
+
+
+
+    
+
+
     getFlight() {
       var res = {}
       if (
