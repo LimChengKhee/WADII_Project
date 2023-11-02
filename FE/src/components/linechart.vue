@@ -11,6 +11,7 @@ import * as d3 from "d3";
 import { useAuthStore } from '../store/piniaStore/authStore';
 import { useUsersStore } from '../store/piniaStore/userStore';
 import { mapStores } from 'pinia';
+import { callWithAsyncErrorHandling } from "vue";
 
 export default {
   name: 'Linechart',
@@ -23,7 +24,7 @@ export default {
   data() {
     return {
 
-      screenWidth: window.innerWidth * 0.8, // Adjust the multiplier to set the desired width proportion
+      screenWidth: window.innerWidth * 0.8,
     };
   },
 
@@ -45,7 +46,7 @@ export default {
     dataLC: {
       immediate: true,
       handler(newVal, oldVal) {
-        console.log(this.dataLC)
+        
         this.drawChart();
       }
     }
@@ -74,6 +75,7 @@ export default {
       container.select("svg").remove();
       this.drawChart();
     },
+
     drawChart() {
       if (this.dataLC.length === 0) {
         return; // Check if the data array is empty
@@ -103,15 +105,15 @@ export default {
       const container = d3.select("#chartContainer");
       container.select("svg").remove();
       const containerWidth = container.node().getBoundingClientRect().width;
-      const margin = { top: 30, right: 50, bottom: 40, left: 100 };
+      const margin = { top: 30, right: 50, bottom: 40, left: this.screenWidth <= 600 ? 50 : 100 };
       const width = Math.min(this.screenWidth, containerWidth) - margin.left - margin.right;
-      const height = 475 - margin.top - margin.bottom;
+      const height = 500 - margin.top - margin.bottom;
 
       const svg = d3
         .select("#chartContainer")
         .append("svg")
         .style("color", "white")
-        .attr("border-radius", "15px")
+        .attr("border-radius", "5px")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom);
 
@@ -126,18 +128,18 @@ export default {
 
       gradient.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#ff7e5f"); // Adjust the color as per your preference
+        .attr("stop-color", "#ff7e5f"); 
 
       gradient.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#feb47b"); // Adjust the color as per your preference
+        .attr("stop-color", "#feb47b"); 
 
       svg.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
         .style("fill", "#204E59")
-        .attr("rx", "15") // Horizontal radius for rounded corners
-        .attr("ry", "15"); // Vertical radius for rounded corners
+        .attr("rx", "5") 
+        .attr("ry", "5"); 
 
 
 
@@ -145,7 +147,8 @@ export default {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       const formatTime = d3.timeFormat("%Y-%m-%d");
-      const parseTime = d3.timeParse("%Y-%m-%d"); // Adjust the format according to the date format you have
+      const parseTime = d3.timeParse("%Y-%m-%d"); 
+      const formatTimeMonthYear = d3.timeFormat("%b %Y");
 
       const x = d3
         .scaleTime()
@@ -159,7 +162,7 @@ export default {
         .scaleLinear()
         .domain([
           0,
-          d3.max(this.dataLC, d => d.totalCost) * 1.2 // Adjust the multiplier to expand the y-axis
+          d3.max(this.dataLC, d => d.totalCost) * 1.2 
         ])
         .nice()
         .range([height, 0]);
@@ -167,12 +170,12 @@ export default {
       const line = d3
         .line()
         .x(d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
-        .y(d => y(d.totalCost)); // Adjusted to use totalCost
+        .y(d => y(d.totalCost)); 
 
 
       g.append("text")
-        .attr("x", width - 10) // Adjust the x position
-        .attr("y", 10) // Adjust the y position
+        .attr("x", width - 10) 
+        .attr("y", 10) 
         .attr("text-anchor", "end")
         .attr("fill", "white")
 
@@ -201,17 +204,15 @@ export default {
         .enter()
         .append("circle")
         .attr("cx", d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
-        .attr("cy", d => y(d.totalCost)) // Updated to use totalCost
+        .attr("cy", d => y(d.totalCost)) 
         .attr("r", 5)
         .attr("fill", "steelblue")
 
         .on("mouseover", function (event, d) {
           const xPos = x(parseTime(d.itinerary_data.itinerary_data.destination.start_date));
-          const yPos = y(d.totalCost); // Change to totalCost
+          const yPos = y(d.totalCost); 
 
           const containerRect = g.node().getBoundingClientRect();
-          const containerLeft = containerRect.left;
-          const containerTop = containerRect.top;
 
           const descriptionWidth = 400;
           const descriptionHeight = 400;
@@ -235,7 +236,7 @@ export default {
 
           foreignObjectGroup
             .append("foreignObject")
-            .attr("width", descriptionWidth) // Use string interpolation to include 'px'
+            .attr("width", descriptionWidth) 
             .attr("height", descriptionHeight)
             .append("xhtml:div")
             .style("position", "absolute")
@@ -246,10 +247,12 @@ export default {
             .html(`
     <div style=" width: 300px; background: white; color: black; padding: 5px;">
       <div style="display:flex; justify-content: space-between;">
-        <p style="text-align: left; margin: 0;">To: ${d.itinerary_data.itinerary_data.destination.trip_country}</p>
+        <p style="text-align: left; margin: 0;">To:</p>
+        <p style="text-align: right; margin: 0;">${d.itinerary_data.itinerary_data.destination.trip_country}</p>
       </div>
       <div style="display:flex; justify-content: space-between;">
-        <p style="text-align: left; margin: 0;">Date: ${d.itinerary_data.itinerary_data.destination.start_date}</p>
+        <p style="text-align: left; margin: 0;">Date:</p>
+        <p style="text-align: right; margin: 0;"> ${d.itinerary_data.itinerary_data.destination.start_date}</p>
       </div>
       <div style="display:flex; justify-content: space-between;">
         <p style="text-align: left; margin: 0;">Hotel Cost:</p>
@@ -280,21 +283,42 @@ export default {
           d3.select(".x-hover-line").remove();
           d3.select(".y-hover-line").remove();
         });
+      const calculateTickCount = () => {
+        const maxTickCount = 10; 
+        const minWidthPerTick = 120; 
+
+        const tickCount = Math.floor(containerWidth / minWidthPerTick); 
+
+        return Math.min(tickCount, maxTickCount, this.dataLC.length); 
+      };
+
+      const tickCount = calculateTickCount();
+
       g.append("g")
         .attr("style", "color: white;")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).tickFormat(formatTime).ticks(this.dataLC.length));
+        .call(d3.axisBottom(x).ticks(tickCount).tickFormat((date, index, dates) => {
+          if (this.screenWidth <= 600) {
+            if (index === 0 || (index > 0 && dates[index - 1].getMonth() !== date.getMonth())) {
+              return formatTimeMonthYear(date);
+            } else {
+              return "";
+            }
+          } else {
+            return formatTime(date);
+          }
+        }));
 
 
 
       g.append("g")
         .call(d3.axisLeft(y).tickSizeOuter(0))
         .selectAll("text")
-        .attr("x", -30) // Shift the y-axis labels to the left
-        .attr("y", -10); // Adjust the vertical alignment of the labels
+        .attr("x", this.screenWidth <= 600 ? 0 : -30)
+        .attr("y", -10); 
       g.append("text")
         .attr("x", width - 10)
-        .attr("y", 30)
+        .attr("y", this.screenWidth <= 600 ? 10 : 30)
         .attr("text-anchor", "end")
         .attr("fill", "white")
         .text(`Total Cost: $${totalCost.toFixed(2)}`);
@@ -319,7 +343,7 @@ export default {
         .attr("dy", "1em")
         .style("text-anchor", "middle")
         .attr("fill", "white")
-        .text("Total Cost"); // Add the label for the y-axis
+        .text("Total Cost"); 
     },
   },
   beforeDestroy() {

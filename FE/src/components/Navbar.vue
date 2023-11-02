@@ -1,10 +1,10 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-12 px-0 d-flex justify-content-center">
-        <nav class="navbar navbar-expand-lg">
+    <div class="row" >
+      <div class="col-12 px-0 ms-4">
+        <nav class="navbar navbar-expand-lg bg-white px-0">
           <div class="container-fluid position-relative">
-            <img class="ms-4" src="../img/EcoBound.png" style="height: 50px; cursor: pointer; max-width: 100%;"
+            <img class="" src="../img/EcoBound.png" style="height: 50px; cursor: pointer; max-width: 100%;"
               alt="EcoBound Logo" @click="sliderIndicator(1)" />
               <div class="me-4 d-lg-none">
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -74,19 +74,19 @@ export default {
         },
         {
           id: 2,
-          icon: "fa fa-gear",
+          icon: "fa fa-hotel",
+          text: "Hotel",
+        },
+        {
+          id: 3,
+          icon: "fa fa-plane",
+          text: "Flights",
+        },
+        {
+          id: 4,
+          icon: "fa fa-chart-line",
           text: "Dashboard",
         },
-        // {
-        //   id: 3,
-        //   icon: "fa fa-question",
-        //   text: "About",
-        // },
-        // {
-        //   id: 4,
-        //   icon: "fa fa-question",
-        //   text: "Hotel",
-        // },
       ],
     };
   },
@@ -96,7 +96,7 @@ export default {
       this.sliderPosition = el.offsetLeft;
       this.selectedElementWidth = el.offsetWidth;
       this.selectedIndex = id;
-      var routes = { 1: '/', 2: '/dashboard', 3: '/', 4: '/hotel' }
+      var routes = { 1: '/', 2: '/hotel', 3: '/flight', 4: '/dashboard' }
       var page = routes[id]
       this.$router.push(page)
     },
@@ -129,7 +129,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .profile {
   color: white;
 }
@@ -200,8 +200,8 @@ body {
 }
 
 :root {
-  --active-color: #ffee93;
-  --link-text-color: #f1faee;
+  --active-color: #5a47eb;
+  --link-text-color: black;
   --menu-background-color: rgba(255, 0, 0, 0);
   ;
   --active-background-color: #EB4F47;
@@ -227,6 +227,7 @@ body {
   height: 100%;
   /* Ensure each menu item stretches to the full height of the navbar */
   align-items: center;
+  margin-left: 20px;
   
   /* Vertically center the menu items */
 }
@@ -284,6 +285,8 @@ body {
 * {
   /* color: white; */
   font-weight: var(--menu-background-color);
+  color: black;
+  
 }
 
 /* Styling the navbar dropdown */
@@ -296,7 +299,8 @@ body {
 .navbar-toggler-icon {
   width: 1.5rem;
   height: 1.5rem;
-  background-image: url("path_to_your_hamburger_icon");
+  background-image: url("../img/menu.png");
+  
   /* Replace "path_to_your_hamburger_icon" with the actual path to your hamburger icon */
   background-size: cover;
 }
@@ -311,9 +315,10 @@ body {
 }
 
 .nav-link {
-  color: white;
+  color: black;
   font-size: 1.2rem;
   padding: 10px;
+
 }
 
 /* Styling the active link in the dropdown */
@@ -321,4 +326,10 @@ body {
   color: #EB4F47;
   font-weight: bold;
 }
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
 </style>

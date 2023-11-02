@@ -52,7 +52,7 @@ export default {
 
     <div class="text-start">
       <h2 class="mt-3  d-none d-md-block">Select your flight</h2>
-      <h2 class="d-md-none mt-3">FLight</h2>
+      <h2 class="d-md-none mt-3">Flight</h2>
       <p class="">Fill up your flight details (Optional)</p>
     </div>
 
@@ -64,7 +64,7 @@ export default {
       <input
         type="text"
         id="name"
-        placeholder="e.g. Stephen King"
+        placeholder="e.g. SQ-222"
         class="py-2 ps-3"
         v-model="itineraryStore.flight_no"
       />

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid " >
     <div class="row rounded-rect-container align-items-start">
       <div class="row float-left">
         <h1 style="text-transform: capitalize;">{{ userid }}'s Dashboard</h1>

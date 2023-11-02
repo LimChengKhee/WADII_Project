@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
-   <div class="row bg-gray-100">  
+   <div class="row bg-gray-100" >  
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="min-height-400 position-absolute w-100 px-0" style="background-color: #5E72E4; right:0px"></div>
+    <div class="min-height-400 position-absolute w-100 px-0 " style="background-color: #5E72E4; right:0px;top:-2%"></div>
     <div class="col-3">
       <div v-if="!openModal" class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
         <div class="sidenav-header">
@@ -439,9 +439,19 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
     this.iti_name = this.$route.params.itinerary_name
     // const userStore = useUsersStore()
     this.iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
-    let item = this.iti_data.itinerary_data.destination.itinerary_date.split(',')
+
     this.days =  this.iti_data.itinerary_data.itinerary_days
-    console.log(this.days)
+    console.log(this.days,'2')
+    var hotel = this.iti_data.itinerary_data.hotels
+    if (hotel.length > 0){
+      this.baseOrigin = hotel[0].hotelname
+      this.origin = hotel[0].hotelname
+    }else{
+      this.baseOrigin = ''
+      this.origin = ''
+    }
+    
+    
 
     },
   
@@ -465,6 +475,7 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
       const authStore = useAuthStore()
       console.log(this.iti_data)
       this.iti_data.itinerary_data.itinerary_days = this.days
+      this.iti_data.itinerary_data.destination = format
       await userStore.updateItinerary(this.iti_data, this.user, this.iti_name)
     },
     initialiseOrigin(){

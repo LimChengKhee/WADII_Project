@@ -142,7 +142,7 @@ mindate = getDate()
               <i class="fa fa-minus"></i>
             </button>
           </span>
-          <h5 class="p-1 pt-2">{{ itineraryStore.child }}</h5>
+          <h5 class="p-1 pt-2">{{ itineraryStore.adult }}</h5>
           <span class="input-group-btn">
             <button
               type="button"

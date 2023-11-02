@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useAuthStore } from './authStore'
 import axios from 'axios'
+import cities from '../../components/countries.json'
 
 export const useItineraryStore = defineStore('itinerary', {
   state: () => {
@@ -45,9 +46,18 @@ export const useItineraryStore = defineStore('itinerary', {
   },
   actions: {
     validateDestination(arrival_country) {
-      if (arrival_country.length < 3) {
+      var country = []  
+      cities.forEach(function(obj){
+        country.push(obj['country'])
+      })
+      var check = country.filter((c) => c.toLowerCase() == arrival_country.toLowerCase())
+      console.log(check)
+      if (arrival_country.length == null || arrival_country.length == 0) {
         this.errors.arrival_country = 'Choose a destination to start planning'
-      } else {
+      } else if (check <= 0){
+        this.errors.arrival_country = 'Invalid country'
+      } 
+      else{
         this.errors.arrival_country = ''
       }
     },
@@ -55,7 +65,7 @@ export const useItineraryStore = defineStore('itinerary', {
         if (hotel == null) {
             this.errors.hotel = 'This field is required';
         } else if (hotel.length == 0) {
-            this.errors.hotel = 'Email must contain @';
+            this.errors.hotel = 'This field is required';
         } else {
             this.errors.hotel = '';
         }
