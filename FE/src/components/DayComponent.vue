@@ -582,7 +582,7 @@ data () {
             'North Macedonia': 'MK',
             'Češka': 'CZ'
         },
-        countryName: "Australia",
+        countryName: "",
         country: "",
         predictionList: [],
         selectedTypes: ['tourist_attraction','museum','cafe'],
@@ -1170,10 +1170,17 @@ methods: {
     async findPlace(query,fieldList,locBias){
         var testDiv = document.getElementById('testingDiv');
         const {PlacesService} = await google.maps.importLibrary("places");
-        let request = {
-            query: query,
-            fields: fieldList,
-            locationBias: locBias,
+        if (locBias !== ""){
+            var request = {
+                query: query,
+                fields: fieldList,
+                locationBias: locBias,
+            }
+        }else{
+            var request = {
+                query: query,
+                fields: fieldList
+            }
         }
         var service = new PlacesService(testDiv);
         return new Promise((resolve, reject) => {service.findPlaceFromQuery(request, (results, status) => {

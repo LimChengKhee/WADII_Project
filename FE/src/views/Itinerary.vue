@@ -22,11 +22,11 @@
     </div>
     <div class="min-height-400 position-absolute w-100 px-0 " style="background-color: #5E72E4; right:0px;top:-2%"></div>
     <div class="col-3">
-      <div v-if="!openModal" class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
-        <div class="sidenav-header">
+      <div v-if="!openModal" class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start ms-4 " id="sidenav-main" style="margin-top:5%">
+        <!-- <div class="sidenav-header">
           <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
           <img src="../assets/img/EcoBound.png" class="navbar-brand-img" style="max-height:78px!important;" alt="main_logo" >
-        </div>
+        </div> -->
         <hr class="horizontal dark mt-0">
         <div class="collapse navbar-collapse w-auto" style="min-height:700px" id="sidenav-collapse-main">
           <ul class="navbar-nav">
@@ -172,9 +172,9 @@
                         <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
                       </svg></p> 
                       <div class="input-group pe-0 mt-3 mb-0">
-                        <Datepicker class="w-md-75" style="height:40px; max-width:350px" id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range :enable-time-picker="false"/>
+                        <Datepicker class="w-md-75" style="height:40px; max-width:350px" id='datepick' :min-date="date[0]" :model-value="date" :clearable="false" @update:model-value="selectDate" range :enable-time-picker="false" :teleport=true />
                         <button id='addDay' @click="addDaystoEnd(1)" style="height:38px; margin-top:1px;" class="btn btn-success mb-0" :disabled="this.days.length==0" type="button">
-                          ✚
+                          <!-- ✚ --> Add Day
                         </button>
                       </div>
                     </div>
@@ -384,6 +384,7 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
         editOrigin: false,
         originResult: "",
         originLoc: "",
+        countryName:'',
       }
     },
     computed: {
@@ -400,20 +401,10 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
         const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
         this.date = [startDate, endDate];
       }
-      this.initialiseOrigin();
-      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-      if (this.topAttractions.length == 0){
-          this.getSlicedArr()
-        }
-      // const myCarouselElement = document.querySelector('#activityCarousel')
-      // const carousel = new bootstrap.Carousel(myCarouselElement, {
-      // interval: 3000,
-      // touch: true
-      // })
-      // if (this.topAttractions.length == 0){
-      //     this.getSlicedArr()
-      //   }
+
+
+
+
       const userStore = useUsersStore()
       this.user = this.$route.params.username
       this.iti_name = this.$route.params.itinerary_name
@@ -424,9 +415,26 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
       let item = iti_data.itinerary_data.destination.itinerary_date.split(',')
       let date_range = [new Date(item[0]), new Date(item[1])]
       this.iti_data = iti_data
+
+
+      
+
       this.selectDate(date_range)
       this.itinerary_date = date_range
-      // this.days =  this.iti_data.itinerary_data.itinerary_days
+      this.days =  this.iti_data.itinerary_data.itinerary_days
+      this.countryName = this.iti_data.itinerary_data.destination.trip_country
+
+      this.$refs.dayComp.country = this.$refs.dayComp.getCountryCode(this.countryName)
+      console.log(this.$refs.dayComp.country)
+      
+      this.initialiseOrigin();
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+      if (this.topAttractions.length == 0){
+          this.getSlicedArr()
+        }
+    
+      
       
 
     },
@@ -440,9 +448,8 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
     // const userStore = useUsersStore()
     this.iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
 
-    this.days =  this.iti_data.itinerary_data.itinerary_days
-    console.log(this.days,'2')
     var hotel = this.iti_data.itinerary_data.hotels
+    
     if (hotel.length > 0){
       this.baseOrigin = hotel[0].hotelname
       this.origin = hotel[0].hotelname
@@ -450,6 +457,11 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
       this.baseOrigin = ''
       this.origin = ''
     }
+
+    // this.days =  this.iti_data.itinerary_data.itinerary_days
+    // console.log(this.iti_data.itinerary_data.itinerary_days)
+    // console.log(this.days,'2')
+    
     
     
 
@@ -475,11 +487,11 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
       const authStore = useAuthStore()
       console.log(this.iti_data)
       this.iti_data.itinerary_data.itinerary_days = this.days
-      this.iti_data.itinerary_data.destination = format
+      // this.iti_data.itinerary_data.destination = format
       await userStore.updateItinerary(this.iti_data, this.user, this.iti_name)
     },
     initialiseOrigin(){
-        this.$refs.dayComp.findPlace(this.origin,['geometry']).then(result => {
+        this.$refs.dayComp.findPlace(this.origin,['geometry'],"").then(result => {
           if (result == "No results"){
             this.originLoc = ''
           }else{
@@ -493,9 +505,9 @@ import { useItineraryStore } from '../store/piniaStore/itinerary'
         this.baseOrigin = this.origin
         this.editOrigin = false
       },
-      verifyLocation(){
+      async verifyLocation(){
         this.originResult = ""
-        this.$refs.dayComp.findPlace(this.origin,['geometry','name','formatted_address'],this.originLoc).then(result =>{
+        await this.$refs.dayComp.findPlace(this.origin,['geometry','name','formatted_address'],this.originLoc).then(result =>{
           if (result == "No results"){
               this.originResult = "Place not found"
           }else{
@@ -27562,6 +27574,10 @@ pre[class*="language-"] {
   .ps {
     overflow: auto !important;
   }
+}
+
+.modal{
+  z-index:9999
 }
 
 /*# sourceMappingURL=dashboard-free.css.map */
