@@ -1,49 +1,46 @@
 <template>
-  <div class="parent-container container rounded-4 bg-white">
+  <div class="parent-container container-fluid">
     <div class="row">
-
-      <div class="col-12">
+      <div class="col-1">
+        <p></p>
+      </div>
+      <div class="col-11">
         <div class="row">
           <div class="header">
           <div class="container-fluid">
-            <div class="row my-5">
+            <div class="row">
               <div class="col">
-                <h2 style="text-align: center;color:black">Search Accommodation</h2>
+                <h2 style="text-align: center">Search accomodation</h2>
               </div>
             </div>
-            <!-- <div class="row">
+            <div class="row">
               <div class="col">
-                <p style="text-align: center;color:black">Search for accomodation deals in {}</p>
+                <p style="text-align: center">Search for accomodation deals in {}</p>
               </div>
-            </div> -->
+            </div>
           </div>
 
-          <div class="container big">
-            <div class="me-2" style="display:flex;">
-              
-
-                <div class="me-4">
-                <Datepicker 
-                v-model="this.date"
-                placeholder="Date"
-                :min-date="mindate"
-                input-class-name=""
-                :teleport="true"
-                range
-                /></div>
-                <!-- sort -->
-              <!-- <div class="">
-                    <button class="btn btn-secondary dropdown-toggle " type="button" data-bs-toggle="dropdown"
+          <div class="container">
+            <div class="row mb-5" style="position:relative;z-index:1000;">
+              <div class="col-xl-1"></div>
+              <div class="col-xl-3">
+                <input v-model="user_search" type="text" style="color:black;">
+                <button class="btn btn-primary" value="Search" @click="searchHotelName()" type="button">Search</button>
+              </div>
+              <div class="col-xl-5"></div>
+              <div class="col-xl-1">
+                <span>
+                  <div class="dropdown" style="width: 100%">
+                    <button class="btn btn-secondary dropdown-toggle mt-sm-3" type="button" data-bs-toggle="dropdown"
                       aria-expanded="false">
                       Sorting Criteria
                     </button>
-                    
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="#">Review Rating
                           <span v-if="review_sort" @click="sort_review()"><img src="../assets/sort-up.png"
                               style="width:10px" alt=""></span>
 
-                          <span v-else @click="sort_review()" ><img src="../assets/caret-down.png" style="width:10px"
+                          <span @click="sort_review()" v-else><img src="../assets/caret-down.png" style="width:10px"
                               alt=""></span>
                         </a></li>
                       <li><a class="dropdown-item" href="#">Distance
@@ -55,32 +52,27 @@
 
                         </a></li>
                     </ul>
-              </div> -->
-              <div class="me-4">
-                <input v-model="user_search" type="text" style="color:black; border:1px solid lightgrey; height:38px" placeholder="Search Hotel" class="p-2">
-              </div>
-              <div class="">
-                <button class="btn btn-primary" value="Search" @click="searchHotelName()" type="button">Search</button>
+                  </div>
+
+                </span>
               </div>
             </div>
           </div>
-
-          <div class="row mobile">
-            <div class="col-12"><Datepicker 
+        </div>
+        </div>
+        <div class="row" style="position:relative;z-index:1000;">
+              <div class="col-xl-1"></div>
+              <div class="col-xl-3" >
+                <Datepicker 
                 v-model="this.date"
-                placeholder="Date"
+                placeholder="Start Date | End Date"
                 :min-date="mindate"
-                input-class-name=""
-                :teleport="true"
-                range
-                /></div>
-            <div class="col-12 "><input v-model="user_search" type="text" style="color:black; border:1px solid lightgrey; height:38px" placeholder="Search Hotel" class="p-2 w-100 my-2"></div>
-            <div class="col-12"><button class="btn btn-primary w-100" value="Search" @click="searchHotelName()" type="button">Search</button></div>
-          </div>
-
+                position="right"
+                />
+              </div>
+              <div class="col-xl-5"></div>
+              <div class="col-xl-1"></div>
         </div>
-        </div>
-
         <div class="card_section mt-5" v-if="mounted && !search">
           <HotelCard v-for="hotel in this.hotelsInCities" :hotel_name="hotel.hotel_name"
             :distance_to_cc_formatted="hotel.distance_to_cc_formatted" :review_score="hotel.review_score"
@@ -161,7 +153,7 @@ export default {
       return today
     },
     sort_review() {
-      console.log("test");
+      console.log("jdsif");
       this.review_sort = !this.review_sort;
       if (!this.review_sort) {
         this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
@@ -314,30 +306,5 @@ export default {
 *{
   color:white;
 }
-
-@media only screen and (min-width: 576px) {
-
-
-  .mobile{
-    display:none;
-  }
-   
-     }
-
-
-@media only screen and (max-width: 576px) {
-
-
-.mobile{
-  display:block;
-}
-.big{
-  display:none;
-}
- 
-   }
-   .card{
-    
-   }
 </style>
 

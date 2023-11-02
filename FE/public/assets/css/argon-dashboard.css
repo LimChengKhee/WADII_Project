@@ -21224,6 +21224,7 @@ fieldset:disabled .btn {
   }
 
   .dropdown .dropdown-menu.show:before {
+    border: 1px solid black;
     top: -20px;
   }
 

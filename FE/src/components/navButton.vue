@@ -49,8 +49,8 @@ const nextStep = () => {
 </script>
 
 <template>
-    <div class="nav-buttons ">
-        <button v-if="stepStore.step > 1" @click="stepStore.previousStep()" class="button prev-button float-start  mt-2">Go Back</button>
+    <div class="nav-buttons">
+        <button v-if="stepStore.step > 1" @click="stepStore.previousStep()" class="button prev-button float-start  d-flex flex-row mt-auto mx-auto">Go Back</button>
         <button v-if="stepStore.step < 3" @click="nextStep()" class="button next-button float-end">Next Step</button>
         <button v-if="stepStore.step == 3" @click="nextLocation()" class="button confirm-button float-end">Confirm</button>
     </div>
@@ -100,7 +100,80 @@ const nextStep = () => {
 .confirm-button:hover {
     opacity: 0.8;
 }
+@media only screen and (min-width: 992px) {
 
+    .prev-button{
+    position:absolute;
+    bottom: 0%;
+    left:25%;
+  }
+  .next-button{
+    position:absolute;
+    bottom: 0%;
+    right:7%;
+  }
+  .confirm-button{
+    position:absolute;
+    bottom: 0%;
+    right:7%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+    .prev-button{
+    position:absolute;
+    bottom: 0%;
+    left:25%;
+  }
+  .next-button{
+    position:absolute;
+    bottom: 0%;
+    right:7%;
+  }
+  .confirm-button{
+    position:absolute;
+    bottom: 0%;
+    right:7%;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+
+  .prev-button{
+    position:absolute;
+    bottom: 0%;
+    left:-6%;
+  }
+  .next-button{
+    position:absolute;
+    bottom: 0%;
+    right:0%;
+  }
+  .confirm-button{
+    position:absolute;
+    bottom: 0%;
+    right:7%;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+
+.prev-button{
+  position:absolute;
+  bottom: 0%;
+  left:-6%;
+}
+.next-button{
+  position:absolute;
+  bottom: 0%;
+  right:0%;
+}
+.confirm-button{
+  position:absolute;
+  bottom: 0%;
+  right:7%;
+}
+}
 
 
 </style>
