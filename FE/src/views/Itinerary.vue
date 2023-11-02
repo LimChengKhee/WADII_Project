@@ -847,8 +847,7 @@ export default {
     this.itinerary_date = date_range
 
     this.$refs.dayComp.countryName = this.$refs.dayComp.getCountryCode(this.countryName)
-    console.log(this.$refs.dayComp.country, 'hello')
-    console.log(this.origin)
+
     this.initialiseOrigin()
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(
@@ -869,8 +868,7 @@ export default {
     this.iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
 
     // this.days =  this.iti_data.itinerary_data.itinerary_days
-    // console.log(this.iti_data.itinerary_data.itinerary_days)
-    // console.log(this.days,'2')
+
   },
 
   methods: {
@@ -880,7 +878,6 @@ export default {
     toggleSidebarVisibility() {
       const toggle = document.getElementsByClassName('sidenav')[0]
       var check = window.getComputedStyle(toggle).display
-      console.log(check)
       if (check == 'none') {
         toggle.style.display = 'block'
       } else {
@@ -904,20 +901,16 @@ export default {
         }
         return countryName
       }
-      console.log(countryName)
       
     },
     view_date(date) {
-      console.log(date, 'hi')
       if (date == null) {
         return
       }
 
       if (!(date.includes(','))) {
-        console.log(date,'oneonly')
         let one = new Date(date)
         let printableDate = new Date(new Date().setDate(one.getDate()))
-        console.log(printableDate)
         return printableDate.toDateString()
       }
 
@@ -929,7 +922,6 @@ export default {
       return `${printableDate.toDateString()} - ${printableDate1.toDateString()}`
     },
     view_time(time) {
-      console.log(time,'df')
       return time.slice(0, -6) + time.slice(-2);
      
     },

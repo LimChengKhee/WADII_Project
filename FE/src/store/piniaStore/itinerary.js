@@ -51,7 +51,6 @@ export const useItineraryStore = defineStore('itinerary', {
         country.push(obj['country'])
       })
       var check = country.filter((c) => c.toLowerCase() == arrival_country.toLowerCase())
-      console.log(check)
       if (arrival_country.length == null || arrival_country.length == 0) {
         this.errors.arrival_country = 'Choose a destination to start planning'
       } else if (check <= 0){
@@ -71,7 +70,6 @@ export const useItineraryStore = defineStore('itinerary', {
         }
     },
     validatetripdate(trip_date) {
-      console.log(trip_date)
       
       if (trip_date == null) {
           this.errors.trip_date = 'This field is required';
@@ -119,13 +117,10 @@ export const useItineraryStore = defineStore('itinerary', {
       var today = today_d + '_' + today_t
       var itinerary_name = this.arrival_country.toLowerCase() + '_' + today
       var json_obj = await this.createJsonObj(userid, itinerary_name, today_d)
-      console.log(json_obj.itinerary_data.hotels.length, 'LENGTH')
       if (json_obj.itinerary_data.hotels.length != 0) {
-        console.log('YOU LIER')
         this.flag.hotel = true
       } else {
         this.flag.hotel = false
-        console.log(false)
       }
       var json_str = JSON.stringify(json_obj)
       var bodydata = {
@@ -133,7 +128,6 @@ export const useItineraryStore = defineStore('itinerary', {
         itinerary_data: json_str,
         itinerary_name: itinerary_name
       }
-      console.log(bodydata, token, 's')
 
       const info = await axios.post(`http://127.0.0.1:8000/api_d/itinerary/`, bodydata, {
         headers: { 'Content-Type': 'application/json', Authorization: `Token ${token}` }
@@ -145,7 +139,6 @@ export const useItineraryStore = defineStore('itinerary', {
       var destination = await this.getDestination(today_d)
       var flight = await this.getFlight()
       var hotel = await this.getHotel()
-      console.log(Object.keys(hotel).length, Object.keys(flight).length, 'LENGTH')
 
       var json_obj = {
         display_name: itinerary_name,

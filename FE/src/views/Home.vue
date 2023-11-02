@@ -119,7 +119,7 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
-  background: url("../img/heroImg.jpg") no-repeat center center fixed;
+  background: url("../img/nature.jpg") no-repeat center center fixed;
   background-size: cover;
   /* Ensures the background covers the entire container */
   overflow-x: hidden;
