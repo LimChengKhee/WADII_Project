@@ -422,7 +422,7 @@
         <div class="row mt-lg-4 m">
           <div class="col-xxl-5 col-12 col-md-6 mb-xl-0 mb-4">
             <div class="card">
-              <div class="card-body p-3" >
+              <div class="card-body p-3">
                 <div class="row">
                   <div class="col-10">
                     <div class="numbers">
@@ -466,42 +466,41 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div 
+                    <div
                       class="mt-3 mb-3"
                       style="height: 120px; width: 100%; overflow-y: scroll; overflow-x: hidden"
                     >
                       <div v-for="(flight, ind) in this.iti_data.itinerary_data.flights" class="">
                         <div class="mb-3 rounded-2 p-2 pb-1 shadow bg-c-pink order-card" style="">
                           <template v-if="flight">
-                          <div class="row">
-                            <div class="col-8">
-                              {{ getCountryCode(flight.departure_country) }} ➜
-                              {{ getCountryCode(flight.arrival_country) }}
+                            <div class="row">
+                              <div class="col-8">
+                                {{ getCountryCode(flight.departure_country) }} ➜
+                                {{ getCountryCode(flight.arrival_country) }}
+                              </div>
+                              <div class="col">
+                                <p class="float-end">${{ flight.cost }}</p>
+                              </div>
                             </div>
-                            <div class="col">
-                              <p class="float-end">${{ flight.cost }}</p>
+                            <div class="row">
+                              <div class="col-8">
+                                <h6 class="fw-bold" style="">
+                                  {{ view_date(flight.departure_datetime.split(',')[0]) }}
+                                  {{ view_time(flight.departure_datetime.split(',')[1]) }}
+                                </h6>
+                                <h6 class="fw-bold" style="">
+                                  {{ view_date(flight.arrival_datetime.split(',')[0]) }}
+                                  {{ view_time(flight.arrival_datetime.split(',')[1]) }}
+                                </h6>
+                              </div>
+                              <div class="col">
+                                <button class="btn btn-danger float-end" @click="deleteFlight(ind)">
+                                  Delete
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-8">
-                              <h6 class="fw-bold" style="">
-                                {{ view_date((flight.departure_datetime).split(',')[0]) }}
-                                {{ view_time(flight.departure_datetime.split(',')[1]) }}
-                              </h6>
-                              <h6 class="fw-bold" style="">
-                                {{ view_date((flight.arrival_datetime).split(',')[0]) }}
-                                {{  view_time(flight.arrival_datetime.split(',')[1]) }}
-                              </h6>
-                            </div>
-                            <div class="col">
-                              <button class="btn btn-danger float-end" @click="deleteFlight(ind)">
-                                Delete
-                              </button>
-                            </div>
-                          </div>
-                        </template>
+                          </template>
                         </div>
-                      
                       </div>
                     </div>
                   </div>
@@ -511,7 +510,7 @@
           </div>
           <div class="col-xxl-5 offset-xxl-1 col-md-6 col-12 mb-xl-0 mb-4">
             <div class="card">
-              <div class="card-body p-3 ">
+              <div class="card-body p-3">
                 <div class="row">
                   <div class="col-10">
                     <div class="numbers">
@@ -555,10 +554,10 @@
                   </div>
                 </div>
 
-                <div class="row ">
+                <div class="row">
                   <div
                     class="mt-3 mb-3"
-                    style="height: 120px; width: 100%; overflow-y: scroll; overflow-x: hidden;"
+                    style="height: 120px; width: 100%; overflow-y: scroll; overflow-x: hidden"
                   >
                     <div v-for="(hotel, ind) in this.iti_data.itinerary_data.hotels" class="">
                       <div class="mb-3 rounded-2 p-2 pb-1 shadow bg-c-green order-card" style="">
@@ -718,8 +717,7 @@
                       />
                       <path
                         d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"
-                      /></svg
-                  ></a>
+                      /></svg></a>
                 </span>
               </div>
             </div>
@@ -815,24 +813,21 @@ export default {
   async mounted() {
     this.checkScreenSize()
     window.addEventListener('resize', this.checkScreenSize)
-    if (this.date.length == 0) {
-      const startDate = new Date()
-      const endDate = new Date(new Date().setDate(startDate.getDate() + 7))
-      this.date = [startDate, endDate]
-    }
+    
     const userStore = useUsersStore()
     this.user = this.$route.params.username
     this.iti_name = this.$route.params.itinerary_name
 
     var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
-    console.log(iti_data)
+    console.log(iti_data,'data')
 
-    let item = iti_data.itinerary_data.destination.itinerary_date.split(',')
-    let date_range = [new Date(item[0]), new Date(item[1])]
     this.iti_data = iti_data
-
-    var hotel = this.iti_data.itinerary_data.hotels
     this.countryName = this.iti_data.itinerary_data.destination.trip_country
+    // this.days =  this.iti_data.itinerary_data.itinerary_days
+    console.log(this.days,'b4')
+     this.selectDate(this.date)
+     console.log(this.days,'aft')
+    
 
     if (hotel.length > 0) {
       this.baseOrigin = hotel[0].hotelname + ' ' + this.countryName
@@ -842,9 +837,9 @@ export default {
       this.origin = this.countryName
     }
 
-    this.days = this.iti_data.itinerary_data.itinerary_days
-    this.selectDate(date_range)
-    this.itinerary_date = date_range
+    
+    
+    
 
     this.$refs.dayComp.countryName = this.$refs.dayComp.getCountryCode(this.countryName)
 
@@ -866,9 +861,14 @@ export default {
     this.iti_name = this.$route.params.itinerary_name
     // const userStore = useUsersStore()
     this.iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+    this.days = this.iti_data.itinerary_data.itinerary_days
+    let item = this.iti_data.itinerary_data.destination.itinerary_date.split(',')
+    let date_range = [new Date(item[0]), new Date(item[1])]
+    this.date = date_range
+    this.itinerary_date = date_range
+    // this.days = this.iti_data.itinerary_data.itinerary_days
 
-    // this.days =  this.iti_data.itinerary_data.itinerary_days
-
+    
   },
 
   methods: {
@@ -885,30 +885,29 @@ export default {
       }
     },
     getCountryCode(countryName) {
-      if (countryName == null){
+      if (countryName == null) {
         return
       }
-      if (countryName in country_code){
+      if (countryName in country_code) {
         return country_code[countryName]
-      }else{
-        if (countryName.includes(' ')){
+      } else {
+        if (countryName.includes(' ')) {
           let country = countryName.split(' ')[0]
-        if (country in country_code){
-        return country_code[country]
-          }else{
+          if (country in country_code) {
+            return country_code[country]
+          } else {
             return country
           }
         }
         return countryName
       }
-      
     },
     view_date(date) {
       if (date == null) {
         return
       }
 
-      if (!(date.includes(','))) {
+      if (!date.includes(',')) {
         let one = new Date(date)
         let printableDate = new Date(new Date().setDate(one.getDate()))
         return printableDate.toDateString()
@@ -922,8 +921,7 @@ export default {
       return `${printableDate.toDateString()} - ${printableDate1.toDateString()}`
     },
     view_time(time) {
-      return time.slice(0, -6) + time.slice(-2);
-     
+      return time.slice(0, -6) + time.slice(-2)
     },
     changeOpenModal() {
       if (this.openModal == true) {
@@ -949,12 +947,11 @@ export default {
       const userStore = useUsersStore()
       const authStore = useAuthStore()
       var iti_data = this.iti_data
-      console.log(this.days,'tobestored')
+      console.log(this.days, 'tobestored')
       iti_data.itinerary_data.itinerary_days = this.days
-      
-      
+
       // this.iti_data.itinerary_data.destination = format
-      console.log(iti_data,'before saved')
+      console.log(iti_data, 'before saved')
       await userStore.updateItinerary(iti_data, this.user, this.iti_name)
     },
     initialiseOrigin() {
