@@ -955,9 +955,10 @@ export default {
       iti_data.itinerary_data.itinerary_days = this.days
       let start = new Date(iti_data.itinerary_data.destination.start_date)
       let trip_length = this.days.length;
-      let end = start.setDate(start.getDate()+trip_length);
-      iti_data.itinerary_data.destination.end_date = format_date(end)[0]
-      
+      let end = new Date(new Date().setDate(start.getDate() + (trip_length-1)));
+      this.date= [start,end]
+      iti_data.itinerary_data.destination.end_date = this.format_date(end)[0]
+      iti_data.itinerary_data.destination.itinerary_date = `${this.format_date(start)[0]},${this.format_date(end)[0]}`
 
       // this.iti_data.itinerary_data.destination = format
       console.log(iti_data, 'before saved')
@@ -991,6 +992,7 @@ export default {
         })
     },
     getSlicedArr() {
+      
       this.$refs.dayComp.getTopAttractions().then((result) => {
         this.topAttractions = result
         console.log(this.topAttractions)

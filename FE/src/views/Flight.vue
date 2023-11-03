@@ -274,17 +274,17 @@ export default {
       var end_date = iti_data.itinerary_data.destination.end_date
       this.start_date = start_date
       this.end_date = end_date
-      var date_range = itineraryStore.handleDate(this.flight_date)
+      // var date_range = itineraryStore.handleDate(this.flight_date)
+      // var date_list = date_range.split(',')
 
-      var date_list = date_range.split(',')
-
-      var d_date = date_list[0]
-      var a_date = date_list[1]
+      var d_date = this.start_date
+      // var a_date = date_list[1]
 
       var d_skyId = 'SINS'
       var d_entityId = '27546111'
       console.log(destination_country)
       const [a_skyId, a_entityId] = await this.getAPIcountry(destination_country)
+      console.log(a_skyId, a_entityId)
       // var a_skyId = 'JP'
       // var a_entityId = '29475330'
       if (a_skyId == null || a_entityId == null) {
@@ -292,7 +292,7 @@ export default {
         return
       }
       var people = '1'
-      console.log(d_date, a_date)
+
       const options = {
         method: 'GET',
         url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchFlights',
@@ -349,6 +349,7 @@ export default {
     async filterby(data, stops) {
       var result = []
       if (stops == 'one') {
+        console.log(data,'GONE')
         var flight_list = data.data.itineraries
         console.log(flight_list)
         for (let f of flight_list) {
