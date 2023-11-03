@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
-  <div class="row bg-gray-100">
+  <div class="row bg-gray-100" >
     <button
       v-if="isSmallScreen"
       class="btn btn-primary floating-button mb-0"
@@ -200,16 +200,16 @@
         </div>
         <div class="sidenav-footer mt-auto mx-3">
           <hr color="black" />
-          <a href="#" class="btn btn-dark btn-sm w-100 mb-3">Jump to top</a>
+          <a href="#top" class="btn btn-dark btn-sm w-100 mb-3">Jump to top</a>
           <button @click="save()" class="btn btn-primary text-center  w-100" style="height:30px">Save</button>
         </div>
       </div>
     </div>
     <div class="col-lg-9 col-12 px-0 me-0" style="text-align: start; font-size: 22px">
-      <div class="container-fluid p-4">
+      <div class="container-fluid p-4" id="top">
         <div class="row">
-          <div class="col-xl-4 mb-4" style="z-index: 99">
-            <h5 class="font-weight-bolder text-white ms-2">Itinerary</h5>
+          <div class="col-xl-4 mb-4" style="z-index: 99" >
+            <h5 class="font-weight-bolder text-white ms-2" >Itinerary</h5>
           </div>
         </div>
         <div class="row">
@@ -455,7 +455,7 @@
                       style="height: 120px; width: 100%; overflow-y: scroll; overflow-x: hidden"
                     >
                       <div v-for="(flight, ind) in this.iti_data.itinerary_data.flights" class="">
-                        <div class="mb-3 rounded-2 p-2 pb-1 shadow bg-c-pink order-card" style="">
+                        <div class="mb-3 rounded-2 p-2 pb-1 shadow bg-c-pink order-card" style="background:linear-gradient(310deg, #f5365c 0%, #f56036 100%)!important">
                           <template v-if="flight">
                             <div class="row">
                               <div class="col-8">
@@ -477,10 +477,14 @@
                                   {{ view_datetime(flight.arrival_datetime)[1] }}
                                 </h6>
                               </div>
-                              <div class="col">
-                                <button class="btn btn-danger float-end" @click="deleteFlight(ind)">
-                                  Delete
-                                </button>
+                              <div class="col ">
+                                <div class="float-end " @click="deleteFlight(ind)" style="cursor:pointer" >
+                                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"  fill-rule="evenodd" clip-rule="evenodd">
+                                  <path d="M19 24h-14c-1.104 0-2-.896-2-2v-17h-1v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2h-1v17c0 1.104-.896 2-2 2zm0-19h-14v16.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-16.5zm-9 4c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm6 0c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm-2-7h-4v1h4v-1z"/></svg>
+                               
+                                  </div>
+                                
+                                
                               </div>
                             </div>
                           </template>
@@ -544,7 +548,7 @@
                     style="height: 120px; width: 100%; overflow-y: scroll; overflow-x: hidden"
                   >
                     <div v-for="(hotel, ind) in this.iti_data.itinerary_data.hotels" class="">
-                      <div class="mb-3 rounded-2 p-2 pb-1 shadow bg-c-green order-card" style="">
+                      <div class="mb-3 rounded-2 p-2 pb-1 shadow bg-c-green order-card" style="background:linear-gradient(310deg, #2dce89 0%, #2dcecc 100%)">
                         <div class="row">
                           <div class="col-8" style="text-transform: capitalize;">
                            {{ hotel.hotelname }}
@@ -553,15 +557,19 @@
                             <p class="float-end">${{ hotel.cost }}</p>
                           </div>
                         </div>
-                        <div class="row">
+                        <div class="row d-flex align-items-center">
                           <div class="col-9">
                             <h6 class="fw-bold" style="">{{ view_date(hotel.check_indates) }}</h6>
                           </div>
-                          <div class="col">
-                            <button class="btn btn-danger float-end" @click="deleteHotel(ind)">
-                              Delete
-                            </button>
-                          </div>
+                          <div class="col float-end mb-2">
+                                <div class="float-end" @click="deleteHotel(ind)" style="cursor:pointer" >
+                                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"  fill-rule="evenodd" clip-rule="evenodd">
+                                  <path d="M19 24h-14c-1.104 0-2-.896-2-2v-17h-1v-2h6v-1.5c0-.827.673-1.5 1.5-1.5h5c.825 0 1.5.671 1.5 1.5v1.5h6v2h-1v17c0 1.104-.896 2-2 2zm0-19h-14v16.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-16.5zm-9 4c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm6 0c0-.552-.448-1-1-1s-1 .448-1 1v9c0 .552.448 1 1 1s1-.448 1-1v-9zm-2-7h-4v1h4v-1z"/></svg>
+                               
+                                  </div>
+                                
+                                
+                              </div>
                         </div>
                       </div>
                     </div>

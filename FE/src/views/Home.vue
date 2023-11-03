@@ -196,9 +196,9 @@ body {
   /* Adjust margin as needed */
 }
 
-.card:hover {
+/* .card:hover {
   transform: translateY(-10px);
-}
+} */
 
 .card-img-top {
   border-top-left-radius: 10px;
