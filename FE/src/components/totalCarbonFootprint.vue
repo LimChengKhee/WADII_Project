@@ -44,7 +44,7 @@ export default {
         dataCP: {
             immediate: true,
             handler(newVal, oldVal) {
-                this.totalCarbonFootprint = this.getInfo(newVal, 'carbon_fp');
+                this.totalCarbonFootprint = this.getInfo(newVal, 'carbon_fp').toFixed(2);
             }
         }
     },

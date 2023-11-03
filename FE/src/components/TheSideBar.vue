@@ -20,7 +20,7 @@ function gotostep(step){
 let steps = [
     {
         number: 1,
-        label: "DESTINATION"
+        label: "TRIP"
     },
     {
         number: 2,
@@ -36,7 +36,7 @@ let steps = [
 </script>
 
 <template>
-    <div class=" sidebar h-100 pt-5 ps-4 me-5 no-scroll w-50">
+    <div class="sidebar pt-5 ps-4 me-5 no-scroll ">
         <StepComponent class="" v-for="step in steps" :step="step" @click.native="gotostep(step)" :active="step.number == stepStore.step" />
     </div>
 </template>
@@ -48,22 +48,16 @@ let steps = [
     overflow-y: auto;
 }
 .sidebar {
-    /* padding: 60px 40px; */
+    padding: 10px 5px;
     /* background: url("../assets/img/bg-sidebar-desktop.svg"); */
     background: url("../assets/sidebar_img2.jpg");
     background-size: cover;
     border-radius: 16px;
+    height: 100%;
+    width:50%;
+
 }
 
-@media only screen and (min-width: 992px) {
-  .sidebar {
-    background: url("../assets/sidebar_img3.jpg");
-    /* background: url("../assets/img/haikei1.svg"); */
-    background-size: cover;
-    border-radius: 16px;
-    width:300px;
-    margin-right:0px;
-    /* padding: 60px 40px; */
-}
-}
+
+
 </style>

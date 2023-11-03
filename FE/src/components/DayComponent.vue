@@ -1,6 +1,89 @@
 <template>
     <div id="testingDiv"></div>
     <div class="row" v-for="day of days" :key="day.dayId" :id="'Day' + day.dayId + 'Row'">
+        <div class="col mt-4">
+            <div class="card">
+                <div class="card-header m-0 row pb-0" style="background-color: white; border-bottom:0px;">
+                    <h6 class="p-0 col-1 my-auto" style="color:#344767">
+                        Day {{ day.dayId+1 }}
+                    </h6>
+                    <button v-if="day.dayActivities.length > 0" type="button" class="mt-0 py-0 col-4 btn btn-link my-auto text-warning text-gradient my-auto px-0 mb-0" data-bs-toggle="modal" @click="initialiseRec(-1)" :data-bs-target="'#filter'+ day.dayId + 'Modal'"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill me-1" style="margin-bottom:0.15rem" viewBox="0 0 16 16">
+                            <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                        Add recommended activities
+                    </button>
+                    <button v-else type="button" class="col-4 btn btn-link text-warning text-gradient my-auto px-0 mb-0" @click="initialiseRec(-1)" data-bs-toggle="modal" :data-bs-target="'#noActivitiesConsideration' + day.dayId + 'Modal'">  
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill me-1" style="margin-bottom:0.15rem" viewBox="0 0 16 16">
+                            <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                        Add recommended activities
+                    </button>
+                    <button type="button" class="py-0 col-3 btn btn-link text-primary text-gradient px-0 mb-0" @click="position = -1" data-bs-toggle="modal" :data-bs-target="'#customEvent' + day.dayId + 'Modal'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-1" style="margin-bottom:0.15rem" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                        Add custom activity
+                    </button>
+                    <div class="col-4 p-0 d-inline align-items-center ">
+                        <div class="input-group" >
+                            <span class="input-group-text text-body" style="background-color:white"><svg fill="grey" height="16px" width="16px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="0 0 118.783 118.783" xml:space="preserve">
+<g>
+	<path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+		S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+		c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+		 M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+		S65.914,81.243,47.996,81.243z"/>
+</g>
+</svg></span>
+                            <input type="text" class="form-control"  @input="position = -1, processAutocomplete(day.dayId)" :id="'Day' + day.dayId + 'searchBar'" placeholder="Enter a location..."> <!--@input="processAutocomplete"-->
+                        </div>
+                    </div>
+                </div>
+                <div v-if="displayPredictions.day == day.dayId && displayPredictions.psn == '-1'" class="list-group position-absolute bg-gray-100" style="z-index: 2; right:2rem; top:64px; width:17rem">
+                    <button v-for="prediction in predictionList" :key="prediction.place_id" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction,-1)">{{prediction.description}}</button>
+                </div>
+                <div class="card-body row pt-4 p-3" style="z-index:1">
+                <ul class="list-group px-3">
+                    <li v-if="day.dayActivities.length==0" class="text-center list-group-item border-0 p-4 mb-2 bg-gray-100 border-radius-lg">
+                        <h4 class="my-auto d-inline">No activities found</h4>
+                    </li>
+                    <li v-else v-for="(activity,actIdx) in day.dayActivities" :key="activity.name" class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                        <div class="col-md-4"><img :src="getImage(activity.image)" class="img-fluid border-radius-lg" style="max-height:300px" alt="..."></div>
+                        <div class="col-md-8 position-relative">
+                            <div class="ms-4 d-flex flex-column">
+                                <span class="row">
+                                    <h4 class="mb-3 col-9">Activity {{actIdx+1}} - <span class="text-dark fw-medium">{{activity.name}}</span></h4>
+                                    <a class="col-3 px-0 btn btn-link text-danger text-gradient mb-0" @click="delActivity(day.dayId,actIdx)"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                </span>
+                                <h4 class="mb-3 text-sm font-weight-bolder">Address/Description:<span class="text-dark fw-medium ms-sm-2">{{activity.description}}</span></h4>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="dropdown" >
+                                            <button class="btn btn-link text-dark p-0 mb-0" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration:none">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-square-fill me-2" viewBox="0 0 16 16">
+                                                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/>
+                                                </svg>Insert activity below
+                                            </button>
+                                            <ul class="dropdown-menu" style="border-color:transparent">
+                                                <li><button type="button" class="dropdown-item" data-bs-toggle="modal" @click="initialiseRec(actIdx)" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommended activities</button></li>
+                                                <li><hr class="dropdown-divider" style="background-color:lightgray"></li>
+                                                <li><button type="button" class="dropdown-item" @click="position=actIdx" data-bs-toggle="modal" :data-bs-target="'#customEvent' + day.dayId + 'Modal'">Custom event</button></li> <!--INSERT STUFF-->
+                                                <li><hr class="dropdown-divider" style="background-color:lightgray"></li>
+                                                <li><button type="button" class="dropdown-item" @click="position=actIdx" data-bs-toggle="modal" :data-bs-target="'#locationSearch' + day.dayId + 'Modal'" >Activity search</button></li> <!--INSERT STUFF-->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </div>
         <div class="modal fade" :id="'filter'+ day.dayId + 'Modal'" tabindex="-1" :aria-labelledby="'#filter'+ day.dayId + 'Label'" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -48,7 +131,8 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" :id="'recommend' + day.dayId + 'ModalLabel'">Recommended activities</h1>
+                        <h1 class="modal-title fs-5" :id="'recommend' + day.dayId + 'ModalLabel'">Recommended activities  </h1>
+                        <span class="text-primary ms-auto ">Selected: {{ this.selectedRec.name }}</span>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body mx-auto">
@@ -79,7 +163,9 @@
                             </div>
                         </div> 
                     </div>
+                    
                     <div class="modal-footer">
+                        
                         <button type="button" class="btn btn-danger me-3" :disabled="sliceCount==0" @click="sliceCount--">Previous Page</button>
                         <button type="button" class="btn btn-success me-3" :disabled="sliceCount==(numPages-1)" @click="sliceCount++">Next Page</button>
                         <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close (Reset recommendations!)</button>
@@ -146,206 +232,70 @@
                 </div>
             </div>
         </div>
-        <div class="col mt-4">
-          <div class="card">
-            <div class="card-header m-0 row pb-0">
-                <h6 class="p-0 col-2 my-auto">Day {{ day.dayId+1 }}</h6>
-                <button v-if="day.dayActivities.length > 0" type="button" class="col-3 btn btn-link text-warning text-gradient px-0 mb-0" data-bs-toggle="modal" @click="initialiseRec(-1)" :data-bs-target="'#filter'+ day.dayId + 'Modal'"> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill me-1" style="margin-bottom:0.15rem" viewBox="0 0 16 16">
-                        <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
-                    </svg>
-                    Add recommended activities
-                </button>
-                <button v-else type="button" class="col-3 btn btn-link text-warning text-gradient px-0 mb-0" @click="initialiseRec(-1)" data-bs-toggle="modal" :data-bs-target="'#noActivitiesConsideration' + day.dayId + 'Modal'">  
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill me-1" style="margin-bottom:0.15rem" viewBox="0 0 16 16">
-                        <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
-                    </svg>
-                    Add recommended activities
-                </button>
-                <button type="button" class="col-3 btn btn-link text-primary text-gradient px-0 mb-0" @click="position = -1" data-bs-toggle="modal" :data-bs-target="'#customEvent' + day.dayId + 'Modal'">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-1" style="margin-bottom:0.15rem" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                    </svg>
-                    Add custom activity
-                </button>
-                <div class="col-4 p-0 d-inline align-items-center">
-                    <div class="input-group bg-gray-100">
-                        <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control"  :id="'0'+'autocomplete'+ day.dayId" placeholder="Enter a location..."> <!--@input="processAutocomplete"-->
+        <div class="modal fade modal-lg" :id="'locationSearch' + day.dayId + 'Modal'" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Searching for location</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-            </div>
-            <div v-if="displayPredictions.day == day.dayId && displayPredictions.psn == '0'" class="list-group position-absolute bg-gray-100" style="z-index: 2; right:2rem; top:64px; width:17rem">
-                <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction,0)">{{prediction.description}}</button>
-            </div>
-            <div class="card-body row pt-4 p-3" style="z-index:1">
-              <ul class="list-group px-3">
-                <li v-if="day.dayActivities.length==0" class="text-center list-group-item border-0 p-4 mb-2 bg-gray-100 border-radius-lg">
-                    <h4 class="my-auto d-inline">No activities found</h4>
-                </li>
-                <li v-else v-for="(activity,actIdx) in day.dayActivities" :key="activity.name" class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
-                    <div class="col-md-4"><img :src="getImage(activity.image)" class="img-fluid border-radius-lg" alt="..."></div>
-                    <div class="col-md-8 position-relative">
-                        <div class="ms-4 d-flex flex-column">
-                            <span class="row">
-                                <h4 class="mb-3 col-9">Activity {{actIdx+1}} - <span class="text-dark fw-medium">{{activity.name}}</span></h4>
-                                <a class="col-3 px-0 btn btn-link text-danger text-gradient mb-0" @click="delActivity(day.dayId,actIdx)"><i class="far fa-trash-alt me-2"></i>Delete</a>
-                            </span>
-                            <h4 class="mb-5 text-sm font-weight-bolder">Address/Description:<span class="text-dark fw-medium ms-sm-2">{{activity.description}}</span></h4>
-                            <div class="row">
-                                <div class="col-5">
-                                    <div class="dropdown position-absolute bottom-0" >
-                                        <button class="btn btn-link text-dark p-0 mb-0" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-square-fill me-2" viewBox="0 0 16 16">
-                                                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/>
-                                            </svg>Insert activity below
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal" @click="initialiseRec(actIdx)" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommended activities</button></li>
-                                            <li><hr class="dropdown-divider" style="background-color:lightgray"></li>
-                                            <li><button type="button" class="dropdown-item" @click="position=actIdx" data-bs-toggle="modal" :data-bs-target="'#customEvent' + day.dayId + 'Modal'">Custom event</button></li> <!--INSERT STUFF-->
-                                            <li><hr class="dropdown-divider" style="background-color:lightgray"></li>
-                                            <li><a class="dropdown-item">Activity search</a></li> <!--INSERT STUFF-->
-                                        </ul>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <input type="text" class="form-control"  @input="processAutocomplete(day.dayId)" :id="'Day' + day.dayId + 'modalAutocomplete'"  placeholder="Enter a location...">
+                        </div>
+                        <div>
+                            <div class="row" v-if="displayPredictions.day == day.dayId && displayPredictions.psn != '-1'">
+                                <div class="col-12">
+                                <div class="card mb-4">
+                                    <div class="card-header pb-0">
+                                    <h6>Predictions</h6>
                                     </div>
+                                    <div class="card-body px-0 pt-0 pb-2">
+                                    <div class="table-responsive p-0">
+                                        <table class="table align-items-center mb-0">
+                                        <thead>
+                                            <tr>
+                                            <th class="text-uppercase text-black text-xxs font-weight-bolder opacity-7">Name/Description</th>
+                                            <th class="text-uppercase text-black text-xxs font-weight-bolder opacity-7 ps-2">Choose 1</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="prediction in predictionList" :key="prediction.place_id">
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">{{prediction.description}}</h6>
+                                                </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="mb-0 btn btn-primary" @click="selectedPrediction = prediction">Select</button>
+                                            </td>
+                                            </tr>
+                                        </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    <!-- <div v-for="day of days" :key='day.dayId' class="row my-3 ms-3" :id="'Day' + day.dayId + 'Row'">
-        <div>
-            <button class="btn px-0 pt-0 pb-auto" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" @click="changeCollapseArrow(day.dayId)">
-                    <svg :id="'arrow' + day.dayId + 'right'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-                    </svg>
-                    <svg :id="'arrow' + day.dayId + 'down'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="d-none bi bi-caret-down-fill" viewBox="0 0 16 16">
-                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                    </svg>
-            </button>
-            <p class="d-inline mx-1">
-                Day {{ day.dayId + 1 }}  ({{getPrintableDate(day.dayId)}})
-            </p>
-            <button type="button" @click="deleteDay(day.dayId)" class="btn btn-outline-danger" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: 0.6rem;">Delete Day</button>
-        </div>
-            -->
-           
-            <!-- <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .5rem; margin-left: 35rem" class="btn btn-secondary d-inline" type="button" data-bs-toggle="collapse" :data-bs-target="'#Day' + day.dayId + 'Collapse'" aria-expanded="false" aria-controls="collapseExample">
-                Expand Day 
-            </button> -->
-        <!-- <div class="collapse" :id="'Day' + day.dayId + 'Collapse'">
-            
-            
-            <div v-if="day.dayActivities.length>0" > 
-                <div v-for="(activity,actIdx) in day.dayActivities" :key="activity.name">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-success rounded-circle btn-sm plus-button m-2" data-bs-toggle="dropdown" aria-expanded="false">+</button>
-                        <ul class="dropdown-menu">
-                            <li><button type="button" class="dropdown-item btn btn-outline-primary" data-bs-toggle="modal" @click="initialiseRec(actIdx)" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommend an activity here</button></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" @click="addSearch = actIdx">Search for an activity or add a custom event here</a></li>
-                        </ul>
-                    </div>
-                    <template v-if="addSearch === actIdx"> 
-                        <div class="input-group w-50 mb-3">
-                            <span class="input-group-text">
-                                <svg width="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </span>
-                            <input type="text" @input="processAutocomplete" :id="actIdx + 'autocomplete' + day.dayId" class="form-control" placeholder="Add a place">
-                            <div class="dropend">
-                                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true" style="height:38px;">Custom events</button>
-                                <form class="dropdown-menu dropdown-menu-start p-4" style="width:50%;" data-bs-theme="dark">
-                                    <div class="mb-3">
-                                        <label :for="'Day' + day.dayId + 'EndEventName'" class="form-label">Event Name</label>
-                                        <input type="text" class="form-control" :id="actIdx + 'customName' + day.dayId">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label :for="'Day' + day.dayId + 'EndNotes'" class="form-label">Notes</label>
-                                        <input type="text" class="form-control" :id="actIdx + 'customName' + day.dayId">
-                                    </div>
-                                    <button type="button" @click="addCustomEvent" :id="actIdx + 'customEvent' + day.dayId" class="btn btn-primary">Add event</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div v-if="displayPredictions.day == day.dayId && displayPredictions.psn == actIdx" class="list-group">
-                            <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction,actIdx)">{{prediction.description}}</button>
-                        </div>
-                    </template>
-
-                    <div class="mx-auto mx-md-0 card mb-3" style="max-width: 665px;">
-                        <div class="row g-0">
-                            <div class="col-4">
-                                <img :src="getImage(activity.image)" class="img-fluid rounded-start" alt="...">
-                            </div>
-                            <div class="col-8">
-                                <div class="card-body row">
-                                    <div class="col-md-9 col-12">
-                                        <h5 class="card-title">Activity {{actIdx+1}} - {{activity.name}}</h5>
-                                        <p class="card-text fs-6">{{activity.description}}</p>
-                                    </div>
-                                    <div class="col-md-3 col-12">
-                                        <button @click="delActivity(day.dayId,actIdx)" type="button" class="btn btn-outline-danger" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: .5rem;--bs-btn-font-size: 0.6rem">Delete Activity</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success" @click="addActivityFromPrediction(day.dayId,selectedPrediction,position)" data-bs-dismiss="modal">Add selected item to day</button>
                     </div>
                 </div>
-                <button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" @click="initialiseRec('end')" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommend me activities!</button>
-                
-                
             </div>
-            <div v-else>
-                <h4 class="p-4">
-                    You have no activities currently. <button type="button" class="btn btn-outline-primary" @click="initialiseRec('end')" data-bs-toggle="modal" :data-bs-target="'#noActivitiesConsideration' + day.dayId + 'Modal'">Recommend me activities!</button>
-                </h4>
-                
-                
-            </div> 
-            <div class="input-group w-50 mb-3">
-                <span class="input-group-text">
-                    <svg width="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </span>
-                <input type="text" @input="processAutocomplete" :id="'end'+'autocomplete'+ day.dayId" class="form-control" placeholder="Add a place">
-                <div class="dropend">
-                    <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true" style="height:38px;">Custom events</button>
-                    <form class="dropdown-menu dropdown-menu-start p-4" style="width:50%;" data-bs-theme="dark">
-                        <div class="mb-3">
-                            <label :for="'Day' + day.dayId + 'EndEventName'" class="form-label">Event Name</label>
-                            <input type="text" class="form-control" :id="'end' + 'customName' + day.dayId">
-                        </div>
-                        <div class="mb-3">
-                            <label :for="'Day' + day.dayId + 'EndNotes'" class="form-label">Notes</label>
-                            <input type="text" class="form-control" :id="'end' + 'customNotes' + day.dayId">
-                        </div>
-                        <button type="button" @click="addCustomEvent" :id="'end' + 'customEvent' + day.dayId" class="btn btn-primary">Add event</button>
-                    </form>
-                </div>
-            </div>
-            <div v-if="displayPredictions.day == day.dayId && displayPredictions.psn == 'end'" class="list-group">
-                <button v-for="prediction in predictionList" :key="prediction.name" type="button" class="list-group-item list-group-item-action" @click="addActivityFromPrediction(day.dayId,prediction,'end')">{{prediction.description}}</button>
-            </div>
-        </div> -->
-    <!-- </div> -->
+        </div>
+    </div>
+
 </template>
 <script>
 //  import statements
 import '../assets/day.css';
 // import axios from 'axios';
-
+import country_code from './country_code.json'
 
 export default {
 props: [
@@ -354,7 +304,9 @@ props: [
     'days',
     'date',
     'originLoc',
-    'originName'
+    'originName',
+    'openModal',
+    'countryName'
 ],
 name: 'Day_Component',
 components: {
@@ -363,6 +315,7 @@ components: {
 data () {
 // local repository of information
     return {
+        selectedPrediction: "",
         recs: [],
         // respLength: 0,
         selectedRec: [],
@@ -642,7 +595,7 @@ data () {
             'North Macedonia': 'MK',
             'Češka': 'CZ'
         },
-        countryName: "Australia",
+        countryName:"",
         country: "",
         predictionList: [],
         selectedTypes: ['tourist_attraction','museum','cafe'],
@@ -650,6 +603,7 @@ data () {
         position: 0,
         displayPredictions: {},
         recommendedTypes: ['tourist_attraction','park','museum','cafe', 'aquarium', 'zoo'],
+        openedModal: false
     }
 },
 computed: {
@@ -679,20 +633,27 @@ computed: {
 
 // start of lifecycle
 async mounted () {
-    this.country = this.getCountryCode(this.countryName)
+    // this.country = this.getCountryCode(this.countryName)
+    console.log(this.country,'sd')
+    this.setTriggers()
 },
 
 methods: {
-    changeCollapseArrow(dayId){
-        let arrowdown = document.getElementById('arrow' + dayId + 'down')
-        let arrowright = document.getElementById('arrow' + dayId + 'right')
-        if (arrowdown.classList.contains('d-none')){
-            arrowdown.classList.remove('d-none')
-            arrowright.classList.add('d-none')
-        }else{
-            arrowdown.classList.add('d-none')
-            arrowright.classList.remove('d-none')
-        }        
+    setTriggers(){
+        setTimeout(()=>{let modalTriggerList = document.querySelectorAll('div.modal')
+            for (let modal of modalTriggerList){
+                if (modal.getAttribute('added-listener') == undefined){
+                    modal.setAttribute('added-listener','true')
+                    modal.addEventListener('show.bs.modal', event => {
+                        this.$parent.changeOpenModal()
+                    })
+                    modal.addEventListener('hidden.bs.modal', event => {
+                        this.$parent.changeOpenModal()
+                })
+            }
+        }
+        },50)
+        
     },
     checkPreviousMeal(dayId){
         if (this.days[dayId].dayActivities.length == 0 || this.position == -1){
@@ -723,7 +684,7 @@ methods: {
         }
     },
     getCountryCode(countryName){
-        return this.countryList[countryName]
+        return country_code[countryName]
     },
     checkRecommended(){
         if (this.selectedTypes.length > 0){
@@ -738,13 +699,8 @@ methods: {
         }
     },
     getTopAttractions(){
+        console.log(this.countryName)
         var search = "tourist attractions in " + this.countryName
-        for (let i=0;i<this.days.length;i++){
-            if (this.originName != ""){
-                var search = "tourist attractions near " + this.originName
-                break
-            }
-        }
         var attractionsCount = 0
         var topAttractions = [];
         return new Promise((resolve) => {
@@ -1102,6 +1058,7 @@ methods: {
         return displayedCost
     },
     chooseRec(index){
+        
         if (this.sliceCount == 0){
             this.selectedRec = this.recs[index]
         }else if (this.sliceCount == 1){
@@ -1109,6 +1066,8 @@ methods: {
         }else{
             this.selectedRec = this.recs[index+40]
         }
+
+        console.log(this.recs == this.selectedRec)
     }, 
     addActivityFromReccs(dayId){
         if (this.selectedRec != []){
@@ -1126,10 +1085,16 @@ methods: {
         }
     },
     addActivityFromPrediction(dayId,prediction,position){
-        let autoInput = document.getElementById(position + "autocomplete" + dayId)
-        autoInput.value = ""
+        if (position == -1){
+            let autoInput = document.getElementById('Day' + dayId + 'searchBar')
+            autoInput.value = ""
+        }else{
+            let autoInput = document.getElementById('Day' + dayId + 'modalAutocomplete')
+            autoInput.value = ""
+        }
         this.displayPredictions = {}
         this.getPlaceDetails(prediction.place_id,['name','vicinity','photos']).then(result=>{
+            console.log(result)
             // eslint-disable-next-line vue/no-mutating-props
             if (result.photos === undefined){
                 var image = ""
@@ -1141,7 +1106,7 @@ methods: {
             }else{
                 var address  = result.vicinity
             }
-            if (position == 0){
+            if (position == -1){
                 this.days[dayId].dayActivities.unshift({'name':result.name, 'description':address, 'image':image, 'type':'prediction'})
             }
             else{
@@ -1217,10 +1182,17 @@ methods: {
     async findPlace(query,fieldList,locBias){
         var testDiv = document.getElementById('testingDiv');
         const {PlacesService} = await google.maps.importLibrary("places");
-        let request = {
-            query: query,
-            fields: fieldList,
-            locationBias: locBias,
+        if (locBias !== ""){
+            var request = {
+                query: query,
+                fields: fieldList,
+                locationBias: locBias,
+            }
+        }else{
+            var request = {
+                query: query,
+                fields: fieldList
+            }
         }
         var service = new PlacesService(testDiv);
         return new Promise((resolve, reject) => {service.findPlaceFromQuery(request, (results, status) => {
@@ -1261,15 +1233,15 @@ methods: {
             });
         });
     },
-    processAutocomplete(event){
-        let startindex = event.target.id.indexOf('autocomplete')
-        let actIdx = event.target.id.slice(0,startindex)
-        let dayId = event.target.id.slice(startindex+12)
-        this.displayPredictions = {day: dayId, psn: actIdx}
-        console.log(this.displayPredictions)
-        var location = event.target.value
+    processAutocomplete(dayId){
+        if (this.position == -1){
+            var value = document.getElementById('Day' + dayId + 'searchBar').value
+        }else{
+            var value = document.getElementById('Day' + dayId + 'modalAutocomplete').value
+        }
+        this.displayPredictions = {day: dayId, psn: this.position}
         this.predictionList = []
-        this.placeAutocomplete(location,this.originLoc,this.country).then(suggestions =>{
+        this.placeAutocomplete(value,this.originLoc,this.country).then(suggestions =>{
             if (suggestions == "No valid results"){
                 this.predictionList = []
             }
@@ -1318,7 +1290,6 @@ methods: {
     addCustomEvent(dayId){ // Make dynamic for all positions
         let dayActivities = this.days[dayId].dayActivities
         let nameElem = document.getElementById(dayId + 'customName')
-        console.log(nameElem)
         let notesElem = document.getElementById(dayId + 'customNotes')
         let name = nameElem.value
         let notes = notesElem.value
@@ -1341,4 +1312,17 @@ methods: {
 
 <style scoped>
 
+.card{
+    border-color: transparent !important;
+    border-radius:0.75rem;
+}
+.card-header{
+    border-color: transparent !important;
+    border-radius:0.75rem;
+}
+
+.form-control:focus {
+ box-shadow: none;
+ border-color:#d2d6da;;
+}
 </style>

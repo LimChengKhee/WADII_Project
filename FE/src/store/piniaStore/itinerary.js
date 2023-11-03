@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useAuthStore } from './authStore'
 import axios from 'axios'
+import cities from '../../components/countries.json'
 
 export const useItineraryStore = defineStore('itinerary', {
   state: () => {
@@ -45,9 +46,17 @@ export const useItineraryStore = defineStore('itinerary', {
   },
   actions: {
     validateDestination(arrival_country) {
-      if (arrival_country.length < 3) {
+      var country = []  
+      cities.forEach(function(obj){
+        country.push(obj['country'])
+      })
+      var check = country.filter((c) => c.toLowerCase() == arrival_country.toLowerCase())
+      if (arrival_country.length == null || arrival_country.length == 0) {
         this.errors.arrival_country = 'Choose a destination to start planning'
-      } else {
+      } else if (check <= 0){
+        this.errors.arrival_country = 'Invalid country'
+      } 
+      else{
         this.errors.arrival_country = ''
       }
     },
@@ -55,13 +64,12 @@ export const useItineraryStore = defineStore('itinerary', {
         if (hotel == null) {
             this.errors.hotel = 'This field is required';
         } else if (hotel.length == 0) {
-            this.errors.hotel = 'Email must contain @';
+            this.errors.hotel = 'This field is required';
         } else {
             this.errors.hotel = '';
         }
     },
     validatetripdate(trip_date) {
-      console.log(trip_date)
       
       if (trip_date == null) {
           this.errors.trip_date = 'This field is required';
@@ -109,13 +117,10 @@ export const useItineraryStore = defineStore('itinerary', {
       var today = today_d + '_' + today_t
       var itinerary_name = this.arrival_country.toLowerCase() + '_' + today
       var json_obj = await this.createJsonObj(userid, itinerary_name, today_d)
-      console.log(json_obj.itinerary_data.hotels.length, 'LENGTH')
       if (json_obj.itinerary_data.hotels.length != 0) {
-        console.log('YOU LIER')
         this.flag.hotel = true
       } else {
         this.flag.hotel = false
-        console.log(false)
       }
       var json_str = JSON.stringify(json_obj)
       var bodydata = {
@@ -123,7 +128,6 @@ export const useItineraryStore = defineStore('itinerary', {
         itinerary_data: json_str,
         itinerary_name: itinerary_name
       }
-      console.log(bodydata, token, 's')
 
       const info = await axios.post(`http://127.0.0.1:8000/api_d/itinerary/`, bodydata, {
         headers: { 'Content-Type': 'application/json', Authorization: `Token ${token}` }
@@ -135,7 +139,6 @@ export const useItineraryStore = defineStore('itinerary', {
       var destination = await this.getDestination(today_d)
       var flight = await this.getFlight()
       var hotel = await this.getHotel()
-      console.log(Object.keys(hotel).length, Object.keys(flight).length, 'LENGTH')
 
       var json_obj = {
         display_name: itinerary_name,
@@ -164,6 +167,12 @@ export const useItineraryStore = defineStore('itinerary', {
       res['end_date'] = itinerary_date.split(',')[1]
       return res
     },
+
+
+
+    
+
+
     getFlight() {
       var res = {}
       if (
@@ -220,12 +229,12 @@ export const useItineraryStore = defineStore('itinerary', {
           result[item] = flight_obj[item]
         }
       }
-      // var distance = await this.getDistance(flight_obj["arrival_country"],flight_obj["departure_country"])
-      var distance = 3000
+      var distance = await this.getDistance(flight_obj["arrival_country"],flight_obj["departure_country"])
+      // var distance = 3000
       result['distance'] = distance
 
-    //   var carbon_fp = await this.getcarbon_fp(result['distance'],result['duration'])
-      var carbon_fp = 3000
+     var carbon_fp = await this.getcarbon_fp(result['distance'],result['duration'])
+      // var carbon_fp = 3000
       result['carbon_fp'] = carbon_fp
       console.log(result, 'AFTER')
 

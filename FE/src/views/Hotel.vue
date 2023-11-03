@@ -1,46 +1,49 @@
 <template>
-  <div class="parent-container container-fluid">
+  <div class="parent-container container rounded-4 bg-white mt-5">
     <div class="row">
-      <div class="col-1">
-        <p></p>
-      </div>
-      <div class="col-11">
+
+      <div class="col-12">
         <div class="row">
           <div class="header">
           <div class="container-fluid">
-            <div class="row">
+            <div class="row my-5">
               <div class="col">
-                <h2 style="text-align: center">Search accomodation</h2>
+                <h2 style="text-align: center;color:black">Search Accommodation</h2>
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col">
-                <p style="text-align: center">Search for accomodation deals in {}</p>
+                <p style="text-align: center;color:black">Search for accomodation deals in {}</p>
               </div>
-            </div>
+            </div> -->
           </div>
 
-          <div class="container">
-            <div class="row mb-5" style="position:relative;z-index:1000;">
-              <div class="col-xl-1"></div>
-              <div class="col-xl-3">
-                <input v-model="user_search" type="text" style="color:black;">
-                <button class="btn btn-primary" value="Search" @click="searchHotelName()" type="button">Search</button>
-              </div>
-              <div class="col-xl-5"></div>
-              <div class="col-xl-1">
-                <span>
-                  <div class="dropdown" style="width: 100%">
-                    <button class="btn btn-secondary dropdown-toggle mt-sm-3" type="button" data-bs-toggle="dropdown"
+          <div class="container big d-flex justify-content-center">
+            <div class="me-2" style="display:flex;">
+              
+
+                <div class="me-4">
+                <Datepicker 
+                v-model="this.date"
+                placeholder="Date"
+                :min-date="mindate"
+                input-class-name=""
+                :teleport="true"
+                range
+                /></div>
+                <!-- sort -->
+              <!-- <div class="">
+                    <button class="btn btn-secondary dropdown-toggle " type="button" data-bs-toggle="dropdown"
                       aria-expanded="false">
                       Sorting Criteria
                     </button>
+                    
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="#">Review Rating
                           <span v-if="review_sort" @click="sort_review()"><img src="../assets/sort-up.png"
                               style="width:10px" alt=""></span>
 
-                          <span @click="sort_review()" v-else><img src="../assets/caret-down.png" style="width:10px"
+                          <span v-else @click="sort_review()" ><img src="../assets/caret-down.png" style="width:10px"
                               alt=""></span>
                         </a></li>
                       <li><a class="dropdown-item" href="#">Distance
@@ -52,30 +55,35 @@
 
                         </a></li>
                     </ul>
-                  </div>
-
-                </span>
+              </div> -->
+              <div class="me-4">
+                <input v-model="user_search" type="text" style="color:black; border:1px solid lightgrey; height:38px" placeholder="Search Hotel" class="p-2">
+              </div>
+              <div class="">
+                <button class="btn btn-primary" value="Search" @click="searchHotelName()" type="button">Search</button>
               </div>
             </div>
           </div>
-        </div>
-        </div>
-        <div class="row" style="position:relative;z-index:1000;">
-              <div class="col-xl-1"></div>
-              <div class="col-xl-3" >
-                <Datepicker 
+
+          <div class="row mobile">
+            <div class="col-12"><Datepicker 
                 v-model="this.date"
-                placeholder="Start Date | End Date"
+                placeholder="Date"
                 :min-date="mindate"
-                position="right"
-                />
-              </div>
-              <div class="col-xl-5"></div>
-              <div class="col-xl-1"></div>
+                input-class-name=""
+                :teleport="true"
+                range
+                /></div>
+            <div class="col-12 "><input v-model="user_search" type="text" style="color:black; border:1px solid lightgrey; height:38px" placeholder="Search Hotel" class="p-2 w-100 my-2"></div>
+            <div class="col-12"><button class="btn btn-primary w-100" value="Search" @click="searchHotelName()" type="button">Search</button></div>
+          </div>
+
         </div>
+        </div>
+
         <div class="card_section mt-5" v-if="mounted && !search">
           <HotelCard v-for="hotel in this.hotelsInCities" :hotel_name="hotel.hotel_name"
-            :distance_to_cc_formatted="hotel.distance_to_cc_formatted" :review_score="hotel.review_score"
+            :distance_to_cc_formatted="hotel.distance_to_cc" :review_score="hotel.review_score"
             :review_score_word="hotel.review_score_word" :number_of_reviews="hotel.review_nr"
             :photo_url="hotel.max_1440_photo_url"
             :price_per_night="hotel.composite_price_breakdown.gross_amount_per_night.value"
@@ -84,15 +92,16 @@
         </div>
         <div class="card_section" v-if="mounted && search">
           <HotelCard v-for="hotel in this.sub_hotels" :hotel_name="hotel.hotel_name"
-            :distance_to_cc_formatted="hotel.distance_to_cc_formatted" :review_score="hotel.review_score"
+            :distance_to_cc_formatted="hotel.distance_to_cc" :review_score="hotel.review_score"
             :review_score_word="hotel.review_score_word" :number_of_reviews="hotel.review_nr"
             :photo_url="hotel.max_1440_photo_url"
             :price_per_night="hotel.composite_price_breakdown.gross_amount_per_night.value"
             :currency="hotel.composite_price_breakdown.gross_amount_per_night.currency" :updated_object="hotel"
             :district="hotel.district" :city="hotel.city"></HotelCard>
         </div>
+
         <div class="spinner_section d-flex flex-column" v-if="!mounted">
-          <div class="spinner-border mt-5" style="margin: 0 auto;height:200px;width:200px;" role="status">
+          <div class="spinner-border mt-5" style="margin: 0 auto;height:200px;width:200px; color:black!important" role="status">
           </div>
           <p class="mt-2" style="text-align: center;">Loading...Please give us a second</p>
         </div>
@@ -109,6 +118,10 @@ import axios from 'axios'
 import flushPromises from 'flush-promises'
 import test from "../views/static/test.json"
 import Datepicker from '@vuepic/vue-datepicker';
+import { mapStores } from 'pinia'
+import { useAuthStore } from '../store/piniaStore/authStore'
+import { useUsersStore } from '../store/piniaStore/userStore'
+import { useItineraryStore } from '../store/piniaStore/itinerary'
 
 export default {
   name: 'Hotel',
@@ -129,22 +142,52 @@ export default {
       review_sort: true,
       distance_sort: true,
       mindate: this.getDate(),
+      user: '',
+      iti_name: '',
+      iti_data: '',
+      start_date: '',
+      end_date: '',
+      destination_c: '',
+      departure_c:''
     }
   },
   computed: {
     // computed
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore),
+    ...mapStores(useItineraryStore),
   },
 
   // start of lifecycle
   async mounted() {
+    
+
     let currentState = await this.loadPersistedData();
+
+    const authStore = useAuthStore()
+    const userStore = useUsersStore()
+    const itineraryStore = useItineraryStore()
+    this.user = this.$route.params.username
+    this.iti_name = this.$route.params.itinerary_name
+
+    var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+    this.iti_data = iti_data
+    this.start_date = iti_data.itinerary_data.destination.start_date
+    this.end_date = iti_data.itinerary_data.destination.end_date
+    var dc = iti_data.itinerary_data.destination.trip_country
+    var dec = iti_data.itinerary_data.destination.departure_country
+    this.destination_c = dc
+    this.departure_c = dec
 
     if (currentState == null) {
       await this.mountAllHotelInformation()
       await this.savePersistedData()
       this.mounted = true
     }
-    this.mounted = true
+    
+    console.log(this.hotelsInCities)
+
+    
   },
 
   methods: {
@@ -153,7 +196,7 @@ export default {
       return today
     },
     sort_review() {
-      console.log("jdsif");
+      console.log("test");
       this.review_sort = !this.review_sort;
       if (!this.review_sort) {
         this.hotelsInCities = this.hotelsInCities.sort((a, b) => {
@@ -182,40 +225,71 @@ export default {
       this.search = true;
       let hotels_sub = []
       for (let element of this.hotelsInCities) {
-        if ((element["hotel_name"].includes(this.user_search))) {
+        var hotel = element["hotel_name"].toLowerCase()
+        if (hotel.includes(this.user_searc.toLowerCase())) {
           hotels_sub.push(element)
         }
       }
       this.sub_hotels = hotels_sub;
 
     },
+    async getDestID(location){
+      
+      const options = {
+        method: 'GET',
+        url: 'https://booking-com.p.rapidapi.com/v1/hotels/locations',
+        params: {
+          name: location,
+          locale: 'en-gb'
+        },
+        headers: {
+          'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+          'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+        }
+      };
 
+      try {
+        const response = await axios.request(options);
+        console.log(location)
+        console.log(response.data)
+        return response.data[0]['dest_id'];
+      } catch (error) {
+        console.error(error);
+      }
+    },
 
     // methods defined by ourselves
     async mountAllHotelInformation() {
       // get all the hotels within that city displayed.
-      // const options = {
-      //   method: 'GET',
-      //   url: 'https://booking-com.p.rapidapi.com/v1/hotels/search',
-      //   params: {
-      //     checkin_date: checkin_date,
-      //     dest_type: 'city',
-      //     units: 'metric',
-      //     checkout_date: checkout_date,
-      //     adults_number: adults_number,
-      //     order_by: 'popularity',
-      //     dest_id: dest_id,
-      //     filter_by_currency: 'HNL',
-      //     locale: 'en-gb',
-      //     room_number: number_of_rooms,
-      //     categories_filter_ids: 'class::2,class::4,free_cancellation::1',
-      //     include_adjacency: 'true'
-      //   },
-      //   headers: {
-      //     'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
-      //     'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-      //   }
-      // };
+
+      // let location = 'Japan'
+      var dest_id = await this.getDestID(this.destination_c)
+
+      console.log(dest_id)
+      console.log(this.start_date,this.end_date)
+      var dest_id = "26216"
+      const options = {
+        method: 'GET',
+        url: 'https://booking-com.p.rapidapi.com/v1/hotels/search',
+        params: {
+          checkin_date:this.start_date,
+          dest_type: 'city',
+          units: 'metric',
+          checkout_date: this.end_date,
+          adults_number: 1,
+          order_by: 'popularity',
+          dest_id: dest_id,
+          filter_by_currency: 'SGD',
+          locale: 'en-gb',
+          room_number: 1,
+          categories_filter_ids: 'class::2,class::4,free_cancellation::1',
+          include_adjacency: 'true'
+        },
+        headers: {
+          'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+          'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+        }
+      };
 
       // const options = {
       //   method: 'GET',
@@ -243,40 +317,41 @@ export default {
       //   }
       // };
 
-      // try {
-      //   const response = await axios.request(options)
-      //   console.log(response);
-      //   this.hotelsInCities = response.data.result
-      // } catch (error) {
-      //   console.error(error);
-      // }
+      try {
+        const response = await axios.request(options)
+        console.log(response);
+        this.hotelsInCities = response.data.result
+      } catch (error) {
+        console.error(error);
+      }
 
-      // await flushPromises()
-      this.hotelsInCities = test
+      await flushPromises()
+      // this.hotelsInCities = test
+      this.hotelsInCities = this.hotelsInCities.slice(0,10)
 
-      // for (let hotel of this.hotelsInCities) {
-      //   let hotel_id = hotel.hotel_id
-      //   // fire an API call to get description
-      //   const options = {
-      //     method: 'GET',
-      //     url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
-      //     params: {
-      //       hotel_id: hotel_id,
-      //       locale: 'en-gb'
-      //     },
-      //     headers: {
-      //       'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
-      //       'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-      //     }
-      //   };
-      //   try {
-      //     const response = await axios.request(options)
-      //     hotel['Description'] = response.data
-      //   } catch (error) {
-      //     console.error(error)
-      //   }
-      // }
-      // await flushPromises()
+      for (let hotel of this.hotelsInCities) {
+        let hotel_id = hotel.hotel_id
+        // fire an API call to get description
+        const options = {
+          method: 'GET',
+          url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
+          params: {
+            hotel_id: hotel_id,
+            locale: 'en-gb'
+          },
+          headers: {
+            'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+            'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+          }
+        };
+        try {
+          const response = await axios.request(options)
+          hotel['Description'] = response.data
+        } catch (error) {
+          console.error(error)
+        }
+      }
+      await flushPromises()
     },
     async savePersistedData() {
       // Use localStorage to save data
@@ -306,5 +381,30 @@ export default {
 *{
   color:white;
 }
-</style>
 
+
+@media only screen and (min-width: 576px) {
+
+
+  .mobile{
+    display:none;
+  }
+   
+     }
+
+
+@media only screen and (max-width: 576px) {
+
+
+.mobile{
+  display:block;
+}
+.big{
+  display:none;
+}
+ 
+   }
+   .card{
+    
+   }
+</style>
