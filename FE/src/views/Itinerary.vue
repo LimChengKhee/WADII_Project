@@ -584,7 +584,7 @@
                     <tr v-for="day in days" :key="day.dayId">
                       <td class="w-30">
                         <div class="d-flex px-2 py-1 align-items-center">
-                          <div>
+                          <div style="min-width: 28.5px;">
                             {{ day.dayId + 1 }}
                           </div>
                           <div class="ms-4">

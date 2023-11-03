@@ -22,20 +22,33 @@ const stepStore = useStepStore();
     </Content>
 
 </div>
+</div>
 </template>
 
 <style scoped>
-.container {
+.a{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    
+}
+.con {
   background-color:#fafbff;
   padding: 20px;
   border-radius: 16px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+  width:50%;
+  height: 680px;
+
+  
+
 }
 
 @media only screen and (min-width: 577px)and (max-width: 767px) {
   .con {
   height:770px;
   width:550px;
+
   background-color:#fafbff;
   border-radius: 16px;
   padding: 20px;
@@ -96,4 +109,7 @@ const stepStore = useStepStore();
   margin:10px 10px 10px 10px;
 }
 }
+
+
+
 </style>

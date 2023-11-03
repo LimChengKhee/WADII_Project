@@ -1,253 +1,118 @@
 <template>
-  
-  <div class="row">
-    
-    <div class="col p-0 mx-auto">
-      <div class="container bg-white main_con my-5">
-        <div class="col left-side-mobile">
-          <div class="col">
-            <div class="row pt-4">
-              <div class="col text-center p-0">
-                <p class="m-0">From</p>
-                <input type="text" v-model="departure_c" class="w-50 input_c" />
-                <!-- <p class="d-inline-block">testing </p> -->
-
-            <!-- <img src="../assets/plane_up.png" alt="" style="width:80px;" class="z-n1"> -->
+  <!-- <div class="container mt-4 mb-2"> -->
+    <!-- <div class="row p-1">
+      <div class="col px-0"> -->
+        <!-- <p v-if="this.eco" class="card-header text-white rounded-top shadow" style="background-color:#52a568; font-size:15px">{{ parseInt(this.eco) }}% Lesser Carbon Footprint</p> -->
+        <div class="card mb-3 rounded-top  pb-1 shadow" >
+          <p v-if="this.eco" class="card-header text-white rounded-top p-0 shadow" style="background-color:#52a568; font-size:15px" >
+            {{ parseInt(this.eco) }}% Lesser Carbon Footprint
+          </p>
           
-          
+          <div class="row p-2 pe-5">
 
-        </div>
-          <div class="col-2" >
-            <div >
-              
-              <img class="" src="../assets/plane.svg" style="width:50px;height:50px; text-decoration: underline;"/>
+            <div class="col-2 pe-0">
+              <div class="" style="">
+                <img :src="this.img" alt="" class="img-fluid w-100 h-100 mb-3" style ="" />
+                
+            </div>
+          </div>
+
+          <div class="col-8 p-0">
+            <div class="row">
+            <div class="d-flex">
+              <p class="me-3 my-0">{{this.carrierNameO}} 
+              </p>
+
+            </div>
+          </div>
+
+            <hr>
+           <div class="row">
+            <div class="col-4 px-0">
+              {{this.originDisplayCode}} {{ format_date(this.departure)[1] }}
+            </div>
+
+            <div class="col">
+              <div>
+                {{ hour(this.duration) }}
+              </div>
+              <div class="">
+                <img class="" src="../assets/plane.svg" style="width:20px"/>
+              </div>
+            </div>
+
+            <div class="col-4 px-0">
+              {{ this.destinationDisplayCode }} {{ format_date(this.arrival)[1] }}
+            </div>
+            
+            
+           </div>
+            
+          </div>
+
+            <div class="col-2 px-0 book_big">
+              <div class="row">
+                <div class="col">
+                  {{ this.totalPrice }}
+                </div>
+              </div>
+              <div class="row m-0">
+                <div class="col">
+                  <button class="btn btn-success" @click="book_flight()">Book</button>
+                </div>
+                
+              </div>
+             
+            </div>
+
+            <div class="col-2 px-0 book_small">
+              <div class="">
+                {{ this.totalPrice }} 
+              </div>
+             
+              <button class="btn btn-success" @click="book_flight()">Book</button>
             </div>
             
           </div>
-          
-  
-        
-        <div class="col text-center ">
-         
-          <input type="text" v-model="destination_c" class="w-50  input_c ms-4" />
-            <!-- <p class="d-inline-block">testing </p> -->
-
-            <!-- <img src="../assets/plane_up.png" style="transform: rotate(50deg); width:80px;" alt="" class="z-n1"> -->
-          
         </div>
-
-      </div>
-
-      <div class="row mt-3">
-        <div class="col-3"></div>
-        <div class="col-6">
-          Date
-          <br>
-
-
-                <Datepicker
-                  v-model="start_date"
-                  placeholder="Departure Date/time"
-                  :enable-time-picker="false"
-                  :teleport="true"
-                  :text-input="true"
-                  :min-date="start_date"
-                  :start-date="start_date"
-                  @update:model-value="mountAllFlightInformation"
-                  input-class-name="dp-custom-input py-2 rounded-3 dp-color"
-                  focus-start-date
-                />
-            <Datepicker
-            v-model="start_date"
-            placeholder="Departure Date/time"
-            :enable-time-picker="false"
-            :teleport="true"
-            :text-input="true"
-            :min-date="start_date"
-            :start-date="start_date"
-            @update:model-value="mountAllHotelInformation"
-            input-class-name="dp-custom-input rounded-3 dp-color"
-
-            focus-start-date/>
-
-
-          <div class="col-3"></div>
-        </div>
-
-      </div>
-
-    </div>
-      
-
-      
-
-      
-  
-    </div>
-    <div class="left-side-mobile">
-
-      <div class="col">
-    
-
-      <div class="row mt-4 ">
-        <div class="col text-center ">
-          
-          <input type="text" v-model="departure_c" class="w-50  input_c ms-4 " />
-            <!-- <p class="d-inline-block">testing </p> -->
-
-            <!-- <img src="../assets/plane_up.png" alt="" style="width:80px;" class="z-n1"> -->
-          
-          
-
-        </div>
-          <div class="col-2" >
-            <div >
-              
-              <img class="" src="../assets/plane.svg" style="width:50px;height:50px; text-decoration: underline;"/>
-            </div>
-
-            <div class="row">
-              <div class="col">
-                <div class="row info_row">
-                  <div class="col text-center">One Way</div>
-                  <div class="col text-center">One Stop</div>
-                </div>
-
-                <div class="row first_row mt-4">
-                  <div class="col text-center">From</div>
-                  <div class="col text-center">To</div>
-                </div>
-
-                <div class="row mt-4">
-                  <div class="col text-center">
-                    <input
-                      type="text"
-                      v-model="departure_c"
-                      class="w-50 input_c"
-                      style="margin-left: 60px"
-                    />
-                    <!-- <p class="d-inline-block">testing </p> -->
-
-                    <!-- <img src="../assets/plane_up.png" alt="" style="width:80px;" class="z-n1"> -->
-                  </div>
-                  <div class="col-2">
-                    <div>
-                      <img
-                        class=""
-                        src="../assets/plane.svg"
-                        style="width: 50px; height: 50px; text-decoration: underline"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="col text-center">
-                    <input type="text" v-model="destination_c" class="w-50 input_c me-2" />
-                    <!-- <p class="d-inline-block">testing </p> -->
-
-            <!-- <img src="../assets/plane_up.png" style="transform: rotate(50deg); width:80px;" alt="" class="z-n1"> -->
-          
-        </div>
-
-      </div>
-
-      <div class="row mt-3">
-        <div class="col-3"></div>
-        <div class="col-6">
-          Date
-          <br>
-
-
-                    <Datepicker
-                      v-model="start_date"
-                      placeholder="Departure Date/time"
-                      :enable-time-picker="false"
-                      :teleport="true"
-                      :text-input="true"
-                      :min-date="start_date"
-                      :start-date="start_date"
-                      @update:model-value="mountAllFlightInformation"
-                      input-class-name="dp-custom-input rounded-3 dp-color"
-                      focus-start-date
-                    />
-
-                    <div class="col-3"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col ms-3 scroll-big my-auto" v-if="mounted">
-            <FlightCard
-              v-for="flight in this.hotelsInCities"
-              :flightNumberO="flight.legs[0].segments[0].flightNumber"
-              :alternateIdO="flight.legs[0].segments[0].marketingCarrier.alternateId"
-              :carrierNameO="flight.legs[0].carriers.marketing[0].name"
-              :flightNumberD="flight.legs[1].segments[0].flightNumber"
-              :alternateIdD="flight.legs[1].segments[0].marketingCarrier.alternateId"
-              :carrierNameD="flight.legs[1].carriers.marketing[0].name"
-              :departure="flight.legs[0].segments[0].departure"
-              :originDisplayCode="flight.legs[0].segments[0].origin.displayCode"
-              :originName="flight.legs[0].segments[0].origin.name"
-              :originCity="flight.legs[0].origin.city"
-              :duration="flight.legs[0].durationInMinutes"
-              :arrival="flight.legs[0].arrival"
-              :destinationDisplayCode="flight.legs[0].segments[0].destination.displayCode"
-              :destinationCity="flight.legs[0].destination.name"
-              :totalPrice="flight.price.formatted"
-              :tag="flight.tags"
-              :eco="flight.eco.ecoContenderDelta"
-              :img="flight.legs[0].carriers.marketing[0].logoUrl"
-              :eco_best="flight.eco.eco_best"
-            ></FlightCard>
-          </div>
-
-           <div class="spinner_section d-flex flex-column" v-if="!mounted">
-      <div
-        class="spinner-border mt-5"
-        style="margin: 0 auto; height: 200px; width: 200px"
-        role="status"
-      ></div>
-      <p class="mt-2" style="text-align: center">Loading...Please give us a second</p>
-    </div> 
-
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 <script>
-import FlightCard from '../components/FlightCard.vue'
-import axios from 'axios'
-import flight from './flight.json'
 
-import { mapStores } from 'pinia'
-import { useAuthStore } from '../store/piniaStore/authStore'
-import { useUsersStore } from '../store/piniaStore/userStore'
-import { useItineraryStore } from '../store/piniaStore/itinerary'
-import Datepicker from '@vuepic/vue-datepicker'
-import capital from '../components/countries.json'
+import { mapStores } from 'pinia';
+import { useAuthStore } from '../store/piniaStore/authStore';
+import { useUsersStore } from '../store/piniaStore/userStore';
+import { useItineraryStore } from '../store/piniaStore/itinerary';
 
 export default {
-  name: 'Flight',
-  components: {
-    // importing components from other places
-    FlightCard,
-    Datepicker
+  name: 'FlightCard',
+  components: {},
+  props: {
+    alternateIdO: String,
+    flightNumberO: String,
+    carrierNameO: String,
+    alternateIdD: String,
+    flightNumberD: String,
+    carrierNameD: String,
+    departure: String,
+    originDisplayCode: String,
+    originName: String,
+    originCity: String,
+    duration: Number,
+    arrival: String,
+    destinationDisplayCode: String,
+    destinationCity: String,
+    totalPrice: String,
+    tag:Object,
+    eco:Number,
+    img:String,
+    eco_best:Boolean,
   },
   data() {
     // local repository of information
     return {
-      hotelsInCities: {},
-      mounted: false,
-      // false_data: flight
-      false_data:[],
       user:'',
       iti_name:'',
-      iti_data: '',
-      start_date:'',
-      end_date:'',
-      flight_date:'',
-      destination_c:''
+      carbon_img:''
 
     }
   },
@@ -255,328 +120,114 @@ export default {
     // computed
     ...mapStores(useAuthStore),
     ...mapStores(useUsersStore),
-    ...mapStores(useItineraryStore)
+    ...mapStores(useItineraryStore),
+    bestchoice(){
+      if (this.eco_best){
+        return 'green'
+      }
+      return 'white'
+    }
+    
   },
 
   // start of lifecycle
   async mounted() {
-    // await this.mountAllFlightInformation()
-    const authStore = useAuthStore()
-    const userStore = useUsersStore()
-    const itineraryStore = useItineraryStore()
-    this.user = this.$route.params.username
-    this.iti_name = this.$route.params.itinerary_name
-
-    var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
-    this.iti_data = iti_data
-    this.start_date = new Date(iti_data.itinerary_data.destination.start_date)
-    var dc = iti_data.itinerary_data.destination.trip_country
-    var dec = iti_data.itinerary_data.destination.departure_country
-    console.log(dec)
-    this.destination_c = dc
-    this.departure_c = dec
-    this.mountAllFlightInformation()
   },
 
   methods: {
     // methods defined by ourselves
-    toggleSidebarVisibility() {
-      
-      const toggle = document.getElementsByClassName("sidenav")[0];
-      var check = window.getComputedStyle(toggle).display;
-      console.log(check)
-      if (check == 'none'){
-        toggle.style.display = 'block'
-      }else{
-        toggle.style.display = 'none'
+    eco_flag(){
+      console.log(this.eco)
+      if (this.eco != 0){
+        return true
       }
-      
-
-      },
-    async mountAllFlightInformation() {
-      const authStore = useAuthStore()
-      const userStore = useUsersStore()
-      const itineraryStore = useItineraryStore()
+      return false
+    },
+    async book_flight(){
+      const itineraryStore = useItineraryStore();
+      const userStore = useUsersStore();
+      const authStore = useAuthStore();
       this.user = this.$route.params.username
       this.iti_name = this.$route.params.itinerary_name
-
-      var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
-      this.iti_data = iti_data
-      var dc = iti_data.itinerary_data.destination.trip_country
-      this.destination_c = dc
-
-      var state = capital.filter((c) => c['country'].toLowerCase() == this.destination_c.toLowerCase() );
-      var destination_country = state[0]['city']
-      //placeholder
-      // var data = flight
-      // this.hotelsInCities = await this.filterby(data, 'one')
-      // this.mounted = true
-      // return
-
-      var start_date = iti_data.itinerary_data.destination.start_date
-      var end_date = iti_data.itinerary_data.destination.end_date
-      this.start_date = start_date
-      this.end_date = end_date
-      // var date_range = itineraryStore.handleDate(this.flight_date)
-      // var date_list = date_range.split(',')
-
-      var d_date = this.start_date
-      // var a_date = date_list[1]
-
-      var d_skyId = 'SINS'
-      var d_entityId = '27546111'
-      console.log(destination_country)
-      const [a_skyId, a_entityId] = await this.getAPIcountry(destination_country)
-      console.log(a_skyId, a_entityId)
-      // var a_skyId = 'JP'
-      // var a_entityId = '29475330'
-      if (a_skyId == null || a_entityId == null){
-        this.hotelsInCities = []
-        return
+      var iti_data = await userStore.getUserItinerary(this.user,this.iti_name) 
+        
+       
+      var date_arr = iti_data.itinerary_data.destination.itinerary_date.split(',')
+      var check_date = []
+      for(let i of date_arr){
+        check_date.push(new Date(i))
       }
-      var people = '1'
-
-      const options = {
-        method: 'GET',
-        url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchFlights',
-        params: {
-          originSkyId: d_skyId,
-          destinationSkyId: a_skyId,
-          originEntityId: d_entityId,
-          destinationEntityId: a_entityId,
-          date: d_date,
-          adults: people,
-          currency: 'SGD'
-        },
-        headers: {
-          'X-RapidAPI-Key': '921e9474d9msh41e6dc80c2d8395p101f78jsne7dbbeab3134',
-          'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
-        }
-      }
-      console.log(options)
-      try {
-        const response = await axios.request(options)
-        console.log(response.data)
-        var data = response.data
-        this.hotelsInCities = await this.filterby(data, 'one')
-        this.mounted = true
-      } catch (error) {
-        console.error(error)
-      }
-    },
-
-    async getAPIcountry(country){
-      const options = {
-        method: 'GET',
-        url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchAirport',
-        params: {query: country},
-        headers: {
-          'X-RapidAPI-Key': '921e9474d9msh41e6dc80c2d8395p101f78jsne7dbbeab3134',
-          'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
-        }
-      };
-
-      try {
-        const response = await axios.request(options);
-        console.log(response.data)
-        var skyId = response.data.data[0].navigation.relevantFlightParams.skyId
-        var entityId = response.data.data[0].navigation.relevantFlightParams.entityId
-        console.log(response.data);
-        console.log(skyId,entityId,"ENTITY ID")
-        return [skyId,entityId]
-      } catch (error) {
-        console.error(error);
-        return [null,null]
-      }
-    },
-    async filterby(data,stops){
+      var flight_obj = {
+                    "duration":this.duration,
+                    "flight_no" :this.alternateIdO + this.flightNumberO,
+                    "departure_datetime": new Date(this.departure),
+                    "arrival_datetime": new Date(this.arrival),
+                    "departure_country": this.originName,
+                    "arrival_country": this.destinationCity,
+                    "distance":0,
+                    "cost":this.totalPrice,
+                    "currency":"sgd",
+                    "carbon_fp":0,
+                    "notes":"",
+                    "eco":this.eco,
+                    "img":""
+                }
+      var flightjson = await itineraryStore.createflight(flight_obj)
+      console.log(flightjson,'JSON')
+      iti_data.itinerary_data.flights.push(flightjson)
       
-      var result = []
-      if (stops == 'one') {
-        console.log(data,'GONE')
-        var flight_list = data.data.itineraries
-        console.log(flight_list)
-        for (let f of flight_list){
-          if (f.legs[0].segments.length == 1 && f.legs[1].segments.length == 1 ){
-            if (!('eco' in f)){
-              f['eco'] = {'ecoContenderDelta':0}
-            }
-            result.push(f)
-          }
-        }
-      }
-      function compareByEco(a, b) {
-        return  b.eco.ecoContenderDelta -  a.eco.ecoContenderDelta ;
-      }
+        
+        await userStore.updateItinerary(iti_data,this.user,this.iti_name);
+        this.$router.push({ path: `/itinerary/${this.user}/${this.iti_name}` ,replace:true})
+      },
+      format_date(date) {
+        date = new Date(date)
+      let mth = date.getMonth()
+      let day = date.getDate()
+      let year = date.getFullYear()
+      let time = String(date.toLocaleTimeString()).replaceAll(' ', '-')
+      // time = time.split(':').slice(0,1).join(":")  + time.split(':')[2].slice(0,-2)
+      
+      var parts = time.split('-');
+      let front_time = parts[0].split(':')
+      time = front_time[0] + ":" +  front_time[1] +parts[1]
 
-      // // Sort the array by age in ascending order
-      result.sort(compareByEco);
 
-      for (const [i, obj] of (result.entries())) {
-      if (i == 0){
-        obj.eco['eco_best']= true
-      }else{
-        obj.eco['eco_best'] = false
-      }
-}
-      console.log(result)
-      return result
+      return [`${year}-${mth + 1}-${day}`, time]
+    },
+    hour(time){
+      const hours = Math.floor(time / 60); 
+      const remainingMinutes = time % 60; 
+
+      return String(`${hours}h ${remainingMinutes}m`);
     }
+  
   }
 }
 </script>
 
 <style scoped>
-.banner {
-  background-color: blue;
-}
 
-.main_con {
-  border-radius: 16px;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-}
-.header{
-  background-color:#004ee4;
-  color:white;
-}
-
-.input_c{
-  background-color:#004ee4;
-  color:white;
-  border:none;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.first_row{
-  color:#5f8fee;
-}
-
-.info_row{
-  color:#5f8fee;
-  font-size: 20px;
-}
-</style>
-
-
-<style lang="scss" scoped>
-  :deep() {
-    .dp-custom-input {
-      border: none;
-      color:white;
-  
-  
-  &:focus {
-    border: 1px solid var(--purplish-blue);
+@media only screen and (min-width: 992px) {
+  .book_big{
+    display:block;
   }
 
+  .book_small{
+    display:none;
   }
-  .dp-color{
-  background-color:#004ee4;
-  text-align: center;
-  font-size: 30px;
-  
-}
-svg{
-  display:none;
-
-}
-  
-  }
-
-
-  @media only screen and (min-width: 992px) {
-.left-side-mobile{
-  display:none
-}
-.scroll-big{
-  height: 80vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-}
-
-
-@media only screen and (max-width: 1200px) {
    
-   :deep() {
-     .dp-color{
-     font-size: 20px;
-     
-   }
      }
-
-     .input_c{
-  background-color:#004ee4;
-  color:white;
-  border:none;
-  font-size: 15px;
-  font-weight: bold;
-}
-
-     }
-   
 
 @media only screen and (max-width: 992px) {
-    .left-side {
-    display:none
-    /* padding: 60px 40px; */
-}
-.left-side-mobile{
-  display:block
-}
-
-.input_c{
-  background-color:white;
-  color:black;
-  border:1px solid black;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.scroll-big{
-  height: 60vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  border:3px solid black;
-}
-
-
-:deep() {
-    .dp-custom-input {
-      border: 1px solid black;
-      color:white;
-  
-  
-  &:focus {
-    border: 1px solid var(--purplish-blue);
+  .book_small{
+    display:block;
   }
 
-  }
-  .dp-color{
-  background-color:white;
-  text-align: center;
-  color:black;
-  font-size: 20px;
-  
-}
-svg{
-  display:block;
-
-}
-  }
-
-
-
-}
-
-@media only screen and (max-width: 576px) {
-  .main_con{
-    width:95%;
+  .book_big{
+    display:none;
   }
    
      }
-
 
 </style>

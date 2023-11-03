@@ -338,7 +338,4 @@ export default {
 }
  
    }
-   .card{
-    
-   }
 </style>
