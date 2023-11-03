@@ -146,6 +146,7 @@ export default {
 
     // fetches the data 
     this.fetchedData = await userStore.getItinerary(this.userid, this.token);
+    console.log(this.fetchedData)
 
   },
 

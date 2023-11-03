@@ -48,7 +48,8 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" :id="'recommend' + day.dayId + 'ModalLabel'">Recommended activities</h1>
+                        <h1 class="modal-title fs-5" :id="'recommend' + day.dayId + 'ModalLabel'">Recommended activities  </h1>
+                        <span class="text-primary ms-auto ">Selected: {{ this.selectedRec.name }}</span>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body mx-auto">
@@ -79,7 +80,9 @@
                             </div>
                         </div> 
                     </div>
+                    
                     <div class="modal-footer">
+                        
                         <button type="button" class="btn btn-danger me-3" :disabled="sliceCount==0" @click="sliceCount--">Previous Page</button>
                         <button type="button" class="btn btn-success me-3" :disabled="sliceCount==(numPages-1)" @click="sliceCount++">Next Page</button>
                         <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close (Reset recommendations!)</button>
@@ -345,7 +348,7 @@
 //  import statements
 import '../assets/day.css';
 // import axios from 'axios';
-
+import country_code from './country_code.json'
 
 export default {
 props: [
@@ -642,7 +645,7 @@ data () {
             'North Macedonia': 'MK',
             'Češka': 'CZ'
         },
-        countryName: "Australia",
+        countryName:"",
         country: "",
         predictionList: [],
         selectedTypes: ['tourist_attraction','museum','cafe'],
@@ -679,7 +682,9 @@ computed: {
 
 // start of lifecycle
 async mounted () {
-    this.country = this.getCountryCode(this.countryName)
+    // this.country = this.getCountryCode(this.countryName)
+    console.log(this.country,'sd')
+    this.setTriggers()
 },
 
 methods: {
@@ -723,7 +728,7 @@ methods: {
         }
     },
     getCountryCode(countryName){
-        return this.countryList[countryName]
+        return country_code[countryName]
     },
     checkRecommended(){
         if (this.selectedTypes.length > 0){
@@ -739,12 +744,6 @@ methods: {
     },
     getTopAttractions(){
         var search = "tourist attractions in " + this.countryName
-        for (let i=0;i<this.days.length;i++){
-            if (this.originName != ""){
-                var search = "tourist attractions near " + this.originName
-                break
-            }
-        }
         var attractionsCount = 0
         var topAttractions = [];
         return new Promise((resolve) => {
@@ -1102,6 +1101,7 @@ methods: {
         return displayedCost
     },
     chooseRec(index){
+        
         if (this.sliceCount == 0){
             this.selectedRec = this.recs[index]
         }else if (this.sliceCount == 1){
@@ -1109,6 +1109,8 @@ methods: {
         }else{
             this.selectedRec = this.recs[index+40]
         }
+
+        console.log(this.recs == this.selectedRec)
     }, 
     addActivityFromReccs(dayId){
         if (this.selectedRec != []){
@@ -1217,10 +1219,17 @@ methods: {
     async findPlace(query,fieldList,locBias){
         var testDiv = document.getElementById('testingDiv');
         const {PlacesService} = await google.maps.importLibrary("places");
-        let request = {
-            query: query,
-            fields: fieldList,
-            locationBias: locBias,
+        if (locBias !== ""){
+            var request = {
+                query: query,
+                fields: fieldList,
+                locationBias: locBias,
+            }
+        }else{
+            var request = {
+                query: query,
+                fields: fieldList
+            }
         }
         var service = new PlacesService(testDiv);
         return new Promise((resolve, reject) => {service.findPlaceFromQuery(request, (results, status) => {

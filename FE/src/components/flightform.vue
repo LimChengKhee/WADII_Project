@@ -52,7 +52,7 @@ export default {
 
     <div class="text-start">
       <h2 class="mt-3  d-none d-md-block">Select your flight</h2>
-      <h2 class="d-md-none mt-3">FLight</h2>
+      <h2 class="d-md-none mt-3">Flight</h2>
       <p class="">Fill up your flight details (Optional)</p>
     </div>
 
@@ -64,7 +64,7 @@ export default {
       <input
         type="text"
         id="name"
-        placeholder="e.g. Stephen King"
+        placeholder="e.g. SQ-222"
         class="py-2 ps-3"
         v-model="itineraryStore.flight_no"
       />
@@ -78,7 +78,7 @@ export default {
         }}</span>
       </div>
       <div class="row ">
-        <div class="col-xl-6  col-lg-6 col-md-6">
+        <div class="col-xl-6  col-lg-6 col-md-12 px-0">
           <label for="name" class="text-start mb-2">Departure</label
           ><Datepicker
             v-model="itineraryStore.departure_date"
@@ -93,8 +93,8 @@ export default {
             focus-start-date
           />
         </div>
-        <div class="col-xl-6 col-lg-6 col-md-6">
-          <label for="name" class="text-start mb-2">Departure Country</label
+        <div class="col-xl-6 col-lg-6 col-md-12 px-0 ps-5 country">
+          <label for="name" class="text-start mb-2">Country</label
           ><input
             type="text"
             id="name"
@@ -107,13 +107,13 @@ export default {
       </div>
     </div>
     <div class="form-group">
-      <div class="form-group-label mb-2">
+      <div class="form-group-label mb-2 ">
         <span v-if="itineraryStore.errors.arrival_date">{{
           itineraryStore.errors.arrival_date
         }}</span>
       </div>
       <div class="row ">
-        <div class="col-xl-6 col-lg-6 col-md-6">
+        <div class="col-xl-6 col-lg-6 col-md-12 px-0">
           <label for="name" class="text-start mb-2">Arrival</label
           ><Datepicker
             v-model="itineraryStore.arrival_date"
@@ -129,8 +129,8 @@ export default {
             
           />
         </div>
-        <div class="col-xl-6 col-lg-6 col-md-6">
-          <label for="name" class="text-start mb-2">Arrival Country</label
+        <div class="col-xl-6 col-lg-6 col-md-12 px-0 ps-5 country">
+          <label for="name" class="text-start mb-2">Country</label
           ><input
             type="text"
             id="name"
@@ -150,7 +150,7 @@ export default {
         }}</span>
       </div>
       <div class="row">
-        <div class="col">
+        <div class="col px-0">
           <input
             type="Number"
             id="name"
@@ -233,6 +233,35 @@ p {
 *{
   background-color: white;
 }
+
+@media only screen and (min-width: 768px)and (max-width: 991px) {
+  .form-group{
+    margin: 0px;
+  }
+  .country{
+    padding:0px !important;
+  }
+
+}
+
+@media only screen and (min-width: 577px)and (max-width: 767px) {
+  .form-group{
+    margin: 0px;
+  }
+  .country{
+    padding:0px !important;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .form-group{
+    margin: 0px;
+  }
+  .country{
+    padding:0px !important;
+  }
+}
+
+
 </style>
 
 

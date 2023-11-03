@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="w-100 px-0" style="overflow-x: hidden;">
-    <div class="row">
-      <Navbar class="px-0" style=" z-index: 1000;"/>
+  <div id="app" class="w-100 px-0" style="overflow-x:hidden">
+    <div class="row px-0">
+      <Navbar class="px-0 " style="z-index: 1000;"/>
     </div>
     <!-- Content -->
     <!-- <div class="col-lg-10 offset-lg-2 col-12 px-0"> -->
@@ -24,7 +24,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
 export default { 
   name: "App",
-  /*Life cycle hook*/
+
   components:{
     Navbar,
     Login,
@@ -38,7 +38,7 @@ export default {
 
 <style>
   /* @import '../src/assets/login.css'; */
-  
+
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
 
 html, body {

@@ -1,36 +1,16 @@
 <template>
-  <div class="container bg-white main_con my-5">
-    <div class="row p-3">
-    <div class="col header px-0 left-side">
-
-      <div class="col-12">
-        <img src="../assets/plane_img.png" alt="" class="img-fluid w-100" style="height:360px">
-      </div>
-
-      <div class="col">
-      <div class="row info_row">
-        <div class="col text-center">
-          One Way
-        </div>
-        <div class="col text-center">
-          One Stop
-        </div>
-      </div>
-
-      <div class="row first_row mt-4">
-        <div class="col text-center">
-          From
-        </div>
-        <div class="col text-center">
-          To
-        </div>
-      </div>
-
-      <div class="row mt-4 ">
-        <div class="col text-center ">
-          
-          <input type="text" v-model="departure_c" class="w-50  input_c ms-4" />
-            <!-- <p class="d-inline-block">testing </p> -->
+  
+  <div class="row">
+    
+    <div class="col p-0 mx-auto">
+      <div class="container bg-white main_con my-5">
+        <div class="col left-side-mobile">
+          <div class="col">
+            <div class="row pt-4">
+              <div class="col text-center p-0">
+                <p class="m-0">From</p>
+                <input type="text" v-model="departure_c" class="w-50 input_c" />
+                <!-- <p class="d-inline-block">testing </p> -->
 
             <!-- <img src="../assets/plane_up.png" alt="" style="width:80px;" class="z-n1"> -->
           
@@ -65,6 +45,18 @@
           <br>
 
 
+                <Datepicker
+                  v-model="start_date"
+                  placeholder="Departure Date/time"
+                  :enable-time-picker="false"
+                  :teleport="true"
+                  :text-input="true"
+                  :min-date="start_date"
+                  :start-date="start_date"
+                  @update:model-value="mountAllFlightInformation"
+                  input-class-name="dp-custom-input py-2 rounded-3 dp-color"
+                  focus-start-date
+                />
             <Datepicker
             v-model="start_date"
             placeholder="Departure Date/time"
@@ -113,15 +105,44 @@
               
               <img class="" src="../assets/plane.svg" style="width:50px;height:50px; text-decoration: underline;"/>
             </div>
-            
-          </div>
-          
-  
-        
-        <div class="col text-center ">
-         
-          <input type="text" v-model="destination_c" class="w-50  input_c ms-4" />
-            <!-- <p class="d-inline-block">testing </p> -->
+
+            <div class="row">
+              <div class="col">
+                <div class="row info_row">
+                  <div class="col text-center">One Way</div>
+                  <div class="col text-center">One Stop</div>
+                </div>
+
+                <div class="row first_row mt-4">
+                  <div class="col text-center">From</div>
+                  <div class="col text-center">To</div>
+                </div>
+
+                <div class="row mt-4">
+                  <div class="col text-center">
+                    <input
+                      type="text"
+                      v-model="departure_c"
+                      class="w-50 input_c"
+                      style="margin-left: 60px"
+                    />
+                    <!-- <p class="d-inline-block">testing </p> -->
+
+                    <!-- <img src="../assets/plane_up.png" alt="" style="width:80px;" class="z-n1"> -->
+                  </div>
+                  <div class="col-2">
+                    <div>
+                      <img
+                        class=""
+                        src="../assets/plane.svg"
+                        style="width: 50px; height: 50px; text-decoration: underline"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col text-center">
+                    <input type="text" v-model="destination_c" class="w-50 input_c me-2" />
+                    <!-- <p class="d-inline-block">testing </p> -->
 
             <!-- <img src="../assets/plane_up.png" style="transform: rotate(50deg); width:80px;" alt="" class="z-n1"> -->
           
@@ -136,64 +157,62 @@
           <br>
 
 
-            <Datepicker
-            v-model="start_date"
-            placeholder="Departure Date/time"
-            :enable-time-picker="false"
-            :teleport="true"
-            :text-input="true"
-            :min-date="start_date"
-            :start-date="start_date"
-            @update:model-value="mountAllHotelInformation"
-            input-class-name="dp-custom-input py-2 rounded-3 dp-color"
+                    <Datepicker
+                      v-model="start_date"
+                      placeholder="Departure Date/time"
+                      :enable-time-picker="false"
+                      :teleport="true"
+                      :text-input="true"
+                      :min-date="start_date"
+                      :start-date="start_date"
+                      @update:model-value="mountAllFlightInformation"
+                      input-class-name="dp-custom-input rounded-3 dp-color"
+                      focus-start-date
+                    />
 
-            focus-start-date/>
+                    <div class="col-3"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col ms-3 scroll-big my-auto" v-if="mounted">
+            <FlightCard
+              v-for="flight in this.hotelsInCities"
+              :flightNumberO="flight.legs[0].segments[0].flightNumber"
+              :alternateIdO="flight.legs[0].segments[0].marketingCarrier.alternateId"
+              :carrierNameO="flight.legs[0].carriers.marketing[0].name"
+              :flightNumberD="flight.legs[1].segments[0].flightNumber"
+              :alternateIdD="flight.legs[1].segments[0].marketingCarrier.alternateId"
+              :carrierNameD="flight.legs[1].carriers.marketing[0].name"
+              :departure="flight.legs[0].segments[0].departure"
+              :originDisplayCode="flight.legs[0].segments[0].origin.displayCode"
+              :originName="flight.legs[0].segments[0].origin.name"
+              :originCity="flight.legs[0].origin.city"
+              :duration="flight.legs[0].durationInMinutes"
+              :arrival="flight.legs[0].arrival"
+              :destinationDisplayCode="flight.legs[0].segments[0].destination.displayCode"
+              :destinationCity="flight.legs[0].destination.name"
+              :totalPrice="flight.price.formatted"
+              :tag="flight.tags"
+              :eco="flight.eco.ecoContenderDelta"
+              :img="flight.legs[0].carriers.marketing[0].logoUrl"
+              :eco_best="flight.eco.eco_best"
+            ></FlightCard>
+          </div>
 
-
-          <div class="col-3"></div>
-        </div>
-
-      </div>
-
-    </div>
-      
-
-    </div>
-    <div class="col card_section ms-3 scroll-big" v-if="mounted">
-      <FlightCard
-        v-for="flight in this.hotelsInCities"
-        :flightNumberO="flight.legs[0].segments[0].flightNumber"
-        :alternateIdO ="flight.legs[0].segments[0].marketingCarrier.alternateId"
-        :carrierNameO="flight.legs[0].carriers.marketing[0].name"
-
-        :flightNumberD="flight.legs[1].segments[0].flightNumber"
-        :alternateIdD ="flight.legs[1].segments[0].marketingCarrier.alternateId"
-        :carrierNameD="flight.legs[1].carriers.marketing[0].name"
-
-        :departure="flight.legs[0].segments[0].departure"
-        :originDisplayCode="flight.legs[0].segments[0].origin.displayCode"
-        :originName="flight.legs[0].segments[0].origin.name"
-        :originCity="flight.legs[0].origin.city"
-        :duration="flight.legs[0].durationInMinutes"
-        :arrival="flight.legs[0].arrival"
-        :destinationDisplayCode="flight.legs[0].segments[0].destination.displayCode"
-        :destinationCity="flight.legs[0].destination.name"
-        :totalPrice="flight.price.formatted"
-        :tag = "flight.tags"
-        :eco = "flight.eco.ecoContenderDelta"
-        :img = "flight.legs[0].carriers.marketing[0].logoUrl"
-        :eco_best="flight.eco.eco_best"
-      ></FlightCard>
-    </div>
-    <!-- <div class="spinner_section d-flex flex-column" v-if="!mounted">
+           <div class="spinner_section d-flex flex-column" v-if="!mounted">
       <div
         class="spinner-border mt-5"
         style="margin: 0 auto; height: 200px; width: 200px"
         role="status"
       ></div>
       <p class="mt-2" style="text-align: center">Loading...Please give us a second</p>
-    </div> -->
-  </div>
+    </div> 
+
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -241,7 +260,7 @@ export default {
 
   // start of lifecycle
   async mounted() {
-    // await this.mountAllHotelInformation()
+    // await this.mountAllFlightInformation()
     const authStore = useAuthStore()
     const userStore = useUsersStore()
     const itineraryStore = useItineraryStore()
@@ -256,87 +275,94 @@ export default {
     console.log(dec)
     this.destination_c = dc
     this.departure_c = dec
-    this.mountAllHotelInformation()
-
-    
+    this.mountAllFlightInformation()
   },
 
   methods: {
     // methods defined by ourselves
-    async mountAllHotelInformation() {
-      // const authStore = useAuthStore()
-      // const userStore = useUsersStore()
-      // const itineraryStore = useItineraryStore()
-      // this.user = this.$route.params.username
-      // this.iti_name = this.$route.params.itinerary_name
+    toggleSidebarVisibility() {
+      
+      const toggle = document.getElementsByClassName("sidenav")[0];
+      var check = window.getComputedStyle(toggle).display;
+      console.log(check)
+      if (check == 'none'){
+        toggle.style.display = 'block'
+      }else{
+        toggle.style.display = 'none'
+      }
+      
 
-      // var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
-      // this.iti_data = iti_data
-      // var dc = iti_data.itinerary_data.destination.trip_country
-      // this.destination_c = dc
+      },
+    async mountAllFlightInformation() {
+      const authStore = useAuthStore()
+      const userStore = useUsersStore()
+      const itineraryStore = useItineraryStore()
+      this.user = this.$route.params.username
+      this.iti_name = this.$route.params.itinerary_name
+
+      var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+      this.iti_data = iti_data
+      var dc = iti_data.itinerary_data.destination.trip_country
+      this.destination_c = dc
 
       var state = capital.filter((c) => c['country'].toLowerCase() == this.destination_c.toLowerCase() );
       var destination_country = state[0]['city']
       //placeholder
-      var data = flight
-      this.hotelsInCities = await this.filterby(data,'one')
-      this.mounted = true
-      return
-
+      // var data = flight
+      // this.hotelsInCities = await this.filterby(data, 'one')
+      // this.mounted = true
+      // return
 
       var start_date = iti_data.itinerary_data.destination.start_date
       var end_date = iti_data.itinerary_data.destination.end_date
       this.start_date = start_date
       this.end_date = end_date
-      var date_range = itineraryStore.handleDate(this.flight_date)
+      // var date_range = itineraryStore.handleDate(this.flight_date)
+      // var date_list = date_range.split(',')
 
-      var date_list = date_range.split(',')
+      var d_date = this.start_date
+      // var a_date = date_list[1]
 
-      var d_date = date_list[0]
-      var a_date = date_list[1]
-    
-      
-      var d_skyId = "SINS"
-      var d_entityId = "27546111"
+      var d_skyId = 'SINS'
+      var d_entityId = '27546111'
       console.log(destination_country)
-      const [a_skyId,a_entityId] = await this.getAPIcountry(destination_country)
+      const [a_skyId, a_entityId] = await this.getAPIcountry(destination_country)
+      console.log(a_skyId, a_entityId)
       // var a_skyId = 'JP'
       // var a_entityId = '29475330'
       if (a_skyId == null || a_entityId == null){
         this.hotelsInCities = []
         return
       }
-      var people  = '1'
-      console.log(d_date,a_date)
-const options = {
-  method: 'GET',
-  url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchFlights',
-  params: {
-    originSkyId: d_skyId,
-    destinationSkyId: a_skyId,
-    originEntityId: d_entityId,
-    destinationEntityId: a_entityId,
-    date: d_date,
-    returnDate : a_date,
-    adults: people,
-    currency: 'SGD'
-  },
-  headers: {
-    'X-RapidAPI-Key': '921e9474d9msh41e6dc80c2d8395p101f78jsne7dbbeab3134',
-    'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
-  }
-};
-console.log(options)
-try {
-	const response = await axios.request(options);
-	console.log(response.data);
-  var data = response.data
-  this.hotelsInCities = await this.filterby(data,'one')
-  this.mounted = true
-} catch (error) {
-	console.error(error);
-}
+      var people = '1'
 
+      const options = {
+        method: 'GET',
+        url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchFlights',
+        params: {
+          originSkyId: d_skyId,
+          destinationSkyId: a_skyId,
+          originEntityId: d_entityId,
+          destinationEntityId: a_entityId,
+          date: d_date,
+          adults: people,
+          currency: 'SGD'
+        },
+        headers: {
+          'X-RapidAPI-Key': '921e9474d9msh41e6dc80c2d8395p101f78jsne7dbbeab3134',
+          'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
+        }
+      }
+      console.log(options)
+      try {
+        const response = await axios.request(options)
+        console.log(response.data)
+        var data = response.data
+        this.hotelsInCities = await this.filterby(data, 'one')
+        this.mounted = true
+      } catch (error) {
+        console.error(error)
+      }
     },
 
     async getAPIcountry(country){
@@ -366,7 +392,8 @@ try {
     async filterby(data,stops){
       
       var result = []
-      if (stops == 'one'){
+      if (stops == 'one') {
+        console.log(data,'GONE')
         var flight_list = data.data.itineraries
         console.log(flight_list)
         for (let f of flight_list){

@@ -215,4 +215,3 @@ export default {
     float: right;
 }
 </style>
-  

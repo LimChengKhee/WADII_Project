@@ -190,7 +190,8 @@ export default {
       this.search = true;
       let hotels_sub = []
       for (let element of this.hotelsInCities) {
-        if ((element["hotel_name"].includes(this.user_search))) {
+        var hotel = element["hotel_name"].toLowerCase()
+        if (hotel.includes(this.user_searc.toLowerCase())) {
           hotels_sub.push(element)
         }
       }
@@ -202,28 +203,28 @@ export default {
     // methods defined by ourselves
     async mountAllHotelInformation() {
       // get all the hotels within that city displayed.
-      // const options = {
-      //   method: 'GET',
-      //   url: 'https://booking-com.p.rapidapi.com/v1/hotels/search',
-      //   params: {
-      //     checkin_date: checkin_date,
-      //     dest_type: 'city',
-      //     units: 'metric',
-      //     checkout_date: checkout_date,
-      //     adults_number: adults_number,
-      //     order_by: 'popularity',
-      //     dest_id: dest_id,
-      //     filter_by_currency: 'HNL',
-      //     locale: 'en-gb',
-      //     room_number: number_of_rooms,
-      //     categories_filter_ids: 'class::2,class::4,free_cancellation::1',
-      //     include_adjacency: 'true'
-      //   },
-      //   headers: {
-      //     'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
-      //     'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-      //   }
-      // };
+      const options = {
+        method: 'GET',
+        url: 'https://booking-com.p.rapidapi.com/v1/hotels/search',
+        params: {
+          checkin_date: checkin_date,
+          dest_type: 'city',
+          units: 'metric',
+          checkout_date: checkout_date,
+          adults_number: adults_number,
+          order_by: 'popularity',
+          dest_id: dest_id,
+          filter_by_currency: 'HNL',
+          locale: 'en-gb',
+          room_number: number_of_rooms,
+          categories_filter_ids: 'class::2,class::4,free_cancellation::1',
+          include_adjacency: 'true'
+        },
+        headers: {
+          'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+          'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+        }
+      };
 
       // const options = {
       //   method: 'GET',
@@ -251,40 +252,40 @@ export default {
       //   }
       // };
 
-      // try {
-      //   const response = await axios.request(options)
-      //   console.log(response);
-      //   this.hotelsInCities = response.data.result
-      // } catch (error) {
-      //   console.error(error);
-      // }
+      try {
+        const response = await axios.request(options)
+        console.log(response);
+        this.hotelsInCities = response.data.result
+      } catch (error) {
+        console.error(error);
+      }
 
-      // await flushPromises()
-      this.hotelsInCities = test
+      await flushPromises()
+      // this.hotelsInCities = test
 
-      // for (let hotel of this.hotelsInCities) {
-      //   let hotel_id = hotel.hotel_id
-      //   // fire an API call to get description
-      //   const options = {
-      //     method: 'GET',
-      //     url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
-      //     params: {
-      //       hotel_id: hotel_id,
-      //       locale: 'en-gb'
-      //     },
-      //     headers: {
-      //       'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
-      //       'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-      //     }
-      //   };
-      //   try {
-      //     const response = await axios.request(options)
-      //     hotel['Description'] = response.data
-      //   } catch (error) {
-      //     console.error(error)
-      //   }
-      // }
-      // await flushPromises()
+      for (let hotel of this.hotelsInCities) {
+        let hotel_id = hotel.hotel_id
+        // fire an API call to get description
+        const options = {
+          method: 'GET',
+          url: 'https://booking-com.p.rapidapi.com/v1/hotels/description',
+          params: {
+            hotel_id: hotel_id,
+            locale: 'en-gb'
+          },
+          headers: {
+            'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
+            'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+          }
+        };
+        try {
+          const response = await axios.request(options)
+          hotel['Description'] = response.data
+        } catch (error) {
+          console.error(error)
+        }
+      }
+      await flushPromises()
     },
     async savePersistedData() {
       // Use localStorage to save data
@@ -341,4 +342,3 @@ export default {
     
    }
 </style>
-

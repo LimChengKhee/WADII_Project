@@ -19,20 +19,18 @@ const stepStore = useStepStore();
 
 .main-content {
     width: 100%;
-    
-}
-@media only screen and (min-width: 992px) {
-  .main-container {
-    width:560px;
-    height:960px;
-    margin-left:60px;
-    margin-right:60px;
-}
 }
 
-@media only screen and (min-width: 768px) {
-  .main-container {
-    height:600px;
+@media only screen and (min-width: 768px)and (max-width: 991px) {
+.main-content {
+    height: 680px;
+    width: 100%;
+}
+}
+@media only screen and (min-width: 577px)and (max-width: 767px) {
+  .main-content {
+    height: 640px;
+    width: 100%;
 }
 }
 

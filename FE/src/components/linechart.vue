@@ -179,7 +179,7 @@ export default {
         .attr("text-anchor", "end")
         .attr("fill", "white")
 
-
+      console.log(line)
       g.append("path")
         .datum(this.dataLC)
         .attr("fill", "none")
@@ -318,6 +318,7 @@ export default {
         .attr("y", -10);
       g.append("text")
         .attr("x", width - 10)
+        .attr("y", this.screenWidth <= 600 ? 10 : 30)
         .attr("y", this.screenWidth <= 600 ? 10 : 30)
         .attr("text-anchor", "end")
         .attr("fill", "white")
