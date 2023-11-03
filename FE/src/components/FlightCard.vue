@@ -8,7 +8,7 @@
             {{ parseInt(this.eco) }}% Lesser Carbon Footprint
           </p>
           
-          <div class="row p-2 pe-5">
+          <div class="row p-2 pe-3">
 
             <div class="col-2 pe-0">
               <div class="" style="">

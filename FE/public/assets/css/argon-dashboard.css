@@ -20908,7 +20908,19 @@ fieldset:disabled .btn {
   position: relative;
   z-index: 2;
 }
-
+.card.card-background:after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  display: block;
+  content: "";
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 1rem;
+}
 .card.card-background .card-body .content-center,
 .card.card-background .card-body .content-left {
   min-height: 330px;
@@ -20930,19 +20942,7 @@ fieldset:disabled .btn {
   color: #fff;
 }
 
-.card.card-background:after {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 1;
-  display: block;
-  content: "";
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 1rem;
-}
+
 
 .card.card-background.card-background-mask-primary:before {
   background: rgba(0, 0, 0, 0.2);

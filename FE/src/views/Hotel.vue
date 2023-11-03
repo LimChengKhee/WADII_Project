@@ -117,6 +117,10 @@ import axios from 'axios'
 import flushPromises from 'flush-promises'
 import test from "../views/static/test.json"
 import Datepicker from '@vuepic/vue-datepicker';
+import { mapStores } from 'pinia'
+import { useAuthStore } from '../store/piniaStore/authStore'
+import { useUsersStore } from '../store/piniaStore/userStore'
+import { useItineraryStore } from '../store/piniaStore/itinerary'
 
 export default {
   name: 'Hotel',
@@ -137,15 +141,40 @@ export default {
       review_sort: true,
       distance_sort: true,
       mindate: this.getDate(),
+      user: '',
+      iti_name: '',
+      iti_data: '',
+      start_date: '',
+      end_date: '',
+      destination_c: '',
+      departure_c:''
     }
   },
   computed: {
     // computed
+    ...mapStores(useAuthStore),
+    ...mapStores(useUsersStore),
+    ...mapStores(useItineraryStore),
   },
 
   // start of lifecycle
   async mounted() {
     let currentState = await this.loadPersistedData();
+
+    const authStore = useAuthStore()
+    const userStore = useUsersStore()
+    const itineraryStore = useItineraryStore()
+    this.user = this.$route.params.username
+    this.iti_name = this.$route.params.itinerary_name
+
+    var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+    this.iti_data = iti_data
+    this.start_date = new Date(iti_data.itinerary_data.destination.start_date)
+    this.end_date = new Date(iti_data.itinerary_data.destination.end_date)
+    var dc = iti_data.itinerary_data.destination.trip_country
+    var dec = iti_data.itinerary_data.destination.departure_country
+    this.destination_c = dc
+    this.departure_c = dec
 
     if (currentState == null) {
       await this.mountAllHotelInformation()
@@ -207,16 +236,16 @@ export default {
         method: 'GET',
         url: 'https://booking-com.p.rapidapi.com/v1/hotels/search',
         params: {
-          checkin_date: checkin_date,
+          checkin_date:this.start_date,
           dest_type: 'city',
           units: 'metric',
-          checkout_date: checkout_date,
-          adults_number: adults_number,
+          checkout_date: this.end_date,
+          adults_number: '1',
           order_by: 'popularity',
           dest_id: dest_id,
-          filter_by_currency: 'HNL',
+          filter_by_currency: 'SGD',
           locale: 'en-gb',
-          room_number: number_of_rooms,
+          room_number: '1',
           categories_filter_ids: 'class::2,class::4,free_cancellation::1',
           include_adjacency: 'true'
         },

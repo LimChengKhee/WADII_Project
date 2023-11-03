@@ -1,19 +1,21 @@
 <template>
-  <div class="container-fluid " >
-    <div class="row rounded-rect-container align-items-start">
-      <div class="row float-left">
+  <div class="container-fluid">
+    <div class="row rounded-rect-container align-items-start mt-5">
+      <div class="row float-left mb-2">
         <h1 style="text-transform: capitalize;">{{ userid }}'s Dashboard</h1>
+        <button class="btn btn-primary w-100 " @click="createitinerary">Create Itinerary Now</button>
         <hr />
       </div>
       <div class="col-lg-12">
         <div class="parent-chart-container mt-4">
           <div class="row">
-            <div class="col-lg-8 col-md-12">
+            <div class="col-lg-8 col-md-12 mb-4">
               <Linechart :dataLC="fetchedData" />
             </div>
+            
             <div class="col-lg-4 col-md-12">
-              <button class="btn btn-primary w-100 " @click="createitinerary">Create Itinerary Now</button>
-              <div class="card card-waves col-sm-12 col-lg-12 col-md-12 mt-4" style="height: 80%">
+             
+              <div class="card card-waves col-sm-12 col-lg-12 col-md-12" style="height: 80%">
                 <Itidetails :dataDC="fetchedData" />  
               </div>
             </div>
@@ -86,7 +88,6 @@ export default {
 
     // fetches the data 
     this.fetchedData = await userStore.getItinerary(this.userid, this.token);
-    console.log(this.fetchedData)
 
   },
 

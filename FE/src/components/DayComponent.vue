@@ -3,8 +3,8 @@
     <div class="row" v-for="day of days" :key="day.dayId" :id="'Day' + day.dayId + 'Row'">
         <div class="col mt-4">
             <div class="card">
-                <div class="card-header m-0 row pb-0">
-                    <h6 class="p-0 col-1 my-auto">
+                <div class="card-header m-0 row pb-0" style="background-color: white; border-bottom:0px;">
+                    <h6 class="p-0 col-1 my-auto" style="color:#344767">
                         Day {{ day.dayId+1 }}
                     </h6>
                     <button v-if="day.dayActivities.length > 0" type="button" class="mt-0 py-0 col-4 btn btn-link my-auto text-warning text-gradient my-auto px-0 mb-0" data-bs-toggle="modal" @click="initialiseRec(-1)" :data-bs-target="'#filter'+ day.dayId + 'Modal'"> 
@@ -26,9 +26,18 @@
                         </svg>
                         Add custom activity
                     </button>
-                    <div class="col-4 p-0 d-inline align-items-center">
-                        <div class="input-group bg-gray-100">
-                            <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
+                    <div class="col-4 p-0 d-inline align-items-center ">
+                        <div class="input-group" >
+                            <span class="input-group-text text-body" style="background-color:white"><svg fill="grey" height="16px" width="16px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="0 0 118.783 118.783" xml:space="preserve">
+<g>
+	<path d="M115.97,101.597L88.661,74.286c4.64-7.387,7.333-16.118,7.333-25.488c0-26.509-21.49-47.996-47.998-47.996
+		S0,22.289,0,48.798c0,26.51,21.487,47.995,47.996,47.995c10.197,0,19.642-3.188,27.414-8.605l26.984,26.986
+		c1.875,1.873,4.333,2.806,6.788,2.806c2.458,0,4.913-0.933,6.791-2.806C119.72,111.423,119.72,105.347,115.97,101.597z
+		 M47.996,81.243c-17.917,0-32.443-14.525-32.443-32.443s14.526-32.444,32.443-32.444c17.918,0,32.443,14.526,32.443,32.444
+		S65.914,81.243,47.996,81.243z"/>
+</g>
+</svg></span>
                             <input type="text" class="form-control"  @input="position = -1, processAutocomplete(day.dayId)" :id="'Day' + day.dayId + 'searchBar'" placeholder="Enter a location..."> <!--@input="processAutocomplete"-->
                         </div>
                     </div>
@@ -53,12 +62,12 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="dropdown" >
-                                            <button class="btn btn-link text-dark p-0 mb-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-link text-dark p-0 mb-0" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration:none">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-square-fill me-2" viewBox="0 0 16 16">
                                                     <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4 4a.5.5 0 0 0-.374.832l4 4.5a.5.5 0 0 0 .748 0l4-4.5A.5.5 0 0 0 12 6H4z"/>
                                                 </svg>Insert activity below
                                             </button>
-                                            <ul class="dropdown-menu">
+                                            <ul class="dropdown-menu" style="border-color:transparent">
                                                 <li><button type="button" class="dropdown-item" data-bs-toggle="modal" @click="initialiseRec(actIdx)" :data-bs-target="'#filter'+ day.dayId + 'Modal'">Recommended activities</button></li>
                                                 <li><hr class="dropdown-divider" style="background-color:lightgray"></li>
                                                 <li><button type="button" class="dropdown-item" @click="position=actIdx" data-bs-toggle="modal" :data-bs-target="'#customEvent' + day.dayId + 'Modal'">Custom event</button></li> <!--INSERT STUFF-->
@@ -1301,4 +1310,17 @@ methods: {
 
 <style scoped>
 
+.card{
+    border-color: transparent !important;
+    border-radius:0.75rem;
+}
+.card-header{
+    border-color: transparent !important;
+    border-radius:0.75rem;
+}
+
+.form-control:focus {
+ box-shadow: none;
+ border-color:#d2d6da;;
+}
 </style>

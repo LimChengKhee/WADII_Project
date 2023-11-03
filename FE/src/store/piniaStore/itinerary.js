@@ -229,12 +229,12 @@ export const useItineraryStore = defineStore('itinerary', {
           result[item] = flight_obj[item]
         }
       }
-      // var distance = await this.getDistance(flight_obj["arrival_country"],flight_obj["departure_country"])
-      var distance = 3000
+      var distance = await this.getDistance(flight_obj["arrival_country"],flight_obj["departure_country"])
+      // var distance = 3000
       result['distance'] = distance
 
-    //   var carbon_fp = await this.getcarbon_fp(result['distance'],result['duration'])
-      var carbon_fp = 3000
+     var carbon_fp = await this.getcarbon_fp(result['distance'],result['duration'])
+      // var carbon_fp = 3000
       result['carbon_fp'] = carbon_fp
       console.log(result, 'AFTER')
 

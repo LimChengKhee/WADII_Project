@@ -46,7 +46,7 @@ export default {
     dataLC: {
       immediate: true,
       handler(newVal, oldVal) {
-        
+
         this.drawChart();
       }
     }
@@ -105,7 +105,7 @@ export default {
       const container = d3.select("#chartContainer");
       container.select("svg").remove();
       const containerWidth = container.node().getBoundingClientRect().width;
-      const margin = { top: 30, right: 50, bottom: 40, left: this.screenWidth <= 600 ? 50 : 100 };
+      const margin = { top: 30, right: 50, bottom: 40, left: this.screenWidth <= 600 ? 90 : 100 };
       const width = Math.min(this.screenWidth, containerWidth) - margin.left - margin.right;
       const height = 500 - margin.top - margin.bottom;
 
@@ -128,18 +128,18 @@ export default {
 
       gradient.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#ff7e5f"); 
+        .attr("stop-color", "#ff7e5f");
 
       gradient.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#feb47b"); 
+        .attr("stop-color", "#feb47b");
 
       svg.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
         .style("fill", "#204E59")
-        .attr("rx", "5") 
-        .attr("ry", "5"); 
+        .attr("rx", "5")
+        .attr("ry", "5");
 
 
 
@@ -147,7 +147,7 @@ export default {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       const formatTime = d3.timeFormat("%Y-%m-%d");
-      const parseTime = d3.timeParse("%Y-%m-%d"); 
+      const parseTime = d3.timeParse("%Y-%m-%d");
       const formatTimeMonthYear = d3.timeFormat("%b %Y");
 
       const x = d3
@@ -162,7 +162,7 @@ export default {
         .scaleLinear()
         .domain([
           0,
-          d3.max(this.dataLC, d => d.totalCost) * 1.2 
+          d3.max(this.dataLC, d => d.totalCost) * 1.2
         ])
         .nice()
         .range([height, 0]);
@@ -170,12 +170,12 @@ export default {
       const line = d3
         .line()
         .x(d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
-        .y(d => y(d.totalCost)); 
+        .y(d => y(d.totalCost));
 
 
       g.append("text")
-        .attr("x", width - 10) 
-        .attr("y", 10) 
+        .attr("x", width - 10)
+        .attr("y", 10)
         .attr("text-anchor", "end")
         .attr("fill", "white")
 
@@ -204,13 +204,13 @@ export default {
         .enter()
         .append("circle")
         .attr("cx", d => x(parseTime(d.itinerary_data.itinerary_data.destination.start_date)))
-        .attr("cy", d => y(d.totalCost)) 
+        .attr("cy", d => y(d.totalCost))
         .attr("r", 5)
         .attr("fill", "steelblue")
 
         .on("mouseover", function (event, d) {
           const xPos = x(parseTime(d.itinerary_data.itinerary_data.destination.start_date));
-          const yPos = y(d.totalCost); 
+          const yPos = y(d.totalCost);
 
           const containerRect = g.node().getBoundingClientRect();
 
@@ -236,7 +236,7 @@ export default {
 
           foreignObjectGroup
             .append("foreignObject")
-            .attr("width", descriptionWidth) 
+            .attr("width", descriptionWidth)
             .attr("height", descriptionHeight)
             .append("xhtml:div")
             .style("position", "absolute")
@@ -284,38 +284,40 @@ export default {
           d3.select(".y-hover-line").remove();
         });
       const calculateTickCount = () => {
-        const maxTickCount = 10; 
-        const minWidthPerTick = 100; 
+        const maxTickCount = 10;
+        const minWidthPerTick = 100;
 
-        const tickCount = Math.floor(containerWidth / minWidthPerTick); 
+        const tickCount = Math.floor(containerWidth / minWidthPerTick);
 
-        return Math.min(tickCount, maxTickCount, this.dataLC.length); 
+        return Math.min(tickCount, maxTickCount, this.dataLC.length);
       };
 
       const tickCount = calculateTickCount();
 
       g.append("g")
-  .attr("style", "color: white;")
-  .attr("transform", "translate(0," + height + ")")
-  .call(d3.axisBottom(x).ticks(tickCount).tickFormat((date, index) => {
-    if (this.screenWidth <= 600) {
-      if (index === 0 || (index > 0 && d3.timeMonth(date) < d3.timeMonth(this.dataLC[index - 1].itinerary_data.itinerary_data.destination.start_date))) {
-        return formatTimeMonthYear(date);
-      } else {
-        return "";
-      }
-    } else {
-      return formatTime(date);
-    }
-  }));
-
+        .attr("style", "color: white;")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).ticks(tickCount).tickFormat((date, index) => {
+          if (this.screenWidth <= 600) {
+            if (index === 0 || (index > 0 && d3.timeMonth(date) < d3.timeMonth(this.dataLC[index - 1].itinerary_data.itinerary_data.destination.start_date))) {
+              return formatTimeMonthYear(date);
+            } else {
+              return "";
+            }
+          } else {
+            return formatTime(date);
+          }
+        }));
 
 
       g.append("g")
         .call(d3.axisLeft(y).tickSizeOuter(0))
         .selectAll("text")
-        .attr("x", this.screenWidth <= 600 ? 0 : -30)
-        .attr("y", -10); 
+        .attr("x", () => {
+          return this.screenWidth <= 600 ? -30 : -40; // Adjust the x-position based on screen width and margin
+        })
+        .attr("y", -10);
+
       g.append("text")
         .attr("x", width - 10)
         .attr("y", this.screenWidth <= 600 ? 10 : 30)
@@ -325,11 +327,10 @@ export default {
 
       g.append("text")
         .attr("x", width - 10)
-        .attr("y", 10)
+        .attr("y", this.screenWidth <= 600 ? 30 : 50)
         .attr("text-anchor", "end")
         .attr("fill", "white")
         .text(`Average Cost: $${averageCost.toFixed(2)}`);
-
       // Style x-axis labels
       svg.selectAll(".tick text")
         .attr("fill", "white")
@@ -343,7 +344,7 @@ export default {
         .attr("dy", "1em")
         .style("text-anchor", "middle")
         .attr("fill", "white")
-        .text("Total Cost"); 
+        .text("Total Cost");
     },
   },
   beforeDestroy() {
