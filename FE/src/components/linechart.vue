@@ -179,7 +179,7 @@ export default {
         .attr("text-anchor", "end")
         .attr("fill", "white")
 
-
+      console.log(line)
       g.append("path")
         .datum(this.dataLC)
         .attr("fill", "none")

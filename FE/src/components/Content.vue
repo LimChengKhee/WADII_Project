@@ -30,13 +30,13 @@ const stepStore = useStepStore();
 
 @media only screen and (min-width: 768px)and (max-width: 991px) {
 .main-content {
-    height: 750px;
+    height: 680px;
     width: 100%;
 }
 }
 @media only screen and (min-width: 577px)and (max-width: 767px) {
   .main-content {
-    height: 700px;
+    height: 640px;
     width: 100%;
 }
 }

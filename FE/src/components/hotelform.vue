@@ -51,8 +51,8 @@ mindate = getDate()
 <template>
   <div>
     <div class="text-start">
-      <h2 class="mt-3  d-none d-md-block">Plan your Hotel</h2>
-      <h2 class="d-md-none mt-3">Hotel</h2>
+      <h2 class="mt-3  d-none d-lg-block">Hotel</h2>
+      <h2 class="d-lg-none mt-3">Hotel</h2>
       <p class="">Please provide your information.(Optional)</p>
     </div>
    
@@ -92,7 +92,7 @@ mindate = getDate()
         <span v-if="itineraryStore.errors.hotel_cost">{{ itineraryStore.errors.hotel_cost }}</span>
       </div>
       <div class="row">
-        <div class="col">
+        <div class="col px-0">
           <input
             type="Number"
             id="name"

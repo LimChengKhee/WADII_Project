@@ -1,99 +1,7 @@
 <template>
   
   <div class="row">
-    <div class="col-3 p-0">
-      <button @click="toggleSidebarVisibility">23</button>
-      <div 
-        class=" sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4"
-        id="sidenav-main"
-      >
-        <div class="sidenav-header" @click="route_link('home')">
-          <i
-            class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
-            aria-hidden="true"
-            id="iconSidenav"
-          ></i>
-          <img
-            src="../assets/img/EcoBound.png"
-            class="navbar-brand-img"
-            style="max-height: 78px !important"
-            alt="main_logo"
-          />
-        </div>
-        <hr class="horizontal dark mt-0" />
-        <div class="collapse navbar-collapse w-auto" style="" id="sidenav-collapse-main">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active" @click="route_link('itinerary')">
-                <div
-                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
-                >
-                  <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
-                </div>
-                <span class="nav-link-text ms-1">Itinerary</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" @click="route_link('dashboard')">
-                <div
-                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
-                >
-                  <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-                </div>
-                <span class="nav-link-text ms-1">Dashboard</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" @click="route_link('flight')">
-                <div
-                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="32"
-                    height="32"
-                    fill="currentColor"
-                    class="bi bi-airplane"
-                    viewBox="0 0 16 16"
-                    style="color: red"
-                  >
-                    <path
-                      d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Zm.894.448C7.111 2.02 7 2.569 7 3v4a.5.5 0 0 1-.276.447l-5.448 2.724a.5.5 0 0 0-.276.447v.792l5.418-.903a.5.5 0 0 1 .575.41l.5 3a.5.5 0 0 1-.14.437L6.708 15h2.586l-.647-.646a.5.5 0 0 1-.14-.436l.5-3a.5.5 0 0 1 .576-.411L15 11.41v-.792a.5.5 0 0 0-.276-.447L9.276 7.447A.5.5 0 0 1 9 7V3c0-.432-.11-.979-.322-1.401C8.458 1.159 8.213 1 8 1c-.213 0-.458.158-.678.599Z"
-                    />
-                  </svg>
-                </div>
-                <span class="nav-link-text ms-1">Flights</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" @click="route_link('hotel')">
-                <div
-                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="32"
-                    height="32"
-                    fill="currentColor"
-                    class="bi bi-building"
-                    viewBox="0 0 16 16"
-                    style="color: green"
-                  >
-                    <path
-                      d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1ZM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Z"
-                    />
-                    <path
-                      d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1Zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3V1Z"
-                    />
-                  </svg>
-                </div>
-                <span class="nav-link-text ms-1">Hotels</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    
     <div class="col p-0 mx-auto">
       <div class="container bg-white main_con my-5">
         <div class="col left-side-mobile">
@@ -139,7 +47,7 @@
                   :text-input="true"
                   :min-date="start_date"
                   :start-date="start_date"
-                  @update:model-value="mountAllHotelInformation"
+                  @update:model-value="mountAllFlightInformation"
                   input-class-name="dp-custom-input py-2 rounded-3 dp-color"
                   focus-start-date
                 />
@@ -211,7 +119,7 @@
                       :text-input="true"
                       :min-date="start_date"
                       :start-date="start_date"
-                      @update:model-value="mountAllHotelInformation"
+                      @update:model-value="mountAllFlightInformation"
                       input-class-name="dp-custom-input rounded-3 dp-color"
                       focus-start-date
                     />
@@ -247,14 +155,15 @@
             ></FlightCard>
           </div>
 
-          <!-- <div class="spinner_section d-flex flex-column" v-if="!mounted">
+           <div class="spinner_section d-flex flex-column" v-if="!mounted">
       <div
         class="spinner-border mt-5"
         style="margin: 0 auto; height: 200px; width: 200px"
         role="status"
       ></div>
       <p class="mt-2" style="text-align: center">Loading...Please give us a second</p>
-    </div> -->
+    </div> 
+
         </div>
       </div>
     </div>
@@ -306,7 +215,7 @@ export default {
 
   // start of lifecycle
   async mounted() {
-    // await this.mountAllHotelInformation()
+    // await this.mountAllFlightInformation()
     const authStore = useAuthStore()
     const userStore = useUsersStore()
     const itineraryStore = useItineraryStore()
@@ -321,7 +230,7 @@ export default {
     console.log(dec)
     this.destination_c = dc
     this.departure_c = dec
-    this.mountAllHotelInformation()
+    this.mountAllFlightInformation()
   },
 
   methods: {
@@ -339,27 +248,27 @@ export default {
       
 
       },
-    async mountAllHotelInformation() {
-      // const authStore = useAuthStore()
-      // const userStore = useUsersStore()
-      // const itineraryStore = useItineraryStore()
-      // this.user = this.$route.params.username
-      // this.iti_name = this.$route.params.itinerary_name
+    async mountAllFlightInformation() {
+      const authStore = useAuthStore()
+      const userStore = useUsersStore()
+      const itineraryStore = useItineraryStore()
+      this.user = this.$route.params.username
+      this.iti_name = this.$route.params.itinerary_name
 
-      // var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
-      // this.iti_data = iti_data
-      // var dc = iti_data.itinerary_data.destination.trip_country
-      // this.destination_c = dc
+      var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
+      this.iti_data = iti_data
+      var dc = iti_data.itinerary_data.destination.trip_country
+      this.destination_c = dc
 
       var state = capital.filter(
         (c) => c['country'].toLowerCase() == this.destination_c.toLowerCase()
       )
       var destination_country = state[0]['city']
       //placeholder
-      var data = flight
-      this.hotelsInCities = await this.filterby(data, 'one')
-      this.mounted = true
-      return
+      // var data = flight
+      // this.hotelsInCities = await this.filterby(data, 'one')
+      // this.mounted = true
+      // return
 
       var start_date = iti_data.itinerary_data.destination.start_date
       var end_date = iti_data.itinerary_data.destination.end_date
@@ -393,7 +302,6 @@ export default {
           originEntityId: d_entityId,
           destinationEntityId: a_entityId,
           date: d_date,
-          returnDate: a_date,
           adults: people,
           currency: 'SGD'
         },

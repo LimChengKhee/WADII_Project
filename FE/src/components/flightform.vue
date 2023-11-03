@@ -78,7 +78,7 @@ export default {
         }}</span>
       </div>
       <div class="row ">
-        <div class="col-xl-6  col-lg-6 col-md-12">
+        <div class="col-xl-6  col-lg-6 col-md-12 px-0">
           <label for="name" class="text-start mb-2">Departure</label
           ><Datepicker
             v-model="itineraryStore.departure_date"
@@ -93,7 +93,7 @@ export default {
             focus-start-date
           />
         </div>
-        <div class="col-xl-6 col-lg-6 col-md-12">
+        <div class="col-xl-6 col-lg-6 col-md-12 px-0 ps-5 country">
           <label for="name" class="text-start mb-2">Country</label
           ><input
             type="text"
@@ -107,13 +107,13 @@ export default {
       </div>
     </div>
     <div class="form-group">
-      <div class="form-group-label mb-2">
+      <div class="form-group-label mb-2 ">
         <span v-if="itineraryStore.errors.arrival_date">{{
           itineraryStore.errors.arrival_date
         }}</span>
       </div>
       <div class="row ">
-        <div class="col-xl-6 col-lg-6 col-md-12">
+        <div class="col-xl-6 col-lg-6 col-md-12 px-0">
           <label for="name" class="text-start mb-2">Arrival</label
           ><Datepicker
             v-model="itineraryStore.arrival_date"
@@ -129,7 +129,7 @@ export default {
             
           />
         </div>
-        <div class="col-xl-6 col-lg-6 col-md-12">
+        <div class="col-xl-6 col-lg-6 col-md-12 px-0 ps-5 country">
           <label for="name" class="text-start mb-2">Country</label
           ><input
             type="text"
@@ -150,7 +150,7 @@ export default {
         }}</span>
       </div>
       <div class="row">
-        <div class="col">
+        <div class="col px-0">
           <input
             type="Number"
             id="name"
@@ -238,6 +238,9 @@ p {
   .form-group{
     margin: 0px;
   }
+  .country{
+    padding:0px !important;
+  }
 
 }
 
@@ -245,10 +248,16 @@ p {
   .form-group{
     margin: 0px;
   }
+  .country{
+    padding:0px !important;
+  }
 }
 @media only screen and (max-width: 576px) {
   .form-group{
     margin: 0px;
+  }
+  .country{
+    padding:0px !important;
   }
 }
 

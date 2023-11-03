@@ -127,26 +127,7 @@
           id="sidenav-collapse-main"
         >
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active" @click="route_link('itinerary')">
-                <div
-                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
-                >
-                  <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
-                </div>
-                <span class="nav-link-text ms-1">Itinerary</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" @click="route_link('dashboard')">
-                <div
-                  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
-                >
-                  <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-                </div>
-                <span class="nav-link-text ms-1">Dashboard</span>
-              </a>
-            </li>
+            
             <li class="nav-item">
               <a class="nav-link" @click="route_link('flight')">
                 <div
@@ -156,7 +137,7 @@
                     xmlns="http://www.w3.org/2000/svg"
                     width="32"
                     height="32"
-                    fill="currentColor"
+                    fill="red"
                     class="bi bi-airplane"
                     viewBox="0 0 16 16"
                     style="color: red"
@@ -178,7 +159,7 @@
                     xmlns="http://www.w3.org/2000/svg"
                     width="32"
                     height="32"
-                    fill="currentColor"
+                    fill="green"
                     class="bi bi-building"
                     viewBox="0 0 16 16"
                     style="color: green"
@@ -402,7 +383,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         width="32"
                         height="32"
-                        style="color: white; margin-top: 8px; margin-bottom: 8px"
+                        style="color: white; margin-top: 8px; margin-bottom: 8px;padding:2px"
                         fill="currentColor"
                         class="bi bi-calendar-date"
                         viewBox="0 0 16 16"
@@ -456,7 +437,7 @@
                         xmlns="http://www.w3.org/2000/svg"
                         width="32"
                         height="32"
-                        style="color: white; margin-top: 8px; margin-bottom: 8px"
+                        style="color: white; margin-top: 8px; margin-bottom: 8px; "
                         fill="currentColor"
                         class="bi bi-airplane-fill"
                         viewBox="0 0 16 16"
@@ -487,12 +468,12 @@
                             <div class="row">
                               <div class="col-8">
                                 <h6 class="fw-bold" style="">
-                                  {{ view_date(flight.departure_datetime.split(',')[0]) }}
-                                  {{ view_time(flight.departure_datetime.split(',')[1]) }}
+                                  {{ view_datetime(flight.departure_datetime)[0] }}
+                                  {{ view_datetime(flight.departure_datetime)[1] }}
                                 </h6>
                                 <h6 class="fw-bold" style="">
-                                  {{ view_date(flight.arrival_datetime.split(',')[0]) }}
-                                  {{ view_time(flight.arrival_datetime.split(',')[1]) }}
+                                  {{ view_datetime(flight.arrival_datetime)[0] }}
+                                  {{ view_datetime(flight.arrival_datetime)[1] }}
                                 </h6>
                               </div>
                               <div class="col">
@@ -927,6 +908,15 @@ export default {
       let printableDate1 = new Date(new Date().setDate(ed.getDate()))
       return `${printableDate.toDateString()} - ${printableDate1.toDateString()}`
     },
+    view_datetime(date) {
+      if (date == null){
+        return [null,null]
+      }
+      var date_range = date.split(',')
+      var sd = new Date(date_range[0])
+      let printableDate = new Date(new Date().setDate(sd.getDate()))
+      return [printableDate.toDateString(),this.view_time(date_range[1])]
+    },
     view_time(time) {
       return time.slice(0, -6) + time.slice(-2)
     },
@@ -948,6 +938,13 @@ export default {
       var page = routes[path]
       this.$router.push(page)
     },
+    format_date(date) {
+      let mth = date.getMonth()
+      let day = date.getDate()
+      let year = date.getFullYear()
+      let time = String(date.toLocaleTimeString()).replaceAll(' ', '-')
+      return [`${year}-${mth + 1}-${day}`, time]
+    },
 
     // methods defined by ourselves
     async save() {
@@ -956,6 +953,11 @@ export default {
       var iti_data = this.iti_data
       console.log(this.days, 'tobestored')
       iti_data.itinerary_data.itinerary_days = this.days
+      let start = new Date(iti_data.itinerary_data.destination.start_date)
+      let trip_length = this.days.length;
+      let end = start.setDate(start.getDate()+trip_length);
+      iti_data.itinerary_data.destination.end_date = format_date(end)[0]
+      
 
       // this.iti_data.itinerary_data.destination = format
       console.log(iti_data, 'before saved')
