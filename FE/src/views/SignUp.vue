@@ -15,13 +15,14 @@
             <input type="password" v-model="password" class="form-control" placeholder="Enter Password" />
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+            <button type="submit" class="btn btn-primary btn-block w-100">Sign Up</button>
           </div>
-        </form>
+       
 
-        <p class="text-center mt-3">
+        <p class="text-center mt-3 w-100">
           <router-link to="/login">Login</router-link>
         </p>
+      </form>
       </div>
     </div>
   </div>
@@ -71,7 +72,7 @@ export default {
 }
 
 .card {
-  max-width: 400px;
+  max-width: 600px;
   width: 100%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

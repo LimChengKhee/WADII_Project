@@ -3,9 +3,6 @@
     <div class="card">
       <div class="card-body">
         <div class="login-content">
-          <!-- Add the rectangular image on the left -->
-          <img src="../img/kfc.png" alt="Image" class="login-image" />
-
           <div class="login-form">
             <h1 class="card-title">Login Page</h1>
             <form @submit.prevent="submitForm" class="form-login">
@@ -20,13 +17,14 @@
               </div>
 
               <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                <button type="submit" class="btn btn-primary btn-block w-100">Log in</button>
               </div>
-            </form>
+            
 
-            <p class="text-center mt-3">
+            <p class="text-center mt-1 w-100">
               <router-link to="/sign-up">Sign Up</router-link>
             </p>
+          </form>
           </div>
         </div>
       </div>
@@ -47,25 +45,25 @@ export default {
       password: ''
     }
   },
-  computed:{
+  computed: {
     ...mapStores(useAuthStore)
   },
   methods: {
-    
-  async submitForm(){
-    const authStore = useAuthStore();
-    var resp = await authStore.login(this.username,this.password);
-    console.log(resp,"te")
-    if (resp){
-      console.log('hi')
-      this.$router.push({ path: '/' })
-    }else{
-      alert("Wrong Info")
-    }
+
+    async submitForm() {
+      const authStore = useAuthStore();
+      var resp = await authStore.login(this.username, this.password);
+      console.log(resp, "te")
+      if (resp) {
+        console.log('hi')
+        this.$router.push({ path: '/' })
+      } else {
+        alert("Wrong Info")
+      }
+
+    },
 
   },
-    
-    },
   components: {},
 }
 </script>
@@ -134,18 +132,4 @@ export default {
 .form-control {
   padding-left: 40px;
 }
-
-/* Add a vertical divider */
-.login-form::before {
-  content: '';
-  position: absolute;
-  left: -2px;
-  /* Adjust the position as needed */
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  /* Adjust the divider width as needed */
-  background-color: #ccc;
-  /* Divider color */
-}</style>
-  
+</style>
