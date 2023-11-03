@@ -1,15 +1,8 @@
-# WADII_Project
- Travel Itinerary
-
 # Project Title
+🍃 EcoBound 🍃, a travel application ✈️ that makes it easier for travellers to plan their trip 🔥🔥🔥! 
 
-# Project Description
-
-# Table of Contents
-
-# References
-
-## API(s)
+# Project Description 📖
+Our application aims to not only streamline the process of planning a trip, through aggregating the hotels 🏨 & flights ✈️ information alongside itinerary planning 📆, we also hope that by displaying eco-friendly solutions to users, we are converting travellers to become more environmentally conscious when travelling.
 
 # Collaboration
 1. Clone files required

@@ -31,3 +31,4 @@ login with username admin and password wad2is216
 go back to the terminal in the FE directory
 command in terminal: npm run dev
 login with username admin and password wad2is216
+
