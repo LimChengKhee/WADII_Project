@@ -697,7 +697,7 @@
               <div class="card p-4">
                 <span class="font-weight-bolder"
                   >Loading...
-                  <a href="#" class="btn" style="border: 1px solid gray; margin-bottom: 0px"
+                  <a href="#top" class="btn" style="border: 1px solid gray; margin-bottom: 0px"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
@@ -725,6 +725,7 @@
           :originLoc="originLoc"
           :originName="origin"
           :openModal="openModal"
+          :countryName="countryName"
         ></Day_Component>
       </div>
     </div>
@@ -828,12 +829,12 @@ export default {
       this.baseOrigin = this.countryName
       this.origin = this.countryName
     }
-
+    console.log(this.countryName)
     
     
     
-
-    this.$refs.dayComp.countryName = this.$refs.dayComp.getCountryCode(this.countryName)
+    this.$refs.dayComp.countryName = this.countryName
+    this.$refs.dayComp.country = this.$refs.dayComp.getCountryCode(this.countryName)
 
     this.initialiseOrigin()
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -841,6 +842,7 @@ export default {
       (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
     )
     if (this.topAttractions.length == 0) {
+    console.log("testubg")
       this.getSlicedArr()
     }
   },
@@ -1001,7 +1003,7 @@ export default {
         })
     },
     getSlicedArr() {
-
+      console.log(this.countryName)
       this.$refs.dayComp.getTopAttractions().then((result) => {
         this.topAttractions = result
         console.log(this.topAttractions)

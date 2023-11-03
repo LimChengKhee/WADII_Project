@@ -182,32 +182,19 @@ body {
   overflow: hidden;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* Adding shadow to the cards */
   transition: transform 0.3s;
   margin-bottom: 20px;
-  /* background: url(https://i.ibb.co/M9LB3Kq/Glassmorphism-Background.png); */
-  background-size: cover;
-  padding: 2rem;
-  /* width:310px; */
-  /* height:640px; */
+  width: 15rem; /* Adjust the width of the cards /
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(16.5px);
-
-  /* Adjust margin as needed */
 }
-
-/* .card:hover {
-  transform: translateY(-10px);
-} */
 
 .card-img-top {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   width: 100%;
-  height: 200px;
-  /* Adjust height as needed */
+  height: 150px; / Adjust the height of the image */
   object-fit: cover;
-  /* Ensure the image covers the entire container */
 }
 
 .card-body {
@@ -247,13 +234,5 @@ body {
 }
 
 
-.carousel-control-prev {
-  left: -5%;
-  z-index: 1;
-}
 
-.carousel-control-next {
-  right: -5%;
-  z-index: 1;
-}
 </style>

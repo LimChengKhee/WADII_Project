@@ -83,7 +83,7 @@
 
         <div class="card_section mt-5" v-if="mounted && !search">
           <HotelCard v-for="hotel in this.hotelsInCities" :hotel_name="hotel.hotel_name"
-            :distance_to_cc_formatted="hotel.distance_to_cc_formatted" :review_score="hotel.review_score"
+            :distance_to_cc_formatted="hotel.distance_to_cc" :review_score="hotel.review_score"
             :review_score_word="hotel.review_score_word" :number_of_reviews="hotel.review_nr"
             :photo_url="hotel.max_1440_photo_url"
             :price_per_night="hotel.composite_price_breakdown.gross_amount_per_night.value"
@@ -92,15 +92,16 @@
         </div>
         <div class="card_section" v-if="mounted && search">
           <HotelCard v-for="hotel in this.sub_hotels" :hotel_name="hotel.hotel_name"
-            :distance_to_cc_formatted="hotel.distance_to_cc_formatted" :review_score="hotel.review_score"
+            :distance_to_cc_formatted="hotel.distance_to_cc" :review_score="hotel.review_score"
             :review_score_word="hotel.review_score_word" :number_of_reviews="hotel.review_nr"
             :photo_url="hotel.max_1440_photo_url"
             :price_per_night="hotel.composite_price_breakdown.gross_amount_per_night.value"
             :currency="hotel.composite_price_breakdown.gross_amount_per_night.currency" :updated_object="hotel"
             :district="hotel.district" :city="hotel.city"></HotelCard>
         </div>
+
         <div class="spinner_section d-flex flex-column" v-if="!mounted">
-          <div class="spinner-border mt-5" style="margin: 0 auto;height:200px;width:200px;" role="status">
+          <div class="spinner-border mt-5" style="margin: 0 auto;height:200px;width:200px; color:black!important" role="status">
           </div>
           <p class="mt-2" style="text-align: center;">Loading...Please give us a second</p>
         </div>
@@ -159,6 +160,8 @@ export default {
 
   // start of lifecycle
   async mounted() {
+    
+
     let currentState = await this.loadPersistedData();
 
     const authStore = useAuthStore()
@@ -169,8 +172,8 @@ export default {
 
     var iti_data = await userStore.getUserItinerary(this.user, this.iti_name)
     this.iti_data = iti_data
-    this.start_date = new Date(iti_data.itinerary_data.destination.start_date)
-    this.end_date = new Date(iti_data.itinerary_data.destination.end_date)
+    this.start_date = iti_data.itinerary_data.destination.start_date
+    this.end_date = iti_data.itinerary_data.destination.end_date
     var dc = iti_data.itinerary_data.destination.trip_country
     var dec = iti_data.itinerary_data.destination.departure_country
     this.destination_c = dc
@@ -181,7 +184,10 @@ export default {
       await this.savePersistedData()
       this.mounted = true
     }
-    this.mounted = true
+    
+    console.log(this.hotelsInCities)
+
+    
   },
 
   methods: {
@@ -227,11 +233,41 @@ export default {
       this.sub_hotels = hotels_sub;
 
     },
+    async getDestID(location){
+      
+      const options = {
+        method: 'GET',
+        url: 'https://booking-com.p.rapidapi.com/v1/hotels/locations',
+        params: {
+          name: location,
+          locale: 'en-gb'
+        },
+        headers: {
+          'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
+          'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+        }
+      };
 
+      try {
+        const response = await axios.request(options);
+        console.log(location)
+        console.log(response.data)
+        return response.data[0]['dest_id'];
+      } catch (error) {
+        console.error(error);
+      }
+    },
 
     // methods defined by ourselves
     async mountAllHotelInformation() {
       // get all the hotels within that city displayed.
+
+      // let location = 'Japan'
+      var dest_id = await this.getDestID(this.destination_c)
+
+      console.log(dest_id)
+      console.log(this.start_date,this.end_date)
+      var dest_id = "26216"
       const options = {
         method: 'GET',
         url: 'https://booking-com.p.rapidapi.com/v1/hotels/search',
@@ -240,12 +276,12 @@ export default {
           dest_type: 'city',
           units: 'metric',
           checkout_date: this.end_date,
-          adults_number: '1',
+          adults_number: 1,
           order_by: 'popularity',
           dest_id: dest_id,
           filter_by_currency: 'SGD',
           locale: 'en-gb',
-          room_number: '1',
+          room_number: 1,
           categories_filter_ids: 'class::2,class::4,free_cancellation::1',
           include_adjacency: 'true'
         },
@@ -291,6 +327,7 @@ export default {
 
       await flushPromises()
       // this.hotelsInCities = test
+      this.hotelsInCities = this.hotelsInCities.slice(0,10)
 
       for (let hotel of this.hotelsInCities) {
         let hotel_id = hotel.hotel_id
@@ -303,7 +340,7 @@ export default {
             locale: 'en-gb'
           },
           headers: {
-            'X-RapidAPI-Key': '1b483ecf55mshf8532b1de0b460ep15ab30jsnbb634c85aadd',
+            'X-RapidAPI-Key': '77e12cde7dmsh40a7d5751e3dff1p1ca69ajsnc3ae5c097785',
             'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
           }
         };

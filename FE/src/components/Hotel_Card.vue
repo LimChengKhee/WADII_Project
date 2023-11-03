@@ -23,7 +23,7 @@
                 <div class="row d-flex justify-content-start p-sm-1 p-xl-0">
                   <div class="col-md-3 col-sm-4 col-xs-3">
                     <span class="badge rounded-pill text-bg-secondary"
-                      >{{ this.distance_to_cc_formatted }} from centre</span
+                      >{{ this.distance_to_cc_formatted }}km from centre</span
                     ><br />
                   </div>
                   
@@ -77,6 +77,9 @@
                       Book Room
                     </span>
                   </button>
+                  <div>
+                    ${{ price_per_night }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -108,7 +111,8 @@ export default {
     currency: String,
     updated_object: Object,
     district: String,
-    city: String
+    city: String,
+    price_per_night: Number,
   },
   data() {
     // local repository of information

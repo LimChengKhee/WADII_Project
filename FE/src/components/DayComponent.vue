@@ -305,7 +305,8 @@ props: [
     'date',
     'originLoc',
     'originName',
-    'openModal'
+    'openModal',
+    'countryName'
 ],
 name: 'Day_Component',
 components: {
@@ -698,6 +699,7 @@ methods: {
         }
     },
     getTopAttractions(){
+        console.log(this.countryName)
         var search = "tourist attractions in " + this.countryName
         var attractionsCount = 0
         var topAttractions = [];
