@@ -1,3 +1,4 @@
+The frontend application would be deployed on http://localhost:5173 or http://127.0.0.1:5173
 unzip the folder
 drag to the directory where you want to store the folder
 open wamp (wait for it to start)
