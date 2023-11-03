@@ -53,7 +53,7 @@
             <div class="col-2 px-0 book_big">
               <div class="row">
                 <div class="col">
-                  {{ this.totalPrice }}
+                  ${{ Math.ceil(this.totalPrice) }}
                 </div>
               </div>
               <div class="row m-0">
@@ -67,7 +67,7 @@
 
             <div class="col-2 px-0 book_small">
               <div class="">
-                {{ this.totalPrice }} 
+                ${{ Math.ceil(this.totalPrice) }} 
               </div>
              
               <button class="btn btn-success" @click="book_flight()">Book</button>
@@ -101,7 +101,7 @@ export default {
     arrival: String,
     destinationDisplayCode: String,
     destinationCity: String,
-    totalPrice: String,
+    totalPrice: Number,
     tag:Object,
     eco:Number,
     img:String,

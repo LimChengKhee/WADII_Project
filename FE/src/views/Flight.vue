@@ -47,7 +47,7 @@
                   :text-input="true"
                   :min-date="start_date"
                   :start-date="start_date"
-                  @update:model-value="mountAllFlightInformation"
+                  @update:model-value=""
                   input-class-name="dp-custom-input py-2 rounded-3 dp-color"
                   focus-start-date
                 />
@@ -119,7 +119,7 @@
                       :text-input="true"
                       :min-date="start_date"
                       :start-date="start_date"
-                      @update:model-value="mountAllFlightInformation"
+                      @update:model-value=""
                       input-class-name="dp-custom-input rounded-3 dp-color"
                       focus-start-date
                     />
@@ -136,9 +136,6 @@
               :flightNumberO="flight.legs[0].segments[0].flightNumber"
               :alternateIdO="flight.legs[0].segments[0].marketingCarrier.alternateId"
               :carrierNameO="flight.legs[0].carriers.marketing[0].name"
-              :flightNumberD="flight.legs[1].segments[0].flightNumber"
-              :alternateIdD="flight.legs[1].segments[0].marketingCarrier.alternateId"
-              :carrierNameD="flight.legs[1].carriers.marketing[0].name"
               :departure="flight.legs[0].segments[0].departure"
               :originDisplayCode="flight.legs[0].segments[0].origin.displayCode"
               :originName="flight.legs[0].segments[0].origin.name"
@@ -147,7 +144,7 @@
               :arrival="flight.legs[0].arrival"
               :destinationDisplayCode="flight.legs[0].segments[0].destination.displayCode"
               :destinationCity="flight.legs[0].destination.name"
-              :totalPrice="flight.price.formatted"
+              :totalPrice="flight.price.raw"
               :tag="flight.tags"
               :eco="flight.eco.ecoContenderDelta"
               :img="flight.legs[0].carriers.marketing[0].logoUrl"
@@ -235,6 +232,21 @@ export default {
 
   methods: {
     // methods defined by ourselves
+    check_date(date){
+      var date_list = date.split('-')
+      var year = date_list[0]
+      var mon = date_list[1]
+      var day = date_list[2]
+      if (mon.length == 1){
+        mon = '0' + String(mon)
+      }
+      if (day.length == 1){
+        day = '0' + String(day)
+      }
+      return `${year}-${mon}-${day}`
+
+
+    },
     toggleSidebarVisibility() {
       
       const toggle = document.getElementsByClassName("sidenav")[0];
@@ -279,6 +291,7 @@ export default {
 
       var d_date = this.start_date
       // var a_date = date_list[1]
+      d_date = this.check_date(d_date)
 
       var d_skyId = 'SINS'
       var d_entityId = '27546111'
@@ -306,7 +319,7 @@ export default {
           currency: 'SGD'
         },
         headers: {
-          'X-RapidAPI-Key': '921e9474d9msh41e6dc80c2d8395p101f78jsne7dbbeab3134',
+          'X-RapidAPI-Key': 'ec19d5b397mshdd9dc88cda0f832p127c16jsn5f1eef25bf85',
           'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
         }
       }
@@ -328,7 +341,7 @@ export default {
         url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchAirport',
         params: { query: country },
         headers: {
-          'X-RapidAPI-Key': '921e9474d9msh41e6dc80c2d8395p101f78jsne7dbbeab3134',
+          'X-RapidAPI-Key': 'ec19d5b397mshdd9dc88cda0f832p127c16jsn5f1eef25bf85',
           'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
         }
       }
@@ -353,7 +366,7 @@ export default {
         var flight_list = data.data.itineraries
         console.log(flight_list)
         for (let f of flight_list) {
-          if (f.legs[0].segments.length == 1 && f.legs[1].segments.length == 1) {
+          if (f.legs[0].segments.length == 1 ) {
             if (!('eco' in f)) {
               f['eco'] = { ecoContenderDelta: 0 }
             }
