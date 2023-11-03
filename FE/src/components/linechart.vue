@@ -105,7 +105,7 @@ export default {
       const container = d3.select("#chartContainer");
       container.select("svg").remove();
       const containerWidth = container.node().getBoundingClientRect().width;
-      const margin = { top: 30, right: 50, bottom: 40, left: this.screenWidth <= 600 ? 50 : 100 };
+      const margin = { top: 30, right: 50, bottom: 40, left: this.screenWidth <= 600 ? 90 : 100 };
       const width = Math.min(this.screenWidth, containerWidth) - margin.left - margin.right;
       const height = 500 - margin.top - margin.bottom;
 
@@ -310,15 +310,16 @@ export default {
         }));
 
 
-
       g.append("g")
         .call(d3.axisLeft(y).tickSizeOuter(0))
         .selectAll("text")
-        .attr("x", this.screenWidth <= 600 ? 0 : -30)
+        .attr("x", () => {
+          return this.screenWidth <= 600 ? -30 : -40; // Adjust the x-position based on screen width and margin
+        })
         .attr("y", -10);
+
       g.append("text")
         .attr("x", width - 10)
-        .attr("y", this.screenWidth <= 600 ? 10 : 30)
         .attr("y", this.screenWidth <= 600 ? 10 : 30)
         .attr("text-anchor", "end")
         .attr("fill", "white")
@@ -326,11 +327,10 @@ export default {
 
       g.append("text")
         .attr("x", width - 10)
-        .attr("y", 10)
+        .attr("y", this.screenWidth <= 600 ? 30 : 50)
         .attr("text-anchor", "end")
         .attr("fill", "white")
         .text(`Average Cost: $${averageCost.toFixed(2)}`);
-
       // Style x-axis labels
       svg.selectAll(".tick text")
         .attr("fill", "white")

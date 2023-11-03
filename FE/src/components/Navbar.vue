@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-12 ms-4">
-        <nav class="navbar navbar-expand-lg bg-white px-0">
+      <div class="col-12 px-0">
+        <nav class="navbar navbar-expand-lg bg-white">
           <div class="container-fluid position-relative d-flex align-items-center">
             <img
               class=""
@@ -96,16 +96,6 @@ export default {
       },
       {
         id: 2,
-        icon: "fa fa-hotel",
-        text: "Hotel",
-      },
-      {
-        id: 3,
-        icon: "fa fa-plane",
-        text: "Flights",
-      },
-      {
-        id: 4,
         icon: "fa fa-chart-line",
         text: "Dashboard",
       },
@@ -128,7 +118,7 @@ export default {
       this.sliderPosition = el.offsetLeft;
       this.selectedElementWidth = el.offsetWidth;
       this.selectedIndex = id;
-      var routes = { 1: '/', 2: '/hotel', 3: '/flight', 4: '/dashboard' }
+      var routes = { 1: '/', 2: '/dashboard'}
       var page = routes[id]
       this.$router.push(page)
     },

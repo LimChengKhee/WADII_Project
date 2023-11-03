@@ -106,8 +106,8 @@
     </div>
 
     <div
-      class="min-height-400 position-absolute w-100"
-      style="background-color: #5e72e4; right: 0px; top: -2%"
+      class="min-height-400 position-absolute "
+      style="background-color: #5e72e4;"
     ></div>
     <div class="col-3">
       <div
