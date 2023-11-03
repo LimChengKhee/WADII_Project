@@ -4,6 +4,9 @@
 # Project Description 📖
 Our application aims to not only streamline the process of planning a trip, through aggregating the hotels 🏨 & flights ✈️ information alongside itinerary planning 📆, we also hope that by displaying eco-friendly solutions to users, we are converting travellers to become more environmentally conscious when travelling.
 
+# Github Repo
+https://github.com/LimChengKhee/WADII_Project
+
 # Collaboration
 drag to the directory where you want to store the folder
 open wamp (wait for it to start)
