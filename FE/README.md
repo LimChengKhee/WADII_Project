@@ -1,4 +1,4 @@
-The frontend application would be deployed on http://localhost:5173 or http://127.0.0.1:5173
+The frontend application would be deployed on http://localhost:5173 or http://127.0.0.1:
 unzip the folder
 drag to the directory where you want to store the folder
 open wamp (wait for it to start)
@@ -31,4 +31,3 @@ login with username admin and password wad2is216
 go back to the terminal in the FE directory
 command in terminal: npm run dev
 login with username admin and password wad2is216
-
