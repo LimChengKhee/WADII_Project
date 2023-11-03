@@ -38,4 +38,4 @@ go to your browser and paste this link: http://127.0.0.1:8000/admin \
 login with username admin and password wad2is216\
 go back to the terminal in the FE directory\
 command in terminal: npm run dev\
-login with username admin and password wad2is216\
+login with username admin and password wad2is216
