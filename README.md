@@ -34,7 +34,7 @@ command in terminal: python manage.py createsuperuser\
 terminal will prompt for username: type in admin\
 terminal will prompt for email address: type in test@gmail.com\
 terminal will prompt for password: type in wad2is216\
-go to your browser and paste this link: http://127.0.0.1:8000/admin\
+go to your browser and paste this link: http://127.0.0.1:8000/admin \
 login with username admin and password wad2is216\
 go back to the terminal in the FE directory\
 command in terminal: npm run dev\
