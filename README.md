@@ -7,7 +7,14 @@ Our application aims to not only streamline the process of planning a trip, thro
 # Github Repo
 https://github.com/LimChengKhee/WADII_Project
 
+# API notes
+Flight Scanner Api 20Uses
+Carbon Footprint Api 100Uses
+Distance  Api 100 uses
+Booking.com Api 550 Uses
+
 # Collaboration
+Ensure Python is install\
 drag to the directory where you want to store the folder\
 open wamp (wait for it to start)\
 open mysqlworkbench\

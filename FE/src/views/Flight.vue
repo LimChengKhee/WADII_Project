@@ -119,7 +119,7 @@
                       :text-input="true"
                       :min-date="start_date"
                       :start-date="start_date"
-                      @update:model-value=""
+                      @update:model-value="searchflight"
                       input-class-name="dp-custom-input rounded-3 dp-color"
                       focus-start-date
                     />
@@ -199,6 +199,7 @@ export default {
       end_date: '',
       flight_date: '',
       destination_c: '',
+      search:false,
     }
   },
   computed: {
@@ -259,6 +260,15 @@ export default {
       
 
       },
+
+      async searchflight(){
+        this.search = true
+        
+
+        await this.mountAllFlightInformation();
+        this.search = false
+      },
+
     async mountAllFlightInformation() {
       const authStore = useAuthStore()
       const userStore = useUsersStore()
@@ -289,11 +299,26 @@ export default {
       // var date_list = date_range.split(',')
 
       var d_date = this.start_date
-      // var a_date = date_list[1]
-      d_date = this.check_date(d_date)
-
       var d_skyId = 'SINS'
       var d_entityId = '27546111'
+      // var a_date = date_list[1]
+      if (this.search){
+        var departure_c = this.departure_c
+        var destination_country = this.destination_c
+        var d_date = this.start_date
+
+        let state = capital.filter(
+        (c) => c['country'].toLowerCase() == this.departure_c.toLowerCase()
+      )
+        departure_c = state[0]['city']
+
+        const [d_skyId, d_entityId] = await this.getAPIcountry(departure_c)
+      }
+      
+      d_date = this.check_date(d_date)
+
+
+      
       console.log(destination_country)
       const [a_skyId, a_entityId] = await this.getAPIcountry(destination_country)
       console.log(a_skyId, a_entityId)
