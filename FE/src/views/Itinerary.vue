@@ -872,6 +872,7 @@ export default {
         return printableDate.toDateString()
     },
     checkScreenSize() {
+      console.log(window.innerWidth,'width',window.innerWidth <= 1010)
       this.isSmallScreen = window.innerWidth <= 1010 // Adjust the threshold as needed
     },
     toggleSidebarVisibility() {
@@ -1136,5 +1137,34 @@ export default {
 .card-header{
     border-color: transparent !important;
     border-radius:0.75rem;
+}
+.floating-button {
+  position: fixed;
+  width: 10%;
+  height: 10%;
+  bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 20px;
+  z-index: 12312;
+}
+
+@media (min-width: 1010px) {
+  .floating-button {
+    display: none;
+  }
+}
+@media (max-width: 1010px) {
+  #sidenav-main {
+    display: none;
+  }
+  .floating-button {
+    display: fixed;
+  }
+}
+
+ .border-radius-lg {
+  border-radius:0.75rem;
 }
 </style>
