@@ -263,8 +263,6 @@ export default {
 
       async searchflight(){
         this.search = true
-        
-
         await this.mountAllFlightInformation();
         this.search = false
       },
@@ -302,6 +300,7 @@ export default {
       var d_skyId = 'SINS'
       var d_entityId = '27546111'
       // var a_date = date_list[1]
+      console.log(this.search,'SEARCHING')
       if (this.search){
         var departure_c = this.departure_c
         var destination_country = this.destination_c
