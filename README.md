@@ -12,14 +12,14 @@ Github\
 d3.js Charting/Dashboard\
 Sustainability\
 vuex storing information\
-vue router\
+vue router
 
 
 # API notes
 Flight Scanner Api 20Uses\
 Carbon Footprint Api 100Uses\
 Distance  Api 100 uses\
-Booking.com Api 550 Uses\
+Booking.com Api 550 Uses
 
 # Collaboration
 Ensure Python is install\
