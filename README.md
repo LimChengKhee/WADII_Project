@@ -16,7 +16,7 @@ vue router
 
 
 # API notes
-Flight Scanner Api 20Uses\
+Flight Scanner Api 20Uses\ 
 Carbon Footprint Api 100Uses\
 Distance  Api 100 uses\
 Booking.com Api 550 Uses

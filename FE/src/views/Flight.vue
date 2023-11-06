@@ -343,7 +343,7 @@ export default {
           currency: 'SGD'
         },
         headers: {
-          'X-RapidAPI-Key': '74fa17a6c8mshd5c9b688c9cf890p15d633jsn2d0dff545fee',
+          'X-RapidAPI-Key': 'c260fac248mshc510bbc87154606p1d1f15jsn6b4821212ce9',
           'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
         }
       }
@@ -365,7 +365,7 @@ export default {
         url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchAirport',
         params: { query: country },
         headers: {
-          'X-RapidAPI-Key': '74fa17a6c8mshd5c9b688c9cf890p15d633jsn2d0dff545fee',
+          'X-RapidAPI-Key': 'c260fac248mshc510bbc87154606p1d1f15jsn6b4821212ce9',
           'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
         }
       }
