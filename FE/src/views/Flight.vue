@@ -300,8 +300,9 @@ export default {
       var d_skyId = 'SINS'
       var d_entityId = '27546111'
       // var a_date = date_list[1]
-      console.log(this.search,'SEARCHING')
+      
       if (this.search){
+        console.log(this.search,'SEARCHING')
         var departure_c = this.departure_c
         var destination_country = this.destination_c
         var d_date = this.start_date
@@ -342,7 +343,7 @@ export default {
           currency: 'SGD'
         },
         headers: {
-          'X-RapidAPI-Key': '08e81b2736msh4c536fc4a7840cep1aeb8fjsn85440eaaed97',
+          'X-RapidAPI-Key': '74fa17a6c8mshd5c9b688c9cf890p15d633jsn2d0dff545fee',
           'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
         }
       }
@@ -364,7 +365,7 @@ export default {
         url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchAirport',
         params: { query: country },
         headers: {
-          'X-RapidAPI-Key': '08e81b2736msh4c536fc4a7840cep1aeb8fjsn85440eaaed97',
+          'X-RapidAPI-Key': '74fa17a6c8mshd5c9b688c9cf890p15d633jsn2d0dff545fee',
           'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
         }
       }

@@ -52,7 +52,7 @@
 
             <div class="col-2 px-0 book_big">
               <div class="row">
-                <div class="col">
+                <div class="col px-0">
                   ${{ Math.ceil(this.totalPrice) }}
                 </div>
               </div>
