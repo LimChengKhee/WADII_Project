@@ -767,6 +767,7 @@ methods: {
         this.recs = []
         this.sliceCount = 0
         this.anyRecs = [1,0]
+        var acceptableRating = 4
         this.nearbySearch(keyword,this.originLoc,range,60).then(resp =>{
             if (resp == "No valid results"){
                 this.anyRecs[1]++;
