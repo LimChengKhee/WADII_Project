@@ -178,13 +178,14 @@ export default {
     var dec = iti_data.itinerary_data.destination.departure_country
     this.destination_c = dc
     this.departure_c = dec
+    this.date = [new Date(this.start_date),new Date(this.end_date)]
 
     if (currentState == null) {
       await this.mountAllHotelInformation()
       await this.savePersistedData()
       this.mounted = true
     }
-    
+    this.mounted = true
     console.log(this.hotelsInCities)
 
     
@@ -251,7 +252,7 @@ export default {
       try {
         const response = await axios.request(options);
         console.log(location)
-        console.log(response.data)
+        console.log(response.data,'here?')
         return response.data[0]['dest_id'];
       } catch (error) {
         console.error(error);
@@ -263,10 +264,12 @@ export default {
       // get all the hotels within that city displayed.
 
       // let location = 'Japan'
+      console.log('called')
       var dest_id = await this.getDestID(this.destination_c)
 
-      console.log(dest_id)
+      console.log(dest_id,'await?')
       console.log(this.start_date,this.end_date)
+      console.log('you there')
       var dest_id = "26216"
       const options = {
         method: 'GET',
@@ -319,7 +322,7 @@ export default {
 
       try {
         const response = await axios.request(options)
-        console.log(response);
+        console.log(response,'LOADING');
         this.hotelsInCities = response.data.result
       } catch (error) {
         console.error(error);
