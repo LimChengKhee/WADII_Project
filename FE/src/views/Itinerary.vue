@@ -115,7 +115,7 @@
         v-if="!openModal"
         class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start ms-4"
         id="sidenav-main"
-        style="margin-top: 5%"
+        style="margin-top: 5%;"
       >
         <!-- <div class="sidenav-header">
           <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -124,7 +124,7 @@
         <hr class="horizontal dark mt-0" />
         <div
           class="collapse navbar-collapse w-auto"
-          style="min-height: 700px"
+          style="min-height: 70%"
           id="sidenav-collapse-main"
         >
           <ul class="navbar-nav">
@@ -199,7 +199,7 @@
             </li>
           </ul>
         </div>
-        <div class="sidenav-footer mt-auto mx-3">
+        <div class="sidenav-footer mt-auto mx-3" >
           <hr color="black" />
           <a href="#top" class="btn btn-dark btn-sm w-100 mb-3">Jump to top</a>
           <button @click="save()" class="btn btn-primary text-center  w-100" style="height:30px">Save</button>
