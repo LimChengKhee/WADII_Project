@@ -772,7 +772,36 @@ methods: {
                 this.anyRecs[1]++;
             }else{
                 for (let p of resp){
+                    if (p.rating === undefined){
+                            continue
+                        }
+                        if (p.rating < acceptableRating || p.user_ratings_total < 50 || p.business_status != "OPERATIONAL"){
+                            continue;
+                        }
+                        if (p.types.includes('car_dealer')){
+                            continue;
+                        }
                     this.getPlaceDetails(p.place_id,['url']).then(result =>{   
+                        if (p.vicinity === undefined){
+                            var address = ""
+                        }else{
+                            var address = p.vicinity
+                        }
+                        if (p.rating === undefined){
+                            var rating = ["-", "-"]
+                        }else{
+                            var rating = [p.rating,p.user_ratings_total]
+                        }
+                        if (p.price_level === undefined){
+                            var cost = 0
+                        }else{
+                            var cost = p.price_level
+                        }
+                        if (p.photos === undefined){
+                            var photo = ""
+                        }else{
+                            var photo = p.photos[0]
+                        }
                         if (result == "No results"){
                             var url = ""
                         }else{

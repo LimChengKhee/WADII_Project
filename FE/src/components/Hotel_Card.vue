@@ -61,25 +61,18 @@
               <div class="container">
                 <div class="row mt-5">
                   <!--Ratings / achievements-->
-                  <button type="button" class="btn btn-primary">
-                    <router-link
-                      :to="`/hotel/${this.hotel_name}`"
-                      style="text-decoration: none; color: black; font-weight: bold"
-                    >
-                      Details
-                    </router-link>
-                  </button>
 
-                  <br />
+
+                  <div>
+                    ${{ price_per_night }}
+                  </div>
 
                   <button type="button" class="btn btn-warning mt-2" @click="book_room()">
                     <span style="text-decoration: none; color: black; font-weight: bold">
                       Book Room
                     </span>
                   </button>
-                  <div>
-                    ${{ price_per_night }}
-                  </div>
+                  
                 </div>
               </div>
             </div>

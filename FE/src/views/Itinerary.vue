@@ -115,7 +115,7 @@
         v-if="!openModal"
         class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start ms-4"
         id="sidenav-main"
-        style="margin-top: 5%"
+        style="margin-top: 5%;"
       >
         <!-- <div class="sidenav-header">
           <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -124,7 +124,7 @@
         <hr class="horizontal dark mt-0" />
         <div
           class="collapse navbar-collapse w-auto"
-          style="min-height: 700px"
+          style="min-height: 70%"
           id="sidenav-collapse-main"
         >
           <ul class="navbar-nav">
@@ -199,7 +199,7 @@
             </li>
           </ul>
         </div>
-        <div class="sidenav-footer mt-auto mx-3">
+        <div class="sidenav-footer mt-auto mx-3" >
           <hr color="black" />
           <a href="#top" class="btn btn-dark btn-sm w-100 mb-3">Jump to top</a>
           <button @click="save()" class="btn btn-primary text-center  w-100" style="height:30px">Save</button>
@@ -214,7 +214,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xxl-5 col-md-6 col-12 mb-4">
+          <div class="col-xxl-5 col-lg-6 col-md-6 col-12 mb-4">
             <div class="card" id="originCard">
               <div class="card-body p-3">
                 <div class="row">
@@ -238,7 +238,32 @@
                           />
                         </svg>
                       </p>
-                      <div class="mt-3 mb-0" id="chooseOrigin">
+                     
+                    </div>
+                  </div>
+                  <div class="col-2 text-end">
+                    <div
+                      class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        fill="currentColor"
+                        class="bi bi-geo-alt-fill"
+                        style="color: white; margin-top: 8px; margin-bottom: 8px"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="row">
+                    <div class="mt-3 mb-0" id="chooseOrigin">
                         <template v-if="!editOrigin">
                           <div class="input-group pe-0 fs-6" style="max-height: 40px">
                             <input
@@ -303,32 +328,12 @@
                           </div>
                         </template>
                       </div>
-                    </div>
-                  </div>
-                  <div class="col-2 text-end">
-                    <div
-                      class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        fill="currentColor"
-                        class="bi bi-geo-alt-fill"
-                        style="color: white; margin-top: 8px; margin-bottom: 8px"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"
-                        />
-                      </svg>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-xxl-5 offset-xxl-1 col-md-6 col-12 mb-4">
+          <div class="col-xxl-5 offset-xxl-1 col-lg-6 col-md-6 col-12 mb-4">
             <div class="card" id="editCard">
               <div class="card-body p-3">
                 <div class="row">
@@ -351,30 +356,7 @@
                           />
                         </svg>
                       </p>
-                      <div class="input-group pe-0 mt-3 mb-0">
-                        <Datepicker
-                          class="w-md-75"
-                          style="height: 40px; max-width: 350px"
-                          id="datepick"
-                          :min-date="date[0]"
-                          :model-value="date"
-                          :clearable="false"
-                          @update:model-value="selectDate"
-                          range
-                          :enable-time-picker="false"
-                          :teleport="true"
-                        />
-                        <button
-                          id="addDay"
-                          @click="addDaystoEnd(1)"
-                          style="height: 38px; margin-top: 1px"
-                          class="btn btn-success mb-0"
-                          :disabled="this.days.length == 0"
-                          type="button"
-                        >
-                          ✚
-                        </button>
-                      </div>
+                     
                     </div>
                   </div>
                   <div class="col-2 text-end">
@@ -400,12 +382,41 @@
                     </div>
                   </div>
                 </div>
+                <div class="row">
+                  <div class = "col px-0 ">
+                    <div class="input-group pe-0 mt-3 mb-0">
+                        <Datepicker
+                          class="w-md-75 px-0"
+                          style="height: 40px; max-width: 350px"
+                          id="datepick"
+                          :min-date="date[0]"
+                          :model-value="date"
+                          :clearable="false"
+                          @update:model-value="selectDate"
+                          range
+                          :enable-time-picker="false"
+                          :teleport="true"
+                        />
+                        <button
+                          id="addDay"
+                          @click="addDaystoEnd(1)"
+                          style="height: 38px; margin-top: 1px"
+                          class="btn btn-success mb-0"
+                          :disabled="this.days.length == 0"
+                          type="button"
+                        >
+                          ✚
+                        </button>
+                      </div>
+                  </div>
+                  
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div class="row mt-lg-4 m">
-          <div class="col-xxl-5 col-12 col-md-6 mb-xl-0 mb-4">
+          <div class="col-xxl-5 col-12 col-lg-6 col-md-6 mb-xl-0 mb-4">
             <div class="card">
               <div class="card-body p-3">
                 <div class="row">
@@ -497,7 +508,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xxl-5 offset-xxl-1 col-md-6 col-12 mb-xl-0 mb-4">
+          <div class="col-xxl-5 offset-xxl-1 col-lg-6 col-md-6 col-12 mb-xl-0 mb-4">
             <div class="card">
               <div class="card-body p-3">
                 <div class="row">
@@ -611,7 +622,7 @@
                           <h6 class="text-sm mb-0" style="color:#344767">{{ day.dayActivities.length }}</h6>
                         </div>
                       </td>
-                      <td>
+                      <!-- <td>
                         <div class="text-end me-3">
                           <p class="text-xs font-weight-bold mb-0" style="color:#67748e">Jump to day</p>
                           <h6 class="text-sm mb-0">
@@ -622,7 +633,7 @@
                             >
                           </h6>
                         </div>
-                      </td>
+                      </td> -->
                       <td>
                         <div class="text-end me-3">
                           <h6 class="text-sm mb-0">
@@ -872,6 +883,7 @@ export default {
         return printableDate.toDateString()
     },
     checkScreenSize() {
+      console.log(window.innerWidth,'width',window.innerWidth <= 1010)
       this.isSmallScreen = window.innerWidth <= 1010 // Adjust the threshold as needed
     },
     toggleSidebarVisibility() {
@@ -1136,5 +1148,34 @@ export default {
 .card-header{
     border-color: transparent !important;
     border-radius:0.75rem;
+}
+.floating-button {
+  position: fixed;
+  width: 10%;
+  height: 10%;
+  bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 20px;
+  z-index: 12312;
+}
+
+@media (min-width: 1010px) {
+  .floating-button {
+    display: none;
+  }
+}
+@media (max-width: 1010px) {
+  #sidenav-main {
+    display: none;
+  }
+  .floating-button {
+    display: fixed;
+  }
+}
+
+ .border-radius-lg {
+  border-radius:0.75rem;
 }
 </style>
