@@ -8,7 +8,7 @@ The virtual environment will be activated and you’ll see “(BE)” next to th
 BE\Scripts\activate.bat
 ```
 
-## Download Django
+## Download Django.
 ```sh
 python -m pip install Django
 ```
